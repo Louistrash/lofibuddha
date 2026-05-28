@@ -1,26 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <!-- Background circle -->
-  <circle cx="50" cy="50" r="48" fill="#0f0f0f" />
+  <!-- Outer glow ring -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#c49464" stroke-width="0.5" opacity="0.15" />
   
-  <!-- Enso ring -->
-  <path d="M50 8 C73 8 92 27 92 50 C92 73 73 92 50 92 C27 92 8 73 8 50 C8 30 27 13 50 10" 
-    fill="none" stroke="#c49464" stroke-width="2.5" stroke-linecap="round" opacity="0.8" />
+  <!-- Enso circle -->
+  <path d="M50 5 C75 5 95 25 95 50 C95 75 75 95 50 95 C25 95 5 75 5 50 C5 28 22 7 48 5" 
+    fill="none" stroke="#d4b48a" stroke-width="2.5" stroke-linecap="round" opacity="0.9" />
   
-  <!-- Outer lotus petals -->
-  <ellipse cx="50" cy="72" rx="22" ry="32" fill="#c49464" opacity="0.15" />
-  <ellipse cx="33" cy="78" rx="15" ry="28" fill="#c49464" opacity="0.12" transform="rotate(-15, 33, 78)" />
-  <ellipse cx="67" cy="78" rx="15" ry="28" fill="#c49464" opacity="0.12" transform="rotate(15, 67, 78)" />
+  <!-- Lotus petals - outer -->
+  <ellipse cx="50" cy="74" rx="24" ry="34" fill="#c49464" opacity="0.12" />
+  <ellipse cx="34" cy="80" rx="16" ry="30" fill="#c49464" opacity="0.10" transform="rotate(-16, 34, 80)" />
+  <ellipse cx="66" cy="80" rx="16" ry="30" fill="#c49464" opacity="0.10" transform="rotate(16, 66, 80)" />
   
-  <!-- Inner lotus -->
-  <ellipse cx="50" cy="68" rx="18" ry="24" fill="#c49464" opacity="0.18" />
+  <!-- Lotus petals - inner -->
+  <ellipse cx="50" cy="70" rx="18" ry="26" fill="#c49464" opacity="0.16" />
   
-  <!-- Buddha/lotus silhouette -->
-  <circle cx="50" cy="35" r="10" fill="#c49464" opacity="0.7" />
-  <path d="M50 55 C56 55 60 58 61 64 C62 70 60 74 56 78 C54 80 52 80 50 80 C48 80 46 80 44 78 C40 74 38 70 39 64 C40 58 44 55 50 55Z" fill="#c49464" opacity="0.45" />
+  <!-- Buddha head -->
+  <circle cx="50" cy="34" r="11" fill="#d4b48a" opacity="0.75" />
   
   <!-- Crown bump -->
-  <path d="M45 28 C47 24 53 24 55 28 C56 26 52 22 48 24 Z" fill="#c49464" opacity="0.5" />
+  <path d="M44 26 C47 22 53 22 56 26 C57 24 53 20 47 22 Z" fill="#d4b48a" opacity="0.55" />
   
-  <!-- Center glow -->
-  <circle cx="50" cy="76" r="5" fill="#c49464" opacity="0.2" />
+  <!-- Buddha body/shoulders -->
+  <path d="M50 54 C57 54 61 57 62 64 C63 71 61 75 56 79 C54 81 52 81 50 81 C48 81 46 81 44 79 C39 75 37 71 38 64 C39 57 43 54 50 54Z" fill="#d4b48a" opacity="0.5" />
+  
+  <!-- Center dot -->
+  <circle cx="50" cy="78" r="4" fill="#c49464" opacity="0.25" />
 </svg>

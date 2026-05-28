@@ -50,13 +50,23 @@ function applyAccent(key: string) {
 
 // ── Load saved settings ──
 
+const DEFAULT_SETTINGS = { theme: "dark" as const, accent: "sienna", apiKeys: { deepseek: "", gemini: "", openai: "" } };
+
 function loadSettings() {
-  if (typeof window === "undefined") return { theme: "dark" as const, accent: "sienna", apiKeys: { deepseek: "", gemini: "", openai: "" } };
+  if (typeof window === "undefined") return { ...DEFAULT_SETTINGS, apiKeys: { ...DEFAULT_SETTINGS.apiKeys } };
   try {
     const saved = localStorage.getItem("bodhi-settings");
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Merge with defaults — handles missing fields from old localStorage formats
+      return {
+        theme: parsed.theme || DEFAULT_SETTINGS.theme,
+        accent: parsed.accent || DEFAULT_SETTINGS.accent,
+        apiKeys: { ...DEFAULT_SETTINGS.apiKeys, ...(parsed.apiKeys || {}) },
+      };
+    }
   } catch {}
-  return { theme: "dark" as const, accent: "sienna", apiKeys: { deepseek: "", gemini: "", openai: "" } };
+  return { ...DEFAULT_SETTINGS, apiKeys: { ...DEFAULT_SETTINGS.apiKeys } };
 }
 
 // ── Component ──
@@ -71,12 +81,21 @@ export default function SettingsPage() {
 
   // Load on mount
   useEffect(() => {
-    const settings = loadSettings();
-    setTheme(settings.theme);
-    setAccent(settings.accent);
-    setApiKeys(settings.apiKeys);
-    applyTheme(settings.theme);
-    applyAccent(settings.accent);
+    try {
+      const settings = loadSettings();
+      setTheme(settings.theme);
+      setAccent(settings.accent);
+      setApiKeys(settings.apiKeys);
+      applyTheme(settings.theme);
+      applyAccent(settings.accent);
+    } catch (err) {
+      // Corrupt settings — reset to defaults
+      console.warn("Settings load failed, resetting:", err);
+      localStorage.removeItem("bodhi-settings");
+      setTheme("dark");
+      setAccent("sienna");
+      setApiKeys({ deepseek: "", gemini: "", openai: "" });
+    }
     setInitialized(true);
   }, []);
 

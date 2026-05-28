@@ -158,3 +158,67 @@ body {
 .animate-ripple { animation: ripplePulse 5s ease-in-out infinite; }
 .animate-ripple-2 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 1.5s; }
 .animate-ripple-3 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 3s; }
+
+/* ── LofiBuddha Public Theme ── Warm Buddha Temple palette ── */
+.theme-buddha {
+  --bg-primary: #0a1e1e;
+  --bg-surface: #0f2826;
+  --bg-card: #142f2c;
+  --bg-hover: #1a3834;
+  --border: #1f3f3a;
+  --border-glow: rgba(210, 160, 90, 0.18);
+  --text-primary: #ede6d8;
+  --text-secondary: #a89a82;
+  --text-muted: #7a7060;
+  --accent: #d4a44a;
+  --accent-light: #e0b860;
+  --accent-glow: rgba(212, 164, 74, 0.22);
+  --buddha-gold: #d4a44a;
+  --buddha-bronze: #b88240;
+  --buddha-teal: #143838;
+  --buddha-deep: #0a2828;
+  --buddha-red: #b05040;
+  --buddha-lotus: #d4886a;
+  --buddha-rose: #c89070;
+  --buddha-ember: #e0a040;
+  --buddha-candle: rgba(220, 170, 80, 0.18);
+}
+
+.theme-buddha .glass {
+  background: var(--bg-card);
+  border-color: rgba(212, 164, 74, 0.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212, 164, 74, 0.05);
+}
+
+.theme-buddha .glass:hover {
+  border-color: rgba(212, 164, 74, 0.3);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 30px rgba(212, 164, 74, 0.12), inset 0 1px 0 rgba(212, 164, 74, 0.08);
+}
+
+/* Gold shimmer — warmer */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.theme-buddha .text-gradient-gold {
+  background: linear-gradient(135deg, #e0b860 0%, #d4a44a 25%, #f0d078 50%, #d4a44a 75%, #c89050 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+
+.theme-buddha .bg-gradient-buddha {
+  background: linear-gradient(135deg, #0a2828 0%, #143838 40%, #0f2826 70%, #0a1e1e 100%);
+}
+
+.theme-buddha .border-buddha {
+  border-color: rgba(212, 164, 74, 0.2);
+}
+
+/* Warm candle glow utility */
+.theme-buddha .glow-candle {
+  box-shadow: 0 0 40px rgba(220, 170, 80, 0.12), 0 0 80px rgba(200, 140, 60, 0.06);
+}

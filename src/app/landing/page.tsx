@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import {
   Play, Sparkles, Check, ArrowRight, Menu, X, Globe,
   Heart, Moon, Sun, Music, Zap, Shield, Star,
-  Music2, Camera, Headphones, Send, Tv, Quote,
+  Music2, Camera, Headphones, Send, Tv, Quote, Flower2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -106,7 +106,8 @@ const contentGrid = [
 ];
 
 const socials = [
-  { label: "YouTube", icon: Tv, href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A", color: "hover:text-red-400" },
+  { label: "YouTube", icon: Tv, href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1", color: "hover:text-red-400" },
+  { label: "LoFi Buddha Music", icon: Music2, href: "https://www.youtube.com/@LoFi_Buddha_Music", color: "hover:text-rose-400" },
   { label: "TikTok", icon: Music2, href: "https://www.tiktok.com/@lofibuddha", color: "hover:text-pink-400" },
   { label: "Instagram", icon: Camera, href: "https://www.instagram.com/lofibuddha", color: "hover:text-purple-400" },
   { label: "Facebook", icon: Globe, href: "https://www.facebook.com/lofibuddha", color: "hover:text-blue-400" },
@@ -162,15 +163,15 @@ export default function LandingPage() {
     { href: "#features", label: t.navFeatures[lang] },
     { href: "#content", label: t.navContent[lang] },
     { href: "#pricing", label: t.navPricing[lang] },
-    { href: "/podcast", label: t.navPodcast[lang] },
   ];
 
   return (
-    <div className="min-h-screen bg-bg-primary text-text-primary overflow-x-hidden">
-      {/* Background ambient glow */}
+    <div className="min-h-screen bg-bg-primary text-text-primary overflow-x-hidden theme-buddha">
+      {/* Background ambient glow — warm candle-lit temple */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent/3 rounded-full blur-[120px] animate-pulse" style={{animationDuration: "8s"}} />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-purple-500/2 rounded-full blur-[100px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full blur-[130px] animate-pulse opacity-40" style={{ background: "radial-gradient(circle, rgba(220,170,80,0.18) 0%, transparent 70%)", animationDuration: "8s" }} />
+        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full blur-[120px] opacity-30" style={{ background: "radial-gradient(circle, rgba(212,136,106,0.12) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] rounded-full blur-[100px] opacity-25" style={{ background: "radial-gradient(circle, rgba(200,144,112,0.1) 0%, transparent 70%)" }} />
       </div>
 
       {/* ── Nav ── */}
@@ -179,9 +180,9 @@ export default function LandingPage() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
             <svg width="28" height="28" viewBox="0 0 100 100" className="transition-transform duration-700 group-hover:rotate-12 sm:w-8 sm:h-8">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#c49464" strokeWidth="2.5" strokeDasharray="230" strokeDashoffset="20" strokeLinecap="round" />
-              <circle cx="50" cy="50" r="10" fill="#c49464" opacity="0.8" />
-              <path d="M50 15 C65 15 75 25 78 40 C80 25 70 15 50 15Z" fill="#c49464" opacity="0.4" />
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#d4a44a" strokeWidth="2.5" strokeDasharray="230" strokeDashoffset="20" strokeLinecap="round" />
+              <circle cx="50" cy="50" r="10" fill="#d4a44a" opacity="0.85" />
+              <path d="M50 15 C65 15 75 25 78 40 C80 25 70 15 50 15Z" fill="#e0b860" opacity="0.5" />
             </svg>
             <span className="font-semibold text-text-primary tracking-wide text-sm sm:text-base">LofiBuddha</span>
           </Link>
@@ -195,6 +196,22 @@ export default function LandingPage() {
 
           {/* Desktop right side */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Language switcher */}
+            <div className="flex items-center gap-1 bg-bg-hover border border-border/30 rounded-lg p-0.5">
+              {(["en", "nl"] as Lang[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                    lang === l
+                      ? "bg-accent/20 text-accent-light"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
+                >
+                  {l === "en" ? "🇬🇧 EN" : "🇳🇱 NL"}
+                </button>
+              ))}
+            </div>
             <Link href="/signup" className="text-xs font-medium px-4 py-2 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all">
               {t.ctaStart[lang]}
             </Link>
@@ -282,7 +299,7 @@ export default function LandingPage() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08] max-w-3xl mx-auto">
-          {lang === "en" ? <>Your daily dose of <span className="text-accent-light">calm</span> in a chaotic world</> : <>Jouw dagelijkse dosis <span className="text-accent-light">kalmte</span> in een chaotische wereld</>}
+          {lang === "en" ? <>Your daily dose of <span className="text-gradient-gold">calm</span> in a chaotic world</> : <>Jouw dagelijkse dosis <span className="text-gradient-gold">kalmte</span> in een chaotische wereld</>}
         </h1>
 
         <p className="text-text-secondary text-base sm:text-lg mt-6 max-w-xl mx-auto leading-relaxed">
@@ -301,26 +318,55 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        {/* Zen visual */}
+        {/* Zen visual — ornate Buddha-inspired mandala */}
         <div className="mt-14 sm:mt-20 max-w-lg mx-auto relative">
+          {/* Ripple rings — warm gold */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full border border-accent/10 animate-ripple" />
+            <div className="w-72 h-72 sm:w-88 sm:h-88 rounded-full border opacity-20 animate-ripple" style={{ borderColor: "rgba(212,164,74,0.35)" }} />
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-48 h-48 sm:w-60 sm:h-60 rounded-full border border-accent/5 animate-ripple-2" />
+            <div className="w-56 h-56 sm:w-68 sm:h-68 rounded-full border opacity-15 animate-ripple-2" style={{ borderColor: "rgba(212,164,74,0.25)" }} />
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-accent/5 animate-ripple-3" />
+            <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border opacity-10 animate-ripple-3" style={{ borderColor: "rgba(224,184,96,0.2)" }} />
           </div>
-          <div className="relative w-56 h-56 sm:w-72 sm:h-72 mx-auto">
+          {/* Warm ember glow */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full opacity-15 animate-pulse" style={{ background: "radial-gradient(circle, rgba(220,170,80,0.5) 0%, transparent 70%)", animationDuration: "6s" }} />
+          </div>
+          {/* Main enso + buddha + lotus — warm temple gold */}
+          <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto">
             <svg viewBox="0 0 200 200" className="w-full h-full animate-enso">
-              <path d="M100 10 C150 10 190 50 190 100 C190 150 150 190 100 190 C50 190 10 150 10 100 C10 55 42 16 85 12" fill="none" stroke="#c49464" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
-              <ellipse cx="100" cy="120" rx="30" ry="45" fill="#c49464" opacity="0.12" />
-              <ellipse cx="75" cy="130" rx="20" ry="40" fill="#c49464" opacity="0.10" transform="rotate(-15, 75, 130)" />
-              <ellipse cx="125" cy="130" rx="20" ry="40" fill="#c49464" opacity="0.10" transform="rotate(15, 125, 130)" />
-              <circle cx="100" cy="70" r="14" fill="#c49464" opacity="0.5" />
-              <path d="M100 85 C85 85 78 92 76 108 C74 120 78 130 88 138 C93 141 97 142 100 142 C103 142 107 141 112 138 C122 130 126 120 124 108 C122 92 115 85 100 85Z" fill="#c49464" opacity="0.35" />
-              <circle cx="100" cy="135" r="8" fill="#c49464" opacity="0.15" />
+              {/* Outer ornate ring */}
+              <circle cx="100" cy="100" r="95" fill="none" stroke="#d4a44a" strokeWidth="0.8" strokeDasharray="4 8" opacity="0.3" />
+              <circle cx="100" cy="100" r="92" fill="none" stroke="#e0b860" strokeWidth="0.5" opacity="0.15" />
+
+              {/* Enso circle — warm gold */}
+              <path d="M100 8 C148 8 192 44 192 100 C192 156 148 192 100 192 C52 192 8 156 8 100 C8 48 45 10 92 8" fill="none" stroke="#d4a44a" strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+
+              {/* Lotus flower at center — warm amber + red */}
+              <ellipse cx="100" cy="120" rx="32" ry="48" fill="#d4a44a" opacity="0.12" />
+              <ellipse cx="70" cy="130" rx="18" ry="38" fill="#d4a44a" opacity="0.10" transform="rotate(-18, 70, 130)" />
+              <ellipse cx="130" cy="130" rx="18" ry="38" fill="#d4a44a" opacity="0.10" transform="rotate(18, 130, 130)" />
+              {/* Lotus side petals — warm red/ember */}
+              <ellipse cx="55" cy="120" rx="14" ry="30" fill="#d4886a" opacity="0.08" transform="rotate(-30, 55, 120)" />
+              <ellipse cx="145" cy="120" rx="14" ry="30" fill="#d4886a" opacity="0.08" transform="rotate(30, 145, 120)" />
+
+              {/* Buddha silhouette — rich gold */}
+              <circle cx="100" cy="64" r="15" fill="#d4a44a" opacity="0.5" />
+              <ellipse cx="100" cy="82" rx="10" ry="6" fill="#e0b860" opacity="0.18" />
+              <path d="M100 92 C85 92 78 100 76 118 C74 132 78 142 88 150 C93 153 97 154 100 154 C103 154 107 153 112 150 C122 142 126 132 124 118 C122 100 115 92 100 92Z" fill="#d4a44a" opacity="0.45" />
+              <circle cx="100" cy="148" r="7" fill="#d4a44a" opacity="0.15" />
+
+              {/* Decorative dots on the ring */}
+              <circle cx="100" cy="10" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="160" cy="45" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="190" cy="100" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="160" cy="155" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="100" cy="190" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="40" cy="155" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="10" cy="100" r="2" fill="#e0b860" opacity="0.35" />
+              <circle cx="40" cy="45" r="2" fill="#e0b860" opacity="0.35" />
             </svg>
           </div>
         </div>
@@ -333,18 +379,29 @@ export default function LandingPage() {
           <span className="flex items-center gap-1.5 text-amber-400">{t.trustRating[lang]}</span>
         </div>
 
-        {/* YouTube CTA */}
-        <div className="mt-14 max-w-xl mx-auto">
-          <a href="https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A" target="_blank" rel="noopener"
+        {/* YouTube CTAs */}
+        <div className="mt-14 max-w-xl mx-auto space-y-3">
+          <a href="https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1" target="_blank" rel="noopener"
             className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-red-500/5 border border-red-500/10 hover:border-red-500/20 hover:bg-red-500/8 transition-all group">
             <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
               <Tv size={20} className="text-red-400" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-text-primary">{t.ytWatch[lang]}</p>
-              <p className="text-xs text-text-muted">{t.ytSub[lang]}</p>
+              <p className="text-sm font-medium text-text-primary">LofiBuddha on YouTube</p>
+              <p className="text-xs text-text-muted">New lofi mixes & yoga flows every week</p>
             </div>
             <ArrowRight size={16} className="text-red-400 group-hover:translate-x-1 transition-transform ml-auto" />
+          </a>
+          <a href="https://www.youtube.com/@LoFi_Buddha_Music" target="_blank" rel="noopener"
+            className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-rose-500/5 border border-rose-500/10 hover:border-rose-500/20 hover:bg-rose-500/8 transition-all group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500/20 to-amber-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Music size={20} className="text-rose-400" />
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-medium text-text-primary">Lo-Fi Buddha AI Music</p>
+              <p className="text-xs text-text-muted">AI meditation music & tranquil visuals</p>
+            </div>
+            <ArrowRight size={16} className="text-rose-400 group-hover:translate-x-1 transition-transform ml-auto" />
           </a>
         </div>
       </section>
@@ -410,7 +467,7 @@ export default function LandingPage() {
           <h2 className="text-3xl sm:text-4xl font-bold mt-3">{t.podcastTitle[lang]}</h2>
           <p className="text-text-muted mt-3 max-w-md mx-auto text-sm">{t.podcastSub[lang]}</p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-            {[{ label: "Spotify", href: "https://open.spotify.com/" }, { label: "Apple Podcasts", href: "https://podcasts.apple.com/" }, { label: "YouTube", href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A" }].map((p) => (
+            {[{ label: "Spotify", href: "https://open.spotify.com/" }, { label: "Apple Podcasts", href: "https://podcasts.apple.com/" }, { label: "YouTube", href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1" }, { label: "AI Music", href: "https://www.youtube.com/@LoFi_Buddha_Music" }].map((p) => (
               <a key={p.label} href={p.href} target="_blank" rel="noopener"
                 className="px-5 py-2.5 rounded-xl bg-bg-card border border-border/30 text-sm text-text-secondary hover:text-accent-light hover:border-accent/30 transition-all">
                 {p.label}
@@ -518,7 +575,6 @@ export default function LandingPage() {
               <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerContent[lang]}</h4>
               <a href="#features" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.navFeatures[lang]}</a>
               <Link href="/browse" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerBrowse[lang]}</Link>
-              <Link href="/podcast" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.navPodcast[lang]}</Link>
             </div>
             <div className="space-y-2">
               <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerCompany[lang]}</h4>
