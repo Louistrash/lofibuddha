@@ -10,7 +10,25 @@ import Link from "next/link";
 
 // ── Translations ──
 
-type Lang = "en" | "nl";
+type Lang = "en" | "nl" | "es" | "de" | "fr" | "hi";
+
+const LANG_FLAGS: Record<Lang, string> = { en: "🇬🇧", nl: "🇳🇱", es: "🇪🇸", de: "🇩🇪", fr: "🇫🇷", hi: "🇮🇳" };
+const LANG_LABELS: Record<Lang, string> = { en: "EN", nl: "NL", es: "ES", de: "DE", fr: "FR", hi: "HI" };
+const LANGS: Lang[] = ["en", "nl", "es", "de", "fr", "hi"];
+
+// Fallback: NL for Dutch, EN for everything else
+function detectLang(): Lang {
+  if (typeof window === "undefined") return "en";
+  const stored = localStorage.getItem("lofibuddha-lang") as Lang;
+  if (stored && LANGS.includes(stored)) return stored;
+  const browser = navigator.language.toLowerCase();
+  if (browser.startsWith("nl")) return "nl";
+  if (browser.startsWith("es")) return "es";
+  if (browser.startsWith("de")) return "de";
+  if (browser.startsWith("fr")) return "fr";
+  if (browser.startsWith("hi")) return "hi";
+  return "en";
+}
 
 const t: Record<string, Record<Lang, string>> = {
   navFeatures: { en: "Features", nl: "Functies" },
@@ -69,15 +87,7 @@ const t: Record<string, Record<Lang, string>> = {
 };
 
 function useT(): (key: string) => string {
-  const [lang] = useState<Lang>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("lofibuddha-lang") as Lang;
-      if (stored === "en" || stored === "nl") return stored;
-      const browserLang = navigator.language.toLowerCase();
-      if (browserLang.startsWith("nl")) return "nl";
-    }
-    return "en";
-  });
+  const [lang] = useState<Lang>(() => detectLang());
   return (key: string) => t[key]?.[lang] || t[key]?.en || key;
 }
 
@@ -127,14 +137,7 @@ export default function LandingPage() {
   const [subscribed, setSubscribed] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang] = useState<Lang>(() => {
-    if (typeof window !== "undefined") {
-      const s = localStorage.getItem("lofibuddha-lang") as Lang;
-      if (s === "en" || s === "nl") return s;
-      if (navigator.language.toLowerCase().startsWith("nl")) return "nl";
-    }
-    return "en";
-  });
+  const [lang, setLang] = useState<Lang>(() => detectLang());
 
   // Re-render on lang change
   useEffect(() => {
@@ -196,19 +199,20 @@ export default function LandingPage() {
 
           {/* Desktop right side */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language switcher */}
+            {/* Language switcher — 6 languages */}
             <div className="flex items-center gap-1 bg-bg-hover border border-border/30 rounded-lg p-0.5">
-              {(["en", "nl"] as Lang[]).map((l) => (
+              {LANGS.map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
                     lang === l
                       ? "bg-accent/20 text-accent-light"
                       : "text-text-muted hover:text-text-primary"
                   }`}
+                  title={LANG_LABELS[l]}
                 >
-                  {l === "en" ? "🇬🇧 EN" : "🇳🇱 NL"}
+                  {LANG_FLAGS[l]} {LANG_LABELS[l]}
                 </button>
               ))}
             </div>
@@ -217,18 +221,8 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          {/* Mobile: hamburger + lang toggle */}
+          {/* Mobile: hamburger only (lang switcher in slide menu) */}
           <div className="flex md:hidden items-center gap-1">
-            {/* Compact lang switcher on mobile */}
-            <button
-              onClick={() => setLang(lang === "en" ? "nl" : "en")}
-              className="p-2 rounded-lg text-text-muted hover:text-accent-light transition-colors flex items-center gap-1 text-xs font-medium"
-              aria-label="Switch language"
-            >
-              <Globe size={16} />
-              <span className="uppercase">{lang}</span>
-            </button>
-
             {/* Hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -260,13 +254,13 @@ export default function LandingPage() {
             <div className="mt-6 pt-6 border-t border-border/30 space-y-4">
               {/* Language switcher in menu */}
               <div>
-                <p className="text-xs text-text-muted mb-2 uppercase tracking-wider">{lang === "en" ? "Language" : "Taal"}</p>
-                <div className="flex gap-2">
-                  {(["en", "nl"] as Lang[]).map((l) => (
+                <p className="text-xs text-text-muted mb-2 uppercase tracking-wider">{lang === "en" ? "Language" : lang === "nl" ? "Taal" : lang === "es" ? "Idioma" : lang === "de" ? "Sprache" : lang === "fr" ? "Langue" : "भाषा"}</p>
+                <div className="flex flex-wrap gap-2">
+                  {LANGS.map((l) => (
                     <button key={l}
                       onClick={() => setLang(l)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${lang === l ? "bg-accent/20 text-accent-light border border-accent/30" : "bg-bg-hover text-text-muted hover:text-text-primary border border-border/30"}`}>
-                      {l === "en" ? "🇬🇧 English" : "🇳🇱 Nederlands"}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${lang === l ? "bg-accent/20 text-accent-light border border-accent/30" : "bg-bg-hover text-text-muted hover:text-text-primary border border-border/30"}`}>
+                      {LANG_FLAGS[l]} {LANG_LABELS[l]}
                     </button>
                   ))}
                 </div>
