@@ -1,36 +1,53 @@
 "use client";
 
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, User, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Header() {
+interface HeaderProps {
+  onMenuToggle: () => void;
+  mobileOpen: boolean;
+}
+
+export default function Header({ onMenuToggle, mobileOpen }: HeaderProps) {
   return (
-    <header className="h-16 border-b border-border bg-bg-surface/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-30">
-      {/* Logo + Search */}
-      <div className="flex items-center gap-3">
+    <header className="h-16 border-b border-border bg-bg-surface/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30">
+      {/* Left: hamburger (mobile) + Logo + Search */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+        {/* Hamburger — alleen op mobiel */}
+        <button
+          onClick={onMenuToggle}
+          className="lg:hidden p-2 -ml-1 rounded-lg text-text-secondary hover:text-text-primary transition-colors flex-shrink-0"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
+        {/* Logo — hidden op hele kleine schermen */}
         <Image
           src="/bodhi-logo.svg"
           alt="Bodhi"
-          width={32}
-          height={32}
-          className="rounded-lg"
+          width={28}
+          height={28}
+          className="rounded-lg flex-shrink-0 hidden sm:block"
         />
-        <div className="flex items-center gap-2 bg-bg-card border border-border rounded-xl px-4 py-2 w-full max-w-md">
-          <Search size={16} className="text-text-muted" />
+
+        {/* Search bar */}
+        <div className="flex items-center gap-2 bg-bg-card border border-border rounded-xl px-3 sm:px-4 py-2 flex-1 max-w-md min-w-0">
+          <Search size={16} className="text-text-muted flex-shrink-0" />
           <input
             type="text"
-            placeholder="Search anything..."
-            className="bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted w-full"
+            placeholder="Search..."
+            className="bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted w-full min-w-0"
           />
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-bg-hover text-[10px] text-text-muted font-mono">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-bg-hover text-[10px] text-text-muted font-mono flex-shrink-0">
             ⌘K
           </kbd>
         </div>
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 ml-2 flex-shrink-0">
         <button className="p-2 rounded-xl hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-all">
           <Bell size={18} />
         </button>
