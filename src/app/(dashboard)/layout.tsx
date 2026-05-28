@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex min-h-screen">
       <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <main className="flex-1 lg:ml-[260px] transition-all duration-300">
-        <Header onMenuToggle={() => setMobileOpen(!mobileOpen)} mobileOpen={mobileOpen} />
+        <Header onMenuToggle={() => setMobileOpen(prev => !prev)} mobileOpen={mobileOpen} />
         <div className="p-4 sm:p-6 max-w-7xl">{children}</div>
       </main>
     </div>
