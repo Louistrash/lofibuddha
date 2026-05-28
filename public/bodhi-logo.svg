@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Cirkel achtergrond -->
+  <circle cx="64" cy="64" r="60" fill="#1a1a18" stroke="#c49464" stroke-width="2"/>
+  <circle cx="64" cy="64" r="56" fill="none" stroke="#c49464" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Lotus / meditatie figuur -->
+  <!-- Hoofd -->
+  <circle cx="64" cy="40" r="10" fill="#c49464" opacity="0.9"/>
+  
+  <!-- Lichaam -->
+  <path d="M64 50 Q64 70 50 85" stroke="#c49464" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M64 50 Q64 70 78 85" stroke="#c49464" stroke-width="3" stroke-linecap="round" fill="none"/>
+  
+  <!-- Armen in meditatiehouding -->
+  <path d="M50 60 Q40 55 35 48" stroke="#d4b48a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M78 60 Q88 55 93 48" stroke="#d4b48a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  
+  <!-- Lotus bloemblaadjes onderkant -->
+  <ellipse cx="50" cy="88" rx="12" ry="5" fill="#c49464" opacity="0.4" transform="rotate(-20, 50, 88)"/>
+  <ellipse cx="78" cy="88" rx="12" ry="5" fill="#c49464" opacity="0.4" transform="rotate(20, 78, 88)"/>
+  <ellipse cx="64" cy="92" rx="14" ry="5" fill="#c49464" opacity="0.5"/>
+  
+  <!-- Aura cirkels -->
+  <circle cx="64" cy="64" r="48" fill="none" stroke="#d4b48a" stroke-width="0.3" opacity="0.2"/>
+  <circle cx="64" cy="64" r="40" fill="none" stroke="#d4b48a" stroke-width="0.3" opacity="0.15"/>
+</svg>
