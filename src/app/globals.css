@@ -144,3 +144,17 @@ body {
   background: transparent;
   filter: none;
 }
+
+/* ── Zen landing page animations ── */
+@keyframes ripplePulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.08); }
+}
+@keyframes ensoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-enso { animation: ensoSpin 25s linear infinite; }
+.animate-ripple { animation: ripplePulse 5s ease-in-out infinite; }
+.animate-ripple-2 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 1.5s; }
+.animate-ripple-3 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 3s; }
