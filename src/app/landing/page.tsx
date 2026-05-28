@@ -195,9 +195,9 @@ export default function LandingPage() {
 
           {/* Desktop right side */}
           <div className="hidden md:flex items-center gap-3">
-            <a href="https://bodhi.aibuddha.net" target="_blank" rel="noopener" className="text-xs font-medium px-3.5 py-2 rounded-xl bg-accent/10 text-accent-light hover:bg-accent/20 transition-all border border-accent/20">
-              {t.bodhiPro[lang]}
-            </a>
+            <Link href="/signup" className="text-xs font-medium px-4 py-2 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all">
+              {t.ctaStart[lang]}
+            </Link>
           </div>
 
           {/* Mobile: hamburger + lang toggle */}
@@ -255,11 +255,11 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Bodhi Pro link */}
-              <a href="https://bodhi.aibuddha.net" target="_blank" rel="noopener" onClick={closeMenu}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-accent/10 text-accent-light hover:bg-accent/20 transition-all border border-accent/20 text-sm font-medium">
-                {t.bodhiPro[lang]}
-              </a>
+              {/* Sign up link in menu */}
+              <Link href="/signup" onClick={closeMenu}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all text-sm font-medium">
+                {t.ctaStart[lang]}
+              </Link>
             </div>
 
             {/* Social icons in menu */}
