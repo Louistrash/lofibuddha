@@ -170,21 +170,33 @@ export default function SocialPage() {
       .finally(() => setLoadingVideos(false));
   }, []);
 
-  // Load calendar posts (localStorage fallback)
+  // Load calendar posts (API first, localStorage fallback)
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("bodhi-calendar");
-      if (saved) {
-        setPosts(JSON.parse(saved));
-      } else {
-        const defaults = generateCalendarPosts();
-        setPosts(defaults);
-        localStorage.setItem("bodhi-calendar", JSON.stringify(defaults));
-      }
-    } catch {
-      setPosts(generateCalendarPosts());
-    }
-    setLoadingPosts(false);
+    setLoadingPosts(true);
+    fetch("/api/calendar/list")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.posts?.length) {
+          setPosts(data.posts);
+          localStorage.setItem("bodhi-calendar", JSON.stringify(data.posts));
+        }
+      })
+      .catch(() => {
+        // Fallback to localStorage
+        try {
+          const saved = localStorage.getItem("bodhi-calendar");
+          if (saved) {
+            setPosts(JSON.parse(saved));
+          } else {
+            const defaults = generateCalendarPosts();
+            setPosts(defaults);
+            localStorage.setItem("bodhi-calendar", JSON.stringify(defaults));
+          }
+        } catch {
+          setPosts(generateCalendarPosts());
+        }
+      })
+      .finally(() => setLoadingPosts(false));
   }, []);
 
   const savePosts = (updated: CalendarPost[]) => {
