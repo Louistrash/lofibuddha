@@ -20,6 +20,8 @@ export default function NewsletterPage() {
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const [sendResult, setSendResult] = useState<{sent?:number;failed?:number;total?:number;error?:string} | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -52,12 +54,24 @@ export default function NewsletterPage() {
   };
 
   const handleSend = async (id: string) => {
-    await fetch("/api/newsletter", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status: "sent" }),
-    });
-    setNewsletters(prev => prev.map(n => n.id === id ? { ...n, status: "sent", sentAt: new Date().toISOString() } : n));
+    setSendingId(id);
+    try {
+      const res = await fetch("/api/newsletter/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ issueId: id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNewsletters(prev => prev.map(n => n.id === id ? { ...n, status: "sent", sentAt: new Date().toISOString(), subscriberCount: data.total } : n));
+        setSendResult({ sent: data.sent, failed: data.failed, total: data.total });
+      } else {
+        setSendResult({ error: data.error || "Send failed" });
+      }
+    } catch (e: any) {
+      setSendResult({ error: e.message });
+    }
+    setSendingId(null);
   };
 
   if (loading) return <div className="flex items-center justify-center py-20"><Loader2 size={24} className="animate-spin text-accent-light" /></div>;
