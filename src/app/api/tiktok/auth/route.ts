@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { loadTokens, saveTokens } from "../utils";
 
 const TIKTOK_AUTH_URL = "https://www.tiktok.com/v2/auth/authorize/";
 const TIKTOK_TOKEN_URL = "https://open.tiktokapis.com/v2/oauth/token/";
@@ -14,28 +15,6 @@ function getCredentials() {
     clientKey: process.env.TIKTOK_CLIENT_KEY || "",
     clientSecret: process.env.TIKTOK_CLIENT_SECRET || "",
   };
-}
-
-// Simple file-based token storage (for dev; use DB in production)
-function tokenPath() {
-  return "/opt/data/bodhi-dashboard/.tiktok-tokens.json";
-}
-
-function loadTokens(): Record<string, unknown> {
-  try {
-    const fs = require("fs");
-    if (fs.existsSync(tokenPath())) {
-      return JSON.parse(fs.readFileSync(tokenPath(), "utf-8"));
-    }
-  } catch {}
-  return {};
-}
-
-function saveTokens(tokens: Record<string, unknown>) {
-  try {
-    const fs = require("fs");
-    fs.writeFileSync(tokenPath(), JSON.stringify(tokens, null, 2));
-  } catch {}
 }
 
 export async function GET(req: NextRequest) {

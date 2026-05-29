@@ -574,7 +574,12 @@ export default function LandingPage() {
               <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerCompany[lang]}</h4>
               <a href="#" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerAbout[lang]}</a>
               <a href="#" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerContact[lang]}</a>
-              <a href="#" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerPrivacy[lang]}</a>
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">Legal</h4>
+              <Link href="/legal/privacy" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Privacy Policy</Link>
+              <Link href="/legal/terms" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Terms & Conditions</Link>
+              <Link href="/legal/disclaimer" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Disclaimer</Link>
             </div>
             <div className="space-y-2">
               <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerFollow[lang]}</h4>

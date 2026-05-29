@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
+import { getAccessToken, loadTokens } from "../utils";
 
 const TIKTOK_API = "https://open.tiktokapis.com/v2/user/info/";
 
-function loadTokens(): Record<string, unknown> {
-  try {
-    const fs = require("fs");
-    const path = "/opt/data/bodhi-dashboard/.tiktok-tokens.json";
-    if (fs.existsSync(path)) return JSON.parse(fs.readFileSync(path, "utf-8"));
-  } catch {}
-  return {};
-}
-
 export async function GET() {
+  const accessToken = await getAccessToken();
   const tokens = loadTokens();
 
-  if (!tokens.access_token || !tokens.open_id) {
+  if (!accessToken || !tokens.open_id) {
     return NextResponse.json({ connected: false, error: "Not connected" }, { status: 401 });
   }
 
   try {
     const res = await fetch(`${TIKTOK_API}?fields=open_id,union_id,avatar_url,display_name,follower_count,likes_count,video_count,bio_description`, {
       headers: {
-        Authorization: `Bearer ${tokens.access_token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

@@ -176,6 +176,13 @@ export default function SocialPage() {
   const [tiktokLoading, setTiktokLoading] = useState(true);
   const [tiktokConnecting, setTiktokConnecting] = useState(false);
 
+  // Direct TikTok Publishing
+  const [activePublishVideo, setActivePublishVideo] = useState<VideoEntry | null>(null);
+  const [publishCaption, setPublishCaption] = useState("");
+  const [publishing, setPublishing] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
+
   // Load videos
   useEffect(() => {
     fetch("/api/videos/list")
@@ -259,6 +266,46 @@ export default function SocialPage() {
   const savePosts = (updated: CalendarPost[]) => {
     setPosts(updated);
     localStorage.setItem("bodhi-calendar", JSON.stringify(updated));
+  };
+
+  // ── Direct TikTok Publishing Handlers ──
+
+  const handleOpenPublish = (video: VideoEntry) => {
+    setActivePublishVideo(video);
+    setPublishCaption(`Quiet moments of Zen reflection. ✨🧘\n\nGenerated with lofibuddha.com\n\n#zen #meditation #lofi #mindfulness #lofibuddha`);
+    setPublishSuccess(null);
+    setPublishError(null);
+    setPublishing(false);
+  };
+
+  const handlePublishToTikTok = async () => {
+    if (!activePublishVideo) return;
+    setPublishing(true);
+    setPublishSuccess(null);
+    setPublishError(null);
+
+    try {
+      const response = await fetch("/api/tiktok/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          videoPath: activePublishVideo.path,
+          caption: publishCaption,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        setPublishError(data.error);
+      } else {
+        setPublishSuccess("Successfully posted to TikTok! Video is now queueing/processing on your TikTok account.");
+      }
+    } catch (err: any) {
+      setPublishError(err.message || "Failed to publish video. Please check connection.");
+    } finally {
+      setPublishing(false);
+    }
   };
 
   // ── Actions ──
@@ -656,12 +703,20 @@ export default function SocialPage() {
                         {video.width}×{video.height} · {video.sizeFormatted}
                       </p>
                     </div>
-                    <a
-                      href={video.path} download
-                      className="flex items-center gap-2 text-xs text-accent-light hover:text-accent transition-all py-1.5 px-3 rounded-lg bg-accent/5 hover:bg-accent/10 w-fit"
-                    >
-                      <Download size={12} /> Download
-                    </a>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      <a
+                        href={video.path} download
+                        className="flex items-center gap-2 text-xs text-text-muted hover:text-text-primary transition-all py-1.5 px-3 rounded-lg bg-bg-card hover:bg-bg-hover w-fit border border-border"
+                      >
+                        <Download size={12} /> Download
+                      </a>
+                      <button
+                        onClick={() => handleOpenPublish(video)}
+                        className="flex items-center gap-2 text-xs text-accent-light hover:text-accent transition-all py-1.5 px-3 rounded-lg bg-accent/10 hover:bg-accent/20 w-fit border border-accent/20"
+                      >
+                        <Send size={12} /> Publish to TikTok
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -669,6 +724,116 @@ export default function SocialPage() {
           </div>
         )}
       </div>
+
+      {/* ── Direct TikTok Publish Modal ── */}
+      {activePublishVideo && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="glass max-w-md w-full p-6 space-y-4 relative border border-accent/20">
+            <button
+              onClick={() => setActivePublishVideo(null)}
+              className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="space-y-1">
+              <h3 className="text-base font-semibold text-text-primary">Publish to TikTok</h3>
+              <p className="text-xs text-text-muted">
+                Post your lofi video directly to your connected TikTok account.
+              </p>
+            </div>
+
+            {/* Video preview */}
+            <div className="bg-black aspect-video rounded-xl overflow-hidden flex items-center justify-center border border-border">
+              <video
+                src={activePublishVideo.path}
+                controls muted preload="metadata"
+                className="max-h-full"
+              />
+            </div>
+
+            {/* Connection Check */}
+            {!tiktokProfile?.connected ? (
+              <div className="bg-error/10 border border-error/20 p-4 rounded-xl space-y-3 text-center">
+                <p className="text-xs text-error">TikTok account is not connected.</p>
+                <button
+                  onClick={() => {
+                    setActivePublishVideo(null);
+                    handleTikTokConnect();
+                  }}
+                  className="text-xs font-semibold px-4 py-2 bg-error/20 hover:bg-error/30 text-error-light rounded-lg transition-all"
+                >
+                  Connect Account Now
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-bg-hover border border-border">
+                  {tiktokProfile.avatar && (
+                    <img src={tiktokProfile.avatar} alt="Avatar" className="w-6 h-6 rounded-full border border-accent/20" />
+                  )}
+                  <span className="text-xs font-medium text-text-primary">@{tiktokProfile.displayName}</span>
+                  <span className="text-[10px] text-text-muted ml-auto">{tiktokProfile.followers?.toLocaleString()} followers</span>
+                </div>
+
+                <div>
+                  <label className="text-[10px] text-text-muted block mb-1">Video Caption & Hashtags</label>
+                  <textarea
+                    rows={4}
+                    value={publishCaption}
+                    onChange={(e) => setPublishCaption(e.target.value)}
+                    className="w-full bg-bg-card border border-border rounded-lg p-3 text-sm text-text-primary outline-none focus:border-accent/50 resize-none font-sans"
+                    maxLength={150}
+                  />
+                  <div className="flex justify-between mt-1">
+                    <span className="text-[10px] text-text-muted">Max 150 characters (recommended for shorts)</span>
+                    <span className="text-[10px] text-text-muted">{publishCaption.length}/150</span>
+                  </div>
+                </div>
+
+                {publishSuccess && (
+                  <div className="bg-success/15 border border-success/35 text-success text-xs p-3 rounded-xl">
+                    {publishSuccess}
+                  </div>
+                )}
+
+                {publishError && (
+                  <div className="bg-error/15 border border-error/35 text-error text-xs p-3 rounded-xl">
+                    {publishError}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    onClick={() => setActivePublishVideo(null)}
+                    disabled={publishing}
+                    className="text-xs text-text-muted hover:text-text-primary px-4 py-2 transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handlePublishToTikTok}
+                    disabled={publishing}
+                    className="btn-zen text-xs py-2 px-5 flex items-center gap-2"
+                  >
+                    {publishing ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        Publishing...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={14} />
+                        Publish Direct
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
