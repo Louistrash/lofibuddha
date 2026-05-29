@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   description:
     "Unlimited lofi music, guided yoga flows, breathwork, and meditation. Start your free trial.",
   icons: {
-    icon: "/bodhi-icon.svg",
-    apple: "/bodhi-icon.svg",
+    icon: "/bodhi-icon-32.png",
+    apple: "/bodhi-icon-180.png",
+    other: [{ rel: "icon", url: "/bodhi-icon-192.png", sizes: "192x192" }],
   },
   openGraph: {
     title: "LofiBuddha — Your Daily Dose of Calm",
