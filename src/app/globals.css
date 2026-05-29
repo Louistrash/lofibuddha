@@ -1,0 +1,276 @@
+@import "tailwindcss";
+
+/* ── Bodhi Hermes OS ── Zen Dark Theme ── */
+
+:root {
+  --bg-primary: #0f0f0f;
+  --bg-surface: #1a1a18;
+  --bg-card: #1e1e1b;
+  --bg-hover: #252522;
+  --border: #2a2a26;
+  --border-glow: rgba(180, 140, 100, 0.12);
+  --text-primary: #e8e2d8;
+  --text-secondary: #9a9488;
+  --text-muted: #6b655a;
+  --accent: #c49464;
+  --accent-light: #d4b48a;
+  --accent-glow: rgba(196, 148, 100, 0.15);
+  --success: #7a9a6a;
+  --warning: #c49464;
+  --error: #b06050;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-card: var(--bg-card);
+  --color-bg-hover: var(--bg-hover);
+  --color-border: var(--border);
+  --color-border-glow: var(--border-glow);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-glow: var(--accent-glow);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --radius-custom: var(--radius);
+  --radius-lg: var(--radius-lg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Glassmorphism Card ── */
+.glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 0 1px var(--border-glow), 0 4px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass:hover {
+  border-color: rgba(180, 140, 100, 0.25);
+  box-shadow: 0 0 0 1px var(--border-glow), 0 4px 24px rgba(0, 0, 0, 0.3),
+    0 0 20px var(--accent-glow);
+}
+
+/* ── Zen Button ── */
+.btn-zen {
+  background: var(--accent);
+  color: #0f0f0f;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+.btn-zen:hover {
+  background: var(--accent-light);
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* ── Smooth Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Zen Breathing Animation ── */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.zen-breath {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* ── Glow Pulse ── */
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+}
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ── Hermes AI Iframe ── */
+.hermes-iframe-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.hermes-iframe-container iframe {
+  background: transparent;
+  filter: none;
+}
+
+/* ── Zen landing page animations ── */
+@keyframes ripplePulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.08); }
+}
+@keyframes ensoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-enso { animation: ensoSpin 25s linear infinite; }
+.animate-ripple { animation: ripplePulse 5s ease-in-out infinite; }
+.animate-ripple-2 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 1.5s; }
+.animate-ripple-3 { animation: ripplePulse 5s ease-in-out infinite; animation-delay: 3s; }
+
+/* ── LofiBuddha Public Theme ── Warm Buddha Temple palette ── */
+.theme-buddha {
+  --bg-primary: #0a1e1e;
+  --bg-surface: #0f2826;
+  --bg-card: #142f2c;
+  --bg-hover: #1a3834;
+  --border: #1f3f3a;
+  --border-glow: rgba(210, 160, 90, 0.18);
+  --text-primary: #ede6d8;
+  --text-secondary: #a89a82;
+  --text-muted: #7a7060;
+  --accent: #d4a44a;
+  --accent-light: #e0b860;
+  --accent-glow: rgba(212, 164, 74, 0.22);
+  --buddha-gold: #d4a44a;
+  --buddha-bronze: #b88240;
+  --buddha-teal: #143838;
+  --buddha-deep: #0a2828;
+  --buddha-red: #b05040;
+  --buddha-lotus: #d4886a;
+  --buddha-rose: #c89070;
+  --buddha-ember: #e0a040;
+  --buddha-candle: rgba(220, 170, 80, 0.18);
+}
+
+.theme-buddha .glass {
+  background: var(--bg-card);
+  border-color: rgba(212, 164, 74, 0.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212, 164, 74, 0.05);
+}
+
+.theme-buddha .glass:hover {
+  border-color: rgba(212, 164, 74, 0.3);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 30px rgba(212, 164, 74, 0.12), inset 0 1px 0 rgba(212, 164, 74, 0.08);
+}
+
+/* Gold shimmer — warmer */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.theme-buddha .text-gradient-gold {
+  background: linear-gradient(135deg, #e0b860 0%, #d4a44a 25%, #f0d078 50%, #d4a44a 75%, #c89050 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+
+.theme-buddha .bg-gradient-buddha {
+  background: linear-gradient(135deg, #0a2828 0%, #143838 40%, #0f2826 70%, #0a1e1e 100%);
+}
+
+.theme-buddha .border-buddha {
+  border-color: rgba(212, 164, 74, 0.2);
+}
+
+/* Warm candle glow utility */
+.theme-buddha .glow-candle {
+  box-shadow: 0 0 40px rgba(220, 170, 80, 0.12), 0 0 80px rgba(200, 140, 60, 0.06);
+}
+
+/* ═══════════════════════════════════════════════
+   EDITORIAL THEME — LofiBuddha lifestyle design
+   ═══════════════════════════════════════════════ */
+.editorial-theme {
+  --editorial-cream: #faf8f5;
+  --editorial-warm: #f5f0e8;
+  --editorial-stone: #78716c;
+  --editorial-ink: #292524;
+  --editorial-gold: #b08050;
+  background: #faf8f5;
+  color: #292524;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif font stack for headings */
+.editorial-theme .font-serif {
+  font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+}
+
+/* Slow fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Smooth scroll behavior */
+.editorial-theme {
+  scroll-behavior: smooth;
+}
+
+/* Subtle hover transitions */
+.editorial-theme a,
+.editorial-theme button {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Selection color */
+.editorial-theme ::selection {
+  background: rgba(176, 128, 80, 0.15);
+  color: #292524;
+}
+
+/* Scrollbar */
+.editorial-theme ::-webkit-scrollbar { width: 6px; }
+.editorial-theme ::-webkit-scrollbar-track { background: transparent; }
+.editorial-theme ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }
