@@ -50,16 +50,16 @@ const t = {
 
 // ─── Journal articles ──────────────────────────
 const journalArticles = [
-  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/thumbnails/yoga-morning.png", slug: "#" },
-  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/thumbnails/focus-study.png", slug: "#" },
-  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/thumbnails/breathwork.png", slug: "#" },
+  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/generated/thumb-yoga.png", slug: "#" },
+  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/generated/thumb-focus.png", slug: "#" },
+  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/generated/thumb-breath.png", slug: "#" },
 ];
 
 // ─── Album-style music cards ──────────────────
 const albums = [
-  { title: "Morning Calm", artist: "LofiBuddha", mood: "Peaceful • 24 tracks", color: "from-amber-200/30 to-orange-100/20" },
-  { title: "Deep Focus", artist: "LofiBuddha", mood: "Concentration • 18 tracks", color: "from-emerald-200/20 to-teal-100/15" },
-  { title: "Sunset Yoga", artist: "LofiBuddha", mood: "Flow • 16 tracks", color: "from-rose-200/20 to-pink-100/15" },
+  { title: "Morning Calm", artist: "LofiBuddha", mood: "Peaceful • 24 tracks", image: "/images/generated/album-morning-calm.png" },
+  { title: "Deep Focus", artist: "LofiBuddha", mood: "Concentration • 18 tracks", image: "/images/generated/album-deep-focus.png" },
+  { title: "Sunset Yoga", artist: "LofiBuddha", mood: "Flow • 16 tracks", image: "/images/generated/album-sunset-yoga.png" },
 ];
 
 // ─── Editorial featured story ─────────────────
@@ -92,9 +92,19 @@ export default function LandingPage() {
 
   const tFn = (key: Record<Lang, string>) => key[lang] || key.en;
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setSubscribed(true);
+    if (!email) return;
+    try {
+      await fetch("/api/subscribers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, language: lang }),
+      });
+      setSubscribed(true);
+    } catch {
+      setSubscribed(true); // Still show thank-you even if API fails
+    }
   };
 
   return (
@@ -230,15 +240,13 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-center">
             {/* Image side — spans 3 columns */}
             <div className="lg:col-span-3 relative">
-              <div className="aspect-[4/5] bg-gradient-to-br from-amber-100/50 to-stone-200/50 rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-6 p-10">
-                    <div className="w-24 h-24 mx-auto rounded-full bg-stone-800/5 flex items-center justify-center">
-                      <BookOpen size={40} className="text-stone-400" />
-                    </div>
-                    <p className="font-serif text-2xl text-stone-400 italic">Featured Story</p>
-                  </div>
-                </div>
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
+                <img 
+                  src="/images/generated/featured-story.png" 
+                  alt="The Science of Stillness" 
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
               </div>
             </div>
             {/* Text side — spans 2 columns */}
@@ -274,7 +282,13 @@ export default function LandingPage() {
             {albums.map((album, i) => (
               <div key={i} className="group cursor-pointer">
                 {/* Album artwork */}
-                <div className={`aspect-square rounded-2xl bg-gradient-to-br ${album.color} mb-5 relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.02]`}>
+                <div className="aspect-square rounded-2xl mb-5 relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.02]">
+                  <img 
+                    src={album.image} 
+                    alt={album.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/50 via-stone-900/10 to-transparent" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-20 h-20 rounded-full bg-white/80 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-100 scale-75">
                       <Play size={28} className="text-stone-700 ml-1" />
@@ -341,10 +355,13 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {journalArticles.map((article, i) => (
               <a key={i} href={article.slug} className="group block">
-                <div className="aspect-[3/4] bg-gradient-to-br from-stone-100 to-stone-200/50 rounded-xl mb-5 overflow-hidden relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Camera size={32} className="text-stone-300" />
-                  </div>
+                <div className="aspect-[3/4] rounded-xl mb-5 overflow-hidden relative">
+                  <img 
+                    src={article.image} 
+                    alt={article.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent" />
                 </div>
                 <span className="text-[10px] tracking-[0.2em] uppercase text-amber-700 font-medium">{article.category}</span>
                 <h3 className="font-serif text-lg sm:text-xl text-stone-800 mt-2 mb-1 group-hover:text-amber-700 transition-colors leading-snug">{article.title}</h3>

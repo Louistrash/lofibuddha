@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import {
   Image, Upload, Download, Trash2, Loader2, Plus,
   Copy, Check, X, FolderOpen, Film, Search, Grid3X3, List,
+  RefreshCw, Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +26,9 @@ export default function ImagesPage() {
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [dragOver, setDragOver] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
+  const [regenerateModal, setRegenerateModal] = useState(false);
+  const [regeneratePrompt, setRegeneratePrompt] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load images
@@ -80,6 +84,43 @@ export default function ImagesPage() {
     // For now, just remove from view
     setImages(prev => prev.filter(i => i.path !== entry.path));
     if (selected?.path === entry.path) setSelected(null);
+  };
+
+  // Regenerate
+  const handleRegenerate = async () => {
+    if (!selected) return;
+    setRegenerating(true);
+    try {
+      const res = await fetch("/api/images/regenerate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: selected.name, prompt: regeneratePrompt || undefined }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSelected(data.image);
+        await loadImages();
+        setRegenerateModal(false);
+      } else {
+        alert(data.error || "Regeneration failed");
+      }
+    } catch (e: any) {
+      alert(e.message);
+    }
+    setRegenerating(false);
+  };
+
+  const openRegenerate = () => {
+    if (!selected) return;
+    // Load saved prompt from _prompts.json
+    fetch("/images/generated/_prompts.json")
+      .then(r => r.json())
+      .then(data => {
+        const base = selected.name.replace(/\.(png|jpg|jpeg|webp)$/i, "").replace(/-\d+$/, "");
+        setRegeneratePrompt(data[base]?.prompt || "");
+      })
+      .catch(() => setRegeneratePrompt(""));
+    setRegenerateModal(true);
   };
 
   // Filter
@@ -261,11 +302,58 @@ export default function ImagesPage() {
                 <Link href="/video" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/10 text-xs text-accent-light hover:bg-accent/20 transition-all">
                   <Film size={14} /> Use in Video
                 </Link>
+                <button onClick={openRegenerate}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-500/10 text-xs text-purple-400 hover:bg-purple-500/20 transition-all">
+                  <Sparkles size={14} /> Regenerate
+                </button>
                 <button onClick={() => handleDelete(selected)}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/5 text-xs text-error hover:bg-red-500/10 transition-all">
                   <Trash2 size={14} /> Delete
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Regenerate Modal */}
+      {regenerateModal && selected && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          onClick={() => setRegenerateModal(false)}>
+          <div className="bg-bg-card border border-border rounded-2xl p-6 w-full max-w-lg mx-4 space-y-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles size={18} className="text-purple-400" />
+                <h3 className="font-semibold text-text-primary">Regenerate with Imagen 4.0</h3>
+              </div>
+              <button onClick={() => setRegenerateModal(false)} className="p-1 text-text-muted hover:text-text-primary">
+                <X size={18} />
+              </button>
+            </div>
+            <div>
+              <p className="text-xs text-text-muted mb-2">Editing: <span className="text-text-primary">{selected.name}</span></p>
+              <textarea
+                value={regeneratePrompt}
+                onChange={(e) => setRegeneratePrompt(e.target.value)}
+                rows={5}
+                placeholder="Describe the image you want to generate..."
+                className="w-full bg-bg-hover border border-border rounded-xl p-3 text-sm text-text-primary placeholder:text-text-muted resize-none focus:border-accent/50 outline-none"
+              />
+              <p className="text-[10px] text-text-muted mt-1">
+                ✨ Edit the prompt to tweak style, lighting, or composition. Original prompt is pre-filled.
+              </p>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setRegenerateModal(false)}
+                className="px-4 py-2 rounded-xl bg-bg-hover text-xs text-text-muted hover:text-text-primary transition-all">
+                Cancel
+              </button>
+              <button onClick={handleRegenerate} disabled={regenerating || !regeneratePrompt.trim()}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-500 text-white text-xs hover:bg-purple-600 disabled:opacity-50 transition-all">
+                {regenerating ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+                {regenerating ? "Generating..." : "Regenerate"}
+              </button>
             </div>
           </div>
         </div>

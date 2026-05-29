@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
-const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
+const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,14 +29,14 @@ export async function POST(request: NextRequest) {
       { role: "user", content: message },
     ];
 
-    const res = await fetch(DEEPSEEK_URL, {
+    const res = await fetch(OPENAI_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${DEEPSEEK_KEY}`,
+        Authorization: `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: "deepseek-chat",
+        model: "gpt-4o-mini",
         messages,
         max_tokens: 600,
         temperature: 0.7,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Bodhi Chat] DeepSeek error:", res.status, errText);
+      console.error("[Bodhi Chat] OpenAI error:", res.status, errText);
       return NextResponse.json(
         { error: "AI service unavailable" },
         { status: 502 }

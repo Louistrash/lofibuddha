@@ -170,6 +170,7 @@ export default function SocialPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<CalendarPost | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [renderingPosts, setRenderingPosts] = useState<Set<string>>(new Set());
 
   // TikTok connection
   const [tiktokProfile, setTiktokProfile] = useState<TikTokProfile | null>(null);
@@ -333,6 +334,39 @@ export default function SocialPage() {
 
   const handleRelease = (id: string) => {
     savePosts(posts.map((p) => (p.id === id ? { ...p, status: "scheduled" as const } : p)));
+  };
+
+  const handleRenderVideo = async (post: CalendarPost) => {
+    setRenderingPosts((prev) => new Set(prev).add(post.id));
+    try {
+      const sizeMap: Record<string, string> = { youtube: "youtube", tiktok: "tiktok", shorts: "shorts", square: "square" };
+      const format = sizeMap[post.format || "youtube"] || "youtube";
+      const res = await fetch("/api/video/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          template: post.template || "zen-lofi",
+          size: format,
+          caption: post.caption,
+          subtitle: post.title,
+          duration: 30,
+          background: post.background || "",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const videoPath = `/videos/${data.output}`;
+        savePosts(posts.map((p) => (p.id === post.id ? { ...p, video: videoPath } : p)));
+      }
+    } catch (err) {
+      console.error("Render failed:", err);
+    } finally {
+      setRenderingPosts((prev) => {
+        const next = new Set(prev);
+        next.delete(post.id);
+        return next;
+      });
+    }
   };
 
   const handleAddPost = () => {
@@ -620,6 +654,16 @@ export default function SocialPage() {
                                 title="Schedule for release"
                               >
                                 <Send size={14} />
+                              </button>
+                            )}
+                            {!post.video && (
+                              <button
+                                onClick={() => handleRenderVideo(post)}
+                                disabled={renderingPosts.has(post.id)}
+                                className="p-1.5 rounded-lg hover:bg-purple-500/10 text-purple-400 hover:text-purple-300 transition-all disabled:opacity-50"
+                                title="Render video"
+                              >
+                                {renderingPosts.has(post.id) ? <Loader2 size={14} className="animate-spin" /> : <Film size={14} />}
                               </button>
                             )}
                             <button

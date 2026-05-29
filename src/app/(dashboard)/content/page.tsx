@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   Film, Play, Download, Loader2, Sparkles, Calendar,
   Clapperboard, Smartphone, Square, Clock, Edit3, Check,
-  Plus,
+  Plus, Wand2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -63,6 +63,7 @@ export default function ContentPage() {
   const [loadingVideos, setLoadingVideos] = useState(true);
   const [posts, setPosts] = useState<CalendarPost[]>(getDefaultPosts());
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [generatingPost, setGeneratingPost] = useState<string | null>(null);
 
   // Load videos from API
   useEffect(() => {
@@ -103,6 +104,28 @@ export default function ContentPage() {
     return acc;
   }, {});
   const sortedDates = Object.keys(grouped).sort();
+
+  const generateVideo = async (postId: string) => {
+    setGeneratingPost(postId);
+    try {
+      const res = await fetch("/api/calendar/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, video: data.video, status: "scheduled" } : p));
+        // Save to server
+        fetch("/api/calendar/list", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(posts.map(p => p.id === postId ? { ...p, video: data.video, status: "scheduled" } : p)) });
+      } else {
+        alert("Generate failed: " + (data.error || "Unknown error"));
+      }
+    } catch (e: any) {
+      alert("Generate error: " + e.message);
+    }
+    setGeneratingPost(null);
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -216,7 +239,17 @@ export default function ContentPage() {
                         <p className="text-xs text-text-muted mt-0.5 line-clamp-2">{post.caption}</p>
                         <div className="flex items-center gap-3 mt-1.5">
                           <span className="text-[10px] text-text-muted flex items-center gap-1"><Clock size={10} /> {post.time}</span>
-                          {post.video && <span className="text-[10px] text-accent-light flex items-center gap-1"><Play size={10} /> video</span>}
+                          {post.video ? (
+                            <span className="text-[10px] text-accent-light flex items-center gap-1"><Play size={10} /> video ready</span>
+                          ) : (
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); generateVideo(post.id); }}
+                              disabled={generatingPost === post.id}
+                              className="text-[10px] text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-all disabled:opacity-50">
+                              {generatingPost === post.id ? <Loader2 size={10} className="animate-spin" /> : <Wand2 size={10} />}
+                              {generatingPost === post.id ? "generating..." : "generate video"}
+                            </button>
+                          )}
                           <span className="text-[10px] text-text-muted truncate">{post.hashtags}</span>
                         </div>
                       </div>

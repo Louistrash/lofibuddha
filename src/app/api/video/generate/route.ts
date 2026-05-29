@@ -5,7 +5,7 @@ import { join } from "path";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { template, size, caption, subtitle, duration } = body;
+    const { template, size, caption, subtitle, duration, background } = body;
 
     if (!caption || !size) {
       return NextResponse.json(
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
     const outputName = `video-${resolvedSize.replace(":", "x")}-${Date.now()}.mp4`;
     const safeCaption = caption.replace(/"/g, '\\"').replace(/\n/g, "\\n");
     const safeSubtitle = (subtitle || "Mindfulness & Relaxation").replace(/"/g, '\\"');
+    const safeBackground = (background || "").replace(/"/g, '\\"');
 
     const cmd = [
       "node",
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
       `--duration ${duration || 30}`,
       `--caption "${safeCaption}"`,
       `--subtitle "${safeSubtitle}"`,
+      ...(safeBackground ? [`--background "${safeBackground}"`] : []),
       `--output ${outputName}`,
     ].join(" ");
 

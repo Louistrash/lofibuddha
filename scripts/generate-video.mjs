@@ -203,7 +203,12 @@ async function generate(args) {
   const subtitle = args.subtitle || "Mindfulness & Relaxation";
   const outputName = args.output || `video-${sizeStr.replace(":", "x")}-${Date.now()}.mp4`;
   const outputPath = resolve(join(PUBLIC, outputName));
-  const bgImage = args.bg || "";
+  const bgImage = args.background || args.bg || "";
+  // Resolve background image path (URL → local filesystem)
+  let resolvedBg = bgImage;
+  if (bgImage && bgImage.startsWith("/images/")) {
+    resolvedBg = join(ROOT, "public", bgImage.replace(/^\//, ""));
+  }
 
   mkdirSync(dirname(outputPath), { recursive: true });
 
@@ -214,10 +219,10 @@ async function generate(args) {
 
   // Copy background image into temp project if provided
   let bgPath = "";
-  if (bgImage && existsSync(bgImage)) {
-    const ext = bgImage.split(".").pop();
+  if (resolvedBg && existsSync(resolvedBg)) {
+    const ext = resolvedBg.split(".").pop();
     const destName = `bg.${ext}`;
-    copyFileSync(bgImage, join(tmpProject, destName));
+    copyFileSync(resolvedBg, join(tmpProject, destName));
     bgPath = destName;
   }
 
@@ -226,7 +231,7 @@ async function generate(args) {
   writeFileSync(join(tmpProject, "index.html"), html);
 
   console.log(`[Bodhi] Rendering: ${width}x${height} | ${duration}s → ${outputName}`);
-  if (bgPath) console.log(`[Bodhi] Background: ${bgPath}`);
+  if (bgPath) console.log(`[Bodhi] Background: ${bgPath} (from ${resolvedBg})`);
 
   try {
     execSync(

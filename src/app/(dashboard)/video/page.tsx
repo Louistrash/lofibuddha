@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Video, Play, Clock, Film, Wand2, Monitor,
-  Loader2, Download, CheckCircle2, Smartphone, Tv, Square,
+  Loader2, Download, CheckCircle2, Smartphone, Tv, Square, Image as ImageIcon,
 } from "lucide-react";
 
 type Size = "shorts" | "youtube" | "square";
@@ -38,6 +38,8 @@ export default function VideoPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [result, setResult] = useState<VideoResult | null>(null);
   const [error, setError] = useState("");
+  const [background, setBackground] = useState("");
+  const [bgImages, setBgImages] = useState<{name:string; path:string; url:string}[]>([]);
 
   const handleGenerate = async () => {
     setStatus("rendering");
@@ -47,7 +49,7 @@ export default function VideoPage() {
       const res = await fetch("/api/video/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ size, duration, caption, subtitle, template }),
+        body: JSON.stringify({ size, duration, caption, subtitle, template, background }),
       });
       const data = await res.json();
       if (data.success) {
@@ -61,6 +63,14 @@ export default function VideoPage() {
       setError(err.message);
       setStatus("error");
     }
+  };
+
+  const loadBgImages = async () => {
+    try {
+      const res = await fetch("/api/images/list");
+      const data = await res.json();
+      setBgImages(data.images || []);
+    } catch { setBgImages([]); }
   };
 
   return (
@@ -139,6 +149,38 @@ export default function VideoPage() {
               placeholder="Mindfulness & Relaxation"
               className="w-full bg-bg-hover border border-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent/50"
             />
+          </div>
+
+          {/* Background Image Picker */}
+          <div>
+            <label className="text-xs text-text-muted mb-2 block">
+              Background Image <span className="text-accent-light">(from gallery)</span>
+            </label>
+            {bgImages.length === 0 ? (
+              <button onClick={loadBgImages}
+                className="w-full p-3 rounded-xl border border-dashed border-border text-xs text-text-muted hover:border-accent/40 hover:text-text-secondary transition-all">
+                <ImageIcon size={14} className="inline mr-1" /> Load images from gallery
+              </button>
+            ) : (
+              <div className="flex gap-2 overflow-x-auto pb-1 max-w-full">
+                <button
+                  onClick={() => setBackground("")}
+                  className={`flex-shrink-0 w-14 h-14 rounded-xl border-2 flex items-center justify-center transition-all ${
+                    !background ? "border-accent bg-accent/10" : "border-border bg-bg-hover hover:border-accent/30"
+                  }`}>
+                  <span className="text-[9px] text-text-muted text-center">None</span>
+                </button>
+                {bgImages.slice(0, 8).map((img) => (
+                  <button key={img.path}
+                    onClick={() => setBackground(img.path)}
+                    className={`flex-shrink-0 w-14 h-14 rounded-xl border-2 overflow-hidden transition-all ${
+                      background === img.path ? "border-accent ring-2 ring-accent/20" : "border-border hover:border-accent/40"
+                    }`}>
+                    <img src={img.path} alt={img.name} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Generate */}

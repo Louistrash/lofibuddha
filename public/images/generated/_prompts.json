@@ -1,0 +1,37 @@
+{
+  "featured-story": {
+    "prompt": "High-end editorial photograph for a mindfulness magazine. A serene zen meditation room bathed in golden morning light streaming through shoji screens. Warm amber, cream, and soft gold tones. A single cushion on tatami mats. Minimalist. Kinfolk x Architectural Digest aesthetic. No text. Professional photography, shallow depth of field.",
+    "style": "editorial-zen",
+    "aspectRatio": "4:5"
+  },
+  "album-morning-calm": {
+    "prompt": "Minimalist album cover art. Soft dawn light over misty mountains. Pale amber, blush pink, and lavender sky. Very peaceful and serene. Warm analog film grain texture. No text. High-end music label aesthetic.",
+    "style": "album-art",
+    "aspectRatio": "1:1"
+  },
+  "album-deep-focus": {
+    "prompt": "Minimalist album cover art. A warm-lit wooden desk at golden hour with a single steaming cup of tea. Soft bokeh in background. Warm amber and deep brown tones. Cozy, focused atmosphere. No text. Lo-fi hip hop aesthetic.",
+    "style": "album-art",
+    "aspectRatio": "1:1"
+  },
+  "album-sunset-yoga": {
+    "prompt": "Minimalist album cover art. Silhouette of a person in tree pose at golden hour on a hilltop. Warm orange, coral, and deep purple sunset sky. Peaceful, spiritual vibe. No text. Wellness brand aesthetic.",
+    "style": "album-art",
+    "aspectRatio": "1:1"
+  },
+  "thumb-yoga": {
+    "prompt": "A person practicing yoga at sunrise on a wooden deck overlooking misty mountains. Golden morning light. Warm cream, amber, and soft green tones. Serene and peaceful. Editorial photography. No text.",
+    "style": "editorial-thumbnail",
+    "aspectRatio": "3:4"
+  },
+  "thumb-focus": {
+    "prompt": "A cozy study corner with warm lamp light, laptop, notebook, and headphones. Rain on window. Warm amber and dark brown tones. Deep focus atmosphere. Lo-fi study aesthetic. No text.",
+    "style": "editorial-thumbnail",
+    "aspectRatio": "3:4"
+  },
+  "thumb-breath": {
+    "prompt": "Close-up of a person meditating, soft focus on breathing. Warm golden light, peaceful expression. Soft cream and amber tones. Editorial wellness photography. No text.",
+    "style": "editorial-thumbnail",
+    "aspectRatio": "3:4"
+  }
+}
