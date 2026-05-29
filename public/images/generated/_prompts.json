@@ -33,5 +33,115 @@
     "prompt": "Close-up of a person meditating, soft focus on breathing. Warm golden light, peaceful expression. Soft cream and amber tones. Editorial wellness photography. No text.",
     "style": "editorial-thumbnail",
     "aspectRatio": "3:4"
+  },
+  "featured-story-1780073127734": {
+    "prompt": "High-end editorial photograph for a mindfulness magazine. A serene zen meditation room bathed in golden morning light streaming through shoji screens. Warm amber, cream, and soft gold tones. A single cushion on tatami mats. Minimalist. Kinfolk x Architectural Digest aesthetic. No text. Professional photography, shallow depth of field.",
+    "style": "editorial-zen",
+    "aspectRatio": "4:5"
+  },
+  "temple-01-jungle-1780083927467": {
+    "prompt": "Ancient moss-covered Buddha statue in an abandoned Cambodian jungle temple. Massive strangler fig roots embracing weathered stone pillars. Golden sunbeams piercing through broken ceiling illuminating floating dust. Emerald pool at Buddha feet reflecting light. Photorealistic, cinematic lighting, National Geographic style, 8K, warm amber and deep forest green tones. No text, no watermark.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-02-mountain-1780083958167": {
+    "prompt": "Solitary stone Buddha statue on a misty Himalayan mountain peak at dawn. Ancient weathered stone with prayer flags fluttering in wind. Pink and golden alpenglow on snow-capped peaks behind. Wispy clouds at eye level. Cinematic wide shot, hyperrealistic, spiritual atmosphere, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-03-water-1780083963909": {
+    "prompt": "Submerged ancient Buddha head half-underwater in a crystal clear turquoise lagoon. Sunlight refracting through water creating caustic patterns on weathered stone face. Tropical fish swimming around. Limestone cliffs in background. Surreal peaceful atmosphere, underwater photography, ethereal lighting, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-04-desert-1780083971177": {
+    "prompt": "Weathered sandstone Buddha face emerging from a desert cliff in Petra-like canyon. Golden hour light casting long shadows. Wind-carved details on ancient stone. Sand dunes in distance. Warm terracotta, amber, and deep rust tones. National Geographic documentary style, cinematic, 8K, majestic. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-05-cave-1780083995200": {
+    "prompt": "Hidden cave temple deep inside a mountain. Massive golden Buddha statue illuminated by a single shaft of light from a ceiling opening. Thousands of tiny candles flickering around the base. Stalactites and ancient carvings on walls. Warm gold, deep brown, and soft amber tones. Sacred atmosphere, cinematic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-06-sakura-1780084000171": {
+    "prompt": "Ancient mossy stone Buddha sitting under a massive blooming sakura tree at golden hour. Pink petals falling gently like snow. Weathered stone lanterns along a stone path. Soft mist in background mountains. Japanese temple garden aesthetic. Dreamy, ethereal, warm pink and soft green tones. Cinematic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-07-rice-1780084013161": {
+    "prompt": "Weathered Buddha statue standing in the middle of a luminous green Balinese rice terrace at dawn. Reflections in flooded paddies. Mist rising from terraces. Volcanic mountain silhouette behind. Warm golden morning light. Spiritual, peaceful, National Geographic aesthetic. 8K photorealistic. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-08-rain-1780084018629": {
+    "prompt": "Ancient stone Buddha in a monsoon-drenched temple courtyard. Heavy rain creating ripples in shallow pools. Dark dramatic storm clouds with a single break of golden light illuminating the statue face. Wet stone reflections. Moody, dramatic, spiritual atmosphere. Cinematic rain photography, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-09-bonsai-1780084046191": {
+    "prompt": "Ancient miniature Buddha statue nestled in the roots of a thousand-year-old bonsai tree. Moss garden with raked gravel patterns. Soft diffused light through paper screens. Japanese zen monastery garden. Intimate close-up perspective showing incredible detail. Warm natural tones, peaceful atmosphere. Macro photography, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-10-floating-1780084058325": {
+    "prompt": "Buddha statue floating serenely in zero gravity inside an abandoned space temple. Stars and nebula visible through broken dome ceiling. Ancient stone and futuristic decay blend. Bioluminescent plants growing on walls. Surreal, spiritual sci-fi atmosphere. Cinematic wide shot, 8K, ethereal lighting. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-11-autumn-1780084064702": {
+    "prompt": "Stone Buddha sitting peacefully in a Japanese temple garden during peak autumn. Vibrant red and orange maple leaves covering the ground and floating on a koi pond. Warm afternoon light filtering through colorful canopy. Stone lantern and wooden bridge. Warm amber, crimson, and gold tones. Cinematic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-12-frost-1780084073441": {
+    "prompt": "Frozen Buddha statue in an abandoned Himalayan monastery. Ice crystals forming on stone surface. Snow-covered prayer wheels. Northern lights dancing in sky through broken roof. Blue twilight atmosphere. Mystical, cold yet peaceful. Cinematic winter photography, 8K, ethereal. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-13-sunset-1780084097618": {
+    "prompt": "Giant reclining Buddha silhouette at sunset in an abandoned Thai temple. Sky ablaze with orange, magenta, and deep purple. Silhouetted palm trees and ruined stupas. The last golden rays illuminating the Buddha serene face. Cinematic wide shot, spiritual atmosphere, National Geographic aesthetic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-14-mirror-1780084106505": {
+    "prompt": "Perfect mirror reflection of a Buddha statue in a perfectly still alpine lake at blue hour. Snow-capped peaks reflected symmetrically. Mist hovering over water surface. A single prayer flag on shore. Minimalist composition, meditative atmosphere. Cool blue and soft lavender tones. Cinematic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-15-fireflies-1780084117119": {
+    "prompt": "Stone Buddha in a tropical temple ruin at twilight surrounded by thousands of glowing fireflies. Bioluminescent mushrooms at the base. Ancient banyan tree roots embracing pillars. Magical, enchanted forest atmosphere. Warm golden bokeh lights against deep blue dusk. Dreamy, ethereal, 8K cinematic. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-16-lotus-1780084127489": {
+    "prompt": "Buddha statue rising from a vast field of blooming pink lotus flowers at dawn. Mist hovering over the water. Sacred geometry patterns in the sky at sunrise. Egret birds flying. Spiritual awakening atmosphere. Soft pink, warm gold, and sage green tones. Cinematic wide shot, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-17-dragon-1780084147810": {
+    "prompt": "Ancient Buddha carved into a cliff face with detailed stone dragon guardians coiled around pillars. Sea mist and crashing waves at the base of the temple. Dramatic storm clouds parting to reveal golden light. Southeast Asian temple aesthetic. Majestic, powerful yet serene. Cinematic wide shot, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-18-bamboo-1780084154934": {
+    "prompt": "Weathered Buddha statue in a dense bamboo forest. Sunlight filtering through green stalks creating striped light patterns. A small stream with stepping stones leading to the statue. Zen garden elements. Peaceful solitude atmosphere. Deep greens, warm amber light. Cinematic nature photography, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-19-stars-1780084168193": {
+    "prompt": "Buddha statue in an open-roof temple under the most spectacular Milky Way night sky. Ancient stone observatory elements. Bioluminescent moss glowing softly. A single oil lamp at Buddha feet. Timeless, cosmic spiritual atmosphere. Deep indigo, silver starlight, warm lamp glow. Astrophotography, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-20-waterfall-1780084173458": {
+    "prompt": "Buddha statue meditating behind a thin veil of a massive waterfall. Water curtain creating natural privacy. Rainbow in the mist from sunlight. Lush tropical vegetation surrounding the hidden sanctuary. Secret paradise atmosphere. Cinematic, magical realism, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
+  },
+  "temple-21-roots-1780084264363": {
+    "prompt": "Giant Buddha head completely embraced by an ancient banyan tree in an abandoned temple complex. Roots growing through eyes and mouth creating haunting yet peaceful fusion of nature and sacred. Soft dappled light through canopy. Siem Reap Angkor Wat aesthetic. Deep greens, warm stone tones. Photorealistic, National Geographic, 8K. No text.",
+    "style": "custom",
+    "aspectRatio": "1:1"
   }
 }

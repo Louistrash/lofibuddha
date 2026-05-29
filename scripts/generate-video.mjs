@@ -126,7 +126,8 @@ function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundIma
   }
 </style>
 </head>
-<body data-width="${width}" data-height="${height}">
+<body>
+<div data-composition-id="main" data-width="${width}" data-height="${height}" data-duration="${duration}" data-start="0" style="width:${width}px;height:${height}px;position:relative;overflow:hidden;">
   ${backgroundImage ? '<div class="bg-layer"></div>' : ""}
   <canvas id="rain"></canvas>
   <div class="vignette"></div>
@@ -137,18 +138,31 @@ function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundIma
     <div class="subtitle">${subtitle}</div>
   </div>
   <div class="brand">lofibuddha.com</div>
+</div>
 
   <script>
-    window.__hf = { duration: ${duration}, seek: function(t) {} };
+    window.__timelines = {
+    main: {
+      duration: function() { return ${duration}; },
+      pause: function() {},
+      play: function() {},
+      seek: function(t) {},
+      progress: function() { return 0; },
+      time: function() { return 0; },
+      totalDuration: function() { return ${duration}; }
+    }
+  };
     const canvas = document.getElementById('rain');
     const ctx = canvas.getContext('2d');
     canvas.width = ${width}; canvas.height = ${height};
-    const drops = Array.from({length: 100}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      speed: 2 + Math.random() * 4,
-      len: 5 + Math.random() * 12,
-      opacity: 0.1 + Math.random() * 0.3
+    let seed = 42;
+    function seeded() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+    const drops = Array.from({length: 80}, () => ({
+      x: seeded() * canvas.width,
+      y: seeded() * canvas.height,
+      speed: 2 + seeded() * 4,
+      len: 5 + seeded() * 12,
+      opacity: 0.1 + seeded() * 0.3
     }));
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -159,21 +173,22 @@ function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundIma
         ctx.lineTo(d.x - 1, d.y + d.len);
         ctx.globalAlpha = d.opacity; ctx.stroke();
         d.y += d.speed;
-        if (d.y > canvas.height) { d.y = -d.len; d.x = Math.random() * canvas.width; }
+        if (d.y > canvas.height) { d.y = -d.len; d.x = seeded() * canvas.width; }
       }
       ctx.globalAlpha = 1;
-      requestAnimationFrame(draw);
+      
     }
+    setInterval(draw, 33);
     draw();
 
     const pc = document.getElementById('particles');
     for (let i = 0; i < 25; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top = (60 + Math.random() * 40) + '%';
-      p.style.animationDelay = Math.random() * 6 + 's';
-      p.style.animationDuration = (4 + Math.random() * 8) + 's';
+      p.style.left = seeded() * 100 + '%';
+      p.style.top = (60 + seeded() * 40) + '%';
+      p.style.animationDelay = seeded() * 6 + 's';
+      p.style.animationDuration = (4 + seeded() * 8) + 's';
       pc.appendChild(p);
     }
   </script>
