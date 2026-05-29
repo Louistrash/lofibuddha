@@ -137,6 +137,7 @@ export default function LandingPage() {
   const [subscribed, setSubscribed] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const [lang, setLang] = useState<Lang>(() => detectLang());
 
   // Re-render on lang change
@@ -199,22 +200,34 @@ export default function LandingPage() {
 
           {/* Desktop right side */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language switcher — 6 languages */}
-            <div className="flex items-center gap-1 bg-bg-hover border border-border/30 rounded-lg p-0.5">
-              {LANGS.map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    lang === l
-                      ? "bg-accent/20 text-accent-light"
-                      : "text-text-muted hover:text-text-primary"
-                  }`}
-                  title={LANG_LABELS[l]}
-                >
-                  {LANG_FLAGS[l]} {LANG_LABELS[l]}
-                </button>
-              ))}
+            {/* Language switcher — dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-bg-hover border border-border/30 text-xs font-medium text-text-secondary hover:text-text-primary transition-all"
+              >
+                <span>{LANG_FLAGS[lang]} {LANG_LABELS[lang]}</span>
+                <svg className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              {langOpen && (
+                <div className="absolute top-full right-0 mt-1 bg-bg-surface border border-border/40 rounded-xl shadow-xl p-1 z-50 min-w-[110px] backdrop-blur-xl">
+                  {LANGS.map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => { setLang(l); setLangOpen(false); }}
+                      className={`flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                        lang === l
+                          ? "bg-accent/15 text-accent-light"
+                          : "text-text-muted hover:text-text-primary hover:bg-bg-hover"
+                      }`}
+                    >
+                      <span>{LANG_FLAGS[l]}</span> {LANG_LABELS[l]}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <Link href="/signup" className="text-xs font-medium px-4 py-2 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all">
               {t.ctaStart[lang]}
