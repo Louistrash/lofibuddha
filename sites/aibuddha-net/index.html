@@ -3,552 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Favicon -->
+  <title>AI Buddha — Wisdom for the Digital Age</title>
+  <meta name="description" content="A mindful space where ancient wisdom meets modern AI. Guided meditation, contemplative dialogue, and daily calm.">
   <link rel="icon" type="image/png" sizes="32x32" href="bodhi-icon-32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="bodhi-icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="bodhi-icon-180.png">
-  
-  <!-- Primary SEO Meta Tags -->
-  <title>AI Buddha | Your Digital Guide for Mindfulness, Wisdom & Inner Peace</title>
-  <meta name="description" content="Meet AI Buddha: an advanced spiritual AI guide designed to support you with daily meditation, life wisdom, and stress relief. Find calm in a busy world.">
-  <meta name="keywords" content="AI Buddha, Buddhism AI, mindfulness guide, online meditation timer, spiritual AI assistant, stress relief, inner peace">
-  <meta name="author" content="aibuddha.net">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://aibuddha.net/">
-  <meta property="og:title" content="AI Buddha - Digital Guide for Wisdom & Inner Peace">
-  <meta property="og:description" content="Meet AI Buddha. Receive wise answers to life questions, practice mindfulness with our built-in meditation timer, and experience tranquility.">
-  
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=1.3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-  <!-- --- Header / Navigation --- -->
-  <header class="header" id="header">
-    <div class="container nav">
-      <a href="#hero" class="logo" id="nav-logo">
-        <img src="bodhi-icon-32.png" class="logo-icon" alt="Bodhi" width="32" height="32">
-        <span>AI Buddha</span>
+<body class="editorial">
+  <!-- ═══ Navigation ═══ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <img src="bodhi-icon-32.png" alt="AI Buddha" width="32" height="32" class="logo-img">
+        <span class="logo-text">AI Buddha</span>
       </a>
-      
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu">
-          <li><a href="#features" class="nav-link" data-i18n="nav-philosophy">Philosophy</a></li>
-          <li><a href="#lofi-section" class="nav-link" data-i18n="nav-lofi">Lofi Radio</a></li>
-          <li><a href="#chat-section" class="nav-link" data-i18n="nav-chat">Talk to Buddha</a></li>
-          <li><a href="#meditate-section" class="nav-link" data-i18n="nav-meditate">Meditation</a></li>
-          <li><a href="#pricing" class="nav-link" data-i18n="nav-pricing">Pricing</a></li>
-          
-          <!-- Sleek Language Selector -->
-          <li>
-            <div class="lang-selector">
-              <button class="lang-btn" id="lang-btn" aria-label="Select Language" onclick="document.getElementById('lang-dropdown').classList.toggle('open')">
-                <span id="lang-btn-text">🌐 EN</span>
-                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <div class="lang-dropdown" id="lang-dropdown">
-                <button class="lang-option active" data-lang="en" onclick="bodhiSetLang('en');document.getElementById('lang-dropdown').classList.remove('open')">English</button>
-                <button class="lang-option" data-lang="nl" onclick="bodhiSetLang('nl');document.getElementById('lang-dropdown').classList.remove('open')">Nederlands</button>
-                <button class="lang-option" data-lang="es" onclick="bodhiSetLang('es');document.getElementById('lang-dropdown').classList.remove('open')">Español</button>
-                <button class="lang-option" data-lang="de" onclick="bodhiSetLang('de');document.getElementById('lang-dropdown').classList.remove('open')">Deutsch</button>
-                <button class="lang-option" data-lang="fr" onclick="bodhiSetLang('fr');document.getElementById('lang-dropdown').classList.remove('open')">Français</button>
-                <button class="lang-option" data-lang="hi" onclick="bodhiSetLang('hi');document.getElementById('lang-dropdown').classList.remove('open')">हिन्दी</button>
-              </div>
-            </div>
-          </li>
-          
-          <li><button class="nav-cta" onclick="document.getElementById('chat-section').scrollIntoView({behavior: 'smooth'})" data-i18n="nav-try">Try Now</button></li>
-        </ul>
-      </nav>
-      
-      <button class="mobile-nav-toggle" aria-label="Open Menu" id="menu-toggle">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+      <div class="nav-links">
+        <a href="#philosophy">Philosophy</a>
+        <a href="#practice">Practice</a>
+        <a href="#wisdom">Wisdom</a>
+      </div>
+      <div class="nav-actions">
+        <div class="lang-select">
+          <button class="lang-btn" id="langBtn" onclick="document.getElementById('langDrop').classList.toggle('open')">
+            <span id="langLabel">🇬🇧 EN</span>
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang-drop" id="langDrop">
+            <button data-lang="en" class="active" onclick="setLang('en')">🇬🇧 English</button>
+            <button data-lang="nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+            <button data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+            <button data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+            <button data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
+            <button data-lang="hi" onclick="setLang('hi')">🇮🇳 हिन्दी</button>
+          </div>
+        </div>
+        <a href="#chat" class="btn-primary">Begin</a>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main>
-    <!-- --- Hero Section --- -->
-    <section class="hero" id="hero">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-tagline">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 22h20L12 2Zm0 3.99L18.47 18H5.53L12 5.99ZM11 16h2v2h-2v-2Zm0-6h2v4h-2v-4Z"/>
+  <!-- ═══ Hero ═══ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-tag" data-i18n="hero-tag">Ancient wisdom, modern mind</p>
+      <h1 class="hero-title" data-i18n="hero-title">
+        A conversation<br>
+        <span class="hero-title-em">with stillness</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero-sub">
+        AI Buddha is your companion for meditation, reflection, and mindful dialogue — always present, always calm.
+      </p>
+      <div class="hero-cta">
+        <a href="#chat" class="btn-primary btn-lg" data-i18n="hero-cta">Begin your practice</a>
+        <a href="#philosophy" class="btn-ghost" data-i18n="hero-learn">Learn more</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- ═══ Philosophy ═══ -->
+  <section id="philosophy" class="section">
+    <div class="section-inner">
+      <div class="section-label">Philosophy</div>
+      <div class="philo-grid">
+        <div class="philo-text">
+          <h2 class="section-title" data-i18n="philo-title">Wisdom is not about having answers. It's about learning to sit with the questions.</h2>
+          <p class="section-body" data-i18n="philo-body">
+            In the rush of modern life, we rarely pause. AI Buddha creates a space where you can slow down, reflect, and reconnect — not by giving you quick answers, but by guiding you toward your own inner stillness.
+          </p>
+          <p class="section-body" data-i18n="philo-body2">
+            Drawing from Buddhist philosophy, contemporary mindfulness, and the quiet intelligence of AI, each conversation is an invitation to presence.
+          </p>
+        </div>
+        <div class="philo-visual">
+          <div class="enso-container">
+            <svg viewBox="0 0 200 200" class="enso-svg">
+              <circle cx="100" cy="100" r="90" fill="none" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="6 14" opacity="0.15"/>
+              <path d="M100 12 C145 12 188 48 188 100 C188 152 145 188 100 188 C55 188 12 152 12 100 C12 52 48 14 92 12" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
             </svg>
-            <span data-i18n="hero-tagline">Bringing Wisdom to the Digital Age</span>
-          </div>
-          <h1 class="hero-title" data-i18n="hero-title">Find your inner peace with <span>AI Buddha</span></h1>
-          <p class="hero-description" data-i18n="hero-desc">
-            A modern spiritual companion translating ancient Buddhist wisdom into answers for your daily challenges. Experience mindfulness, reflection, and Zen, wherever and whenever you want.
-          </p>
-          <div class="hero-buttons">
-            <button class="btn btn--primary" onclick="document.getElementById('chat-section').scrollIntoView({behavior: 'smooth'})" id="btn-start-chat" data-i18n="hero-cta-chat">
-              Talk to AI Buddha
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z"/>
-              </svg>
-            </button>
-            <button class="btn btn--secondary" onclick="document.getElementById('meditate-section').scrollIntoView({behavior: 'smooth'})" id="btn-start-meditation" data-i18n="hero-cta-meditate">
-              Start Meditation
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <div class="hero-visual">
-          <div class="ripple ripple-1"></div>
-          <div class="ripple ripple-2"></div>
-          <div class="ripple ripple-3"></div>
-          <div class="enso-ring">
-            <!-- Custom CSS Enso Painted Circle using SVG -->
-            <svg class="enso-svg" viewBox="0 0 100 100">
-              <path d="M 50,5 A 45,45 0 1,1 25,12" stroke="#E5C158" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="250" stroke-dashoffset="10"/>
-            </svg>
-            <div class="glow-orb"></div>
-            <div class="buddha-silhouette">
-              <!-- Handcrafted lotus buddha icon -->
-              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- Head & Halo -->
-                <circle cx="50" cy="28" r="8" />
-                <path d="M50 17a14 14 0 0 1 10 10c0 5-2.5 8-10 10c-7.5-2-10-5-10-10a14 14 0 0 1 10-10Z" opacity="0.3" />
-                <!-- Torso in Lotus Position -->
-                <path d="M50 37 c -8 0, -14 3, -16 12 c -1 5, 2 10, 8 13 c 3 1.5, 6 2, 8 2 c 2 0, 5 -0.5, 8 -2 c 6 -3, 9 -8, 8 -13 c -2 -9, -8 -12, -16 -12 Z" />
-                <!-- Folded Arms & Lotus Petals base -->
-                <path d="M26 62 c 6 7, 14 10, 24 10 c 10 0, 18 -3, 24 -10 c 4 -5, 0 -8, -6 -9 c -6 -1, -12 2, -18 2 c -6 0, -12 -3, -18 -2 c -6 1, -10 4, -6 9 Z" />
-                <!-- Lotus base -->
-                <path d="M15 72 c 12 12, 58 12, 70 0 c -10 -4, -20 -1, -35 -1 c -15 0, -25 -3, -35 1 Z" opacity="0.8" />
-              </svg>
-            </div>
+            <div class="enso-dot"></div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- --- Features / Philosophy --- -->
-    <section class="section" id="features">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="features-label">Why AI Buddha?</span>
-          <h2 class="section-title" data-i18n="features-title">Ancient Wisdom Meets Cutting-edge Tech</h2>
-          <p class="section-description" data-i18n="features-desc">
-            AI Buddha combines deep Buddhist scriptures and mindfulness teachings with modern AI to create a sanctuary of peace in your day.
-          </p>
+  <!-- ═══ Practice ═══ -->
+  <section id="practice" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-label">The Practice</div>
+      <div class="practice-grid">
+        <div class="practice-card">
+          <div class="practice-icon">🧘</div>
+          <h3 data-i18n="practice1-title">Guided Meditation</h3>
+          <p data-i18n="practice1-desc">Set a timer and let AI Buddha lead you through breath-focused meditation. The timer runs entirely in your browser — nothing leaves your device.</p>
         </div>
-        
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon-wrapper">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z"/>
-                <path d="M12 6v6l4 2"/>
-              </svg>
-            </div>
-            <h3 class="feature-card-title" data-i18n="feat1-title">Instant Calm & Guidance</h3>
-            <p class="feature-card-description" data-i18n="feat1-desc">
-              Ask life questions, discuss stress, or seek guidance. Get instant calming, compassionate, and wise answers that offer perspective.
-            </p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon-wrapper">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 3a9 9 0 0 1 9 9c0 2.378-1.002 4.502-2.6 6L12 15l-6.4 3A9 9 0 0 1 3 12a9 9 0 0 1 9-9Z"/>
-              </svg>
-            </div>
-            <h3 class="feature-card-title" data-i18n="feat2-title">Digital Mindfulness</h3>
-            <p class="feature-card-description" data-i18n="feat2-desc">
-              Develop healthy mental habits with our built-in breathing and meditation widgets, designed to bring you directly into the present.
-            </p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon-wrapper">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2a5 5 0 0 0-5 5v3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2V7a5 5 0 0 0-5-5Zm-3 5a3 3 0 0 1 6 0v3H9V7Zm3 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-              </svg>
-            </div>
-            <h3 class="feature-card-title" data-i18n="feat3-title">100% Safe & Private</h3>
-            <p class="feature-card-description" data-i18n="feat3-desc">
-              Your path to peace is personal. All your conversations and meditation sessions are completely anonymous and never shared.
-            </p>
-          </div>
+        <div class="practice-card">
+          <div class="practice-icon">💭</div>
+          <h3 data-i18n="practice2-title">Contemplative Dialogue</h3>
+          <p data-i18n="practice2-desc">Ask anything. From life's big questions to daily struggles, AI Buddha responds with compassion, not judgment. Every conversation is private and anonymous.</p>
+        </div>
+        <div class="practice-card">
+          <div class="practice-icon">🎵</div>
+          <h3 data-i18n="practice3-title">Lofi Soundscapes</h3>
+          <p data-i18n="practice3-desc">Curated lofi beats for focus and relaxation. No ads, no algorithms — just music that helps you enter a state of flow.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- --- Lofi Buddha Live & Mixes --- -->
-    <section class="section" id="lofi-section" style="background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="lofi-label">Lofi Buddha Radio</span>
-          <h2 class="section-title" data-i18n="lofi-title">Listen Live & Discover Our Mixes</h2>
-          <p class="section-description" data-i18n="lofi-desc">
-            Calm your mind for work or study with our live stream or choose from our carefully curated lofi soundscapes.
-          </p>
+  <!-- ═══ Wisdom ═══ -->
+  <section id="wisdom" class="section">
+    <div class="section-inner">
+      <div class="section-label">Words of Wisdom</div>
+      <div class="wisdom-grid">
+        <div class="wisdom-quote">
+          <p class="wisdom-text">"Peace comes from within. Do not seek it without."</p>
+          <p class="wisdom-author">— Buddha</p>
         </div>
-        
-        <div class="lofi-grid">
-          <!-- Live Stream Embed -->
-          <div class="lofi-live-box">
-            <div class="lofi-player-wrapper">
-              <iframe 
-                src="https://www.youtube.com/embed/TVh0_1wLArU" 
-                title="Lofi Buddha Zen Ambient" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-              </iframe>
-            </div>
-            <div class="lofi-live-info">
-              <div class="live-pulse-badge">LIVE</div>
-              <h3 data-i18n="lofi-live-title">Lofi Buddha 24/7 Zen Radio</h3>
-              <p data-i18n="lofi-live-desc">Calming beats, soothing melodies, and gentle meditation sounds to keep you focused or relaxed.</p>
-            </div>
-          </div>
-          
-          <!-- Recente Videos / Playlist Grid -->
-          <div class="lofi-sidebar">
-            <h4 data-i18n="lofi-sidebar-title">Our Soundscapes</h4>
-            <div class="lofi-playlist-wrapper">
-              <iframe 
-                src="https://www.youtube.com/embed/videoseries?list=PLobGh1S8k5QSm-SRWEk9ngaLODmbcno33" 
-                title="Lofi Buddha Playlist" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
-            </div>
-          </div>
+        <div class="wisdom-quote">
+          <p class="wisdom-text">"The present moment is filled with joy and happiness. If you are attentive, you will see it."</p>
+          <p class="wisdom-author">— Thich Nhat Hanh</p>
+        </div>
+        <div class="wisdom-quote">
+          <p class="wisdom-text">"Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment."</p>
+          <p class="wisdom-author">— Buddha</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- --- AI Buddha Chat Demo --- -->
-    <section class="section" id="chat-section" style="background-color: var(--bg-secondary);">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="chat-label">Interactive Guide</span>
-          <h2 class="section-title" data-i18n="chat-title">Consult the AI Buddha</h2>
-          <p class="section-description" data-i18n="chat-desc">
-            Ask a question about stress, emotions, relationships, or mindfulness. Click an example or type your question.
-          </p>
+  <!-- ═══ Chat Preview ═══ -->
+  <section id="chat" class="section section-dark">
+    <div class="section-inner">
+      <div class="section-label section-label-light">Talk to AI Buddha</div>
+      <div class="chat-preview">
+        <div class="chat-bubble chat-bubble-ai">
+          <p>Welcome, seeker of peace. What brings you here today?</p>
         </div>
-        
-        <div class="showcase-grid">
-          <!-- Chat Window Box -->
-          <div class="chat-showcase" id="chat-box">
-            <div class="chat-header">
-              <div class="chat-profile">
-                <div class="chat-avatar">
-                  <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="30" r="10" />
-                    <path d="M50 45 c-10 0, -18 4, -20 15 c5 6, 12 8, 20 8 c8 0, 15 -2, 20 -8 c-2 -11, -10 -15, -20 -15 Z" />
-                  </svg>
-                </div>
-                <div class="chat-profile-info">
-                  <h4>AI Buddha</h4>
-                  <div class="chat-status" data-i18n="chat-status">Present in the now</div>
-                </div>
-              </div>
-              <div class="chat-options" id="chat-reset-btn" title="Clear chat">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-            </div>
-            
-            <div class="chat-body" id="chat-messages">
-              <div class="chat-bubble chat-bubble--bot" data-i18n="chat-greeting">
-                Greetings, traveler. I am AI Buddha. What brings you to this path of peace today? Feel free to share your thoughts, stress, or questions with me.
-              </div>
-            </div>
-            
-            <div class="chat-footer">
-              <form class="chat-form" id="chat-form" onsubmit="return false;">
-                <input type="text" class="chat-input" id="chat-input-text" placeholder="Ask a wise question or share your stress..." data-i18n="chat-placeholder" autocomplete="off">
-                <button type="submit" class="chat-send-btn" id="chat-submit-btn" aria-label="Send Message">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                  </svg>
-                </button>
-              </form>
-            </div>
-          </div>
-          
-          <!-- Suggestion Cards (Translations managed dynamically by script.js resetChatLanguage) -->
-          <div class="chat-prompts">
-            <div class="chat-prompt-card" data-prompt="How do I deal with the constant stress of work and expectations?">
-              <h5 data-i18n="chat-card1-title">Stress & Workload</h5>
-              <p data-i18n="chat-card1-prompt">"How do I deal with the constant stress of work and expectations?"</p>
-            </div>
-            
-            <div class="chat-prompt-card" data-prompt="Give me a Buddhist wisdom about dealing with change.">
-              <h5 data-i18n="chat-card2-title">Change & Letting Go</h5>
-              <p data-i18n="chat-card2-prompt">"Give me a Buddhist wisdom about dealing with change."</p>
-            </div>
-            
-            <div class="chat-prompt-card" data-prompt="My mind wanders constantly. How do I truly live in the now?">
-              <h5 data-i18n="chat-card3-title">Mindfulness in Practice</h5>
-              <p data-i18n="chat-card3-prompt">"My mind wanders constantly. How do I truly live in the now?"</p>
-            </div>
-          </div>
+        <div class="chat-bubble chat-bubble-user">
+          <p>I've been feeling overwhelmed lately. Can you help me find calm?</p>
+        </div>
+        <div class="chat-bubble chat-bubble-ai">
+          <p>Let us begin with a single breath. Close your eyes for a moment. Breathe in slowly... and out. In this moment, there is nothing to fix, nowhere to be. You are exactly where you need to be.</p>
         </div>
       </div>
-    </section>
-
-    <!-- --- Meditate Section --- -->
-    <section class="section" id="meditate-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="meditate-label">Mindful Moment</span>
-          <h2 class="section-title" data-i18n="meditate-title">Take a Conscious Breath</h2>
-          <p class="section-description" data-i18n="meditate-desc">
-            Use our interactive breathing guide. Choose a duration, close your eyes halfway, and follow the Buddha's rhythm to immediately reduce stress.
-          </p>
-        </div>
-        
-        <div class="meditation-grid">
-          <!-- Timer Box Widget -->
-          <div class="meditation-timer-box" id="timer-widget">
-            <div class="timer-visual">
-              <div class="timer-circle-bg"></div>
-              
-              <!-- Perfect SVG circle for accurate timer progress ring -->
-              <svg class="timer-svg" viewBox="0 0 240 240">
-                <circle class="timer-svg-circle" id="timer-progress-ring" cx="120" cy="120" r="116"></circle>
-              </svg>
-              
-              <div class="breath-indicator" id="breath-circle">
-                <div class="timer-countdown" id="timer-display">01:00</div>
-              </div>
-              
-              <div class="breath-text" id="breath-instruction" data-i18n="breath-inhale">Breathe in</div>
-            </div>
-            
-            <div class="timer-controls">
-              <div class="duration-selector" id="timer-duration-selector">
-                <button class="duration-btn active" data-time="60">1 <span data-i18n="meditate-min">Min</span></button>
-                <button class="duration-btn" data-time="180">3 <span data-i18n="meditate-min">Min</span></button>
-                <button class="duration-btn" data-time="300">5 <span data-i18n="meditate-min">Min</span></button>
-              </div>
-              
-              <div class="action-buttons">
-                <button class="timer-btn timer-btn--start" id="timer-control-btn" data-i18n="meditate-btn-start">Start Meditation</button>
-                <button class="timer-btn timer-btn--stop" id="timer-reset-btn" style="display: none;" data-i18n="meditate-btn-stop">Stop</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Instructions/Info Side -->
-          <div class="meditation-info">
-            <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-gold);" data-i18n="meditate-info-title">The Importance of Breathing</h3>
-            <p style="font-size: 1.05rem; margin-bottom: 2rem; color: var(--text-secondary);" data-i18n="meditate-info-desc">
-              In Buddhism, breathing (Anapanasati) is the anchor to the present moment. By consciously directing your breath, you slow down the nervous system and calm the busy stream of thoughts ('monkey mind').
-            </p>
-            
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 1.25rem;">
-              <li style="display: flex; gap: 1rem; align-items: flex-start;">
-                <svg width="22" height="22" fill="none" stroke="var(--accent-green)" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
-                  <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div>
-                  <strong style="display:block; margin-bottom: 0.2rem; color: var(--text-primary);" data-i18n="meditate-bullet1-title">4-4-4 Box breathing rhythm</strong>
-                  <span style="font-size: 0.95rem; color: var(--text-secondary);" data-i18n="meditate-bullet1-desc">Our guide gently walks you through: inhale for 4 seconds, hold for 4 seconds, and exhale for 4 seconds.</span>
-                </div>
-              </li>
-              <li style="display: flex; gap: 1rem; align-items: flex-start;">
-                <svg width="22" height="22" fill="none" stroke="var(--accent-green)" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
-                  <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div>
-                  <strong style="display:block; margin-bottom: 0.2rem; color: var(--text-primary);" data-i18n="meditate-bullet2-title">Visual Anchor</strong>
-                  <span style="font-size: 0.95rem; color: var(--text-secondary);" data-i18n="meditate-bullet2-desc">The breathing circle pulses in sync with the rhythm, so you can focus your eyes on it.</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="chat-cta">
+        <a href="#" class="btn-primary btn-lg" data-i18n="chat-cta">Start your conversation</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- --- Philosophy Quote Section --- -->
-    <section class="section quote-section">
-      <div class="container quote-box">
-        <blockquote class="quote-text" data-i18n="quote-text">
-          "The mind is everything. What you think, you become."
-        </blockquote>
-        <cite class="quote-author" data-i18n="quote-author">— Gautama Buddha</cite>
-      </div>
-    </section>
-
-    <!-- --- Pricing / Tiers --- -->
-    <section class="section" id="pricing" style="background-color: var(--bg-secondary);">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="price-label">Your Path</span>
-          <h2 class="section-title" data-i18n="price-title">Choose Your Level of Awareness</h2>
-          <p class="section-description" data-i18n="price-desc">
-            Start for free at your own pace or get access to deeper guidance and daily mindfulness tools.
-          </p>
-        </div>
-        
-        <div class="pricing-grid">
-          <!-- Card 1 -->
-          <div class="pricing-card">
-            <h3 class="pricing-name" data-i18n="price-free-name">Zen Beginner</h3>
-            <div class="pricing-price">€0<span data-i18n="price-free-period">/ always free</span></div>
-            <p class="pricing-desc" data-i18n="price-free-desc">For those just starting to explore mindfulness and spiritual answers.</p>
-            <ul class="pricing-features">
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-chats-limit">5 AI Buddha chats per day</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-timer-basic">Standard Meditation Timer (1 min)</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-quotes">Zen quotes archive</span>
-              </li>
-              <li class="pricing-feature-item unsupported">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                <span data-i18n="feat-chats-unlimit"><strong>Unlimited</strong> AI Buddha chats</span>
-              </li>
-            </ul>
-            <button class="btn btn--secondary btn-pricing" onclick="document.getElementById('chat-section').scrollIntoView({behavior: 'smooth'})" data-i18n="price-btn-free">Start Now</button>
-          </div>
-          
-          <!-- Card 2 -->
-          <div class="pricing-card pricing-card--popular">
-            <div class="pricing-badge" data-i18n="price-popular-badge">Popular</div>
-            <h3 class="pricing-name" data-i18n="price-mid-name">Mindful Path</h3>
-            <div class="pricing-price">€4,99<span data-i18n="price-mid-period">/ month</span></div>
-            <p class="pricing-desc" data-i18n="price-mid-desc">For the active practitioner who wants to integrate deeper mindfulness into busy daily life.</p>
-            <ul class="pricing-features">
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-chats-unlimit"><strong>Unlimited</strong> AI Buddha chats</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-timer-all">All meditation timers (1, 3, 5+ min)</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-reflection">Personalized daily Zen reflection</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-history">Secure local chat history</span>
-              </li>
-            </ul>
-            <button class="btn btn--primary btn-pricing" data-i18n="price-btn-mid">Choose Mindful Path</button>
-          </div>
-          
-          <!-- Card 3 -->
-          <div class="pricing-card">
-            <h3 class="pricing-name" data-i18n="price-high-name">Enlightened Path</h3>
-            <div class="pricing-price">€12,99<span data-i18n="price-high-period">/ month</span></div>
-            <p class="pricing-desc" data-i18n="price-high-desc">For those seeking deep transformation with custom tailored spiritual learning journeys.</p>
-            <ul class="pricing-features">
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-premium-all">Everything from Mindful Path</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-sutras">Custom sutra analyses</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-early">Early access to new AI modules</span>
-              </li>
-              <li class="pricing-feature-item">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>
-                <span data-i18n="feat-support">Direct support from developers</span>
-              </li>
-            </ul>
-            <button class="btn btn--secondary btn-pricing" data-i18n="price-btn-high">Choose Enlightened Path</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- --- Footer --- -->
+  <!-- ═══ Footer ═══ -->
   <footer class="footer">
-    <div class="container footer-grid">
+    <div class="footer-inner">
       <div class="footer-brand">
-        <a href="#hero" class="logo">
-          <img src="bodhi-icon-32.png" class="logo-icon" alt="Bodhi" width="32" height="32">
-          <span>AI Buddha</span>
+        <a href="#" class="logo">
+          <img src="bodhi-icon-32.png" alt="AI Buddha" width="28" height="28" class="logo-img">
+          <span class="logo-text">AI Buddha</span>
         </a>
-        <p data-i18n="footer-desc">Ancient wisdom and modern mindfulness combined to bring calm to the digital age.</p>
+        <p class="footer-tagline">A space for stillness in a restless world.</p>
       </div>
-      
-      <div class="footer-col">
-        <h5 data-i18n="footer-brand-nav">Navigation</h5>
-        <ul class="footer-links">
-          <li><a href="#features" class="footer-link" data-i18n="nav-philosophy">Philosophy</a></li>
-          <li><a href="#lofi-section" class="footer-link" data-i18n="nav-lofi">Lofi Radio</a></li>
-          <li><a href="#chat-section" class="footer-link" data-i18n="nav-chat">Talk to Buddha</a></li>
-          <li><a href="#meditate-section" class="footer-link" data-i18n="nav-meditate">Meditation</a></li>
-          <li><a href="#pricing" class="footer-link" data-i18n="nav-pricing">Pricing</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-col">
-        <h5 data-i18n="footer-brand-legal">Legal</h5>
-        <ul class="footer-links">
-          <li><a href="privacy.html" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
-          <li><a href="terms.html" class="footer-link" data-i18n="footer-terms">Terms & Conditions</a></li>
-          <li><a href="disclaimer.html" class="footer-link" data-i18n="footer-disclaimer">Disclaimer</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-col">
-        <h5 data-i18n="footer-brand-contact">Contact</h5>
-        <ul class="footer-links">
-          <li><a href="mailto:info@aibuddha.net" class="footer-link">info@aibuddha.net</a></li>
-          <li><span class="footer-link" style="cursor:default;" data-i18n="footer-madewith">Made with compassion</span></li>
-        </ul>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="mailto:info@aibuddha.net">Contact</a>
       </div>
     </div>
-    
-    <div class="container footer-bottom">
-      <div class="footer-copyright">
-        &copy; 2026 aibuddha.net. <span data-i18n="footer-rights">All rights reserved.</span>
-      </div>
-      
-      <div class="footer-socials">
-        <a href="#" class="footer-social-link" aria-label="Twitter">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-          </svg>
-        </a>
-        <a href="#" class="footer-social-link" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="2"/>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </a>
-      </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI Buddha</p>
     </div>
   </footer>
 
-  <!-- Script File -->
   <script src="script.js"></script>
+  <script>
+    // Minimal language switcher
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-lang="${lang}"]`)?.classList.add('active');
+      document.getElementById('langDrop')?.classList.remove('open');
+      const flags = { en: '🇬🇧 EN', nl: '🇳🇱 NL', es: '🇪🇸 ES', de: '🇩🇪 DE', fr: '🇫🇷 FR', hi: '🇮🇳 HI' };
+      document.getElementById('langLabel').textContent = flags[lang] || '🇬🇧 EN';
+      if (window.bodhiSetLang) window.bodhiSetLang(lang);
+      else { localStorage.setItem('bodhi-lang', lang); location.reload(); }
+    }
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const drop = document.getElementById('langDrop');
+      const btn = document.getElementById('langBtn');
+      if (drop && btn && !btn.contains(e.target) && !drop.contains(e.target)) drop.classList.remove('open');
+    });
+  </script>
 </body>
 </html>

@@ -1,613 +1,424 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Play, Sparkles, Check, ArrowRight, Menu, X, Globe,
-  Heart, Moon, Sun, Music, Zap, Shield, Star,
-  Music2, Camera, Headphones, Send, Tv, Quote, Flower2,
-} from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { ArrowRight, Sparkles, Play, Pause, Volume2, Moon, Send, ChevronDown, Menu, X, Heart, Quote, Music, BookOpen, Camera } from "lucide-react";
 
-// ── Translations ──
-
+// ─── Language ─────────────────────────────────
 type Lang = "en" | "nl" | "es" | "de" | "fr" | "hi";
-
+const LANGS: Lang[] = ["en", "nl", "es", "de", "fr", "hi"];
 const LANG_FLAGS: Record<Lang, string> = { en: "🇬🇧", nl: "🇳🇱", es: "🇪🇸", de: "🇩🇪", fr: "🇫🇷", hi: "🇮🇳" };
 const LANG_LABELS: Record<Lang, string> = { en: "EN", nl: "NL", es: "ES", de: "DE", fr: "FR", hi: "HI" };
-const LANGS: Lang[] = ["en", "nl", "es", "de", "fr", "hi"];
 
-// Fallback: NL for Dutch, EN for everything else
-function detectLang(): Lang {
+const detectLang = (): Lang => {
   if (typeof window === "undefined") return "en";
   const stored = localStorage.getItem("lofibuddha-lang") as Lang;
   if (stored && LANGS.includes(stored)) return stored;
-  const browser = navigator.language.toLowerCase();
-  if (browser.startsWith("nl")) return "nl";
-  if (browser.startsWith("es")) return "es";
-  if (browser.startsWith("de")) return "de";
-  if (browser.startsWith("fr")) return "fr";
-  if (browser.startsWith("hi")) return "hi";
-  return "en";
-}
-
-const t: Record<string, Record<Lang, string>> = {
-  navFeatures: { en: "Features", nl: "Functies" },
-  navContent: { en: "Content", nl: "Content" },
-  navPricing: { en: "Pricing", nl: "Prijzen" },
-  navPodcast: { en: "Podcast", nl: "Podcast" },
-  bodhiPro: { en: "Bodhi Pro →", nl: "Bodhi Pro →" },
-  badgeNew: { en: "Lofi music meets mindfulness", nl: "Lofi muziek ontmoet mindfulness" },
-  heroTitle: { en: "Your daily dose of calm in a chaotic world", nl: "Jouw dagelijkse dosis kalmte in een chaotische wereld" },
-  heroTitleHighlight: { en: "calm", nl: "kalmte" },
-  heroSub: { en: "Unlimited lofi beats, guided yoga, breathwork & meditation —", nl: "Onbeperkt lofi beats, geleide yoga, ademwerk & meditatie —" },
-  heroSubHighlight: { en: "all in one peaceful place.", nl: "alles op één rustige plek." },
-  ctaStart: { en: "Start Your Free Trial", nl: "Start Je Gratis Proefperiode" },
-  ctaBrowse: { en: "Browse free content", nl: "Bekijk gratis content" },
-  trustTrial: { en: "7-day free trial", nl: "7 dagen gratis" },
-  trustCancel: { en: "Cancel anytime", nl: "Altijd opzegbaar" },
-  trustHappy: { en: "2,400+ happy souls", nl: "2.400+ blije zielen" },
-  trustRating: { en: "★ 4.9 rating", nl: "★ 4.9 beoordeling" },
-  ytWatch: { en: "Watch on YouTube", nl: "Bekijk op YouTube" },
-  ytSub: { en: "New lofi mixes & yoga flows every week", nl: "Wekelijks nieuwe lofi mixes & yoga flows" },
-  whyLabel: { en: "Why LofiBuddha", nl: "Waarom LofiBuddha" },
-  featuresTitle: { en: "Everything you need to unwind", nl: "Alles wat je nodig hebt om te ontspannen" },
-  featuresSub: { en: "Curated content for your mind, body, and soul — no ads, no noise.", nl: "Zorgvuldig geselecteerde content voor lichaam en geest — geen reclame." },
-  journeyLabel: { en: "Start your journey", nl: "Begin je reis" },
-  journeyTitle: { en: "Begin with these free sessions", nl: "Begin met deze gratis sessies" },
-  journeySub: { en: "Handpicked by our teachers to calm your mind instantly.", nl: "Met de hand gekozen door onze leraren." },
-  browseAll: { en: "Browse all free content", nl: "Bekijk alle gratis content" },
-  podcastLabel: { en: "Podcast", nl: "Podcast" },
-  podcastTitle: { en: "The Mindful Creative", nl: "The Mindful Creative" },
-  podcastSub: { en: "Weekly conversations about mindfulness, creativity, and intentional living.", nl: "Wekelijkse gesprekken over mindfulness, creativiteit en bewust leven." },
-  pricingLabel: { en: "Pricing", nl: "Prijzen" },
-  pricingTitle: { en: "Simple, peaceful pricing", nl: "Simpele, rustige prijzen" },
-  pricingSub: { en: "Start free. Upgrade when you're ready. No pressure.", nl: "Begin gratis. Upgrade wanneer jij er klaar voor bent." },
-  mostPopular: { en: "Most Popular", nl: "Meest Gekozen" },
-  freeDesc: { en: "Dip your toes in the calm.", nl: "Proef de rust." },
-  zenDesc: { en: "Your daily dose of peace.", nl: "Jouw dagelijkse dosis rust." },
-  masterDesc: { en: "Deepen your practice.", nl: "Verdiep je beoefening." },
-  communityLabel: { en: "Community", nl: "Community" },
-  communityTitle: { en: "Real stories from real people", nl: "Echte verhalen van echte mensen" },
-  newsletterLabel: { en: "Free weekly calm tips", nl: "Gratis wekelijkse rust-tips" },
-  newsletterTitle: { en: "Join the community", nl: "Word lid van de community" },
-  newsletterSub: { en: "Get a free lofi mix + weekly calm tips. No spam. Just zen.", nl: "Ontvang een gratis lofi mix + wekelijkse tips. Geen spam. Alleen zen." },
-  newsletterPlaceholder: { en: "your@email.com", nl: "jouw@email.com" },
-  newsletterBtn: { en: "Join Free", nl: "Gratis Lid Worden" },
-  newsletterDone: { en: "You're in! 🧘", nl: "Je bent binnen! 🧘" },
-  newsletterDoneSub: { en: "Check your inbox for your free lofi mix.", nl: "Check je inbox voor je gratis lofi mix." },
-  footerTagline: { en: "Your daily dose of calm. Lofi music, yoga, meditation, and mindfulness — all in one peaceful place.", nl: "Jouw dagelijkse dosis kalmte. Lofi muziek, yoga, meditatie en mindfulness — alles op één rustige plek." },
-  footerContent: { en: "Content", nl: "Content" },
-  footerBrowse: { en: "Browse Free", nl: "Gratis Bekijken" },
-  footerCompany: { en: "Company", nl: "Bedrijf" },
-  footerAbout: { en: "About", nl: "Over Ons" },
-  footerContact: { en: "Contact", nl: "Contact" },
-  footerPrivacy: { en: "Privacy", nl: "Privacy" },
-  footerFollow: { en: "Follow", nl: "Volg Ons" },
-  footerCopy: { en: "Discover zen vibes — products and experiences that bring peace and joy to your life.", nl: "Ontdek zen vibes — producten en ervaringen die rust en vreugde brengen." },
+  const browser = navigator.language.toLowerCase().split("-")[0] as Lang;
+  return LANGS.includes(browser) ? browser : "en";
 };
 
-function useT(): (key: string) => string {
-  const [lang] = useState<Lang>(() => detectLang());
-  return (key: string) => t[key]?.[lang] || t[key]?.en || key;
-}
-
-function setLangCookie(lang: Lang) {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("lofibuddha-lang", lang);
-  }
-}
-
-// ── Data ──
-
-const features = [
-  { icon: Music, title: { en: "Lofi Music", nl: "Lofi Muziek" }, desc: { en: "Endless streams of handpicked lofi, chillhop, and ambient beats. Perfect for focus, study, or sleep.", nl: "Eindeloze streams van met de hand gekozen lofi, chillhop en ambient. Perfect voor focus, studie of slaap." }, emoji: "🎵" },
-  { icon: Sun, title: { en: "Yoga Flows", nl: "Yoga Flows" }, desc: { en: "Gentle morning flows and relaxing evening practices for every level. No equipment needed.", nl: "Zachte ochtendflows en ontspannende avondsessies voor elk niveau. Geen materiaal nodig." }, emoji: "🧘" },
-  { icon: Moon, title: { en: "Guided Meditation", nl: "Geleide Meditatie" }, desc: { en: "Breathwork, body scans, and mindfulness sessions narrated with warmth and clarity.", nl: "Ademwerk, bodyscans en mindfulness sessies met warmte en helderheid verteld." }, emoji: "🧠" },
-  { icon: Headphones, title: { en: "Podcast", nl: "Podcast" }, desc: { en: "Weekly conversations about mindfulness, creativity, and intentional living.", nl: "Wekelijkse gesprekken over mindfulness, creativiteit en bewust leven." }, emoji: "🎙️" },
-  { icon: Heart, title: { en: "Community", nl: "Community" }, desc: { en: "Join mindful souls on the same journey. Share, grow, and find accountability.", nl: "Sluit je aan bij gelijkgestemden. Deel, groei en vind steun." }, emoji: "💜" },
-  { icon: Shield, title: { en: "No Ads. Ever.", nl: "Nooit Reclame." }, desc: { en: "Your peace is our priority. No interruptions, no algorithms hijacking your attention.", nl: "Jouw rust is onze prioriteit. Geen onderbrekingen, geen algoritmes." }, emoji: "🛡️" },
-];
-
-const contentGrid = [
-  { emoji: "🧘", title: { en: "Morning Yoga", nl: "Ochtend Yoga" }, desc: { en: "10 min gentle flow", nl: "10 min zachte flow" } },
-  { emoji: "🎵", title: { en: "Focus Lofi", nl: "Focus Lofi" }, desc: { en: "Deep work beats", nl: "Concentratie beats" } },
-  { emoji: "🌙", title: { en: "Sleep Stories", nl: "Slaap Verhalen" }, desc: { en: "Guided relaxation", nl: "Geleide ontspanning" } },
-  { emoji: "🫁", title: { en: "Breathwork", nl: "Ademwerk" }, desc: { en: "5 min reset", nl: "5 min reset" } },
-];
-
-const socials = [
-  { label: "YouTube", icon: Tv, href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1", color: "hover:text-red-400" },
-  { label: "LoFi Buddha Music", icon: Music2, href: "https://www.youtube.com/@LoFi_Buddha_Music", color: "hover:text-rose-400" },
-  { label: "TikTok", icon: Music2, href: "https://www.tiktok.com/@lofibuddha", color: "hover:text-pink-400" },
-  { label: "Instagram", icon: Camera, href: "https://www.instagram.com/lofibuddha", color: "hover:text-purple-400" },
-  { label: "Facebook", icon: Globe, href: "https://www.facebook.com/lofibuddha", color: "hover:text-blue-400" },
-];
-
-const tierFeatures: Record<string, { en: string[]; nl: string[] }> = {
-  free: { en: ["3 lofi tracks / week", "1 yoga flow / week", "Community access", "Browse free content"], nl: ["3 lofi tracks/week", "1 yoga flow/week", "Community toegang", "Gratis content"] },
-  zen: { en: ["Unlimited lofi streams", "Full yoga library", "Guided breathwork", "Ad-free experience", "Offline downloads", "Community challenges"], nl: ["Onbeperkt lofi streams", "Volledige yoga bibliotheek", "Geleid ademwerk", "Reclamevrij", "Offline downloads", "Community challenges"] },
-  master: { en: ["Everything in Zen", "Live guided sessions", "Exclusive workshops", "1-on-1 coaching (2x/mo)", "Early access content", "Custom playlists", "Priority support"], nl: ["Alles van Zen", "Live sessies", "Exclusieve workshops", "1-op-1 coaching", "Vroege toegang", "Custom playlists", "Priority support"] },
+// ─── Translations ─────────────────────────────
+const t = {
+  navFeatures: { en: "Journal", nl: "Journaal", es: "Diario", de: "Journal", fr: "Journal", hi: "पत्रिका" },
+  navMusic: { en: "Music", nl: "Muziek", es: "Música", de: "Musik", fr: "Musique", hi: "संगीत" },
+  navWisdom: { en: "Wisdom", nl: "Wijsheid", es: "Sabiduría", de: "Weisheit", fr: "Sagesse", hi: "ज्ञान" },
+  heroTag: { en: "A mindful space for slow living", nl: "Een mindful plek voor slow living", es: "Un espacio consciente para vivir despacio", de: "Ein achtsamer Ort für langsames Leben", fr: "Un espace conscient pour vivre lentement", hi: "धीमे जीवन के लिए एक सचेत स्थान" },
+  heroTitle1: { en: "Find your", nl: "Vind jouw", es: "Encuentra tu", de: "Finde deinen", fr: "Trouve ton", hi: "अपनी खोजें" },
+  heroTitle2: { en: "rhythm", nl: "ritme", es: "ritmo", de: "Rhythmus", fr: "rythme", hi: "लय" },
+  heroTitle3: { en: "of calm", nl: "van rust", es: "de calma", de: "der Ruhe", fr: "de calme", hi: "शांति की" },
+  heroSub: { en: "Lofi music, guided breathwork, yoga flows, and mindful stories — curated for your daily dose of peace.", nl: "Lofi muziek, geleide ademhaling, yoga flows en mindful verhalen — samengesteld voor jouw dagelijkse dosis rust.", es: "Música lofi, respiración guiada, yoga y historias conscientes — seleccionadas para tu dosis diaria de paz.", de: "Lofi-Musik, geführte Atemübungen, Yoga und achtsame Geschichten — kuratiert für deine tägliche Dosis Ruhe.", fr: "Musique lofi, respiration guidée, yoga et histoires conscientes — organisées pour votre dose quotidienne de paix.", hi: "लोफाई संगीत, निर्देशित श्वास, योग प्रवाह और सचेत कहानियाँ — आपकी दैनिक शांति के लिए।" },
+  ctaExplore: { en: "Begin your journey", nl: "Begin je reis", es: "Comienza tu viaje", de: "Beginne deine Reise", fr: "Commence ton voyage", hi: "अपनी यात्रा शुरू करें" },
+  ctaListen: { en: "Listen now", nl: "Luister nu", es: "Escuchar ahora", de: "Jetzt anhören", fr: "Écouter", hi: "अभी सुनें" },
+  sectionJournal: { en: "The Journal", nl: "Het Journaal", es: "El Diario", de: "Das Journal", fr: "Le Journal", hi: "पत्रिका" },
+  sectionJournalSub: { en: "Stories on mindfulness, creativity, and the art of slow living.", nl: "Verhalen over mindfulness, creativiteit en de kunst van slow living.", es: "Historias sobre mindfulness, creatividad y el arte de vivir despacio.", de: "Geschichten über Achtsamkeit, Kreativität und die Kunst des langsamen Lebens.", fr: "Histoires sur la pleine conscience, la créativité et l'art de vivre lentement.", hi: "माइंडफुलनेस, रचनात्मकता और धीमे जीवन की कला पर कहानियाँ।" },
+  sectionMusic: { en: "The Soundtrack", nl: "De Soundtrack", es: "La Banda Sonora", de: "Der Soundtrack", fr: "La Bande Sonore", hi: "संगीत" },
+  sectionMusicSub: { en: "Handpicked lofi beats for focus, relaxation, and deep work.", nl: "Met zorg geselecteerde lofi beats voor focus, ontspanning en deep work.", es: "Beats lofi seleccionados para concentración, relajación y trabajo profundo.", de: "Handverlesene Lofi-Beats für Fokus, Entspannung und tiefe Arbeit.", fr: "Beats lofi sélectionnés pour la concentration, la relaxation et le travail profond.", hi: "फोकस, विश्राम और गहन कार्य के लिए चयनित लोफाई बीट्स।" },
+  sectionWisdom: { en: "Words of Wisdom", nl: "Woorden van Wijsheid", es: "Palabras de Sabiduría", de: "Worte der Weisheit", fr: "Paroles de Sagesse", hi: "ज्ञान के शब्द" },
+  wisdom1: { en: "\"Peace comes from within. Do not seek it without.\"", nl: "\"Rust komt van binnen. Zoek het niet buiten jezelf.\"", es: "\"La paz viene de dentro. No la busques fuera.\"", de: "\"Frieden kommt von innen. Suche ihn nicht außen.\"", fr: "\"La paix vient de l'intérieur. Ne la cherchez pas à l'extérieur.\"", hi: "\"शांति भीतर से आती है। इसे बाहर मत खोजो।\"" },
+  wisdom1author: { en: "Buddha", nl: "Boeddha", es: "Buda", de: "Buddha", fr: "Bouddha", hi: "बुद्ध" },
+  wisdom2: { en: "\"Almost everything will work again if you unplug it for a few minutes, including you.\"", nl: "\"Bijna alles werkt weer als je het een paar minuten loskoppelt, inclusief jijzelf.\"", es: "\"Casi todo volverá a funcionar si lo desenchufas unos minutos, incluido tú.\"", de: "\"Fast alles funktioniert wieder, wenn man es ein paar Minuten aussteckt — dich eingeschlossen.\"", fr: "\"Presque tout fonctionnera à nouveau si vous le débranchez quelques minutes, y compris vous.\"", hi: "\"लगभग सब कुछ फिर से काम करेगा यदि आप इसे कुछ मिनटों के लिए अनप्लग करें, जिसमें आप भी शामिल हैं।\"" },
+  wisdom2author: { en: "Anne Lamott", nl: "Anne Lamott", es: "Anne Lamott", de: "Anne Lamott", fr: "Anne Lamott", hi: "ऐन लैमट" },
+  wisdom3: { en: "\"The present moment is filled with joy and happiness. If you are attentive, you will see it.\"", nl: "\"Het huidige moment is gevuld met vreugde en geluk. Als je oplettend bent, zul je het zien.\"", es: "\"El momento presente está lleno de alegría y felicidad. Si estás atento, lo verás.\"", de: "\"Der gegenwärtige Moment ist erfüllt von Freude und Glück. Wenn du aufmerksam bist, wirst du es sehen.\"", fr: "\"Le moment présent est rempli de joie et de bonheur. Si vous êtes attentif, vous le verrez.\"", hi: "\"वर्तमान क्षण आनंद और खुशी से भरा है। यदि आप चौकस हैं, तो आप इसे देखेंगे।\"" },
+  wisdom3author: { en: "Thich Nhat Hanh", nl: "Thich Nhat Hanh", es: "Thich Nhat Hanh", de: "Thich Nhat Hanh", fr: "Thich Nhat Hanh", hi: "थिच नहात हान्ह" },
+  sectionNewsletter: { en: "A letter of calm, once a week", nl: "Een brief van rust, één keer per week", es: "Una carta de calma, una vez por semana", de: "Ein Brief der Ruhe, einmal pro Woche", fr: "Une lettre de calme, une fois par semaine", hi: "शांति का एक पत्र, सप्ताह में एक बार" },
+  sectionNewsletterSub: { en: "No spam. No noise. Just a gentle reminder to breathe, a new lofi mix, and something to reflect on.", nl: "Geen spam. Geen ruis. Alleen een zachte herinnering om te ademen, een nieuwe lofi mix en iets om over na te denken.", es: "Sin spam. Sin ruido. Solo un suave recordatorio para respirar, un nuevo mix lofi y algo en qué reflexionar.", de: "Kein Spam. Kein Lärm. Nur eine sanfte Erinnerung zu atmen, ein neuer Lofi-Mix und etwas zum Nachdenken.", fr: "Pas de spam. Pas de bruit. Juste un doux rappel de respirer, un nouveau mix lofi et quelque chose à méditer.", hi: "कोई स्पैम नहीं। कोई शोर नहीं। बस सांस लेने की एक कोमल याद, एक नया लोफाई मिक्स, और कुछ विचार करने के लिए।" },
+  newsletterPlaceholder: { en: "your@email.com", nl: "jouw@email.com", es: "tu@email.com", de: "deine@email.com", fr: "ton@email.com", hi: "आपका@ईमेल.com" },
+  newsletterButton: { en: "Subscribe", nl: "Abonneren", es: "Suscribirse", de: "Abonnieren", fr: "S'abonner", hi: "सदस्यता लें" },
+  footerRights: { en: "A space for calm in a busy world.", nl: "Een plek voor rust in een drukke wereld.", es: "Un espacio para la calma en un mundo ocupado.", de: "Ein Ort der Ruhe in einer geschäftigen Welt.", fr: "Un espace de calme dans un monde occupé.", hi: "व्यस्त दुनिया में शांति का एक स्थान।" },
 };
 
-// ── Component ──
+// ─── Journal articles ──────────────────────────
+const journalArticles = [
+  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/thumbnails/yoga-morning.png", slug: "#" },
+  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/thumbnails/focus-study.png", slug: "#" },
+  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/thumbnails/breathwork.png", slug: "#" },
+];
+
+// ─── Album-style music cards ──────────────────
+const albums = [
+  { title: "Morning Calm", artist: "LofiBuddha", mood: "Peaceful • 24 tracks", color: "from-amber-200/30 to-orange-100/20" },
+  { title: "Deep Focus", artist: "LofiBuddha", mood: "Concentration • 18 tracks", color: "from-emerald-200/20 to-teal-100/15" },
+  { title: "Sunset Yoga", artist: "LofiBuddha", mood: "Flow • 16 tracks", color: "from-rose-200/20 to-pink-100/15" },
+];
+
+// ─── Editorial featured story ─────────────────
+const featuredStory = {
+  title: "The Science of Stillness",
+  subtitle: "How moments of silence reshape your brain and unlock creativity",
+  author: "LofiBuddha Editorial",
+  readTime: "8 min read",
+  excerpt: "In a world that rewards constant motion, the most radical act might be staying perfectly still. Neuroscience now confirms what ancient traditions have known for millennia: silence is not empty — it is full of answers.",
+};
 
 export default function LandingPage() {
-  const __t = useT();
+  const [lang, setLang] = useState<Lang>(() => detectLang());
+  const [langOpen, setLangOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const [lang, setLang] = useState<Lang>(() => detectLang());
+  const [scrollY, setScrollY] = useState(0);
+  const heroRef = useRef<HTMLElement>(null);
 
-  // Re-render on lang change
   useEffect(() => {
-    setLangCookie(lang);
-    // Force a re-render by setting a dummy state
-    // The useState above already re-renders, this is just for the cookie
+    localStorage.setItem("lofibuddha-lang", lang);
   }, [lang]);
 
-  const handleSubscribe = (e: React.FormEvent) => { e.preventDefault(); if (email) setSubscribed(true); };
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleStripeCheckout = async (tier: string, priceId: string) => {
-    if (!priceId) { window.location.href = `/signup?tier=${tier}`; return; }
-    setCheckoutLoading(tier);
-    try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tier, email: "" }) });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-      else window.location.href = `/signup?tier=${tier}`;
-    } catch { window.location.href = `/signup?tier=${tier}`; }
-    setCheckoutLoading(null);
+  const tFn = (key: Record<Lang, string>) => key[lang] || key.en;
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) setSubscribed(true);
   };
 
-  const closeMenu = () => setMenuOpen(false);
-
-  const navLinks = [
-    { href: "#features", label: t.navFeatures[lang] },
-    { href: "#content", label: t.navContent[lang] },
-    { href: "#pricing", label: t.navPricing[lang] },
-  ];
-
   return (
-    <div className="min-h-screen bg-bg-primary text-text-primary overflow-x-hidden theme-buddha">
-      {/* Background ambient glow — warm candle-lit temple */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full blur-[130px] animate-pulse opacity-40" style={{ background: "radial-gradient(circle, rgba(220,170,80,0.18) 0%, transparent 70%)", animationDuration: "8s" }} />
-        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full blur-[120px] opacity-30" style={{ background: "radial-gradient(circle, rgba(212,136,106,0.12) 0%, transparent 70%)" }} />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] rounded-full blur-[100px] opacity-25" style={{ background: "radial-gradient(circle, rgba(200,144,112,0.1) 0%, transparent 70%)" }} />
-      </div>
+    <div className="min-h-screen editorial-theme">
+      {/* ═══════════════════════════════════════════════════════════
+          HERO — Cinematic editorial experience
+          ═══════════════════════════════════════════════════════════ */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Atmospheric background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white" />
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[180px] opacity-20" 
+            style={{ background: "radial-gradient(circle, rgba(180,130,80,0.3) 0%, transparent 70%)" }} />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-15"
+            style={{ background: "radial-gradient(circle, rgba(140,180,160,0.3) 0%, transparent 70%)" }} />
+        </div>
 
-      {/* ── Nav ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-primary/70 backdrop-blur-xl border-b border-border/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
-            <svg width="28" height="28" viewBox="0 0 100 100" className="transition-transform duration-700 group-hover:rotate-12 sm:w-8 sm:h-8">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#d4a44a" strokeWidth="2.5" strokeDasharray="230" strokeDashoffset="20" strokeLinecap="round" />
-              <circle cx="50" cy="50" r="10" fill="#d4a44a" opacity="0.85" />
-              <path d="M50 15 C65 15 75 25 78 40 C80 25 70 15 50 15Z" fill="#e0b860" opacity="0.5" />
-            </svg>
-            <span className="font-semibold text-text-primary tracking-wide text-sm sm:text-base">LofiBuddha</span>
-          </Link>
+        {/* Enso circle — slow breathing animation */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+          <svg viewBox="0 0 400 400" className="w-[500px] h-[500px] max-w-[90vw] max-h-[90vw] opacity-[0.06]"
+            style={{ transform: `scale(${1 + scrollY * 0.0003}) rotate(${scrollY * 0.02}deg)` }}>
+            <circle cx="200" cy="200" r="180" fill="none" stroke="#b08050" strokeWidth="0.8" strokeDasharray="8 12" />
+            <circle cx="200" cy="200" r="170" fill="none" stroke="#b08050" strokeWidth="0.4" strokeDasharray="3 20" opacity="0.5" />
+            <circle cx="200" cy="200" r="190" fill="none" stroke="#b08050" strokeWidth="0.3" opacity="0.3" />
+          </svg>
+        </div>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8 text-sm text-text-secondary">
-            {navLinks.map((l) => (
-              <a key={l.href} href={l.href} onClick={closeMenu} className="hover:text-accent-light transition-colors">{l.label}</a>
-            ))}
-          </div>
-
-          {/* Desktop right side */}
-          <div className="hidden md:flex items-center gap-3">
-            {/* Language switcher — dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-bg-hover border border-border/30 text-xs font-medium text-text-secondary hover:text-text-primary transition-all"
-              >
-                <span>{LANG_FLAGS[lang]} {LANG_LABELS[lang]}</span>
-                <svg className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 9l-7 7-7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              {langOpen && (
-                <div className="absolute top-full right-0 mt-1 bg-bg-surface border border-border/40 rounded-xl shadow-xl p-1 z-50 min-w-[110px] backdrop-blur-xl">
-                  {LANGS.map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => { setLang(l); setLangOpen(false); }}
-                      className={`flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                        lang === l
-                          ? "bg-accent/15 text-accent-light"
-                          : "text-text-muted hover:text-text-primary hover:bg-bg-hover"
-                      }`}
-                    >
-                      <span>{LANG_FLAGS[l]}</span> {LANG_LABELS[l]}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <Link href="/signup" className="text-xs font-medium px-4 py-2 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all">
-              {t.ctaStart[lang]}
+        {/* Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-700"
+          style={{ 
+            background: scrollY > 50 ? "rgba(255,255,255,0.85)" : "transparent",
+            backdropFilter: scrollY > 50 ? "blur(20px)" : "none",
+            borderBottom: scrollY > 50 ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent"
+          }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 h-16 sm:h-20 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                <Moon size={16} className="text-amber-200" />
+              </div>
+              <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
             </Link>
-          </div>
 
-          {/* Mobile: hamburger only (lang switcher in slide menu) */}
-          <div className="flex md:hidden items-center gap-1">
-            {/* Hamburger */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 -mr-1 rounded-lg text-text-secondary hover:text-text-primary transition-colors z-[60]"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
+            <div className="hidden md:flex items-center gap-10">
+              <a href="#journal" className="text-sm text-stone-500 hover:text-stone-800 transition-colors tracking-wide">{tFn(t.navFeatures)}</a>
+              <a href="#music" className="text-sm text-stone-500 hover:text-stone-800 transition-colors tracking-wide">{tFn(t.navMusic)}</a>
+              <a href="#wisdom" className="text-sm text-stone-500 hover:text-stone-800 transition-colors tracking-wide">{tFn(t.navWisdom)}</a>
+            </div>
+
+            <div className="hidden md:flex items-center gap-4">
+              {/* Language dropdown */}
+              <div className="relative">
+                <button onClick={() => setLangOpen(!langOpen)}
+                  className="flex items-center gap-1.5 px-3 py-2 text-xs tracking-wide text-stone-500 hover:text-stone-800 transition-colors">
+                  <span>{LANG_FLAGS[lang]} {LANG_LABELS[lang]}</span>
+                  <ChevronDown size={12} className={`transition-transform ${langOpen ? "rotate-180" : ""}`} />
+                </button>
+                {langOpen && (
+                  <div className="absolute top-full right-0 mt-1 bg-white border border-stone-200 rounded-lg shadow-xl p-1 z-50 min-w-[110px]">
+                    {LANGS.map((l) => (
+                      <button key={l} onClick={() => { setLang(l); setLangOpen(false); }}
+                        className={`flex items-center gap-2 w-full px-3 py-2 rounded-md text-xs transition-colors ${lang === l ? "bg-stone-100 text-stone-800" : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"}`}>
+                        <span>{LANG_FLAGS[l]}</span> {LANG_LABELS[l]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <Link href="/signup" className="text-xs tracking-wide px-5 py-2.5 rounded-full bg-stone-800 text-white hover:bg-stone-700 transition-all">
+                {tFn(t.ctaExplore)}
+              </Link>
+            </div>
+
+            {/* Mobile hamburger */}
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2 text-stone-600">
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+        </nav>
+
+        {/* Mobile menu */}
+        {menuOpen && (
+          <div className="fixed inset-0 z-40 md:hidden">
+            <div className="absolute inset-0 bg-white/95 backdrop-blur-xl" onClick={() => setMenuOpen(false)} />
+            <div className="absolute top-20 right-4 w-64 bg-white border border-stone-100 rounded-2xl shadow-2xl p-6 space-y-4">
+              <a href="#journal" onClick={() => setMenuOpen(false)} className="block text-stone-600 hover:text-stone-900 py-2">{tFn(t.navFeatures)}</a>
+              <a href="#music" onClick={() => setMenuOpen(false)} className="block text-stone-600 hover:text-stone-900 py-2">{tFn(t.navMusic)}</a>
+              <a href="#wisdom" onClick={() => setMenuOpen(false)} className="block text-stone-600 hover:text-stone-900 py-2">{tFn(t.navWisdom)}</a>
+              <div className="pt-3 border-t border-stone-100">
+                <Link href="/signup" className="block w-full text-center px-5 py-2.5 rounded-full bg-stone-800 text-white text-sm">{tFn(t.ctaExplore)}</Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Hero content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-10 pt-32 pb-20 text-center">
+          <p className="text-xs sm:text-sm tracking-[0.3em] uppercase text-stone-400 mb-8 animate-fade-in">
+            {tFn(t.heroTag)}
+          </p>
+          <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-light tracking-tight leading-[1.05] text-stone-800 mb-8"
+            style={{ opacity: Math.max(0, 1 - scrollY * 0.002) }}>
+            {tFn(t.heroTitle1)}<br />
+            <span className="italic text-amber-700">{tFn(t.heroTitle2)}</span>{" "}
+            {tFn(t.heroTitle3)}
+          </h1>
+          <p className="text-base sm:text-lg text-stone-500 max-w-xl mx-auto leading-relaxed mb-10 font-light"
+            style={{ opacity: Math.max(0, 1 - scrollY * 0.003) }}>
+            {tFn(t.heroSub)}
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/signup" className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all">
+              {tFn(t.ctaExplore)}
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <a href="#music" className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-stone-500 text-sm tracking-wide hover:text-stone-800 transition-colors">
+              <Play size={16} />
+              {tFn(t.ctaListen)}
+            </a>
+          </div>
         </div>
-      </nav>
 
-      {/* ── Mobile Menu Overlay ── */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-[55] md:hidden">
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-bg-primary/90 backdrop-blur-md" onClick={closeMenu} />
-          {/* Panel */}
-          <div className="absolute top-16 right-0 w-72 max-w-[85vw] h-[calc(100vh-4rem)] bg-bg-surface border-l border-border/50 p-6 overflow-y-auto animate-in slide-in-from-right duration-200">
-            <nav className="space-y-1">
-              {navLinks.map((l) => (
-                <a key={l.href} href={l.href} onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-all text-base font-medium">
-                  {l.label}
-                </a>
-              ))}
-            </nav>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce opacity-40">
+          <ChevronDown size={20} className="text-stone-400" />
+        </div>
+      </section>
 
-            <div className="mt-6 pt-6 border-t border-border/30 space-y-4">
-              {/* Language switcher in menu */}
-              <div>
-                <p className="text-xs text-text-muted mb-2 uppercase tracking-wider">{lang === "en" ? "Language" : lang === "nl" ? "Taal" : lang === "es" ? "Idioma" : lang === "de" ? "Sprache" : lang === "fr" ? "Langue" : "भाषा"}</p>
-                <div className="flex flex-wrap gap-2">
-                  {LANGS.map((l) => (
-                    <button key={l}
-                      onClick={() => setLang(l)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${lang === l ? "bg-accent/20 text-accent-light border border-accent/30" : "bg-bg-hover text-text-muted hover:text-text-primary border border-border/30"}`}>
-                      {LANG_FLAGS[l]} {LANG_LABELS[l]}
-                    </button>
-                  ))}
+      {/* ═══════════════════════════════════════════════════════════
+          FEATURED STORY — Magazine editorial layout
+          ═══════════════════════════════════════════════════════════ */}
+      <section className="py-24 sm:py-36 px-6 sm:px-10 bg-stone-50/50">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-center">
+            {/* Image side — spans 3 columns */}
+            <div className="lg:col-span-3 relative">
+              <div className="aspect-[4/5] bg-gradient-to-br from-amber-100/50 to-stone-200/50 rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center space-y-6 p-10">
+                    <div className="w-24 h-24 mx-auto rounded-full bg-stone-800/5 flex items-center justify-center">
+                      <BookOpen size={40} className="text-stone-400" />
+                    </div>
+                    <p className="font-serif text-2xl text-stone-400 italic">Featured Story</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Sign up link in menu */}
-              <Link href="/signup" onClick={closeMenu}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all text-sm font-medium">
-                {t.ctaStart[lang]}
-              </Link>
             </div>
-
-            {/* Social icons in menu */}
-            <div className="mt-6 pt-6 border-t border-border/30 flex gap-3">
-              {socials.map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener"
-                  className={`w-9 h-9 rounded-lg bg-bg-hover border border-border/30 flex items-center justify-center text-text-muted transition-all ${s.color}`}>
-                  <s.icon size={15} />
-                </a>
-              ))}
+            {/* Text side — spans 2 columns */}
+            <div className="lg:col-span-2 space-y-6">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-amber-700 font-medium">Featured</span>
+              <h2 className="font-serif text-3xl sm:text-4xl font-light leading-tight text-stone-800">
+                {featuredStory.title}
+              </h2>
+              <p className="text-sm text-stone-500 font-light tracking-wide uppercase">{featuredStory.author} · {featuredStory.readTime}</p>
+              <p className="text-stone-600 leading-relaxed text-sm">
+                {featuredStory.excerpt}
+              </p>
+              <a href="#" className="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-800 transition-colors font-medium">
+                Read the story <ArrowRight size={14} />
+              </a>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* ── Hero ── */}
-      <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 px-6 max-w-6xl mx-auto text-center z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent-light text-xs sm:text-sm mb-8 border border-accent/20">
-          <Sparkles size={13} /> {t.badgeNew[lang]}
-        </div>
-
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08] max-w-3xl mx-auto">
-          {lang === "en" ? <>Your daily dose of <span className="text-gradient-gold">calm</span> in a chaotic world</> : <>Jouw dagelijkse dosis <span className="text-gradient-gold">kalmte</span> in een chaotische wereld</>}
-        </h1>
-
-        <p className="text-text-secondary text-base sm:text-lg mt-6 max-w-xl mx-auto leading-relaxed">
-          {t.heroSub[lang]}{" "}<span className="text-accent-light font-medium">{t.heroSubHighlight[lang]}</span>
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
-          <button onClick={() => handleStripeCheckout("zen", "price_zen_monthly")}
-            className="group relative px-8 py-3.5 rounded-xl bg-accent text-bg-primary font-semibold text-sm overflow-hidden transition-all hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20">
-            <span className="relative z-10 flex items-center gap-2">
-              {checkoutLoading === "zen" ? "..." : <><span>{t.ctaStart[lang]}</span><ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" /></>}
-            </span>
-          </button>
-          <Link href="/browse" className="text-sm text-text-secondary hover:text-accent-light transition-colors flex items-center gap-2 px-5 py-3.5">
-            <Play size={15} /> {t.ctaBrowse[lang]}
-          </Link>
-        </div>
-
-        {/* Zen visual — ornate Buddha-inspired mandala */}
-        <div className="mt-14 sm:mt-20 max-w-lg mx-auto relative">
-          {/* Ripple rings — warm gold */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-72 h-72 sm:w-88 sm:h-88 rounded-full border opacity-20 animate-ripple" style={{ borderColor: "rgba(212,164,74,0.35)" }} />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-56 h-56 sm:w-68 sm:h-68 rounded-full border opacity-15 animate-ripple-2" style={{ borderColor: "rgba(212,164,74,0.25)" }} />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border opacity-10 animate-ripple-3" style={{ borderColor: "rgba(224,184,96,0.2)" }} />
-          </div>
-          {/* Warm ember glow */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-24 h-24 rounded-full opacity-15 animate-pulse" style={{ background: "radial-gradient(circle, rgba(220,170,80,0.5) 0%, transparent 70%)", animationDuration: "6s" }} />
-          </div>
-          {/* Main enso + buddha + lotus — warm temple gold */}
-          <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto">
-            <svg viewBox="0 0 200 200" className="w-full h-full animate-enso">
-              {/* Outer ornate ring */}
-              <circle cx="100" cy="100" r="95" fill="none" stroke="#d4a44a" strokeWidth="0.8" strokeDasharray="4 8" opacity="0.3" />
-              <circle cx="100" cy="100" r="92" fill="none" stroke="#e0b860" strokeWidth="0.5" opacity="0.15" />
-
-              {/* Enso circle — warm gold */}
-              <path d="M100 8 C148 8 192 44 192 100 C192 156 148 192 100 192 C52 192 8 156 8 100 C8 48 45 10 92 8" fill="none" stroke="#d4a44a" strokeWidth="2" strokeLinecap="round" opacity="0.55" />
-
-              {/* Lotus flower at center — warm amber + red */}
-              <ellipse cx="100" cy="120" rx="32" ry="48" fill="#d4a44a" opacity="0.12" />
-              <ellipse cx="70" cy="130" rx="18" ry="38" fill="#d4a44a" opacity="0.10" transform="rotate(-18, 70, 130)" />
-              <ellipse cx="130" cy="130" rx="18" ry="38" fill="#d4a44a" opacity="0.10" transform="rotate(18, 130, 130)" />
-              {/* Lotus side petals — warm red/ember */}
-              <ellipse cx="55" cy="120" rx="14" ry="30" fill="#d4886a" opacity="0.08" transform="rotate(-30, 55, 120)" />
-              <ellipse cx="145" cy="120" rx="14" ry="30" fill="#d4886a" opacity="0.08" transform="rotate(30, 145, 120)" />
-
-              {/* Buddha silhouette — rich gold */}
-              <circle cx="100" cy="64" r="15" fill="#d4a44a" opacity="0.5" />
-              <ellipse cx="100" cy="82" rx="10" ry="6" fill="#e0b860" opacity="0.18" />
-              <path d="M100 92 C85 92 78 100 76 118 C74 132 78 142 88 150 C93 153 97 154 100 154 C103 154 107 153 112 150 C122 142 126 132 124 118 C122 100 115 92 100 92Z" fill="#d4a44a" opacity="0.45" />
-              <circle cx="100" cy="148" r="7" fill="#d4a44a" opacity="0.15" />
-
-              {/* Decorative dots on the ring */}
-              <circle cx="100" cy="10" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="160" cy="45" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="190" cy="100" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="160" cy="155" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="100" cy="190" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="40" cy="155" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="10" cy="100" r="2" fill="#e0b860" opacity="0.35" />
-              <circle cx="40" cy="45" r="2" fill="#e0b860" opacity="0.35" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Trust signals */}
-        <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 mt-12 text-text-muted text-xs sm:text-sm">
-          <span className="flex items-center gap-1.5"><Shield size={13} /> {t.trustTrial[lang]}</span>
-          <span className="flex items-center gap-1.5"><Zap size={13} /> {t.trustCancel[lang]}</span>
-          <span className="flex items-center gap-1.5"><Heart size={13} /> {t.trustHappy[lang]}</span>
-          <span className="flex items-center gap-1.5 text-amber-400">{t.trustRating[lang]}</span>
-        </div>
-
-        {/* YouTube CTAs */}
-        <div className="mt-14 max-w-xl mx-auto space-y-3">
-          <a href="https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1" target="_blank" rel="noopener"
-            className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-red-500/5 border border-red-500/10 hover:border-red-500/20 hover:bg-red-500/8 transition-all group">
-            <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Tv size={20} className="text-red-400" />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-medium text-text-primary">LofiBuddha on YouTube</p>
-              <p className="text-xs text-text-muted">New lofi mixes & yoga flows every week</p>
-            </div>
-            <ArrowRight size={16} className="text-red-400 group-hover:translate-x-1 transition-transform ml-auto" />
-          </a>
-          <a href="https://www.youtube.com/@LoFi_Buddha_Music" target="_blank" rel="noopener"
-            className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-rose-500/5 border border-rose-500/10 hover:border-rose-500/20 hover:bg-rose-500/8 transition-all group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500/20 to-amber-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Music size={20} className="text-rose-400" />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-medium text-text-primary">Lo-Fi Buddha AI Music</p>
-              <p className="text-xs text-text-muted">AI meditation music & tranquil visuals</p>
-            </div>
-            <ArrowRight size={16} className="text-rose-400 group-hover:translate-x-1 transition-transform ml-auto" />
-          </a>
         </div>
       </section>
 
-      {/* ── Social Proof Bar ── */}
-      <section className="py-10 px-6 border-y border-border/30 bg-bg-surface/30">
-        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-8 text-text-muted text-sm">
-          {socials.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener"
-              className={`flex items-center gap-2 transition-colors ${s.color}`}>
-              <s.icon size={18} /> <span className="hidden sm:inline font-medium">{s.label}</span>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Features ── */}
-      <section id="features" className="py-20 sm:py-28 px-6 bg-bg-surface/50">
+      {/* ═══════════════════════════════════════════════════════════
+          MUSIC — Album-style presentation
+          ═══════════════════════════════════════════════════════════ */}
+      <section id="music" className="py-24 sm:py-36 px-6 sm:px-10 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-xs text-accent-light uppercase tracking-[0.2em] font-medium">{t.whyLabel[lang]}</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-3">{t.featuresTitle[lang]}</h2>
-            <p className="text-text-muted mt-3 max-w-lg mx-auto text-sm">{t.featuresSub[lang]}</p>
+          <div className="mb-16 sm:mb-20">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-amber-700 font-medium">{tFn(t.sectionMusic)}</span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-800 mt-4 mb-4">{tFn(t.sectionMusic)}</h2>
+            <p className="text-stone-500 text-sm max-w-md">{tFn(t.sectionMusicSub)}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {features.map((f) => (
-              <div key={f.title.en} className="group relative p-6 rounded-2xl bg-bg-card/50 border border-border/30 hover:border-accent/20 transition-all duration-300 hover:bg-bg-card/80">
-                <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 inline-block">{f.emoji}</div>
-                <h3 className="font-semibold text-text-primary mb-1.5">{f.title[lang]}</h3>
-                <p className="text-sm text-text-muted leading-relaxed">{f.desc[lang]}</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {albums.map((album, i) => (
+              <div key={i} className="group cursor-pointer">
+                {/* Album artwork */}
+                <div className={`aspect-square rounded-2xl bg-gradient-to-br ${album.color} mb-5 relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.02]`}>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-white/80 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-100 scale-75">
+                      <Play size={28} className="text-stone-700 ml-1" />
+                    </div>
+                  </div>
+                </div>
+                <h3 className="font-serif text-xl text-stone-800 mb-1">{album.title}</h3>
+                <p className="text-xs text-stone-400 tracking-wide uppercase">{album.artist}</p>
+                <p className="text-xs text-stone-400 mt-1">{album.mood}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Content Preview ── */}
-      <section id="content" className="py-20 sm:py-28 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs text-accent-light uppercase tracking-[0.2em] font-medium">{t.journeyLabel[lang]}</span>
-          <h2 className="text-3xl sm:text-4xl font-bold mt-3 mb-4">{t.journeyTitle[lang]}</h2>
-          <p className="text-text-muted mb-12 max-w-lg mx-auto text-sm">{t.journeySub[lang]}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {contentGrid.map((item) => (
-              <Link key={item.title.en} href="/browse"
-                className="group p-5 rounded-2xl bg-bg-card/50 border border-border/30 hover:border-accent/30 transition-all text-center hover:-translate-y-0.5">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform inline-block">{item.emoji}</div>
-                <h3 className="font-semibold text-text-primary text-sm">{item.title[lang]}</h3>
-                <p className="text-xs text-text-muted mt-1">{item.desc[lang]}</p>
-              </Link>
+      {/* ═══════════════════════════════════════════════════════════
+          WISDOM — Typographic pull quotes
+          ═══════════════════════════════════════════════════════════ */}
+      <section id="wisdom" className="py-24 sm:py-36 px-6 sm:px-10 bg-stone-50/30">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-amber-700 font-medium">{tFn(t.sectionWisdom)}</span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-800 mt-4">{tFn(t.sectionWisdom)}</h2>
+          </div>
+
+          <div className="space-y-20 sm:space-y-28">
+            {[
+              { quote: tFn(t.wisdom1), author: tFn(t.wisdom1author) },
+              { quote: tFn(t.wisdom2), author: tFn(t.wisdom2author) },
+              { quote: tFn(t.wisdom3), author: tFn(t.wisdom3author) },
+            ].map((item, i) => (
+              <div key={i} className={`flex ${i % 2 === 0 ? "justify-start" : "justify-end"}`}>
+                <div className={`max-w-lg ${i % 2 === 0 ? "text-left" : "text-right"}`}>
+                  <Quote size={20} className={`text-amber-300/40 mb-4 ${i % 2 === 0 ? "" : "ml-auto"}`} />
+                  <p className="font-serif text-2xl sm:text-3xl font-light italic text-stone-700 leading-relaxed">
+                    {item.quote}
+                  </p>
+                  <p className="text-xs tracking-[0.2em] uppercase text-stone-400 mt-4">
+                    — {item.author}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
-          <Link href="/browse" className="inline-flex items-center gap-2 mt-10 px-6 py-3 rounded-xl bg-accent/10 text-accent-light hover:bg-accent/20 transition-all text-sm font-medium">
-            {t.browseAll[lang]} <ArrowRight size={15} />
-          </Link>
         </div>
       </section>
 
-      {/* ── Podcast ── */}
-      <section id="podcast" className="py-20 sm:py-28 px-6 bg-bg-surface/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs text-purple-400 uppercase tracking-[0.2em] font-medium">{t.podcastLabel[lang]}</span>
-          <h2 className="text-3xl sm:text-4xl font-bold mt-3">{t.podcastTitle[lang]}</h2>
-          <p className="text-text-muted mt-3 max-w-md mx-auto text-sm">{t.podcastSub[lang]}</p>
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-            {[{ label: "Spotify", href: "https://open.spotify.com/" }, { label: "Apple Podcasts", href: "https://podcasts.apple.com/" }, { label: "YouTube", href: "https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1" }, { label: "AI Music", href: "https://www.youtube.com/@LoFi_Buddha_Music" }].map((p) => (
-              <a key={p.label} href={p.href} target="_blank" rel="noopener"
-                className="px-5 py-2.5 rounded-xl bg-bg-card border border-border/30 text-sm text-text-secondary hover:text-accent-light hover:border-accent/30 transition-all">
-                {p.label}
+      {/* ═══════════════════════════════════════════════════════════
+          JOURNAL — Editorial cards inspired by luxury magazines
+          ═══════════════════════════════════════════════════════════ */}
+      <section id="journal" className="py-24 sm:py-36 px-6 sm:px-10 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 sm:mb-20 gap-4">
+            <div>
+              <span className="text-[10px] tracking-[0.3em] uppercase text-amber-700 font-medium">{tFn(t.sectionJournal)}</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-800 mt-4">{tFn(t.sectionJournal)}</h2>
+              <p className="text-stone-500 text-sm mt-3 max-w-sm">{tFn(t.sectionJournalSub)}</p>
+            </div>
+            <a href="#" className="text-sm text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-1">
+              View all <ArrowRight size={14} />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {journalArticles.map((article, i) => (
+              <a key={i} href={article.slug} className="group block">
+                <div className="aspect-[3/4] bg-gradient-to-br from-stone-100 to-stone-200/50 rounded-xl mb-5 overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Camera size={32} className="text-stone-300" />
+                  </div>
+                </div>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-amber-700 font-medium">{article.category}</span>
+                <h3 className="font-serif text-lg sm:text-xl text-stone-800 mt-2 mb-1 group-hover:text-amber-700 transition-colors leading-snug">{article.title}</h3>
+                <p className="text-xs text-stone-400">{article.readTime}</p>
               </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Pricing ── */}
-      <section id="pricing" className="py-20 sm:py-28 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-xs text-accent-light uppercase tracking-[0.2em] font-medium">{t.pricingLabel[lang]}</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-3">{t.pricingTitle[lang]}</h2>
-            <p className="text-text-muted mt-3 text-sm">{t.pricingSub[lang]}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { name: "Free", price: "€0", period: "forever", desc: t.freeDesc[lang], cta: "Start Free", href: "/signup?tier=free", featured: false, priceId: "", tierKey: "free" },
-              { name: "Zen", price: "€4.99", period: "/month", desc: t.zenDesc[lang], cta: t.ctaStart[lang], href: "/signup?tier=zen", featured: true, priceId: "price_zen_monthly", tierKey: "zen" },
-              { name: "Master", price: "€9.99", period: "/month", desc: t.masterDesc[lang], cta: t.ctaStart[lang], href: "/signup?tier=master", featured: false, priceId: "price_master_monthly", tierKey: "master" },
-            ].map((tier) => (
-              <div key={tier.name} className={`relative p-6 rounded-2xl bg-bg-card/50 border transition-all ${tier.featured ? "border-accent/40 bg-accent/3 scale-[1.02]" : "border-border/30 hover:border-accent/20"}`}>
-                {tier.featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-bg-primary text-[11px] font-semibold px-4 py-1 rounded-full">{t.mostPopular[lang]}</div>}
-                <h3 className="text-lg font-semibold">{tier.name}</h3>
-                <p className="text-sm text-text-muted mt-1">{tier.desc}</p>
-                <div className="mt-4 mb-5"><span className="text-4xl font-bold">{tier.price}</span><span className="text-text-muted text-sm ml-1">{tier.period}</span></div>
-                <ul className="space-y-2.5 mb-6">
-                  {(tierFeatures[tier.tierKey]?.[lang] || tierFeatures[tier.tierKey]?.en).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-text-secondary"><Check size={14} className="text-accent-light mt-0.5 flex-shrink-0" />{f}</li>
-                  ))}
-                </ul>
-                <button onClick={() => handleStripeCheckout(tier.tierKey, tier.priceId)}
-                  disabled={checkoutLoading === tier.tierKey}
-                  className={`w-full py-3 rounded-xl font-medium text-sm transition-all ${tier.featured ? "bg-accent text-bg-primary hover:bg-accent-light" : "bg-bg-hover text-text-primary hover:bg-border"} disabled:opacity-50`}>
-                  {checkoutLoading === tier.tierKey ? "..." : tier.cta}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Testimonials ── */}
-      <section className="py-20 sm:py-28 px-6 bg-bg-surface/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs text-accent-light uppercase tracking-[0.2em] font-medium">{t.communityLabel[lang]}</span>
-          <h2 className="text-3xl sm:text-4xl font-bold mt-3 mb-12">{t.communityTitle[lang]}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { quote: { en: "This platform changed my mornings. The yoga flows are so calming and the lofi music is perfect.", nl: "Dit platform heeft mijn ochtenden veranderd. De yoga flows zijn zo rustgevend." }, name: "Sarah M.", role: { en: "Yoga student", nl: "Yoga student" }, avatar: "🧘‍♀️" },
-              { quote: { en: "Finally, lofi music that actually helps me focus. No ads, no distractions.", nl: "Eindelijk lofi muziek die me écht helpt focussen. Geen reclame, geen afleiding." }, name: "James K.", role: { en: "Developer", nl: "Ontwikkelaar" }, avatar: "💻" },
-              { quote: { en: "The breathwork sessions helped me through a really stressful period. Forever grateful.", nl: "De ademwerksessies hebben me door een stressvolle periode geholpen. Eeuwig dankbaar." }, name: "Emma L.", role: { en: "Teacher", nl: "Docent" }, avatar: "📚" },
-            ].map((t) => (
-              <div key={t.name} className="p-6 rounded-2xl bg-bg-card/50 border border-border/30 text-left space-y-3">
-                <Quote size={20} className="text-accent-light/40" />
-                <p className="text-sm text-text-secondary leading-relaxed italic">&ldquo;{t.quote[lang]}&rdquo;</p>
-                <div className="flex items-center gap-3 pt-2">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-sm">{t.avatar}</div>
-                  <div><p className="text-sm font-medium text-text-primary">{t.name}</p><p className="text-xs text-text-muted">{t.role[lang]}</p></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Newsletter ── */}
-      <section className="py-20 sm:py-28 px-6">
+      {/* ═══════════════════════════════════════════════════════════
+          NEWSLETTER — Elegant and understated
+          ═══════════════════════════════════════════════════════════ */}
+      <section className="py-24 sm:py-36 px-6 sm:px-10 bg-stone-50/50">
         <div className="max-w-lg mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent-light text-xs mb-6 border border-accent/20">
-            <Send size={12} /> {t.newsletterLabel[lang]}
-          </div>
-          <h2 className="text-3xl font-bold mb-3">{t.newsletterTitle[lang]}</h2>
-          <p className="text-text-muted mb-8 text-sm">{t.newsletterSub[lang]}</p>
+          <Send size={20} className="text-amber-300 mx-auto mb-6" />
+          <h2 className="font-serif text-3xl sm:text-4xl font-light text-stone-800 mb-4">{tFn(t.sectionNewsletter)}</h2>
+          <p className="text-stone-500 text-sm mb-8 leading-relaxed">{tFn(t.sectionNewsletterSub)}</p>
+          
           {subscribed ? (
-            <div className="p-6 rounded-2xl bg-bg-card border border-border/30 space-y-2">
-              <Check size={28} className="mx-auto text-accent-light" />
-              <p className="text-text-primary font-medium">{t.newsletterDone[lang]}</p>
-              <p className="text-sm text-text-muted">{t.newsletterDoneSub[lang]}</p>
+            <div className="py-8">
+              <Heart size={32} className="text-amber-400 mx-auto mb-3" />
+              <p className="font-serif text-xl text-stone-700">Thank you for joining.</p>
+              <p className="text-sm text-stone-400 mt-1">A letter of calm is on its way.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex gap-3">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.newsletterPlaceholder[lang]} required
-                className="flex-1 bg-bg-hover border border-border/50 rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent/50 transition-all" />
-              <button type="submit" className="px-6 py-3 rounded-xl bg-accent text-bg-primary text-sm font-medium hover:bg-accent-light transition-all flex-shrink-0">{t.newsletterBtn[lang]}</button>
+            <form onSubmit={handleSubscribe} className="flex gap-3 max-w-md mx-auto">
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+                placeholder={tFn(t.newsletterPlaceholder)}
+                className="flex-1 bg-white border border-stone-200 rounded-full px-5 py-3 text-sm text-stone-700 placeholder:text-stone-300 outline-none focus:border-stone-400 transition-colors" />
+              <button type="submit" className="px-6 py-3 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all flex-shrink-0">
+                {tFn(t.newsletterButton)}
+              </button>
             </form>
           )}
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="py-14 px-6 border-t border-border/30 bg-bg-surface/30">
+      {/* ═══════════════════════════════════════════════════════════
+          FOOTER — Magazine-inspired
+          ═══════════════════════════════════════════════════════════ */}
+      <footer className="py-16 px-6 sm:px-10 bg-stone-900 text-stone-400">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-            <div className="space-y-3 col-span-2 md:col-span-1">
-              <Link href="/" className="flex items-center gap-2">
-                <Moon size={18} className="text-accent-light" />
-                <span className="font-semibold text-sm">LofiBuddha</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+            <div className="col-span-2 md:col-span-1 space-y-4">
+              <Link href="/" className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-stone-700 flex items-center justify-center">
+                  <Moon size={14} className="text-amber-200" />
+                </div>
+                <span className="font-serif text-base tracking-wide text-stone-200">LofiBuddha</span>
               </Link>
-              <p className="text-xs text-text-muted leading-relaxed">{t.footerTagline[lang]}</p>
+              <p className="text-xs leading-relaxed text-stone-500">{tFn(t.footerRights)}</p>
             </div>
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerContent[lang]}</h4>
-              <a href="#features" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.navFeatures[lang]}</a>
-              <Link href="/browse" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerBrowse[lang]}</Link>
+            <div className="space-y-3">
+              <h4 className="text-xs tracking-[0.2em] uppercase text-stone-300 font-medium">Explore</h4>
+              <a href="#journal" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">{tFn(t.navFeatures)}</a>
+              <a href="#music" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">{tFn(t.navMusic)}</a>
+              <a href="#wisdom" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">{tFn(t.navWisdom)}</a>
             </div>
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerCompany[lang]}</h4>
-              <a href="#" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerAbout[lang]}</a>
-              <a href="#" className="block text-xs text-text-muted hover:text-text-primary transition-colors">{t.footerContact[lang]}</a>
+            <div className="space-y-3">
+              <h4 className="text-xs tracking-[0.2em] uppercase text-stone-300 font-medium">Legal</h4>
+              <Link href="/legal/privacy" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">Privacy Policy</Link>
+              <Link href="/legal/terms" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">Terms & Conditions</Link>
+              <Link href="/legal/disclaimer" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">Disclaimer</Link>
             </div>
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">Legal</h4>
-              <Link href="/legal/privacy" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Privacy Policy</Link>
-              <Link href="/legal/terms" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Terms & Conditions</Link>
-              <Link href="/legal/disclaimer" className="block text-xs text-text-muted hover:text-text-primary transition-colors">Disclaimer</Link>
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">{t.footerFollow[lang]}</h4>
-              <div className="flex gap-2.5">
-                {socials.map((s) => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener"
-                    className={`w-8 h-8 rounded-lg bg-bg-hover border border-border/30 flex items-center justify-center text-text-muted transition-all ${s.color}`}>
-                    <s.icon size={14} />
-                  </a>
-                ))}
-              </div>
+            <div className="space-y-3">
+              <h4 className="text-xs tracking-[0.2em] uppercase text-stone-300 font-medium">Connect</h4>
+              <a href="https://www.youtube.com/channel/UC6HTx93z0PErx1CbqT-ZO1A?sub_confirmation=1" target="_blank" rel="noopener" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">YouTube</a>
+              <a href="https://www.tiktok.com/@lofibuddha" target="_blank" rel="noopener" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">TikTok</a>
+              <a href="https://www.instagram.com/lofibuddha" target="_blank" rel="noopener" className="block text-xs text-stone-500 hover:text-stone-300 transition-colors">Instagram</a>
             </div>
           </div>
-          <div className="text-center pt-8 border-t border-border/30">
-            <p className="text-[11px] text-text-muted">&copy; {new Date().getFullYear()} LofiBuddha. {t.footerCopy[lang]}</p>
+          <div className="pt-8 border-t border-stone-800 text-center">
+            <p className="text-[11px] text-stone-600">&copy; {new Date().getFullYear()} LofiBuddha</p>
           </div>
         </div>
       </footer>

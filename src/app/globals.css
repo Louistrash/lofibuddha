@@ -222,3 +222,55 @@ body {
 .theme-buddha .glow-candle {
   box-shadow: 0 0 40px rgba(220, 170, 80, 0.12), 0 0 80px rgba(200, 140, 60, 0.06);
 }
+
+/* ═══════════════════════════════════════════════
+   EDITORIAL THEME — LofiBuddha lifestyle design
+   ═══════════════════════════════════════════════ */
+.editorial-theme {
+  --editorial-cream: #faf8f5;
+  --editorial-warm: #f5f0e8;
+  --editorial-stone: #78716c;
+  --editorial-ink: #292524;
+  --editorial-gold: #b08050;
+  background: #faf8f5;
+  color: #292524;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif font stack for headings */
+.editorial-theme .font-serif {
+  font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+}
+
+/* Slow fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Smooth scroll behavior */
+.editorial-theme {
+  scroll-behavior: smooth;
+}
+
+/* Subtle hover transitions */
+.editorial-theme a,
+.editorial-theme button {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Selection color */
+.editorial-theme ::selection {
+  background: rgba(176, 128, 80, 0.15);
+  color: #292524;
+}
+
+/* Scrollbar */
+.editorial-theme ::-webkit-scrollbar { width: 6px; }
+.editorial-theme ::-webkit-scrollbar-track { background: transparent; }
+.editorial-theme ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }
