@@ -16,6 +16,135 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PUBLIC = join(ROOT, "public", "videos");
 
+// ── Quote Card Template ──────────────────────────────────────────────────────
+
+function quoteCardHTML({ width, height, duration, caption, subtitle, backgroundImage }) {
+  const safeCaption = caption
+    .replace(/\\n/g, "\n")
+    .replace(/\n/g, "<br>");
+  const safeSub = (subtitle || "Mindfulness & Relaxation")
+    .replace(/"/g, "&quot;");
+
+  const bgStyle = backgroundImage
+    ? `background: url('${backgroundImage}') center/cover no-repeat;`
+    : `background: linear-gradient(160deg, #0a0f0e 0%, #111a16 30%, #0d1217 70%, #0a0f0e 100%);`;
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: ${width}px; height: ${height}px;
+    overflow: hidden;
+    ${bgStyle}
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  /* Dark overlay */
+  .overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.65) 100%);
+  }
+
+  /* Gold accent dots */
+  .accent-dot {
+    position: absolute; z-index: 2;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(196,148,100,0.4);
+    box-shadow: 0 0 12px rgba(196,148,100,0.3);
+  }
+
+  /* Quote mark decoration */
+  .quote-mark {
+    position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+    font-size: 120px; color: rgba(196,148,100,0.08);
+    font-family: 'Georgia', serif; line-height: 1;
+    z-index: 2;
+    animation: fadeInDown 2s ease-out;
+  }
+
+  /* Quote text */
+  .quote-wrap {
+    position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 3; text-align: center; width: 85%; max-width: 85%;
+  }
+  .quote {
+    color: #f0ebe0;
+    font-size: ${Math.round(width * 0.055)}px;
+    font-weight: 600; line-height: 1.55;
+    letter-spacing: 0.03em;
+    text-shadow:
+      0 2px 4px rgba(0,0,0,0.95),
+      0 4px 16px rgba(0,0,0,0.8),
+      0 8px 32px rgba(0,0,0,0.5);
+    animation: fadeSlideUp 2.5s 0.3s ease-out both;
+    white-space: pre-line;
+  }
+
+  /* Attribution */
+  .attribution {
+    color: #c49464;
+    font-size: ${Math.round(width * 0.035)}px;
+    font-weight: 500;
+    margin-top: ${Math.round(height * 0.025)}px;
+    letter-spacing: 0.08em;
+    opacity: 0;
+    animation: fadeSlideUp 2s 1.5s ease-out forwards;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  }
+
+  /* Bottom line */
+  .bottom-line {
+    position: absolute; bottom: 22%; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 1px; z-index: 3;
+    background: linear-gradient(90deg, transparent, rgba(196,148,100,0.5), transparent);
+    opacity: 0;
+    animation: fadeSlideUp 2s 1.8s ease-out forwards;
+  }
+
+  /* Brand */
+  .brand {
+    position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
+    z-index: 4; color: rgba(200,180,150,0.5);
+    font-size: ${Math.round(width * 0.024)}px;
+    font-weight: 500; letter-spacing: 0.2em;
+    opacity: 0;
+    animation: fadeSlideUp 2s 2.2s ease-out forwards;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+</style>
+</head>
+<body>
+<div data-composition-id="main" data-width="${width}" data-height="${height}" data-duration="${duration}" data-start="0"
+     style="width:${width}px;height:${height}px;position:relative;overflow:hidden;">
+  <div class="overlay"></div>
+  <div class="accent-dot" style="top:12%;left:18%;"></div>
+  <div class="accent-dot" style="top:10%;right:22%;"></div>
+  <div class="accent-dot" style="bottom:30%;left:25%;"></div>
+  <div class="accent-dot" style="bottom:28%;right:20%;"></div>
+  <div class="quote-mark">"</div>
+  <div class="quote-wrap">
+    <div class="quote">${safeCaption}</div>
+    <div class="attribution">— Buddha</div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="brand">lofibuddha.com</div>
+</div>
+</body>
+</html>`;
+}
+
 // ── Zen Lofi Template ──────────────────────────────────────────────────────
 
 function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundImage }) {
@@ -242,7 +371,10 @@ async function generate(args) {
   }
 
   // Write index.html
-  const html = zenLofiHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath });
+  // Select template
+  const template = args.template || "zen-lofi";
+  const templateFn = template === "quote-card" ? quoteCardHTML : zenLofiHTML;
+  const html = templateFn({ width, height, duration, caption, subtitle, backgroundImage: bgPath });
   writeFileSync(join(tmpProject, "index.html"), html);
 
   console.log(`[Bodhi] Rendering: ${width}x${height} | ${duration}s → ${outputName}`);

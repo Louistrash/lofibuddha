@@ -11,7 +11,8 @@
     "template": "zen-lofi",
     "status": "draft",
     "hashtags": "#yoga #morningroutine #lofi #mindfulness #lofibuddha #yogapractice #morningflow",
-    "video": "/videos/youtube/temple-01-jungle.mp4"
+    "video": "/videos/youtube/temple-01-jungle.mp4",
+    "thumbnail": "/thumbnails/yt-yt-01.png"
   },
   {
     "id": "tt-01",
@@ -22,10 +23,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-02-mountain-1780083958167.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#breathwork #mindfulness #calm #lofi #lofibuddha #stressrelief",
-    "video": "/videos/tiktok/temple-02-mountain-1780083958167.mp4"
+    "video": "/videos/tiktok/quote-tt-01-1780089408459.mp4"
   },
   {
     "id": "tt-02",
@@ -36,10 +37,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-03-water-1780083963909.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#focus #productivity #studytips #lofi #lofibuddha #deephwork",
-    "video": "/videos/tiktok/temple-03-water-1780083963909.mp4"
+    "video": "/videos/tiktok/quote-tt-02-1780089519029.mp4"
   },
   {
     "id": "tt-03",
@@ -50,10 +51,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-04-desert-1780083971177.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#buddha #wisdom #innerpeace #mindfulness #lofibuddha #zenquote",
-    "video": "/videos/tiktok/temple-04-desert-1780083971177.mp4"
+    "video": "/videos/tiktok/quote-tt-03-1780089632891.mp4"
   },
   {
     "id": "yt-02",
@@ -78,10 +79,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-06-sakura-1780084000171.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#deskyoga #stretching #posture #wellness #lofibuddha #officeyoga",
-    "video": "/videos/tiktok/temple-06-sakura-1780084000171.mp4"
+    "video": "/videos/tiktok/quote-tt-04-1780089744597.mp4"
   },
   {
     "id": "tt-05",
@@ -92,10 +93,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-07-rice-1780084013161.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#thichnhathhanh #mindfulness #presentmoment #zen #lofibuddha",
-    "video": "/videos/tiktok/temple-07-rice-1780084013161.mp4"
+    "video": "/videos/tiktok/quote-tt-05-1780089857717.mp4"
   },
   {
     "id": "yt-03",
@@ -120,10 +121,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-09-bonsai-1780084046191.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#boxbreathing #breathwork #stressrelief #mindfulness #lofibuddha",
-    "video": "/videos/tiktok/temple-09-bonsai-1780084046191.mp4"
+    "video": "/videos/tiktok/quote-tt-06-1780089969033.mp4"
   },
   {
     "id": "tt-07",
@@ -134,10 +135,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-10-floating-1780084058325.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#creativity #stillness #mindfulness #artist #lofibuddha #inspiration",
-    "video": "/videos/tiktok/temple-10-floating-1780084058325.mp4"
+    "video": "/videos/tiktok/quote-tt-07-1780090082472.mp4"
   },
   {
     "id": "yt-04",
@@ -162,10 +163,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-12-frost-1780084073441.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#sunday #selfcare #rest #slowdown #mindfulness #lofibuddha",
-    "video": "/videos/tiktok/temple-12-frost-1780084073441.mp4"
+    "video": "/videos/tiktok/quote-tt-08-1780090194158.mp4"
   },
   {
     "id": "tt-09",
@@ -176,10 +177,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-13-sunset-1780084097618.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#breathwork #guidedmeditation #anxietyrelief #lofi #lofibuddha",
-    "video": "/videos/tiktok/temple-13-sunset-1780084097618.mp4"
+    "video": "/videos/tiktok/quote-tt-09-1780090306424.mp4"
   },
   {
     "id": "yt-05",
@@ -204,10 +205,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-15-fireflies-1780084117119.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#digitaldetox #unplug #mindfulness #anne lamott #lofibuddha",
-    "video": "/videos/tiktok/temple-15-fireflies-1780084117119.mp4"
+    "video": "/videos/tiktok/quote-tt-10-1780090417358.mp4"
   },
   {
     "id": "yt-06",
@@ -232,10 +233,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-17-dragon-1780084147810.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#morningroutine #mantra #affirmations #mindfulness #lofibuddha",
-    "video": "/videos/tiktok/temple-17-dragon-1780084147810.mp4"
+    "video": "/videos/tiktok/quote-tt-11-1780090528161.mp4"
   },
   {
     "id": "tt-12",
@@ -246,10 +247,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-18-bamboo-1780084154934.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#lofi #science #focus #productivityhack #lofibuddha #brain",
-    "video": "/videos/tiktok/temple-18-bamboo-1780084154934.mp4"
+    "video": "/videos/tiktok/quote-tt-12-1780090640710.mp4"
   },
   {
     "id": "yt-07",
@@ -274,10 +275,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-20-waterfall-1780084173458.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#nature #mentalhealth #walking #ecotherapy #lofibuddha",
-    "video": "/videos/tiktok/temple-20-waterfall-1780084173458.mp4"
+    "video": "/videos/tiktok/quote-tt-13-1780090753895.mp4"
   },
   {
     "id": "tt-14",
@@ -288,10 +289,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/temple-21-roots-1780084264363.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#zen #lettinggo #stoicism #mindfulness #lofibuddha",
-    "video": "/videos/tiktok/temple-21-roots-1780084264363.mp4"
+    "video": "/videos/tiktok/quote-tt-14-1780090866823.mp4"
   },
   {
     "id": "yt-08",
@@ -316,10 +317,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/thumb-breath.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#silence #meditation #weekend #mindfulness #lofibuddha",
-    "video": "/videos/tiktok/thumb-breath-1780086694746.mp4"
+    "video": "/videos/tiktok/quote-tt-15-1780090979475.mp4"
   },
   {
     "id": "tt-16",
@@ -330,10 +331,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/thumb-focus.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#meditation #brain #science #neuroplasticity #lofibuddha",
-    "video": "/videos/tiktok/thumb-focus-1780086742880.mp4"
+    "video": "/videos/tiktok/quote-tt-16-1780091088618.mp4"
   },
   {
     "id": "yt-09",
@@ -358,10 +359,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/album-morning-calm.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#donothing #mindfulness #challenge #lofibuddha",
-    "video": "/videos/tiktok/album-morning-calm-1780086840124.mp4"
+    "video": "/videos/tiktok/quote-tt-17-1780091197750.mp4"
   },
   {
     "id": "tt-18",
@@ -372,10 +373,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/thumb-yoga.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#bedtimeyoga #sleep #stretching #wellness #lofibuddha",
-    "video": "/videos/tiktok/thumb-yoga-1780086887838.mp4"
+    "video": "/videos/tiktok/quote-tt-18-1780091305975.mp4"
   },
   {
     "id": "yt-10",
@@ -400,10 +401,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/featured-story.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#slowliving #mindfulness #stillness #lofibuddha",
-    "video": "/videos/tiktok/featured-story-1780086984182.mp4"
+    "video": "/videos/tiktok/quote-tt-19-1780091415028.mp4"
   },
   {
     "id": "yt-11",
@@ -428,10 +429,10 @@
     "platform": "tiktok",
     "format": "shorts",
     "background": "/images/generated/album-sunset-yoga.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#motivation #mindfulness #trusttheprocess #lofibuddha",
-    "video": "/videos/tiktok/album-sunset-yoga-1780087083465.mp4"
+    "video": "/videos/tiktok/quote-tt-20-1780091522948.mp4"
   },
   {
     "id": "yt-12",
@@ -484,10 +485,10 @@
     "platform": "tiktok",
     "format": "tiktok",
     "background": "/images/generated/thumb-breath.png",
-    "template": "zen-lofi",
+    "template": "quote-card",
     "status": "draft",
     "hashtags": "#breathwork #anxietyrelief #calm #mindfulness #lofibuddha #selfcare",
-    "video": "/videos/tiktok/thumb-breath-1780087270349.mp4"
+    "video": "/videos/tiktok/quote-tt-21-1780091630063.mp4"
   },
   {
     "id": "yt-15",
