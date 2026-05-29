@@ -48,7 +48,7 @@ export default function Header({ onMenuToggle, mobileOpen }: HeaderProps) {
 
         {/* Logo — verborgen op hele kleine schermen */}
         <Image
-          src="/bodhi-icon.svg"
+          src="/bodhi-icon-32.png"
           alt="Bodhi"
           width={28}
           height={28}

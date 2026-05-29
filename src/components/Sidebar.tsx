@@ -67,7 +67,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
               {/* Logo */}
               <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
                 <NextImage
-                  src="/bodhi-icon.svg"
+                  src="/bodhi-icon-32.png"
                   alt="Bodhi"
                   width={36}
                   height={36}
@@ -132,7 +132,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
         {/* Logo */}
         <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
           <NextImage
-            src="/bodhi-icon.svg"
+            src="/bodhi-icon-32.png"
             alt="Bodhi"
             width={36}
             height={36}
