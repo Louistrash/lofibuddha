@@ -45,19 +45,19 @@
           <!-- Sleek Language Selector -->
           <li>
             <div class="lang-selector">
-              <button class="lang-btn" id="lang-btn" aria-label="Select Language">
-                <span>🌐 EN</span>
+              <button class="lang-btn" id="lang-btn" aria-label="Select Language" onclick="document.getElementById('lang-dropdown').classList.toggle('open')">
+                <span id="lang-btn-text">🌐 EN</span>
                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
               <div class="lang-dropdown" id="lang-dropdown">
-                <button class="lang-option active" data-lang="en">English</button>
-                <button class="lang-option" data-lang="nl">Nederlands</button>
-                <button class="lang-option" data-lang="es">Español</button>
-                <button class="lang-option" data-lang="de">Deutsch</button>
-                <button class="lang-option" data-lang="fr">Français</button>
-                <button class="lang-option" data-lang="hi">हिन्दी</button>
+                <button class="lang-option active" data-lang="en" onclick="bodhiSetLang('en');document.getElementById('lang-dropdown').classList.remove('open')">English</button>
+                <button class="lang-option" data-lang="nl" onclick="bodhiSetLang('nl');document.getElementById('lang-dropdown').classList.remove('open')">Nederlands</button>
+                <button class="lang-option" data-lang="es" onclick="bodhiSetLang('es');document.getElementById('lang-dropdown').classList.remove('open')">Español</button>
+                <button class="lang-option" data-lang="de" onclick="bodhiSetLang('de');document.getElementById('lang-dropdown').classList.remove('open')">Deutsch</button>
+                <button class="lang-option" data-lang="fr" onclick="bodhiSetLang('fr');document.getElementById('lang-dropdown').classList.remove('open')">Français</button>
+                <button class="lang-option" data-lang="hi" onclick="bodhiSetLang('hi');document.getElementById('lang-dropdown').classList.remove('open')">हिन्दी</button>
               </div>
             </div>
           </li>

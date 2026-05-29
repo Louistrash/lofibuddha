@@ -1498,7 +1498,8 @@ a:hover {
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
 }
 
-.lang-selector.active .lang-dropdown {
+.lang-selector.active .lang-dropdown,
+.lang-dropdown.open {
   display: flex;
   transform: translateY(0);
   opacity: 1;

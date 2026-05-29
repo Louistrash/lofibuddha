@@ -346,11 +346,26 @@
   window.bodhiSetLang = function(lang) {
     if (SUPPORTED.includes(lang)) {
       applyLang(lang);
+      // Update the lang button text
+      var btn = document.getElementById('lang-btn-text');
+      if (btn) {
+        var flags = { en: '🇬🇧 EN', nl: '🇳🇱 NL', es: '🇪🇸 ES', de: '🇩🇪 DE', fr: '🇫🇷 FR', hi: '🇮🇳 HI' };
+        btn.textContent = flags[lang] || lang.toUpperCase();
+      }
     }
   };
 
   window.bodhiGetLang = function() {
     return localStorage.getItem(STORAGE_KEY) || 'en';
   };
+
+  // Close language dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    var dd = document.getElementById('lang-dropdown');
+    var btn = document.getElementById('lang-btn');
+    if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
+      dd.classList.remove('open');
+    }
+  });
 
 })();
