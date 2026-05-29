@@ -1,39 +1,41 @@
 /* 
-  AI Buddha (.net) - Premium Zen Design System
-  Author: Antigravity AI
-  Description: Modern Zen & Digital Mindfulness landing page styles
+  LofiBuddha (.com) — Candlelit Zen Sanctuary Design System
+  Description: Warm temple palette — deep teal, rich gold, candle glow
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* Modern Zen Color Palette */
-  --bg-primary: #0A0D11;        /* Deep Slate Charcoal */
-  --bg-secondary: #11161D;      /* Midnight Blue Slate */
-  --bg-tertiary: #181F29;       /* Medium Slate */
-  --bg-card: rgba(17, 22, 29, 0.7);
-  
-  --accent-gold: #E5C158;       /* Warm Sand Gold */
-  --accent-gold-rgb: 229, 193, 88;
-  --accent-gold-glow: rgba(229, 193, 88, 0.15);
-  --accent-gold-strong: #F2D379;
-  
-  --accent-green: #5B8C6C;      /* Sage Bamboo Green */
-  --accent-green-rgb: 91, 140, 108;
-  
-  --text-primary: #F3F5F7;      /* Warm Off-White */
-  --text-secondary: #94A3B8;    /* Muted Slate Gray */
-  --text-muted: #64748B;        /* Cool Gray */
-  
+  /* Candlelit Zen Color Palette */
+  --bg-primary: #0a1e1e;        /* Warm Deep Teal */
+  --bg-secondary: #0f2826;      /* Rich Teal */
+  --bg-tertiary: #143432;       /* Medium Warm Teal */
+  --bg-card: rgba(15, 40, 38, 0.7);
+
+  --accent-gold: #d4a44a;       /* Warm Temple Gold */
+  --accent-gold-rgb: 212, 164, 74;
+  --accent-gold-glow: rgba(212, 164, 74, 0.18);
+  --accent-gold-strong: #e0b860;
+
+  --accent-bronze: #b88240;     /* Deep Bronze */
+  --accent-lotus: #d4886a;      /* Warm Lotus Pink */
+  --accent-candle: rgba(220, 170, 80, 0.12);  /* Candle Glow */
+
+  --accent-green: #6a8a5a;      /* Warm Sage Green */
+
+  --text-primary: #ede6d8;      /* Soft Cream */
+  --text-secondary: #a89a82;    /* Warm Taupe */
+  --text-muted: #7a7060;        /* Earth Brown-Gray */
+
   /* Glassmorphism & UI Tokens */
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-border-hover: rgba(229, 193, 88, 0.2);
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  --shadow-gold: 0 0 30px rgba(229, 193, 88, 0.1);
-  --shadow-green: 0 0 30px rgba(91, 140, 108, 0.1);
-  
+  --glass-border: rgba(212, 164, 74, 0.08);
+  --glass-border-hover: rgba(212, 164, 74, 0.22);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25);
+  --shadow-gold: 0 0 30px rgba(212, 164, 74, 0.12);
+  --shadow-green: 0 0 30px rgba(106, 138, 90, 0.1);
+
   --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   --transition-fast: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -60,18 +62,18 @@ body {
   position: relative;
 }
 
-/* Background Atmosphere Elements */
+/* Background Atmosphere — Candlelit Temple Glow */
 body::before {
   content: '';
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, rgba(229, 193, 88, 0.03) 0%, rgba(0,0,0,0) 70%);
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, rgba(212, 164, 74, 0.06) 0%, rgba(0,0,0,0) 70%);
   z-index: -1;
   pointer-events: none;
-  filter: blur(80px);
+  filter: blur(100px);
 }
 
 body::after {
@@ -81,7 +83,7 @@ body::after {
   right: -10%;
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle, rgba(91, 140, 108, 0.03) 0%, rgba(0,0,0,0) 70%);
+  background: radial-gradient(circle, rgba(212, 136, 106, 0.04) 0%, rgba(0,0,0,0) 70%);
   z-index: -1;
   pointer-events: none;
   filter: blur(100px);
@@ -146,7 +148,7 @@ a:hover {
   left: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(10, 13, 17, 0.8);
+  background: rgba(10, 30, 30, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
