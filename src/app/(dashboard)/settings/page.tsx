@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import {
-  Key, Palette, Bell, Shield, Globe, Save,
+  Key, Palette, Bell, Shield, Globe, Save, Music2,
   Sun, Moon, Monitor, CheckCircle2, Loader2,
 } from "lucide-react";
 
@@ -247,6 +247,44 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ── TikTok API ── */}
+      <div className="glass p-5 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-bg-hover flex items-center justify-center">
+            <Music2 size={20} className="text-pink-400" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-text-primary text-sm">TikTok Integration</h3>
+            <p className="text-xs text-text-muted">Connect your TikTok account via OAuth. <a href="https://developers.tiktok.com/apps/" target="_blank" rel="noopener" className="text-accent-light hover:underline">Get keys →</a></p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs text-text-muted mb-1 block">Client Key</label>
+            <input
+              type="text"
+              defaultValue=""
+              placeholder="awb..."
+              onChange={(e) => { /* set via ENV */ }}
+              className="w-full bg-bg-hover border border-border rounded-xl px-4 py-2.5 text-sm text-text-primary font-mono placeholder:text-text-muted outline-none focus:border-accent/50"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-text-muted mb-1 block">Client Secret</label>
+            <input
+              type="password"
+              defaultValue=""
+              placeholder="••••••••"
+              onChange={(e) => { /* set via ENV */ }}
+              className="w-full bg-bg-hover border border-border rounded-xl px-4 py-2.5 text-sm text-text-primary font-mono placeholder:text-text-muted outline-none focus:border-accent/50"
+            />
+          </div>
+        </div>
+        <p className="text-[10px] text-text-muted bg-bg-hover rounded-lg p-3 leading-relaxed">
+          🔐 Set these in <code className="text-accent-light">.env.local</code> or the container environment variables. Then restart the server. These keys enable automatic TikTok posting.
+        </p>
       </div>
 
       {/* ── Notifications ── */}

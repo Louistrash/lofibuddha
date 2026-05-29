@@ -27,6 +27,16 @@ interface CalendarPost {
   hashtags: string;
 }
 
+interface TikTokProfile {
+  connected: boolean;
+  displayName?: string;
+  avatar?: string;
+  bio?: string;
+  followers?: number;
+  likes?: number;
+  videos?: number;
+}
+
 // ── Platform config ──
 
 const platformUrls: Record<string, string> = {
@@ -37,11 +47,11 @@ const platformUrls: Record<string, string> = {
 };
 
 const platforms = [
-  { label: "YouTube", icon: Clapperboard, connected: true, color: "text-red-400" },
-  { label: "TikTok", icon: Music2, connected: true, color: "text-pink-400" },
-  { label: "Instagram", icon: Camera, connected: true, color: "text-purple-400" },
-  { label: "Facebook", icon: Globe, connected: true, color: "text-blue-400" },
-  { label: "Pinterest", icon: MapPin, connected: false, color: "text-red-300" },
+  { label: "YouTube", icon: Clapperboard, color: "text-red-400" },
+  { label: "TikTok", icon: Music2, color: "text-pink-400" },
+  { label: "Instagram", icon: Camera, color: "text-purple-400" },
+  { label: "Facebook", icon: Globe, color: "text-blue-400" },
+  { label: "Pinterest", icon: MapPin, color: "text-red-300" },
 ];
 
 const platformIcons: Record<string, typeof Tv> = {
@@ -161,6 +171,11 @@ export default function SocialPage() {
   const [editForm, setEditForm] = useState<CalendarPost | null>(null);
   const [showAdd, setShowAdd] = useState(false);
 
+  // TikTok connection
+  const [tiktokProfile, setTiktokProfile] = useState<TikTokProfile | null>(null);
+  const [tiktokLoading, setTiktokLoading] = useState(true);
+  const [tiktokConnecting, setTiktokConnecting] = useState(false);
+
   // Load videos
   useEffect(() => {
     fetch("/api/videos/list")
@@ -198,6 +213,48 @@ export default function SocialPage() {
       })
       .finally(() => setLoadingPosts(false));
   }, []);
+
+  // Check TikTok connection status
+  useEffect(() => {
+    fetch("/api/tiktok/auth?action=status")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.connected) {
+          // Fetch profile if connected
+          return fetch("/api/tiktok/profile").then((r) => r.json());
+        }
+        return { connected: false };
+      })
+      .then((profile) => setTiktokProfile(profile))
+      .catch(() => setTiktokProfile({ connected: false }))
+      .finally(() => setTiktokLoading(false));
+  }, []);
+
+  // Handle OAuth callback params
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tiktok = params.get("tiktok");
+    if (tiktok === "connected") {
+      setTiktokLoading(true);
+      fetch("/api/tiktok/profile")
+        .then((r) => r.json())
+        .then((p) => setTiktokProfile(p))
+        .finally(() => setTiktokLoading(false));
+      window.history.replaceState({}, "", "/social");
+    }
+  }, []);
+
+  const handleTikTokConnect = () => {
+    setTiktokConnecting(true);
+    window.location.href = "/api/tiktok/auth?action=login";
+  };
+
+  const handleTikTokDisconnect = async () => {
+    setTiktokLoading(true);
+    await fetch("/api/tiktok/auth?action=disconnect");
+    setTiktokProfile({ connected: false });
+    setTiktokLoading(false);
+  };
 
   const savePosts = (updated: CalendarPost[]) => {
     setPosts(updated);
@@ -269,31 +326,62 @@ export default function SocialPage() {
         {platforms.map((p) => {
           const Icon = p.icon;
           const url = platformUrls[p.label];
+          const isTikTok = p.label === "TikTok";
+          const isConnected = isTikTok ? tiktokProfile?.connected : true;
+
           const card = (
             <div
               key={p.label}
-              className={`glass p-4 flex flex-col items-center gap-3 cursor-pointer hover:border-accent/30 transition-all ${
-                p.connected ? "border-accent/30" : "opacity-60"
+              className={`glass p-4 flex flex-col items-center gap-3 transition-all ${
+                isConnected ? "border-accent/30 cursor-default" : "opacity-60 cursor-pointer hover:border-accent/30 hover:opacity-80"
               }`}
             >
               <Icon size={24} className={p.color} />
               <span className="text-xs font-medium text-text-secondary">{p.label}</span>
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded-full ${
-                  p.connected ? "bg-success/10 text-success" : "bg-bg-hover text-text-muted"
-                }`}
-              >
-                {p.connected ? "Connected" : "Connect"}
-              </span>
+
+              {/* TikTok profile info */}
+              {isTikTok && tiktokLoading ? (
+                <span className="text-[10px] text-text-muted flex items-center gap-1">
+                  <Loader2 size={10} className="animate-spin" /> Checking...
+                </span>
+              ) : isTikTok && tiktokProfile?.connected ? (
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/10 text-success">Connected</span>
+                  {tiktokProfile.displayName && (
+                    <span className="text-[10px] text-text-muted">@{tiktokProfile.displayName}</span>
+                  )}
+                  {tiktokProfile.followers !== undefined && (
+                    <span className="text-[10px] text-text-muted">{tiktokProfile.followers.toLocaleString()} followers</span>
+                  )}
+                  <button
+                    onClick={handleTikTokDisconnect}
+                    className="text-[10px] text-error/70 hover:text-error mt-1 transition-colors"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              ) : isTikTok && !tiktokProfile?.connected ? (
+                <button
+                  onClick={handleTikTokConnect}
+                  disabled={tiktokConnecting}
+                  className="text-[10px] px-3 py-1 rounded-full bg-accent/10 text-accent-light hover:bg-accent/20 transition-all disabled:opacity-50"
+                >
+                  {tiktokConnecting ? "Connecting..." : "Connect TikTok"}
+                </button>
+              ) : (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/10 text-success">
+                  Connected
+                </span>
+              )}
             </div>
           );
-          return url ? (
+          return isTikTok ? (
+            card
+          ) : url ? (
             <a key={p.label} href={url} target="_blank" rel="noopener noreferrer" className="no-underline">
               {card}
             </a>
-          ) : (
-            card
-          );
+          ) : card;
         })}
       </div>
 
