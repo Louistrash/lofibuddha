@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// OpenAI takes priority; DeepSeek as fallback
 const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
-const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
+const AI_KEY = OPENAI_KEY || DEEPSEEK_KEY || "";
+const AI_BASE = OPENAI_KEY
+  ? "https://api.openai.com/v1"
+  : "https://api.deepseek.com/v1";
+const AI_MODEL = OPENAI_KEY ? "gpt-4o-mini" : "deepseek-chat";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +15,13 @@ export async function POST(request: NextRequest) {
 
     if (!message?.trim()) {
       return NextResponse.json({ error: "Empty message" }, { status: 400 });
+    }
+
+    if (!AI_KEY) {
+      return NextResponse.json(
+        { error: "No AI key configured — set OPENAI_API_KEY or DEEPSEEK_API_KEY" },
+        { status: 500 }
+      );
     }
 
     const messages = [
@@ -29,14 +42,14 @@ export async function POST(request: NextRequest) {
       { role: "user", content: message },
     ];
 
-    const res = await fetch(OPENAI_URL, {
+    const res = await fetch(`${AI_BASE}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_KEY}`,
+        Authorization: `Bearer ${AI_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: AI_MODEL,
         messages,
         max_tokens: 600,
         temperature: 0.7,
@@ -46,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Bodhi Chat] OpenAI error:", res.status, errText);
+      console.error("[Bodhi Chat] AI error:", res.status, errText);
       return NextResponse.json(
         { error: "AI service unavailable" },
         { status: 502 }
