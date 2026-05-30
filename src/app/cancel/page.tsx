@@ -1,33 +1,52 @@
 "use client";
 
-import { XCircle, ArrowLeft, Moon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function CancelPage() {
   return (
-    <div className="min-h-screen bg-bg-primary flex items-center justify-center px-6">
-      <div className="max-w-md w-full text-center space-y-8">
-        <div className="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center mx-auto">
-          <XCircle size={36} className="text-error" />
-        </div>
-
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-text-primary">No worries 🧘</h1>
-          <p className="text-text-muted">
-            You didn&apos;t complete the payment. Take your time — we&apos;re here when you&apos;re ready.
-          </p>
+    <div className="min-h-screen editorial-theme flex items-center justify-center px-6">
+      <div className="max-w-md w-full text-center space-y-10">
+        {/* Enso circle */}
+        <div className="mx-auto">
+          <svg viewBox="0 0 120 120" className="w-20 h-20">
+            <circle
+              cx="60"
+              cy="60"
+              r="48"
+              fill="none"
+              stroke="#d6d3d1"
+              strokeWidth="0.6"
+              strokeDasharray="85 300"
+              strokeLinecap="round"
+              transform="rotate(-20 60 60)"
+            />
+          </svg>
         </div>
 
         <div className="space-y-3">
+          <h1 className="font-serif text-3xl sm:text-4xl font-light text-stone-800">
+            No hurry
+          </h1>
+          <p className="text-stone-500 leading-relaxed">
+            You didn&apos;t complete the payment. Take your time — this space is
+            here whenever you&apos;re ready.
+          </p>
+        </div>
+
+        <div className="space-y-4">
           <Link
-            href="/landing#pricing"
-            className="btn-zen flex items-center justify-center gap-2 py-3 px-6 mx-auto w-fit"
+            href="/signup"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all"
           >
-            <ArrowLeft size={18} />
-            Back to Plans
+            <ArrowLeft size={16} />
+            Return to plans
           </Link>
-          <p className="text-xs text-text-muted">
-            <Link href="/landing" className="text-accent-light hover:text-accent">
+          <p className="text-xs text-stone-400">
+            <Link
+              href="/landing"
+              className="hover:text-stone-600 transition-colors"
+            >
               ← LofiBuddha Home
             </Link>
           </p>

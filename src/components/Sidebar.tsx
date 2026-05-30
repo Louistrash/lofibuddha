@@ -69,10 +69,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
               {/* Logo */}
               <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
                 <NextImage
-                  src="/bodhi-icon-32.png"
+                  src="/lofibuddha.png"
                   alt="Bodhi"
-                  width={36}
-                  height={36}
+                  width={39}
+                  height={39}
                   className="rounded-xl flex-shrink-0"
                 />
                 <span className="font-semibold text-text-primary text-sm tracking-wide">
@@ -134,10 +134,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
         {/* Logo */}
         <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
           <NextImage
-            src="/bodhi-icon-32.png"
+            src="/lofibuddha.png"
             alt="Bodhi"
-            width={36}
-            height={36}
+            width={39}
+            height={39}
             className="rounded-xl flex-shrink-0"
           />
           {!collapsed && (

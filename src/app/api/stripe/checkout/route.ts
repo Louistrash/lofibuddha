@@ -8,21 +8,30 @@ function getStripe() {
 }
 
 const PRICE_MAP: Record<string, string> = {
-  zen: "price_zen_monthly", // Replace with actual Stripe price IDs
-  master: "price_master_monthly",
+  zen: "", // Free tier — no Stripe checkout needed
+  mindful: "price_1TchJtB7GXjClDhqDj2dLJDn", // €4,99/month
+  enlightened: "price_1TchJuB7GXjClDhqJRbsTgHt", // €12,99/month
 };
 
 export async function POST(request: NextRequest) {
   try {
     const { tier, email } = await request.json();
-    const priceId = PRICE_MAP[tier] || PRICE_MAP.zen;
+    const priceId = PRICE_MAP[tier];
+
+    // Use public app URL (handles reverse proxy — Apache → Docker)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+
+    // Zen tier is free — redirect directly to signup, no Stripe needed
+    if (tier === "zen" || !priceId) {
+      return NextResponse.json({ url: `${baseUrl}/signup?tier=zen` });
+    }
 
     const session = await getStripe().checkout.sessions.create({
       mode: "subscription",
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${request.nextUrl.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.nextUrl.origin}/cancel`,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cancel`,
       allow_promotion_codes: true,
       billing_address_collection: "auto",
       metadata: { tier, source: "bodhi-landing" },

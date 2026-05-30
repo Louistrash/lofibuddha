@@ -47,7 +47,7 @@ async function scanDir(dir: string, baseUrl: string, prefix: string): Promise<Im
 export async function GET(request: NextRequest) {
   try {
     const publicDir = join(process.cwd(), "public", "images");
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "";
     const images = await scanDir(publicDir, baseUrl, "");
     return NextResponse.json({ images, total: images.length });
   } catch (err) {

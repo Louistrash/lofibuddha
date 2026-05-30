@@ -1,6 +1,6 @@
 "use client";
 
-import { Play, Clock, Music, Sun, Moon, ArrowRight, Sparkles } from "lucide-react";
+import { Play, Clock, Music, Sun, Moon, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const freeContent = [
@@ -38,7 +38,7 @@ const freeContent = [
     title: "Guided Breathwork",
     type: "Breathwork",
     duration: "5 min",
-    icon: Sparkles,
+    icon: Music,
     color: "text-emerald-400",
     bg: "bg-emerald-400/10",
     desc: "A short breathwork session to reset your mind in minutes.",
@@ -79,7 +79,7 @@ export default function BrowsePage() {
       <nav className="sticky top-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-text-primary font-semibold">
-            <Moon size={20} className="text-accent-light" />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[27px] w-auto" />
             LofiBuddha
           </Link>
           <Link href="/#pricing" className="btn-zen text-sm py-2 px-4">
@@ -135,7 +135,6 @@ export default function BrowsePage() {
         {/* Premium Teaser */}
         <div className="glass p-8 text-center space-y-6 bg-gradient-to-b from-accent/5 to-transparent border-accent/20">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent-light text-sm">
-            <Sparkles size={14} />
             Premium
           </div>
           <h2 className="text-2xl font-bold text-text-primary">Unlock the full experience</h2>

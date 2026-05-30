@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Play, Pause, Volume2, Moon, Send, ChevronDown, Menu, X, Heart, Quote, Music, BookOpen, Camera } from "lucide-react";
+import { ArrowRight, Play, Pause, Volume2, Send, ChevronDown, Menu, X, Heart, Quote, Music, BookOpen, Camera } from "lucide-react";
 
 // ─── Language ─────────────────────────────────
 type Lang = "en" | "nl" | "es" | "de" | "fr" | "hi";
@@ -50,9 +50,9 @@ const t = {
 
 // ─── Journal articles ──────────────────────────
 const journalArticles = [
-  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/generated/thumb-yoga.png", slug: "#" },
-  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/generated/thumb-focus.png", slug: "#" },
-  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/generated/thumb-breath.png", slug: "#" },
+  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/generated/thumb-yoga.png", slug: "/browse" },
+  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/generated/thumb-focus.png", slug: "/browse" },
+  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/generated/thumb-breath.png", slug: "/browse" },
 ];
 
 // ─── Album-style music cards ──────────────────
@@ -135,15 +135,14 @@ export default function LandingPage() {
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-700"
           style={{ 
-            background: scrollY > 50 ? "rgba(255,255,255,0.85)" : "transparent",
-            backdropFilter: scrollY > 50 ? "blur(20px)" : "none",
+            background: scrollY > 50 ? "rgba(250,248,245,0.92)" : "rgba(250,248,245,0.75)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
             borderBottom: scrollY > 50 ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent"
           }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-10 h-16 sm:h-20 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
-                <Moon size={16} className="text-amber-200" />
-              </div>
+              <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-auto" />
               <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
             </Link>
 
@@ -259,7 +258,7 @@ export default function LandingPage() {
               <p className="text-stone-600 leading-relaxed text-sm">
                 {featuredStory.excerpt}
               </p>
-              <a href="#" className="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-800 transition-colors font-medium">
+              <a href="/browse" className="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-800 transition-colors font-medium">
                 Read the story <ArrowRight size={14} />
               </a>
             </div>
@@ -347,7 +346,7 @@ export default function LandingPage() {
               <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-800 mt-4">{tFn(t.sectionJournal)}</h2>
               <p className="text-stone-500 text-sm mt-3 max-w-sm">{tFn(t.sectionJournalSub)}</p>
             </div>
-            <a href="#" className="text-sm text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-1">
+            <a href="/browse" className="text-sm text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-1">
               View all <ArrowRight size={14} />
             </a>
           </div>
@@ -435,9 +434,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
             <div className="col-span-2 md:col-span-1 space-y-4">
               <Link href="/" className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-stone-700 flex items-center justify-center">
-                  <Moon size={14} className="text-amber-200" />
-                </div>
+                <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-auto" />
                 <span className="font-serif text-base tracking-wide text-stone-200">LofiBuddha</span>
               </Link>
               <p className="text-xs leading-relaxed text-stone-500">{tFn(t.footerRights)}</p>

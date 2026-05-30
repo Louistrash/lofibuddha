@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ArrowRight, Sparkles, Moon } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -10,33 +10,41 @@ function SuccessContent() {
   const sessionId = params?.get("session_id") || "";
 
   return (
-    <div className="min-h-screen bg-bg-primary flex items-center justify-center px-6">
-      <div className="max-w-md w-full text-center space-y-8">
-        <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto">
-          <Check size={36} className="text-success" />
-        </div>
-
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-text-primary">Welcome to the community! 🧘</h1>
-          <p className="text-text-muted">
-            Your payment was successful. You now have full access to all premium content.
-          </p>
-          {sessionId && (
-            <p className="text-xs text-text-muted">Session: {sessionId.slice(0, 12)}...</p>
-          )}
+    <div className="min-h-screen editorial-theme flex items-center justify-center px-6">
+      <div className="max-w-md w-full text-center space-y-10">
+        {/* Checkmark */}
+        <div className="w-20 h-20 rounded-full bg-amber-100/50 flex items-center justify-center mx-auto">
+          <Check size={36} className="text-amber-600" />
         </div>
 
         <div className="space-y-3">
+          <h1 className="font-serif text-3xl sm:text-4xl font-light text-stone-800">
+            Welcome to the community
+          </h1>
+          <p className="text-stone-500 leading-relaxed">
+            Your subscription is active. A calm space awaits — explore your new
+            practice.
+          </p>
+          {sessionId && (
+            <p className="text-xs text-stone-400 font-mono">
+              Session: {sessionId.slice(0, 18)}...
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-4">
           <Link
             href="/browse"
-            className="btn-zen flex items-center justify-center gap-2 py-3 px-6 mx-auto w-fit"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all"
           >
-            <Sparkles size={18} />
-            Start Exploring
-            <ArrowRight size={18} />
+            Begin your practice
+            <ArrowRight size={16} />
           </Link>
-          <p className="text-xs text-text-muted">
-            <Link href="/landing" className="text-accent-light hover:text-accent">
+          <p className="text-xs text-stone-400">
+            <Link
+              href="/landing"
+              className="hover:text-stone-600 transition-colors"
+            >
               ← Back to LofiBuddha
             </Link>
           </p>
@@ -48,7 +56,13 @@ function SuccessContent() {
 
 export default function SuccessPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-bg-primary flex items-center justify-center"><Moon size={24} className="text-accent-light animate-spin" /></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen editorial-theme flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-stone-300 border-t-amber-500 rounded-full animate-spin" />
+        </div>
+      }
+    >
       <SuccessContent />
     </Suspense>
   );

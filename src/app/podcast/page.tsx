@@ -1,35 +1,45 @@
 import Link from "next/link";
-import { Headphones, Sparkles, ArrowLeft } from "lucide-react";
+import { Headphones, ArrowLeft } from "lucide-react";
 
 export default function PodcastPage() {
   return (
-    <div className="min-h-screen bg-bg-primary theme-buddha flex items-center justify-center px-6">
-      {/* Background glow */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-[100px]" style={{ background: "radial-gradient(circle, rgba(196,148,100,0.3) 0%, transparent 70%)" }} />
-      </div>
-
-      <div className="relative z-10 text-center max-w-md space-y-8">
+    <div className="min-h-screen editorial-theme flex items-center justify-center px-6">
+      <div className="text-center max-w-md space-y-10">
         {/* Icon */}
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-accent/10 border border-accent/20 animate-pulse" style={{ animationDuration: "3s" }}>
-          <Headphones size={32} className="text-accent-light" />
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-stone-100 border border-stone-200 mx-auto">
+          <Headphones size={32} className="text-stone-400" />
         </div>
 
         {/* Text */}
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 text-accent-light text-xs border border-accent/20">
-            <Sparkles size={12} /> Coming Soon
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">The Mindful Creative</h1>
-          <p className="text-text-muted leading-relaxed">
-            Weekly conversations about mindfulness, creativity, and intentional living. We're crafting something special — stay tuned.
+        <div className="space-y-4">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-amber-700 font-medium">
+            Coming Soon
+          </span>
+          <h1 className="font-serif text-3xl sm:text-4xl font-light text-stone-800">
+            The Mindful Creative
+          </h1>
+          <p className="text-stone-500 leading-relaxed">
+            Weekly conversations about mindfulness, creativity, and intentional
+            living. We&apos;re crafting something special — stay tuned.
           </p>
         </div>
 
-        {/* Back link */}
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-accent-light hover:text-accent transition-colors">
-          <ArrowLeft size={16} /> Back to LofiBuddha
-        </Link>
+        {/* Links */}
+        <div className="flex flex-col items-center gap-3">
+          <Link
+            href="/browse"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all"
+          >
+            Explore content
+            <ArrowLeft size={14} className="rotate-180" />
+          </Link>
+          <Link
+            href="/landing"
+            className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          >
+            ← LofiBuddha Home
+          </Link>
+        </div>
       </div>
     </div>
   );

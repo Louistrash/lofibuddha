@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Clock, ArrowRight, ChevronDown, Moon, Globe, Sparkles } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, ChevronDown, Globe } from "lucide-react";
 
 const LANGS = ["en", "nl", "es", "de", "fr", "hi"] as const;
 type Lang = typeof LANGS[number];
@@ -42,9 +42,7 @@ export default function CoursesPage() {
       <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-stone-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
-              <Moon size={16} className="text-amber-200" />
-            </div>
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-auto" />
             <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
           </Link>
           <div className="flex items-center gap-4">
@@ -61,7 +59,6 @@ export default function CoursesPage() {
 
       {/* Hero */}
       <section className="py-20 sm:py-28 px-6 text-center">
-        <Sparkles size={32} className="mx-auto text-amber-400 mb-6" />
         <h1 className="font-serif text-4xl sm:text-6xl font-light text-stone-800 mb-4">
           {lang === "nl" ? "Onze Cursussen" : lang === "es" ? "Nuestros Cursos" : "Our Courses"}
         </h1>

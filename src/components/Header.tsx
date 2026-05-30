@@ -48,10 +48,10 @@ export default function Header({ onMenuToggle, mobileOpen }: HeaderProps) {
 
         {/* Logo — verborgen op hele kleine schermen */}
         <Image
-          src="/bodhi-icon-32.png"
+          src="/lofibuddha.png"
           alt="Bodhi"
-          width={28}
-          height={28}
+          width={31}
+          height={31}
           className="rounded-lg flex-shrink-0 hidden sm:block"
         />
 

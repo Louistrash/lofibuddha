@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       `--output ${outputName}`,
     ].join(" ");
 
-    console.log("[Bodhi API] Running:", cmd);
+    console.log("[Bodhi API] Generating video:", outputName);
 
     const cwd = join(process.cwd());
     const stdout = execSync(cmd, {

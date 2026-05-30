@@ -32,6 +32,8 @@ const checklist = [
       { task: "Webhook endpoint", done: true },
       { task: "Success / Cancel pages", done: true },
       { task: "Plan metadata mapping", done: true },
+      { task: "Live Stripe price IDs (Mindful €4,99 / Enlightened €12,99)", done: true },
+      { task: "Webhook subscriber provisioning", done: true },
     ],
   },
   {
@@ -45,13 +47,13 @@ const checklist = [
     ],
   },
   {
-    category: "To Do (Tomorrow)",
+    category: "To Do",
     items: [
       { task: "YouTube OAuth + upload API", done: false },
       { task: "TikTok API integration", done: false },
       { task: "Instagram Graph API", done: false },
-      { task: "Real Stripe price IDs in .env", done: false },
       { task: "Analytics dashboard with real data", done: false },
+      { task: "Blog posts with real content", done: false },
     ],
   },
 ];
