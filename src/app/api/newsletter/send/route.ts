@@ -130,7 +130,10 @@ export async function POST(request: NextRequest) {
 
     // Load courses for cross-promotion
     let courses: any[] = [];
-    try { courses = JSON.parse(await readFile(COURSES_DB, "utf-8")); } catch {}
+    try {
+      const raw = JSON.parse(await readFile(COURSES_DB, "utf-8"));
+      courses = Array.isArray(raw) ? raw : (raw.courses || []);
+    } catch {}
 
     // Send emails
     const results: { email: string; success: boolean; error?: string }[] = [];
