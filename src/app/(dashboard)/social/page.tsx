@@ -22,9 +22,12 @@ interface CalendarPost {
   date: string;
   time: string;
   platform: string;
+  format?: string;
+  template?: string;
   video: string;
   status: "draft" | "scheduled" | "released";
   hashtags: string;
+  background?: string;
 }
 
 interface TikTokProfile {
