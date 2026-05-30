@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Text & chat: DeepSeek primary
-const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
-const AI_BASE = "https://api.deepseek.com/v1";
-const AI_MODEL = "deepseek-chat";
+// Text & chat: OpenAI primary
+const AI_KEY = process.env.OPENAI_API_KEY || "";
+const AI_BASE = "https://api.openai.com/v1";
+const AI_MODEL = "gpt-4o";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Empty message" }, { status: 400 });
     }
 
-    if (!DEEPSEEK_KEY) {
+    if (!AI_KEY) {
       return NextResponse.json(
-        { error: "DeepSeek API key not configured" },
+        { error: "OpenAI API key not configured" },
         { status: 500 }
       );
     }
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${DEEPSEEK_KEY}`,
+        Authorization: `Bearer ${AI_KEY}`,
       },
       body: JSON.stringify({
         model: AI_MODEL,
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Bodhi Chat] DeepSeek error:", res.status, errText);
+      console.error("[Bodhi Chat] OpenAI error:", res.status, errText);
       return NextResponse.json(
         { error: "AI service unavailable" },
         { status: 502 }

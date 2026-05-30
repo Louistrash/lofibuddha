@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Text generation: DeepSeek primary
-const AI_KEY = process.env.DEEPSEEK_API_KEY || "";
-const AI_BASE = "https://api.deepseek.com/v1";
-const MODEL = "deepseek-chat";
+// Text generation: OpenAI primary
+const AI_KEY = process.env.OPENAI_API_KEY || "";
+const AI_BASE = "https://api.openai.com/v1";
+const MODEL = "gpt-4o";
 
 // ── Prompt templates per content type ──
 
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
 
     if (!AI_KEY) {
       return NextResponse.json(
-        { error: "No AI key configured — set DEEPSEEK_API_KEY" },
+        { error: "No AI key configured — set OPENAI_API_KEY" },
         { status: 500 }
       );
     }
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
       PROMPT_BUILDERS[type]?.(topic, tone) ||
       PROMPT_BUILDERS.youtube(topic, tone);
 
-    // Call DeepSeek
+    // Call OpenAI
     const response = await fetch(`${AI_BASE}/chat/completions`, {
       method: "POST",
       headers: {
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("DeepSeek API error:", errorText);
+      console.error("OpenAI API error:", errorText);
       return NextResponse.json(
         { error: "AI generation failed", detail: errorText },
         { status: 502 }
