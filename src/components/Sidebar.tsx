@@ -32,7 +32,7 @@ const navItems = [
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/newsletter", label: "Newsletter", icon: Mail },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/hermes", label: "Hermes AI", icon: Bot, badge: "Chat" },
+  { href: "/hermes", label: "Hermes OS", icon: Bot, badge: "Full" },
 ];
 
 interface SidebarProps {
