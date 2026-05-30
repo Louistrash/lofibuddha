@@ -1,0 +1,18 @@
+[
+  {
+    "email": "louis@lofibuddha.com",
+    "language": "en",
+    "name": "Louis",
+    "subscribedAt": "2026-05-30T10:00:00.000Z",
+    "confirmed": true,
+    "status": "active"
+  },
+  {
+    "email": "louis@lofibuddha.com",
+    "language": "nl",
+    "name": "Louis",
+    "subscribedAt": "2026-05-30T10:00:00.000Z",
+    "confirmed": true,
+    "status": "active"
+  }
+]
