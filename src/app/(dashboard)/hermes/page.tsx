@@ -8,19 +8,17 @@ export default function HermesPage() {
       : "/webui/";
 
   return (
-    <div style={{ height: "calc(100vh - 80px)", width: "100%" }}>
-      <iframe
-        src={webuiUrl}
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "none",
-          borderRadius: "12px",
-          background: "#0f0f0f",
-        }}
-        title="Hermes OS — Full AI Workspace"
-        allow="clipboard-read; clipboard-write"
-      />
-    </div>
+    <iframe
+      src={webuiUrl}
+      style={{
+        width: "100%",
+        height: "100vh",
+        border: "none",
+        background: "#0f0f0f",
+        display: "block",
+      }}
+      title="Hermes OS — Full AI Workspace"
+      allow="clipboard-read; clipboard-write"
+    />
   );
 }
