@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, User, Loader2, Sparkles, Trash2 } from "lucide-react";
+import { Bot, Send, User, Loader2, Trash2 } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -10,25 +10,43 @@ interface Message {
 }
 
 export default function HermesPage() {
-  const [messages, setMessages] = useState<Message[]>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("bodhi-chat");
-      return stored ? JSON.parse(stored) : [];
-    }
-    return [];
-  });
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Load from localStorage AFTER hydration (avoids SSR mismatch)
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("bodhi-chat");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+          }
+        }
+      }
+    } catch {
+      // Corrupt data — clear it
+      localStorage.removeItem("bodhi-chat");
+    }
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem("bodhi-chat", JSON.stringify(messages.slice(-100)));
-  }, [messages]);
+    if (hydrated) {
+      try {
+        localStorage.setItem("bodhi-chat", JSON.stringify(messages.slice(-100)));
+      } catch { /* quota exceeded — ignore */ }
+    }
+  }, [messages, hydrated]);
 
   const sendMessage = async () => {
     const text = input.trim();
@@ -74,7 +92,13 @@ export default function HermesPage() {
 
   const clearChat = () => {
     setMessages([]);
-    localStorage.removeItem("bodhi-chat");
+    try { localStorage.removeItem("bodhi-chat"); } catch { /* ignore */ }
+  };
+
+  const handlePreset = (text: string) => {
+    setInput(text);
+    // Focus after React re-render
+    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -112,12 +136,14 @@ export default function HermesPage() {
       <div className="flex-1 glass rounded-2xl p-5 mb-4 overflow-y-auto space-y-4 border border-border-glow">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center py-16 space-y-4">
-            <Sparkles size={40} className="text-accent-light zen-breath" />
-            <div>
-              <p className="text-text-secondary text-sm font-medium">Welcome to lofibuddha.com</p>
-              <p className="text-text-muted text-xs mt-1">Relax and unwind · Mindfulness and relaxation</p>
+            <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+              <Bot size={28} className="text-accent-light" />
             </div>
-            <div className="grid grid-cols-2 gap-2 mt-4">
+            <div>
+              <p className="text-text-secondary text-sm font-medium">Welcome to Bodhi Hermes</p>
+              <p className="text-text-muted text-xs mt-1">Your AI assistant for lofibuddha.com</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-4 w-full max-w-sm">
               {[
                 "Write a zen quote",
                 "5-minute meditation script",
@@ -126,8 +152,9 @@ export default function HermesPage() {
               ].map((suggestion) => (
                 <button
                   key={suggestion}
-                  onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}
-                  className="text-xs text-text-muted bg-bg-hover hover:bg-bg-card border border-border rounded-xl px-3 py-2 text-left transition-all hover:border-accent/30"
+                  type="button"
+                  onClick={() => handlePreset(suggestion)}
+                  className="text-xs text-text-muted bg-bg-hover hover:bg-bg-card border border-border rounded-xl px-3 py-2.5 text-left transition-all hover:border-accent/30 active:scale-[0.98] cursor-pointer"
                 >
                   {suggestion}
                 </button>
@@ -193,15 +220,16 @@ export default function HermesPage() {
           className="flex-1 bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted"
         />
         <button
+          type="button"
           onClick={sendMessage}
           disabled={loading || !input.trim()}
-          className="p-2.5 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="p-2.5 rounded-xl bg-accent text-bg-primary hover:bg-accent-light transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
         >
           <Send size={16} />
         </button>
       </div>
 
-      <p className="text-xs text-text-muted text-center mt-3 zen-breath">
+      <p className="text-xs text-text-muted text-center mt-3">
         Join our community · lofibuddha.com
       </p>
     </div>
