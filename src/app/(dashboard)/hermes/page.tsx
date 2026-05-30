@@ -13,40 +13,36 @@ export default function HermesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const [ready, setReady] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load from localStorage AFTER hydration (avoids SSR mismatch)
+  // Load saved messages after mount
   useEffect(() => {
     try {
-      if (typeof window !== "undefined") {
-        const stored = localStorage.getItem("bodhi-chat");
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setMessages(parsed);
-          }
-        }
+      const stored = localStorage.getItem("bodhi-chat");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) setMessages(parsed);
       }
     } catch {
-      // Corrupt data — clear it
       localStorage.removeItem("bodhi-chat");
     }
-    setHydrated(true);
+    setReady(true);
   }, []);
 
+  // Save messages
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      localStorage.setItem("bodhi-chat", JSON.stringify(messages.slice(-100)));
+    } catch { /* ignore */ }
+  }, [messages, ready]);
+
+  // Auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  useEffect(() => {
-    if (hydrated) {
-      try {
-        localStorage.setItem("bodhi-chat", JSON.stringify(messages.slice(-100)));
-      } catch { /* quota exceeded — ignore */ }
-    }
-  }, [messages, hydrated]);
 
   const sendMessage = async () => {
     const text = input.trim();
@@ -63,53 +59,39 @@ export default function HermesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history: messages.slice(-10) }),
       });
-
       const data = await res.json();
-
       if (data.reply) {
-        const aiMsg: Message = { role: "assistant", content: data.reply, timestamp: Date.now() };
-        setMessages((prev) => [...prev, aiMsg]);
+        setMessages((prev) => [...prev, {
+          role: "assistant", content: data.reply, timestamp: Date.now()
+        }]);
       } else {
-        const errMsg: Message = {
+        setMessages((prev) => [...prev, {
           role: "assistant",
           content: "🧘 *Stilte...* De AI is even in meditatie. Probeer het opnieuw.",
-          timestamp: Date.now(),
-        };
-        setMessages((prev) => [...prev, errMsg]);
+          timestamp: Date.now()
+        }]);
       }
     } catch {
-      const errMsg: Message = {
+      setMessages((prev) => [...prev, {
         role: "assistant",
         content: "⚠️ Verbinding verbroken. Check of de server online is.",
-        timestamp: Date.now(),
-      };
-      setMessages((prev) => [...prev, errMsg]);
+        timestamp: Date.now()
+      }]);
     } finally {
       setLoading(false);
       inputRef.current?.focus();
     }
   };
 
-  const clearChat = () => {
-    setMessages([]);
-    try { localStorage.removeItem("bodhi-chat"); } catch { /* ignore */ }
-  };
-
-  const handlePreset = (text: string) => {
-    setInput(text);
-    // Focus after React re-render
-    setTimeout(() => inputRef.current?.focus(), 0);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
+  const presets = [
+    "Write a zen quote",
+    "5-minute meditation script",
+    "Lofi video caption ideas",
+    "YouTube Shorts hooks",
+  ];
 
   return (
-    <div className="flex flex-col h-full" style={{ minHeight: "calc(100vh - 140px)" }}>
+    <div className="flex flex-col" style={{ minHeight: "calc(100vh - 140px)" }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -123,9 +105,11 @@ export default function HermesPage() {
         </div>
         {messages.length > 0 && (
           <button
-            onClick={clearChat}
+            onClick={() => {
+              setMessages([]);
+              try { localStorage.removeItem("bodhi-chat"); } catch { /* */ }
+            }}
             className="p-2 rounded-xl hover:bg-bg-hover text-text-muted hover:text-error transition-all"
-            title="Clear chat"
           >
             <Trash2 size={16} />
           </button>
@@ -144,19 +128,18 @@ export default function HermesPage() {
               <p className="text-text-muted text-xs mt-1">Your AI assistant for lofibuddha.com</p>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-4 w-full max-w-sm">
-              {[
-                "Write a zen quote",
-                "5-minute meditation script",
-                "Lofi video caption ideas",
-                "YouTube Shorts hooks",
-              ].map((suggestion) => (
+              {presets.map((text) => (
                 <button
-                  key={suggestion}
+                  key={text}
                   type="button"
-                  onClick={() => handlePreset(suggestion)}
-                  className="text-xs text-text-muted bg-bg-hover hover:bg-bg-card border border-border rounded-xl px-3 py-2.5 text-left transition-all hover:border-accent/30 active:scale-[0.98] cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setInput(text);
+                  }}
+                  className="text-xs text-text-muted bg-bg-hover hover:bg-bg-card border border-border rounded-xl px-3 py-2.5 text-left transition-all hover:border-accent/30 active:scale-[0.98] cursor-pointer select-none"
                 >
-                  {suggestion}
+                  {text}
                 </button>
               ))}
             </div>
@@ -164,22 +147,17 @@ export default function HermesPage() {
         )}
 
         {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}
-          >
+          <div key={i} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}>
             {msg.role === "assistant" && (
               <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center flex-shrink-0 mt-1">
                 <Bot size={14} className="text-accent-light" />
               </div>
             )}
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-accent/15 text-text-primary rounded-br-md"
-                  : "bg-bg-hover text-text-primary rounded-bl-md"
-              }`}
-            >
+            <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              msg.role === "user"
+                ? "bg-accent/15 text-text-primary rounded-br-md"
+                : "bg-bg-hover text-text-primary rounded-bl-md"
+            }`}>
               <p className="whitespace-pre-wrap">{msg.content}</p>
               <span className="text-[10px] text-text-muted mt-1 block">
                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -203,7 +181,6 @@ export default function HermesPage() {
             </div>
           </div>
         )}
-
         <div ref={bottomRef} />
       </div>
 
@@ -214,7 +191,12 @@ export default function HermesPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           placeholder="Ask Hermes anything..."
           disabled={loading}
           className="flex-1 bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted"
