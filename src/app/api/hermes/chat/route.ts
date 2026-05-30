@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// OpenAI takes priority; DeepSeek as fallback
-const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
+// Text & chat: DeepSeek primary
 const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
-const AI_KEY = OPENAI_KEY || DEEPSEEK_KEY || "";
-const AI_BASE = OPENAI_KEY
-  ? "https://api.openai.com/v1"
-  : "https://api.deepseek.com/v1";
-const AI_MODEL = OPENAI_KEY ? "gpt-4o-mini" : "deepseek-chat";
+const AI_BASE = "https://api.deepseek.com/v1";
+const AI_MODEL = "deepseek-chat";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,9 +13,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Empty message" }, { status: 400 });
     }
 
-    if (!AI_KEY) {
+    if (!DEEPSEEK_KEY) {
       return NextResponse.json(
-        { error: "No AI key configured — set OPENAI_API_KEY or DEEPSEEK_API_KEY" },
+        { error: "DeepSeek API key not configured" },
         { status: 500 }
       );
     }
@@ -46,7 +42,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${AI_KEY}`,
+        Authorization: `Bearer ${DEEPSEEK_KEY}`,
       },
       body: JSON.stringify({
         model: AI_MODEL,
@@ -59,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Bodhi Chat] AI error:", res.status, errText);
+      console.error("[Bodhi Chat] DeepSeek error:", res.status, errText);
       return NextResponse.json(
         { error: "AI service unavailable" },
         { status: 502 }
@@ -69,7 +65,7 @@ export async function POST(request: NextRequest) {
     const data = await res.json();
     const reply = data.choices?.[0]?.message?.content || "";
 
-    return NextResponse.json({ reply });
+    return NextResponse.json({ reply, model: AI_MODEL });
   } catch (err: any) {
     console.error("[Bodhi Chat] Error:", err.message);
     return NextResponse.json(

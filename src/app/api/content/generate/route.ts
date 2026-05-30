@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Support both OpenAI and DeepSeek — OpenAI key takes priority
-const AI_API_KEY = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY || "";
-const AI_BASE = process.env.OPENAI_API_KEY
-  ? "https://api.openai.com/v1"
-  : "https://api.deepseek.com/v1";
-const MODEL = process.env.OPENAI_API_KEY ? "gpt-4o" : "deepseek-chat";
+// Text generation: DeepSeek primary
+const AI_KEY = process.env.DEEPSEEK_API_KEY || "";
+const AI_BASE = "https://api.deepseek.com/v1";
+const MODEL = "deepseek-chat";
 
 // ── Prompt templates per content type ──
 
@@ -119,9 +117,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Topic is required" }, { status: 400 });
     }
 
-    if (!AI_API_KEY) {
+    if (!AI_KEY) {
       return NextResponse.json(
-        { error: "No AI key configured — set OPENAI_API_KEY or DEEPSEEK_API_KEY" },
+        { error: "No AI key configured — set DEEPSEEK_API_KEY" },
         { status: 500 }
       );
     }
@@ -133,12 +131,12 @@ export async function POST(request: NextRequest) {
       PROMPT_BUILDERS[type]?.(topic, tone) ||
       PROMPT_BUILDERS.youtube(topic, tone);
 
-    // Call AI provider (OpenAI if key set, else DeepSeek)
+    // Call DeepSeek
     const response = await fetch(`${AI_BASE}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${AI_API_KEY}`,
+        Authorization: `Bearer ${AI_KEY}`,
       },
       body: JSON.stringify({
         model: MODEL,
