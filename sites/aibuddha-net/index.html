@@ -176,23 +176,19 @@
     </div>
   </section>
 
-  <!-- ═══ Chat Preview ═══ -->
+  <!-- ═══ AI Buddha Chat ═══ -->
   <section id="chat" class="section section-dark">
     <div class="section-inner">
-      <div class="section-label section-label-light">Talk to AI Buddha</div>
-      <div class="chat-preview">
+      <div class="section-label section-label-light" data-i18n="chat-label">Talk to AI Buddha</div>
+      <div class="chat-preview" id="chatMessages">
         <div class="chat-bubble chat-bubble-ai">
           <p>Welcome, seeker of peace. What brings you here today?</p>
         </div>
-        <div class="chat-bubble chat-bubble-user">
-          <p>I've been feeling overwhelmed lately. Can you help me find calm?</p>
-        </div>
-        <div class="chat-bubble chat-bubble-ai">
-          <p>Let us begin with a single breath. Close your eyes for a moment. Breathe in slowly... and out. In this moment, there is nothing to fix, nowhere to be. You are exactly where you need to be.</p>
-        </div>
       </div>
-      <div class="chat-cta">
-        <a href="https://lofibuddha.com/signup" class="btn-primary btn-lg" data-i18n="chat-cta">Start your conversation</a>
+      <div class="chat-typing" id="chatTyping">AI Buddha is listening...</div>
+      <div class="chat-input-wrap">
+        <input type="text" id="chatInput" placeholder="Type your message..." data-i18n-placeholder="chat-placeholder" />
+        <button id="chatSend" onclick="sendChatMessage()">Send</button>
       </div>
     </div>
   </section>
@@ -237,6 +233,73 @@
       const btn = document.getElementById('langBtn');
       if (drop && btn && !btn.contains(e.target) && !drop.contains(e.target)) drop.classList.remove('open');
     });
+  </script>
+  <script>
+    var chatHistory = [];
+    var chatInput = document.getElementById('chatInput');
+    var chatMessages = document.getElementById('chatMessages');
+    var chatTyping = document.getElementById('chatTyping');
+    var chatSend = document.getElementById('chatSend');
+
+    chatInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+
+    function sendChatMessage() {
+      var msg = chatInput.value.trim();
+      if (!msg) return;
+
+      // Add user bubble
+      var userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble chat-bubble-user';
+      userBubble.innerHTML = '<p>' + escapeHtml(msg) + '</p>';
+      chatMessages.appendChild(userBubble);
+
+      chatInput.value = '';
+      chatInput.disabled = true;
+      chatSend.disabled = true;
+      chatTyping.classList.add('active');
+
+      chatHistory.push({ role: 'user', content: msg });
+
+      fetch('chat.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, history: chatHistory })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        chatTyping.classList.remove('active');
+        var reply = data.reply || data.content || '...';
+        chatHistory.push({ role: 'assistant', content: reply });
+
+        var aiBubble = document.createElement('div');
+        aiBubble.className = 'chat-bubble chat-bubble-ai';
+        aiBubble.innerHTML = '<p>' + escapeHtml(reply) + '</p>';
+        chatMessages.appendChild(aiBubble);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      })
+      .catch(function() {
+        chatTyping.classList.remove('active');
+        var errBubble = document.createElement('div');
+        errBubble.className = 'chat-bubble chat-bubble-ai';
+        errBubble.innerHTML = '<p>I need a moment of stillness. Please try again.</p>';
+        chatMessages.appendChild(errBubble);
+      })
+      .finally(function() {
+        chatInput.disabled = false;
+        chatSend.disabled = false;
+        chatInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+    }
+
+    function escapeHtml(text) {
+      var d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
   </script>
 </body>
 </html>
