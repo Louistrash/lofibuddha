@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import fs from "fs";
 import path from "path";
+import { sendWelcomeEmail } from "@/lib/welcome-email";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY || "", {
@@ -155,6 +156,10 @@ export async function POST(request: NextRequest) {
           status: "active",
           startDate: new Date().toISOString(),
         });
+
+        // Send welcome email (fire-and-forget)
+        sendWelcomeEmail(email, tier, session.metadata?.language || "en")
+          .catch(() => {/* silent fail — don't block webhook */});
       }
       break;
     }
