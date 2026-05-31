@@ -58,6 +58,37 @@
       transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--ink); }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .lang-select { position: relative; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.6rem;
+      background: none; border: none; cursor: pointer; color: var(--stone);
+      font-size: 0.75rem; font-family: "Inter", sans-serif; border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .lang-btn:hover { background: rgba(0,0,0,0.03); }
+    .lang-drop {
+      position: absolute; top: 100%; right: 0; margin-top: 0.5rem;
+      background: white; border: 1px solid var(--border); border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08); padding: 0.4rem;
+      min-width: 140px; display: none; flex-direction: column; z-index: 200;
+    }
+    .lang-drop button {
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem;
+      border: none; background: none; cursor: pointer; font-size: 0.8rem;
+      color: var(--stone); font-family: "Inter", sans-serif; border-radius: 8px;
+      transition: all 0.2s; width: 100%; text-align: left;
+    }
+    .lang-drop button:hover, .lang-drop button.active { background: var(--warm); color: var(--ink); font-weight: 400; }
+    .lang-drop.open, .lang-drop[style*="display: flex"] { display: flex !important; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1.5rem; border-radius: 100px;
+      background: var(--ink); color: white; text-decoration: none;
+      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.03em;
+      font-family: "Inter", sans-serif; transition: all 0.3s;
+    }
+    .btn-primary:hover { background: #44403c; transform: translateY(-1px); }
     /* Legal */
     .legal-page { padding: 7rem 2rem 4rem; }
     .legal-container { max-width: 700px; margin: 0 auto; }
@@ -127,8 +158,22 @@
         <img src="lofibuddha.png" alt="LofiBuddha" width="32" height="32" class="logo-img">
         <span class="logo-text">LofiBuddha</span>
       </a>
-      <div class="nav-links">
-        <a href="/">Home</a>
+      <div class="nav-actions">
+        <div class="lang-select">
+          <button class="lang-btn" id="langBtn" onclick="document.getElementById('langDrop').classList.toggle('open')">
+            <span id="langLabel">🇬🇧 EN</span>
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang-drop" id="langDrop">
+            <button data-lang="en" class="active" onclick="setLang('en')">🇬🇧 English</button>
+            <button data-lang="nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+            <button data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+            <button data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+            <button data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
+            <button data-lang="hi" onclick="setLang('hi')">🇮🇳 हिन्दी</button>
+          </div>
+        </div>
+        <a href="/" class="btn-primary">Home</a>
       </div>
     </div>
   </nav>
@@ -203,6 +248,22 @@
     </div>
   </footer>
 
+  <script>
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-lang="'+lang+'"]')?.classList.add('active');
+      document.getElementById('langDrop')?.classList.remove('open');
+      var flags = { en: '🇬🇧 EN', nl: '🇳🇱 NL', es: '🇪🇸 ES', de: '🇩🇪 DE', fr: '🇫🇷 FR', hi: '🇮🇳 HI' };
+      document.getElementById('langLabel').textContent = flags[lang] || '🇬🇧 EN';
+      if (window.bodhiSetLang) window.bodhiSetLang(lang);
+      else { localStorage.setItem('bodhi-lang', lang); location.reload(); }
+    }
+    document.addEventListener('click', function(e) {
+      var drop = document.getElementById('langDrop');
+      var btn = document.getElementById('langBtn');
+      if (drop && btn && !btn.contains(e.target) && !drop.contains(e.target)) drop.classList.remove('open');
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

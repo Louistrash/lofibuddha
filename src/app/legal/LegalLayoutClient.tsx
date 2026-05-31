@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import LangToggle from "./lang-toggle";
 
 export default function LegalLayoutClient({ children }: { children: React.ReactNode }) {
   return (
@@ -35,20 +36,23 @@ export default function LegalLayoutClient({ children }: { children: React.ReactN
               LofiBuddha
             </span>
           </Link>
-          <Link
-            href="/landing"
-            style={{
-              color: "#78716c",
-              fontSize: "0.8rem",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              fontWeight: 400,
-              textDecoration: "none",
-            }}
-            className="hover:underline"
-          >
-            ← Back
-          </Link>
+          <div className="flex items-center gap-4">
+            <LangToggle />
+            <Link
+              href="/landing"
+              style={{
+                color: "#78716c",
+                fontSize: "0.8rem",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                fontWeight: 400,
+                textDecoration: "none",
+              }}
+              className="hover:underline"
+            >
+              ← Back
+            </Link>
+          </div>
         </div>
       </nav>
 

@@ -26,12 +26,23 @@
         <img src="lofibuddha.png" alt="AI Buddha" width="32" height="32" class="logo-img">
         <span class="logo-text">AI Buddha</span>
       </a>
-      <div class="nav-links">
-        <a href="/#philosophy">Philosophy</a>
-        <a href="/#practice">Practice</a>
-        <a href="/#wisdom">Wisdom</a>
+      <div class="nav-actions">
+        <div class="lang-select">
+          <button class="lang-btn" id="langBtn" onclick="document.getElementById('langDrop').classList.toggle('open')">
+            <span id="langLabel">🇬🇧 EN</span>
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang-drop" id="langDrop">
+            <button data-lang="en" class="active" onclick="setLang('en')">🇬🇧 English</button>
+            <button data-lang="nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+            <button data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+            <button data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+            <button data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
+            <button data-lang="hi" onclick="setLang('hi')">🇮🇳 हिन्दी</button>
+          </div>
+        </div>
+        <a href="/#chat" class="btn-primary">Begin</a>
       </div>
-      <a href="/#chat" class="btn-primary">Begin</a>
     </div>
   </nav>
 
@@ -106,5 +117,21 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-lang="'+lang+'"]')?.classList.add('active');
+      document.getElementById('langDrop')?.classList.remove('open');
+      var flags = { en: '🇬🇧 EN', nl: '🇳🇱 NL', es: '🇪🇸 ES', de: '🇩🇪 DE', fr: '🇫🇷 FR', hi: '🇮🇳 HI' };
+      document.getElementById('langLabel').textContent = flags[lang] || '🇬🇧 EN';
+      if (window.bodhiSetLang) window.bodhiSetLang(lang);
+      else { localStorage.setItem('bodhi-lang', lang); location.reload(); }
+    }
+    document.addEventListener('click', function(e) {
+      var drop = document.getElementById('langDrop');
+      var btn = document.getElementById('langBtn');
+      if (drop && btn && !btn.contains(e.target) && !drop.contains(e.target)) drop.classList.remove('open');
+    });
+  </script>
 </body>
 </html>
