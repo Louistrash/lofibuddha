@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Check, ArrowRight, Music, Heart, Quote, Headphones, ArrowLeft, Loader2 } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { Check, ArrowRight, Music, Heart, Headphones, Settings, ArrowLeft, Loader2, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -12,8 +12,9 @@ interface TierContent {
   subheadline: string;
   quote: string;
   quoteAttribution: string;
-  features: string[];
-  nextSteps: { icon: "music" | "heart" | "headphones"; label: string; href: string }[];
+  tierLabel: string;
+  features: { label: string; locked?: boolean }[];
+  nextSteps: { icon: "music" | "heart" | "headphones"; label: string; desc: string; href: string }[];
   ctaLabel: string;
   ctaHref: string;
 }
@@ -22,19 +23,20 @@ const TIER_CONTENT: Record<string, TierContent> = {
   mindful: {
     headline: "Your Mindful Path begins",
     subheadline:
-      "You now have unlimited access to AI Buddha spiritual guidance, weekly Lofi playlist syncs, and ad-free ambient downloads. A calm space awaits.",
+      "You now have unlimited access to AI Buddha spiritual guidance, weekly curated Lofi playlist syncs, and ad-free ambient audio downloads. A calm space awaits.",
     quote: "The present moment is filled with joy and happiness. If you are attentive, you will see it.",
     quoteAttribution: "Thich Nhat Hanh",
+    tierLabel: "Mindful Path · €4,99/month",
     features: [
-      "Unlimited AI Buddha spiritual chat",
-      "Weekly curated Lofi playlist syncs",
-      "Ad-free ambient audio downloads",
-      "Complete ad-free experience",
+      { label: "Unlimited AI Buddha spiritual chat" },
+      { label: "Weekly curated Lofi playlist syncs" },
+      { label: "Ad-free ambient audio downloads" },
+      { label: "Complete ad-free experience" },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Explore the Lofi library", href: "/browse" },
-      { icon: "heart", label: "Start a chat with AI Buddha", href: "/browse" },
-      { icon: "music", label: "Listen to this week's playlist", href: "/browse" },
+      { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes and Lofi mixes", href: "/browse" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "/browse" },
+      { icon: "music", label: "This week's playlist", desc: "Your first weekly curated Lofi playlist is ready", href: "/browse" },
     ],
     ctaLabel: "Begin your practice",
     ctaHref: "/browse",
@@ -45,16 +47,17 @@ const TIER_CONTENT: Record<string, TierContent> = {
       "You've unlocked everything — personalized daily meditations, custom spiritual roadmaps, and priority access. This is deep transformation.",
     quote: "The way is not in the sky. The way is in the heart.",
     quoteAttribution: "Buddha",
+    tierLabel: "Enlightened Path · €12,99/month",
     features: [
-      "Everything in Mindful Path",
-      "Personalized daily guided meditations",
-      "Custom spiritual roadmaps",
-      "Priority support & early access",
+      { label: "Everything in Mindful Path" },
+      { label: "Personalized daily guided meditations" },
+      { label: "Custom spiritual roadmaps" },
+      { label: "Priority support & early access" },
     ],
     nextSteps: [
-      { icon: "heart", label: "Complete your spiritual roadmap", href: "/browse" },
-      { icon: "headphones", label: "Receive your first meditation", href: "/browse" },
-      { icon: "music", label: "Explore the Lofi library", href: "/browse" },
+      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "/browse" },
+      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "/browse" },
+      { icon: "music", label: "Premium library", desc: "Full access to all ambient albums and exclusive tracks", href: "/browse" },
     ],
     ctaLabel: "Begin your journey",
     ctaHref: "/browse",
@@ -62,17 +65,22 @@ const TIER_CONTENT: Record<string, TierContent> = {
   zen: {
     headline: "Welcome to the community",
     subheadline:
-      "You've joined Zen Beginner — free access to Lofi soundscapes, 10 daily AI Buddha chats, and the box breathing visualizer.",
+      "You've joined Zen Beginner — free access to Lofi soundscapes, 10 daily AI Buddha chats, and the box breathing visualizer. Your practice starts now.",
     quote: "Peace comes from within. Do not seek it without.",
     quoteAttribution: "Buddha",
+    tierLabel: "Zen Beginner · Free",
     features: [
-      "Live-syncing Lofi soundscapes",
-      "10 AI Buddha chats per day",
-      "4-4-4 box breathing visualizer",
+      { label: "Live-syncing Lofi soundscapes" },
+      { label: "10 AI Buddha chats per day" },
+      { label: "4-4-4 box breathing visualizer" },
+      { label: "Unlimited AI Buddha chats", locked: true },
+      { label: "Weekly curated playlists", locked: true },
+      { label: "Personalized guided meditations", locked: true },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Start listening", href: "/browse" },
-      { icon: "heart", label: "Try a breathing session", href: "/browse" },
+      { icon: "headphones", label: "Start listening", desc: "Tune into our live-syncing Lofi radio stream — no sign-in needed", href: "/browse" },
+      { icon: "heart", label: "Try box breathing", desc: "Open the 4-4-4 breathing visualizer for instant calm", href: "/browse" },
+      { icon: "music", label: "Explore premium", desc: "See what's unlocked on the Mindful and Enlightened paths", href: "/signup" },
     ],
     ctaLabel: "Begin your practice",
     ctaHref: "/browse",
@@ -85,10 +93,11 @@ const UNKNOWN_CONTENT: TierContent = {
     "Your subscription is active. A calm space awaits — explore your new practice.",
   quote: "The journey of a thousand miles begins with a single step.",
   quoteAttribution: "Lao Tzu",
+  tierLabel: "",
   features: [],
   nextSteps: [
-    { icon: "headphones", label: "Explore the library", href: "/browse" },
-    { icon: "heart", label: "Start a practice", href: "/browse" },
+    { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes", href: "/browse" },
+    { icon: "heart", label: "Start a practice", desc: "Begin with a simple breathing exercise", href: "/browse" },
   ],
   ctaLabel: "Begin your practice",
   ctaHref: "/browse",
@@ -99,6 +108,36 @@ const iconMap: Record<string, React.ElementType> = {
   heart: Heart,
   headphones: Headphones,
 };
+
+// ── Floating gold particle ────────────────────
+function FloatingParticles() {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+      {Array.from({ length: 20 }).map((_, i) => {
+        const size = 2 + Math.random() * 4;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 8;
+        const duration = 8 + Math.random() * 12;
+        const opacity = 0.08 + Math.random() * 0.12;
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${left}%`,
+              bottom: "-10px",
+              background: `radial-gradient(circle, rgba(176,128,80,${opacity + 0.3}) 0%, rgba(176,128,80,0) 70%)`,
+              animation: `particleFloat ${duration}s ${delay}s ease-in infinite`,
+              opacity,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
 
 function SuccessContent() {
   const params = useSearchParams();
@@ -113,12 +152,20 @@ function SuccessContent() {
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState<string>("");
   const [scrollY, setScrollY] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(true);
+  const confettiTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Scroll tracking for nav glassmorphism ──
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Confetti auto-dismiss ──
+  useEffect(() => {
+    confettiTimeout.current = setTimeout(() => setShowConfetti(false), 4000);
+    return () => { if (confettiTimeout.current) clearTimeout(confettiTimeout.current); };
   }, []);
 
   // ── Fetch tier info from session ──
@@ -128,9 +175,7 @@ function SuccessContent() {
       return;
     }
 
-    // If tier is in URL (zen free tier redirect), use it directly
     if (searchTier) {
-      const content = TIER_CONTENT[searchTier] || UNKNOWN_CONTENT;
       setTier(searchTier);
       setLoading(false);
       return;
@@ -175,6 +220,8 @@ function SuccessContent() {
   }, [customerId]);
 
   const content = TIER_CONTENT[tier] || UNKNOWN_CONTENT;
+  const isPaid = tier === "mindful" || tier === "enlightened";
+  const hasCustomerPortal = !!customerId;
 
   return (
     <>
@@ -208,34 +255,80 @@ function SuccessContent() {
           to { stroke-dashoffset: 0; }
         }
         @keyframes scaleIn {
-          from { opacity: 0; transform: scale(0.8); }
+          from { opacity: 0; transform: scale(0.7); }
           to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes checkPop {
+          0% { transform: scale(0); opacity: 0; }
+          50% { transform: scale(1.2); opacity: 1; }
+          70% { transform: scale(0.9); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes particleFloat {
+          0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+          10% { opacity: 0.8; }
+          90% { opacity: 0.6; }
+          100% { transform: translateY(-100vh) translateX(40px) scale(0.3); opacity: 0; }
+        }
+        @keyframes confetti1 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+          100% { transform: translate(60px, -120px) rotate(240deg) scale(0); opacity: 0; }
+        }
+        @keyframes confetti2 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+          100% { transform: translate(-50px, -140px) rotate(-200deg) scale(0); opacity: 0; }
+        }
+        @keyframes confetti3 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+          100% { transform: translate(70px, -100px) rotate(180deg) scale(0); opacity: 0; }
+        }
+        @keyframes confetti4 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+          100% { transform: translate(-60px, -130px) rotate(-160deg) scale(0); opacity: 0; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
         }
 
         .anim-fade-1 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
-        .anim-fade-2 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; opacity: 0; }
-        .anim-fade-3 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards; opacity: 0; }
-        .anim-fade-4 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards; opacity: 0; }
-        .anim-fade-5 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards; opacity: 0; }
-        .anim-fade-6 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.0s forwards; opacity: 0; }
-        .anim-fade-7 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards; opacity: 0; }
+        .anim-fade-2 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; opacity: 0; }
+        .anim-fade-3 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards; opacity: 0; }
+        .anim-fade-4 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards; opacity: 0; }
+        .anim-fade-5 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.7s forwards; opacity: 0; }
+        .anim-fade-6 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.9s forwards; opacity: 0; }
+        .anim-fade-7 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.1s forwards; opacity: 0; }
 
         .anim-scale { animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; }
+        .anim-check-pop { animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards; opacity: 0; }
         .anim-enso { animation: ensoSpin 30s linear infinite; }
 
         .anim-check circle {
           stroke-dasharray: 60;
           stroke-dashoffset: 60;
-          animation: checkDraw 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+          animation: checkDraw 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
         }
 
         .success-page ::selection {
           background: rgba(176, 128, 80, 0.15);
           color: #1c1917;
         }
+
+        .shimmer-text {
+          background: linear-gradient(90deg, #1c1917 0%, #b08050 50%, #1c1917 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 4s ease-in-out infinite;
+        }
       `}</style>
 
-      <div className="success-page min-h-screen">
+      {/* ── Floating particles ── */}
+      <FloatingParticles />
+
+      <div className="success-page min-h-screen relative" style={{ zIndex: 1 }}>
+
         {/* ── Navigation ── */}
         <nav
           className="fixed top-0 left-0 right-0 z-50 border-b border-stone-200/60"
@@ -284,6 +377,7 @@ function SuccessContent() {
         {!loading && (
           <div className="pt-32 pb-24 sm:pt-40 sm:pb-36 px-6 sm:px-10">
             <div className="max-w-2xl mx-auto text-center">
+
               {/* ── Animated checkmark with enso ring ── */}
               <div className="relative w-28 h-28 mx-auto mb-12">
                 {/* Enso circle — spinning */}
@@ -304,9 +398,35 @@ function SuccessContent() {
                     opacity="0.3"
                   />
                 </svg>
+                {/* Confetti burst particles */}
+                {showConfetti && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    {[
+                      { anim: "confetti1", dur: "1.2s", color: "#b08050", w: "8px", h: "3px", rad: "1px" },
+                      { anim: "confetti2", dur: "1.3s", color: "#d4a44a", w: "6px", h: "3px", rad: "1px" },
+                      { anim: "confetti3", dur: "1.1s", color: "#c89050", w: "7px", h: "2px", rad: "1px" },
+                      { anim: "confetti4", dur: "1.4s", color: "#e0b860", w: "5px", h: "3px", rad: "1px" },
+                      { anim: "confetti1", dur: "1.25s", color: "#b08050", w: "9px", h: "2px", rad: "1px" },
+                      { anim: "confetti2", dur: "1.15s", color: "#d4a060", w: "6px", h: "2px", rad: "1px" },
+                    ].map((c, i) => (
+                      <div
+                        key={i}
+                        className="absolute"
+                        style={{
+                          width: c.w,
+                          height: c.h,
+                          borderRadius: c.rad,
+                          background: c.color,
+                          animation: `${c.anim} ${c.dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`,
+                          opacity: 0,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
                 {/* Checkmark circle */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-[68px] h-[68px] rounded-full bg-amber-100/60 anim-scale flex items-center justify-center">
+                  <div className="w-[68px] h-[68px] rounded-full bg-amber-100/60 anim-check-pop flex items-center justify-center">
                     <svg
                       viewBox="0 0 24 24"
                       className="w-9 h-9 anim-check"
@@ -326,16 +446,16 @@ function SuccessContent() {
               </div>
 
               {/* ── Headline ── */}
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-stone-800 mb-4 anim-fade-1">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-stone-800 mb-3 anim-fade-1">
                 {content.headline}
               </h1>
 
-              {/* ── Tier badge + price ── */}
-              {(tierName || tierPrice) && (
+              {/* ── Tier badge ── */}
+              {(tierName || tierPrice || content.tierLabel) && (
                 <div className="anim-fade-2 mb-6">
                   <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/60 text-amber-800 text-sm font-medium">
-                    {tierName}
-                    {tierPrice && (
+                    {tierName || content.tierLabel}
+                    {tierPrice && tierPrice !== "Free" && (
                       <span className="text-amber-600 font-normal">
                         · {tierPrice}
                       </span>
@@ -345,13 +465,13 @@ function SuccessContent() {
               )}
 
               {/* ── Subheadline ── */}
-              <p className="text-stone-500 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-14 anim-fade-3">
+              <p className="text-stone-500 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-12 anim-fade-3">
                 {content.subheadline}
               </p>
 
               {/* ── Features ── */}
               {content.features.length > 0 && (
-                <div className="bg-white border border-stone-200/80 rounded-2xl p-8 sm:p-10 mb-12 text-left anim-fade-4">
+                <div className="bg-white border border-stone-200/80 rounded-2xl p-8 sm:p-10 mb-10 text-left anim-fade-4">
                   <h2 className="font-serif text-lg font-medium text-stone-700 mb-5">
                     What you now have
                   </h2>
@@ -359,13 +479,21 @@ function SuccessContent() {
                     {content.features.map((feat, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-3 text-stone-600 text-sm"
+                        className={`flex items-start gap-3 text-sm ${feat.locked ? "text-stone-350" : "text-stone-600"}`}
                       >
-                        <Check
-                          size={16}
-                          className="mt-0.5 flex-shrink-0 text-amber-600"
-                        />
-                        {feat}
+                        {feat.locked ? (
+                          <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full border border-stone-300 flex items-center justify-center">
+                            <span className="w-1.5 h-1.5 rounded-full bg-stone-300" />
+                          </span>
+                        ) : (
+                          <Check
+                            size={16}
+                            className="mt-0.5 flex-shrink-0 text-amber-600"
+                          />
+                        )}
+                        <span className={feat.locked ? "opacity-50" : ""}>
+                          {feat.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -374,7 +502,7 @@ function SuccessContent() {
 
               {/* ── Next steps ── */}
               {content.nextSteps.length > 0 && (
-                <div className="mb-14 anim-fade-5">
+                <div className="mb-10 anim-fade-5">
                   <h2 className="font-serif text-lg font-medium text-stone-700 mb-5">
                     Where to begin
                   </h2>
@@ -385,17 +513,22 @@ function SuccessContent() {
                         <Link
                           key={i}
                           href={step.href}
-                          className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-white border border-stone-200/80 hover:border-amber-300/40 hover:shadow-md transition-all duration-500"
+                          className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-white border border-stone-200/80 hover:border-amber-300/40 hover:shadow-md transition-all duration-500"
                         >
-                          <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors duration-500">
+                          <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors duration-500 flex-shrink-0">
                             <Icon
                               size={18}
                               className="text-amber-700 group-hover:text-amber-800 transition-colors"
                             />
                           </div>
-                          <span className="text-sm text-stone-600 group-hover:text-stone-800 transition-colors text-center">
-                            {step.label}
-                          </span>
+                          <div className="text-center">
+                            <span className="text-sm font-medium text-stone-700 group-hover:text-stone-800 transition-colors">
+                              {step.label}
+                            </span>
+                            <p className="text-xs text-stone-400 mt-1 leading-relaxed">
+                              {step.desc}
+                            </p>
+                          </div>
                         </Link>
                       );
                     })}
@@ -403,46 +536,60 @@ function SuccessContent() {
                 </div>
               )}
 
-              {/* ── CTA ── */}
+              {/* ── CTAs ── */}
               <div className="space-y-4 anim-fade-6">
+                {/* Primary CTA */}
                 <Link
                   href={content.ctaHref}
-                  className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all"
+                  className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all duration-300"
                 >
                   {content.ctaLabel}
                   <ArrowRight size={16} />
                 </Link>
+
+                {/* Customer Portal — prominent secondary button */}
+                {hasCustomerPortal && (
+                  <div>
+                    <button
+                      onClick={handlePortal}
+                      disabled={portalLoading}
+                      className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-stone-300 text-stone-600 text-sm tracking-wide hover:border-stone-400 hover:text-stone-800 hover:bg-stone-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {portalLoading ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          Opening portal...
+                        </>
+                      ) : (
+                        <>
+                          <Settings size={14} />
+                          Manage your subscription
+                          <ExternalLink size={12} className="opacity-50" />
+                        </>
+                      )}
+                    </button>
+                    {portalError && (
+                      <p className="text-xs text-amber-700 mt-2">{portalError}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Upsell for zen tier */}
+                {tier === "zen" && (
+                  <div>
+                    <Link
+                      href="/signup"
+                      className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-amber-300/60 text-amber-800 text-sm tracking-wide hover:border-amber-400 hover:bg-amber-50 transition-all duration-300"
+                    >
+                      See premium plans
+                      <ArrowRight size={14} />
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              {/* ── Customer Portal ── */}
-              {customerId && (
-                <div className="mt-8 anim-fade-7">
-                  <button
-                    onClick={handlePortal}
-                    disabled={portalLoading}
-                    className="text-xs text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2 disabled:opacity-50"
-                  >
-                    {portalLoading ? (
-                      <span className="inline-flex items-center gap-1.5">
-                        <Loader2 size={12} className="animate-spin" />
-                        Opening portal...
-                      </span>
-                    ) : (
-                      "Manage your subscription"
-                    )}
-                  </button>
-                  {portalError && (
-                    <p className="text-xs text-amber-700 mt-2">{portalError}</p>
-                  )}
-                </div>
-              )}
-
               {/* ── Quote ── */}
-              <div className="mt-20 pt-16 border-t border-stone-200/60 anim-fade-6">
-                <Quote
-                  size={20}
-                  className="text-amber-300 mx-auto mb-4"
-                />
+              <div className="mt-20 pt-16 border-t border-stone-200/60 anim-fade-7">
                 <p className="font-serif text-xl sm:text-2xl italic text-stone-400 font-light leading-relaxed max-w-md mx-auto">
                   &ldquo;{content.quote}&rdquo;
                 </p>
