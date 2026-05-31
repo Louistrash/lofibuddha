@@ -1,21 +1,52 @@
+"use client";
+
 import Link from "next/link";
-import { Moon } from "lucide-react";
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen theme-buddha bg-bg-primary text-text-primary">
+    <div className="min-h-screen" style={{ background: "#faf8f5", color: "#1c1917", fontFamily: '"Inter", system-ui, -apple-system, sans-serif' }}>
       {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border/50">
+      <nav
+        className="sticky top-0 z-50 border-b"
+        style={{
+          background: "rgba(250,248,245,0.85)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderColor: "rgba(0,0,0,0.06)",
+        }}
+      >
         <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/landing" className="flex items-center gap-2">
-            <svg width="24" height="24" viewBox="0 0 100 100" className="transition-transform duration-700 hover:rotate-12">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#d4a44a" strokeWidth="2.5" strokeDasharray="230" strokeDashoffset="20" strokeLinecap="round" />
-              <circle cx="50" cy="50" r="10" fill="#d4a44a" opacity="0.85" />
-              <path d="M50 15 C65 15 75 25 78 40 C80 25 70 15 50 15Z" fill="#e0b860" opacity="0.5" />
-            </svg>
-            <span className="font-semibold text-text-primary text-sm">LofiBuddha</span>
+          <Link href="/landing" className="flex items-center gap-2.5 no-underline">
+            <img
+              src="/lofibuddha.png"
+              alt="LofiBuddha"
+              className="h-[31px] w-auto"
+              style={{ borderRadius: 8 }}
+            />
+            <span
+              style={{
+                fontFamily: '"Playfair Display", Georgia, serif',
+                fontSize: "1.1rem",
+                color: "#1c1917",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
+              LofiBuddha
+            </span>
           </Link>
-          <Link href="/landing" className="text-sm text-text-muted hover:text-accent-light transition-colors">
+          <Link
+            href="/landing"
+            style={{
+              color: "#78716c",
+              fontSize: "0.8rem",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              fontWeight: 400,
+              textDecoration: "none",
+            }}
+            className="hover:underline"
+          >
             ← Back
           </Link>
         </div>
@@ -23,31 +54,125 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
 
       {/* Content */}
       <main className="max-w-3xl mx-auto px-6 py-12 sm:py-16">
-        <div className="prose prose-invert prose-sm max-w-none
-          prose-headings:text-text-primary prose-headings:font-bold
-          prose-h1:text-2xl prose-h1:sm:text-3xl
-          prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4
-          prose-h3:text-lg prose-h3:text-accent-light
-          prose-p:text-text-secondary prose-p:leading-relaxed
-          prose-a:text-accent-light prose-a:no-underline hover:prose-a:underline
-          prose-strong:text-text-primary
-          prose-ul:text-text-secondary
-          prose-li:marker:text-accent">
-          {children}
-        </div>
+        <div className="legal-content">{children}</div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/30 py-8 text-center">
-        <div className="max-w-3xl mx-auto px-6 space-y-2">
-          <p className="text-xs text-text-muted">&copy; {new Date().getFullYear()} LofiBuddha. All rights reserved.</p>
-          <div className="flex items-center justify-center gap-4 text-xs text-text-muted">
-            <Link href="/legal/privacy" className="hover:text-accent-light transition-colors">Privacy</Link>
-            <Link href="/legal/terms" className="hover:text-accent-light transition-colors">Terms</Link>
-            <Link href="/legal/disclaimer" className="hover:text-accent-light transition-colors">Disclaimer</Link>
+      <footer
+        className="py-8 text-center"
+        style={{ borderTop: "1px solid rgba(0,0,0,0.06)", background: "#f5f0e8" }}
+      >
+        <div className="max-w-3xl mx-auto px-6 space-y-3">
+          <p style={{ fontSize: "0.7rem", color: "#78716c", fontWeight: 300 }}>
+            &copy; {new Date().getFullYear()} LofiBuddha. All rights reserved.
+          </p>
+          <div className="flex items-center justify-center gap-5">
+            {[
+              { label: "Privacy", href: "/legal/privacy" },
+              { label: "Terms", href: "/legal/terms" },
+              { label: "Disclaimer", href: "/legal/disclaimer" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  color: "#78716c",
+                  fontSize: "0.7rem",
+                  fontWeight: 300,
+                  letterSpacing: "0.04em",
+                  textDecoration: "none",
+                }}
+                className="hover:underline"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </footer>
+
+      {/* Inline typography styles for legal content */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+        body {
+          background: #faf8f5 !important;
+          color: #1c1917 !important;
+        }
+        .legal-content h1 {
+          font-family: "Playfair Display", Georgia, serif;
+          font-size: 2rem;
+          font-weight: 400;
+          color: #1c1917;
+          margin-bottom: 0.5rem;
+          line-height: 1.2;
+        }
+        .legal-content h2 {
+          font-family: "Playfair Display", Georgia, serif;
+          font-size: 1.3rem;
+          font-weight: 500;
+          color: #1c1917;
+          margin-top: 2rem;
+          margin-bottom: 0.75rem;
+          line-height: 1.3;
+        }
+        .legal-content h3 {
+          font-family: "Playfair Display", Georgia, serif;
+          font-size: 1rem;
+          font-weight: 500;
+          color: #b08050;
+          margin-top: 1.5rem;
+          margin-bottom: 0.5rem;
+          line-height: 1.3;
+        }
+        .legal-content p {
+          color: #78716c;
+          line-height: 1.8;
+          margin-bottom: 1rem;
+          font-weight: 300;
+        }
+        .legal-content ul {
+          margin: 0.5rem 0 1rem 1.5rem;
+          color: #78716c;
+          font-weight: 300;
+          line-height: 1.8;
+        }
+        .legal-content li {
+          margin-bottom: 0.4rem;
+        }
+        .legal-content strong {
+          color: #1c1917;
+          font-weight: 500;
+        }
+        .legal-content a {
+          color: #b08050;
+          text-decoration: none;
+        }
+        .legal-content a:hover {
+          text-decoration: underline;
+        }
+        .legal-content .legal-updated {
+          font-size: 0.8rem;
+          color: #78716c;
+          font-style: italic;
+          margin-bottom: 2rem;
+          font-weight: 300;
+        }
+        .legal-content .legal-notice {
+          background: #f5f0e8;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+          font-size: 0.85rem;
+          line-height: 1.7;
+          color: #44403c;
+          border: 1px solid rgba(0,0,0,0.04);
+        }
+        .legal-content .legal-notice p {
+          color: #44403c;
+          margin-bottom: 0;
+        }
+      `}</style>
     </div>
   );
 }
