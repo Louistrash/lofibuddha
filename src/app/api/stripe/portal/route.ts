@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Customer portal not yet configured. Please contact support to manage your subscription.",
+            "Your subscription portal is being prepared. It will be available shortly — please check back or contact support@lofibuddha.com.",
         },
         { status: 400 }
       );

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { ArrowRight, Play, Pause, Volume2, Send, ChevronDown, Menu, X, Heart, Quote, Music, BookOpen, Camera } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Play, ChevronDown, Menu, X, Heart, Send, Quote } from "lucide-react";
 
 // ─── Language ─────────────────────────────────
 type Lang = "en" | "nl" | "es" | "de" | "fr" | "hi";
@@ -50,9 +51,9 @@ const t = {
 
 // ─── Journal articles ──────────────────────────
 const journalArticles = [
-  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/generated/thumb-yoga.png", slug: "/browse" },
-  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/generated/thumb-focus.png", slug: "/browse" },
-  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/generated/thumb-breath.png", slug: "/browse" },
+  { title: "The Art of Doing Nothing", category: "Slow Living", readTime: "4 min read", image: "/images/generated/thumb-yoga.png", slug: "/learn" },
+  { title: "Why Lofi Music Helps You Focus", category: "Science", readTime: "6 min read", image: "/images/generated/thumb-focus.png", slug: "/learn" },
+  { title: "A Beginner's Guide to Breathwork", category: "Wellness", readTime: "5 min read", image: "/images/generated/thumb-breath.png", slug: "/learn" },
 ];
 
 // ─── Album-style music cards ──────────────────
@@ -78,21 +79,35 @@ export default function LandingPage() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const rafRef = useRef<number | null>(null);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     localStorage.setItem("lofibuddha-lang", lang);
   }, [lang]);
 
+  // Throttled scroll handler using requestAnimationFrame
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        rafRef.current = requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   const tFn = (key: Record<Lang, string>) => key[lang] || key.en;
 
-  const handleSubscribe = async (e: React.FormEvent) => {
+  const handleSubscribe = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     try {
@@ -103,9 +118,9 @@ export default function LandingPage() {
       });
       setSubscribed(true);
     } catch {
-      setSubscribed(true); // Still show thank-you even if API fails
+      setSubscribed(true);
     }
-  };
+  }, [email, lang]);
 
   return (
     <div className="min-h-screen editorial-theme">
@@ -116,7 +131,7 @@ export default function LandingPage() {
         {/* Atmospheric background */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white" />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[180px] opacity-20" 
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[180px] opacity-20"
             style={{ background: "radial-gradient(circle, rgba(180,130,80,0.3) 0%, transparent 70%)" }} />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-15"
             style={{ background: "radial-gradient(circle, rgba(140,180,160,0.3) 0%, transparent 70%)" }} />
@@ -134,7 +149,7 @@ export default function LandingPage() {
 
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-700"
-          style={{ 
+          style={{
             background: scrollY > 50 ? "rgba(250,248,245,0.92)" : "rgba(250,248,245,0.75)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
@@ -142,7 +157,15 @@ export default function LandingPage() {
           }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-10 h-16 sm:h-20 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-auto" />
+              <Image
+                src="/lofibuddha.png"
+                alt="LofiBuddha"
+                width={35}
+                height={35}
+                priority
+                unoptimized
+                className="h-[35px] w-auto"
+              />
               <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
             </Link>
 
@@ -177,7 +200,7 @@ export default function LandingPage() {
             </div>
 
             {/* Mobile hamburger */}
-            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2 text-stone-600">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2 text-stone-600" aria-label="Menu">
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
@@ -240,10 +263,13 @@ export default function LandingPage() {
             {/* Image side — spans 3 columns */}
             <div className="lg:col-span-3 relative">
               <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
-                <img 
-                  src="/images/generated/featured-story.png" 
-                  alt="The Science of Stillness" 
-                  className="absolute inset-0 w-full h-full object-cover"
+                <Image
+                  src="/images/generated/featured-story.png"
+                  alt="The Science of Stillness"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="object-cover"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
               </div>
@@ -282,10 +308,13 @@ export default function LandingPage() {
               <div key={i} className="group cursor-pointer">
                 {/* Album artwork */}
                 <div className="aspect-square rounded-2xl mb-5 relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.02]">
-                  <img 
-                    src={album.image} 
+                  <Image
+                    src={album.image}
                     alt={album.title}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-900/50 via-stone-900/10 to-transparent" />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -355,10 +384,13 @@ export default function LandingPage() {
             {journalArticles.map((article, i) => (
               <a key={i} href={article.slug} className="group block">
                 <div className="aspect-[3/4] rounded-xl mb-5 overflow-hidden relative">
-                  <img 
-                    src={article.image} 
+                  <Image
+                    src={article.image}
                     alt={article.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent" />
                 </div>
@@ -379,7 +411,7 @@ export default function LandingPage() {
           <Send size={20} className="text-amber-300 mx-auto mb-6" />
           <h2 className="font-serif text-3xl sm:text-4xl font-light text-stone-800 mb-4">{tFn(t.sectionNewsletter)}</h2>
           <p className="text-stone-500 text-sm mb-8 leading-relaxed">{tFn(t.sectionNewsletterSub)}</p>
-          
+
           {subscribed ? (
             <div className="py-8">
               <Heart size={32} className="text-amber-400 mx-auto mb-3" />
@@ -398,7 +430,6 @@ export default function LandingPage() {
           )}
         </div>
       </section>
-
 
       {/* SOCIAL — Connect */}
       <section className="py-20 px-6 sm:px-10 bg-stone-100/50">
@@ -434,7 +465,15 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
             <div className="col-span-2 md:col-span-1 space-y-4">
               <Link href="/" className="flex items-center gap-2.5">
-                <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-auto" />
+                <Image
+                  src="/lofibuddha.png"
+                  alt="LofiBuddha"
+                  width={31}
+                  height={31}
+                  loading="lazy"
+                  unoptimized
+                  className="h-[31px] w-auto"
+                />
                 <span className="font-serif text-base tracking-wide text-stone-200">LofiBuddha</span>
               </Link>
               <p className="text-xs leading-relaxed text-stone-500">{tFn(t.footerRights)}</p>

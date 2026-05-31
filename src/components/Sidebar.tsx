@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Bot,
   Mail,
+  Users,
 } from "lucide-react";
 
 import NextImage from "next/image";
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/studio", label: "Studio", icon: Podcast },
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/newsletter", label: "Newsletter", icon: Mail },
+  { href: "/subscribers", label: "Subscribers", icon: Users },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/hermes", label: "Hermes OS", icon: Bot, badge: "Full" },
 ];

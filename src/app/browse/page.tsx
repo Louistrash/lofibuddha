@@ -123,10 +123,6 @@ export default function BrowsePage() {
                 </div>
                 <h3 className="font-semibold text-text-primary">{item.title}</h3>
                 <p className="text-sm text-text-muted leading-relaxed">{item.desc}</p>
-                <button className="flex items-center gap-1.5 text-sm text-accent-light hover:text-accent transition-colors group/btn">
-                  <Play size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                  Play now
-                </button>
               </div>
             </div>
           ))}

@@ -239,9 +239,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Serif font stack for headings */
+/* Serif font stack for headings — uses next/font/google CSS variable */
 .editorial-theme .font-serif {
-  font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+  font-family: var(--font-serif), "Georgia", "Times New Roman", serif;
+  font-display: swap;
 }
 
 /* Slow fade-in animation */
@@ -274,3 +275,25 @@ body {
 .editorial-theme ::-webkit-scrollbar { width: 6px; }
 .editorial-theme ::-webkit-scrollbar-track { background: transparent; }
 .editorial-theme ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }
+
+/* ── Performance: content-visibility for off-screen sections ── */
+.editorial-theme section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* ── Performance: prevent layout shift for images ── */
+.editorial-theme img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Reduce paint on scroll ── */
+.editorial-theme .fixed {
+  will-change: transform;
+}
+
+/* ── Font loading optimization ── */
+.editorial-theme {
+  font-display: optional;
+}

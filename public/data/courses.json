@@ -12,13 +12,48 @@
           "subtitle": "A 7-Day Introduction to Meditation",
           "description": "Discover the power of presence. This gentle 7-day journey introduces you to meditation, mindful breathing, and the art of simply being. No experience needed — just an open mind.",
           "modules": [
-            { "day": 1, "title": "What is Mindfulness?", "type": "text", "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation." },
-            { "day": 2, "title": "The Breath as Anchor", "type": "video", "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale." },
-            { "day": 3, "title": "Body Scan Meditation", "type": "video", "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding." },
-            { "day": 4, "title": "Working with Thoughts", "type": "text", "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind." },
-            { "day": 5, "title": "Mindful Movement", "type": "video", "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice." },
-            { "day": 6, "title": "Compassion & Self-Kindness", "type": "text", "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward." },
-            { "day": 7, "title": "Integrating Mindfulness Into Daily Life", "type": "video", "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course." }
+            {
+              "day": 1,
+              "title": "What is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation."
+            },
+            {
+              "day": 2,
+              "title": "The Breath as Anchor",
+              "type": "video",
+              "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale."
+            },
+            {
+              "day": 3,
+              "title": "Body Scan Meditation",
+              "type": "video",
+              "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding."
+            },
+            {
+              "day": 4,
+              "title": "Working with Thoughts",
+              "type": "text",
+              "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Movement",
+              "type": "video",
+              "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice."
+            },
+            {
+              "day": 6,
+              "title": "Compassion & Self-Kindness",
+              "type": "text",
+              "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward."
+            },
+            {
+              "day": 7,
+              "title": "Integrating Mindfulness Into Daily Life",
+              "type": "video",
+              "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course."
+            }
           ]
         },
         "nl": {
@@ -26,19 +61,246 @@
           "subtitle": "Een 7-Daagse Introductie tot Meditatie",
           "description": "Ontdek de kracht van aanwezigheid. Deze zachte reis van 7 dagen introduceert je in meditatie, mindful ademen en de kunst van simpelweg zijn. Geen ervaring nodig — alleen een open geest.",
           "modules": [
-            { "day": 1, "title": "Wat is Mindfulness?", "type": "text", "content": "Mindfulness is de beoefening van aandacht schenken aan het huidige moment zonder oordeel. Het gaat niet om het leegmaken van je geest — het gaat om opmerken wat er is. In deze les leer je de basis en probeer je je eerste meditatie van 2 minuten." },
-            { "day": 2, "title": "De Adem als Anker", "type": "video", "content": "Je adem is altijd bij je — een draagbaar anker in elke storm. Vandaag oefenen we het volgen van de adem: het ritme, de temperatuur en de ruimte tussen inademing en uitademing." },
-            { "day": 3, "title": "Bodyscan Meditatie", "type": "video", "content": "Een zachte reis door je lichaam. Van de kruin van je hoofd tot de toppen van je tenen — leer sensaties op te merken zonder oordeel. Laat spanning los waarvan je niet wist dat je die vasthield." },
-            { "day": 4, "title": "Werken met Gedachten", "type": "text", "content": "Gedachten zijn niet de vijand. Het zijn wolken die door de lucht van bewustzijn drijven. Vandaag leer je gedachten observeren zonder erin verstrikt te raken — een vaardigheid die je relatie met je eigen geest transformeert." },
-            { "day": 5, "title": "Mindful Bewegen", "type": "video", "content": "Meditatie betekent niet stilzitten. Ontdek hoe wandelen, stretchen en dagelijkse bewegingen meditatie worden wanneer je ze met bewustzijn doet. Een 10-minuten mindful wandelpraktijk." },
-            { "day": 6, "title": "Compassie & Zelfvriendelijkheid", "type": "text", "content": "Het hart van mindfulness is vriendelijkheid — eerst naar jezelf, dan naar de wereld. De oefening van vandaag: liefdevolle vriendelijkheidsmeditatie. Leer compassie naar binnen te sturen voordat je het naar buiten deelt." },
-            { "day": 7, "title": "Mindfulness Integreren in het Dagelijks Leven", "type": "video", "content": "Mindfulness is geen sessie van 10 minuten — het is een manier van leven. Vandaag verkennen we micro-praktijken: mindful thee drinken, mindful luisteren, mindful wachten. Jouw beoefening gaat verder dan deze cursus." }
+            {
+              "day": 1,
+              "title": "Wat is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is de beoefening van aandacht schenken aan het huidige moment zonder oordeel. Het gaat niet om het leegmaken van je geest — het gaat om opmerken wat er is. In deze les leer je de basis en probeer je je eerste meditatie van 2 minuten."
+            },
+            {
+              "day": 2,
+              "title": "De Adem als Anker",
+              "type": "video",
+              "content": "Je adem is altijd bij je — een draagbaar anker in elke storm. Vandaag oefenen we het volgen van de adem: het ritme, de temperatuur en de ruimte tussen inademing en uitademing."
+            },
+            {
+              "day": 3,
+              "title": "Bodyscan Meditatie",
+              "type": "video",
+              "content": "Een zachte reis door je lichaam. Van de kruin van je hoofd tot de toppen van je tenen — leer sensaties op te merken zonder oordeel. Laat spanning los waarvan je niet wist dat je die vasthield."
+            },
+            {
+              "day": 4,
+              "title": "Werken met Gedachten",
+              "type": "text",
+              "content": "Gedachten zijn niet de vijand. Het zijn wolken die door de lucht van bewustzijn drijven. Vandaag leer je gedachten observeren zonder erin verstrikt te raken — een vaardigheid die je relatie met je eigen geest transformeert."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Bewegen",
+              "type": "video",
+              "content": "Meditatie betekent niet stilzitten. Ontdek hoe wandelen, stretchen en dagelijkse bewegingen meditatie worden wanneer je ze met bewustzijn doet. Een 10-minuten mindful wandelpraktijk."
+            },
+            {
+              "day": 6,
+              "title": "Compassie & Zelfvriendelijkheid",
+              "type": "text",
+              "content": "Het hart van mindfulness is vriendelijkheid — eerst naar jezelf, dan naar de wereld. De oefening van vandaag: liefdevolle vriendelijkheidsmeditatie. Leer compassie naar binnen te sturen voordat je het naar buiten deelt."
+            },
+            {
+              "day": 7,
+              "title": "Mindfulness Integreren in het Dagelijks Leven",
+              "type": "video",
+              "content": "Mindfulness is geen sessie van 10 minuten — het is een manier van leven. Vandaag verkennen we micro-praktijken: mindful thee drinken, mindful luisteren, mindful wachten. Jouw beoefening gaat verder dan deze cursus."
+            }
           ]
         },
-        "es": { "title": "Mindfulness para Principiantes", "subtitle": "Una Introducción de 7 Días a la Meditación", "description": "Descubre el poder de la presencia.", "modules": [] },
-        "de": { "title": "Achtsamkeit für Anfänger", "subtitle": "Eine 7-tägige Einführung in die Meditation", "description": "Entdecke die Kraft der Präsenz.", "modules": [] },
-        "fr": { "title": "Mindfulness pour Débutants", "subtitle": "Une Introduction de 7 Jours à la Méditation", "description": "Découvrez le pouvoir de la présence.", "modules": [] },
-        "hi": { "title": "शुरुआती माइंडफुलनेस", "subtitle": "ध्यान का 7-दिवसीय परिचय", "description": "उपस्थिति की शक्ति की खोज करें।", "modules": [] }
+        "es": {
+          "title": "Mindfulness para Principiantes",
+          "subtitle": "Una Introducción de 7 Días a la Meditación",
+          "description": "Descubre el poder de la presencia.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "What is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation."
+            },
+            {
+              "day": 2,
+              "title": "The Breath as Anchor",
+              "type": "video",
+              "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale."
+            },
+            {
+              "day": 3,
+              "title": "Body Scan Meditation",
+              "type": "video",
+              "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding."
+            },
+            {
+              "day": 4,
+              "title": "Working with Thoughts",
+              "type": "text",
+              "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Movement",
+              "type": "video",
+              "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice."
+            },
+            {
+              "day": 6,
+              "title": "Compassion & Self-Kindness",
+              "type": "text",
+              "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward."
+            },
+            {
+              "day": 7,
+              "title": "Integrating Mindfulness Into Daily Life",
+              "type": "video",
+              "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course."
+            }
+          ]
+        },
+        "de": {
+          "title": "Achtsamkeit für Anfänger",
+          "subtitle": "Eine 7-tägige Einführung in die Meditation",
+          "description": "Entdecke die Kraft der Präsenz.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "What is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation."
+            },
+            {
+              "day": 2,
+              "title": "The Breath as Anchor",
+              "type": "video",
+              "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale."
+            },
+            {
+              "day": 3,
+              "title": "Body Scan Meditation",
+              "type": "video",
+              "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding."
+            },
+            {
+              "day": 4,
+              "title": "Working with Thoughts",
+              "type": "text",
+              "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Movement",
+              "type": "video",
+              "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice."
+            },
+            {
+              "day": 6,
+              "title": "Compassion & Self-Kindness",
+              "type": "text",
+              "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward."
+            },
+            {
+              "day": 7,
+              "title": "Integrating Mindfulness Into Daily Life",
+              "type": "video",
+              "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course."
+            }
+          ]
+        },
+        "fr": {
+          "title": "Mindfulness pour Débutants",
+          "subtitle": "Une Introduction de 7 Jours à la Méditation",
+          "description": "Découvrez le pouvoir de la présence.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "What is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation."
+            },
+            {
+              "day": 2,
+              "title": "The Breath as Anchor",
+              "type": "video",
+              "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale."
+            },
+            {
+              "day": 3,
+              "title": "Body Scan Meditation",
+              "type": "video",
+              "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding."
+            },
+            {
+              "day": 4,
+              "title": "Working with Thoughts",
+              "type": "text",
+              "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Movement",
+              "type": "video",
+              "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice."
+            },
+            {
+              "day": 6,
+              "title": "Compassion & Self-Kindness",
+              "type": "text",
+              "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward."
+            },
+            {
+              "day": 7,
+              "title": "Integrating Mindfulness Into Daily Life",
+              "type": "video",
+              "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course."
+            }
+          ]
+        },
+        "hi": {
+          "title": "शुरुआती माइंडफुलनेस",
+          "subtitle": "ध्यान का 7-दिवसीय परिचय",
+          "description": "उपस्थिति की शक्ति की खोज करें।",
+          "modules": [
+            {
+              "day": 1,
+              "title": "What is Mindfulness?",
+              "type": "text",
+              "content": "Mindfulness is the practice of paying attention to the present moment without judgment. It's not about clearing your mind — it's about noticing what's there. In this lesson, you'll learn the foundations and try your first 2-minute meditation."
+            },
+            {
+              "day": 2,
+              "title": "The Breath as Anchor",
+              "type": "video",
+              "content": "Your breath is always with you — a portable anchor in any storm. Today we practice following the breath: its rhythm, temperature, and the space between inhale and exhale."
+            },
+            {
+              "day": 3,
+              "title": "Body Scan Meditation",
+              "type": "video",
+              "content": "A gentle journey through your body. From the crown of your head to the tips of your toes, learn to notice sensation without judgment. Release tension you didn't know you were holding."
+            },
+            {
+              "day": 4,
+              "title": "Working with Thoughts",
+              "type": "text",
+              "content": "Thoughts are not the enemy. They're clouds passing through the sky of awareness. Today you'll learn to observe thoughts without getting caught in them — a skill that transforms your relationship with your own mind."
+            },
+            {
+              "day": 5,
+              "title": "Mindful Movement",
+              "type": "video",
+              "content": "Meditation doesn't mean sitting still. Discover how walking, stretching, and everyday movements become meditation when done with awareness. A 10-minute mindful walking practice."
+            },
+            {
+              "day": 6,
+              "title": "Compassion & Self-Kindness",
+              "type": "text",
+              "content": "The heart of mindfulness is kindness — toward yourself first, then the world. Today's practice: loving-kindness meditation. Learn to send compassion inward before sharing it outward."
+            },
+            {
+              "day": 7,
+              "title": "Integrating Mindfulness Into Daily Life",
+              "type": "video",
+              "content": "Mindfulness isn't a 10-minute session — it's a way of living. Today we explore micro-practices: mindful tea, mindful listening, mindful waiting. Your practice continues beyond this course."
+            }
+          ]
+        }
       }
     },
     {
@@ -53,16 +315,66 @@
           "subtitle": "10 Essential Poses for Daily Practice",
           "description": "Build a yoga practice that fits your life. Learn 10 fundamental poses with proper alignment, breathing cues, and modifications for every body. No flexibility required — just a willingness to begin.",
           "modules": [
-            { "day": 1, "title": "Mountain Pose (Tadasana)", "type": "video", "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation." },
-            { "day": 2, "title": "Downward Dog (Adho Mukha Svanasana)", "type": "video", "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings." },
-            { "day": 3, "title": "Warrior I & II (Virabhadrasana)", "type": "video", "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II." },
-            { "day": 4, "title": "Tree Pose (Vrksasana)", "type": "video", "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up." },
-            { "day": 5, "title": "Cat-Cow Flow", "type": "video", "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension." },
-            { "day": 6, "title": "Child's Pose (Balasana)", "type": "video", "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom." },
-            { "day": 7, "title": "Bridge Pose (Setu Bandhasana)", "type": "video", "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers." },
-            { "day": 8, "title": "Seated Forward Fold", "type": "video", "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch." },
-            { "day": 9, "title": "Reclined Twist", "type": "video", "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting." },
-            { "day": 10, "title": "Your 10-Pose Flow", "type": "video", "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning." }
+            {
+              "day": 1,
+              "title": "Mountain Pose (Tadasana)",
+              "type": "video",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+            },
+            {
+              "day": 2,
+              "title": "Downward Dog (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+            },
+            {
+              "day": 3,
+              "title": "Warrior I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+            },
+            {
+              "day": 4,
+              "title": "Tree Pose (Vrksasana)",
+              "type": "video",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+            },
+            {
+              "day": 5,
+              "title": "Cat-Cow Flow",
+              "type": "video",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+            },
+            {
+              "day": 6,
+              "title": "Child's Pose (Balasana)",
+              "type": "video",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+            },
+            {
+              "day": 7,
+              "title": "Bridge Pose (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+            },
+            {
+              "day": 8,
+              "title": "Seated Forward Fold",
+              "type": "video",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+            },
+            {
+              "day": 9,
+              "title": "Reclined Twist",
+              "type": "video",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+            },
+            {
+              "day": 10,
+              "title": "Your 10-Pose Flow",
+              "type": "video",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+            }
           ]
         },
         "nl": {
@@ -70,22 +382,336 @@
           "subtitle": "10 Essentiële Houdingen voor Dagelijkse Praktijk",
           "description": "Bouw een yoga practice die bij jouw leven past. Leer 10 fundamentele houdingen met de juiste uitlijning, ademhalingstips en aanpassingen voor elk lichaam. Geen lenigheid vereist — alleen de bereidheid om te beginnen.",
           "modules": [
-            { "day": 1, "title": "Berghouding (Tadasana)", "type": "video", "content": "De basis van alle staande houdingen. Leer de juiste uitlijning van voeten tot kruin." },
-            { "day": 2, "title": "Neerwaartse Hond (Adho Mukha Svanasana)", "type": "video", "content": "DE yoga houding bij uitstek. Bouw kracht in armen en benen terwijl je de wervelkolom verlengt." },
-            { "day": 3, "title": "Krijger I & II (Virabhadrasana)", "type": "video", "content": "Cultiveer kracht en stabiliteit met deze krachtige staande houdingen." },
-            { "day": 4, "title": "Boomhouding (Vrksasana)", "type": "video", "content": "Een balanshouding voor focus en aarding. Vind je centrum, zelfs als het leven wankel voelt." },
-            { "day": 5, "title": "Kat-Koe Flow", "type": "video", "content": "De zachtste manier om de wervelkolom op te warmen. Synchroniseer adem met beweging." },
-            { "day": 6, "title": "Kindhouding (Balasana)", "type": "video", "content": "De ultieme rusthouding. Gebruik het als toevluchtsoord in je practice." },
-            { "day": 7, "title": "Brughouding (Setu Bandhasana)", "type": "video", "content": "Open de borst en versterk de rug. Ideaal voor bureaumedewerkers." },
-            { "day": 8, "title": "Zittende Vooroverbuiging", "type": "video", "content": "Kalmeer de geest terwijl je de hele achterkant van het lichaam stretcht." },
-            { "day": 9, "title": "Liggende Twist", "type": "video", "content": "Laat spanning in de wervelkolom los met deze herstellende twist." },
-            { "day": 10, "title": "Jouw 10-Houdingen Flow", "type": "video", "content": "Alles samen: een complete sequence van 20 minuten die je elke ochtend kunt doen." }
+            {
+              "day": 1,
+              "title": "Berghouding (Tadasana)",
+              "type": "video",
+              "content": "De basis van alle staande houdingen. Leer de juiste uitlijning van voeten tot kruin."
+            },
+            {
+              "day": 2,
+              "title": "Neerwaartse Hond (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "DE yoga houding bij uitstek. Bouw kracht in armen en benen terwijl je de wervelkolom verlengt."
+            },
+            {
+              "day": 3,
+              "title": "Krijger I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultiveer kracht en stabiliteit met deze krachtige staande houdingen."
+            },
+            {
+              "day": 4,
+              "title": "Boomhouding (Vrksasana)",
+              "type": "video",
+              "content": "Een balanshouding voor focus en aarding. Vind je centrum, zelfs als het leven wankel voelt."
+            },
+            {
+              "day": 5,
+              "title": "Kat-Koe Flow",
+              "type": "video",
+              "content": "De zachtste manier om de wervelkolom op te warmen. Synchroniseer adem met beweging."
+            },
+            {
+              "day": 6,
+              "title": "Kindhouding (Balasana)",
+              "type": "video",
+              "content": "De ultieme rusthouding. Gebruik het als toevluchtsoord in je practice."
+            },
+            {
+              "day": 7,
+              "title": "Brughouding (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open de borst en versterk de rug. Ideaal voor bureaumedewerkers."
+            },
+            {
+              "day": 8,
+              "title": "Zittende Vooroverbuiging",
+              "type": "video",
+              "content": "Kalmeer de geest terwijl je de hele achterkant van het lichaam stretcht."
+            },
+            {
+              "day": 9,
+              "title": "Liggende Twist",
+              "type": "video",
+              "content": "Laat spanning in de wervelkolom los met deze herstellende twist."
+            },
+            {
+              "day": 10,
+              "title": "Jouw 10-Houdingen Flow",
+              "type": "video",
+              "content": "Alles samen: een complete sequence van 20 minuten die je elke ochtend kunt doen."
+            }
           ]
         },
-        "es": { "title": "Fundamentos de Yoga", "subtitle": "10 Posturas Esenciales para la Práctica Diaria", "description": "Construye una práctica de yoga a tu medida.", "modules": [] },
-        "de": { "title": "Yoga Grundlagen", "subtitle": "10 Wesentliche Haltungen für die tägliche Praxis", "description": "Baue eine Yoga-Praxis auf, die zu deinem Leben passt.", "modules": [] },
-        "fr": { "title": "Fondamentaux du Yoga", "subtitle": "10 Postures Essentielles pour une Pratique Quotidienne", "description": "Construisez une pratique de yoga adaptée à votre vie.", "modules": [] },
-        "hi": { "title": "योग की नींव", "subtitle": "दैनिक अभ्यास के लिए 10 आवश्यक आसन", "description": "अपने जीवन के अनुकूल योग अभ्यास बनाएं।", "modules": [] }
+        "es": {
+          "title": "Fundamentos de Yoga",
+          "subtitle": "10 Posturas Esenciales para la Práctica Diaria",
+          "description": "Construye una práctica de yoga a tu medida.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Mountain Pose (Tadasana)",
+              "type": "video",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+            },
+            {
+              "day": 2,
+              "title": "Downward Dog (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+            },
+            {
+              "day": 3,
+              "title": "Warrior I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+            },
+            {
+              "day": 4,
+              "title": "Tree Pose (Vrksasana)",
+              "type": "video",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+            },
+            {
+              "day": 5,
+              "title": "Cat-Cow Flow",
+              "type": "video",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+            },
+            {
+              "day": 6,
+              "title": "Child's Pose (Balasana)",
+              "type": "video",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+            },
+            {
+              "day": 7,
+              "title": "Bridge Pose (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+            },
+            {
+              "day": 8,
+              "title": "Seated Forward Fold",
+              "type": "video",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+            },
+            {
+              "day": 9,
+              "title": "Reclined Twist",
+              "type": "video",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+            },
+            {
+              "day": 10,
+              "title": "Your 10-Pose Flow",
+              "type": "video",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+            }
+          ]
+        },
+        "de": {
+          "title": "Yoga Grundlagen",
+          "subtitle": "10 Wesentliche Haltungen für die tägliche Praxis",
+          "description": "Baue eine Yoga-Praxis auf, die zu deinem Leben passt.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Mountain Pose (Tadasana)",
+              "type": "video",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+            },
+            {
+              "day": 2,
+              "title": "Downward Dog (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+            },
+            {
+              "day": 3,
+              "title": "Warrior I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+            },
+            {
+              "day": 4,
+              "title": "Tree Pose (Vrksasana)",
+              "type": "video",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+            },
+            {
+              "day": 5,
+              "title": "Cat-Cow Flow",
+              "type": "video",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+            },
+            {
+              "day": 6,
+              "title": "Child's Pose (Balasana)",
+              "type": "video",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+            },
+            {
+              "day": 7,
+              "title": "Bridge Pose (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+            },
+            {
+              "day": 8,
+              "title": "Seated Forward Fold",
+              "type": "video",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+            },
+            {
+              "day": 9,
+              "title": "Reclined Twist",
+              "type": "video",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+            },
+            {
+              "day": 10,
+              "title": "Your 10-Pose Flow",
+              "type": "video",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+            }
+          ]
+        },
+        "fr": {
+          "title": "Fondamentaux du Yoga",
+          "subtitle": "10 Postures Essentielles pour une Pratique Quotidienne",
+          "description": "Construisez une pratique de yoga adaptée à votre vie.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Mountain Pose (Tadasana)",
+              "type": "video",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+            },
+            {
+              "day": 2,
+              "title": "Downward Dog (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+            },
+            {
+              "day": 3,
+              "title": "Warrior I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+            },
+            {
+              "day": 4,
+              "title": "Tree Pose (Vrksasana)",
+              "type": "video",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+            },
+            {
+              "day": 5,
+              "title": "Cat-Cow Flow",
+              "type": "video",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+            },
+            {
+              "day": 6,
+              "title": "Child's Pose (Balasana)",
+              "type": "video",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+            },
+            {
+              "day": 7,
+              "title": "Bridge Pose (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+            },
+            {
+              "day": 8,
+              "title": "Seated Forward Fold",
+              "type": "video",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+            },
+            {
+              "day": 9,
+              "title": "Reclined Twist",
+              "type": "video",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+            },
+            {
+              "day": 10,
+              "title": "Your 10-Pose Flow",
+              "type": "video",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+            }
+          ]
+        },
+        "hi": {
+          "title": "योग की नींव",
+          "subtitle": "दैनिक अभ्यास के लिए 10 आवश्यक आसन",
+          "description": "अपने जीवन के अनुकूल योग अभ्यास बनाएं।",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Mountain Pose (Tadasana)",
+              "type": "video",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+            },
+            {
+              "day": 2,
+              "title": "Downward Dog (Adho Mukha Svanasana)",
+              "type": "video",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+            },
+            {
+              "day": 3,
+              "title": "Warrior I & II (Virabhadrasana)",
+              "type": "video",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+            },
+            {
+              "day": 4,
+              "title": "Tree Pose (Vrksasana)",
+              "type": "video",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+            },
+            {
+              "day": 5,
+              "title": "Cat-Cow Flow",
+              "type": "video",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+            },
+            {
+              "day": 6,
+              "title": "Child's Pose (Balasana)",
+              "type": "video",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+            },
+            {
+              "day": 7,
+              "title": "Bridge Pose (Setu Bandhasana)",
+              "type": "video",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+            },
+            {
+              "day": 8,
+              "title": "Seated Forward Fold",
+              "type": "video",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+            },
+            {
+              "day": 9,
+              "title": "Reclined Twist",
+              "type": "video",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+            },
+            {
+              "day": 10,
+              "title": "Your 10-Pose Flow",
+              "type": "video",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+            }
+          ]
+        }
       }
     },
     {
@@ -100,11 +726,36 @@
           "subtitle": "5 Techniques for Instant Calm",
           "description": "Your breath is the most powerful tool you carry. Learn 5 science-backed breathing techniques to reduce anxiety, improve focus, and find calm in under 5 minutes. Used by Navy SEALs, monks, and now — you.",
           "modules": [
-            { "day": 1, "title": "Box Breathing", "type": "video", "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes." },
-            { "day": 2, "title": "4-7-8 Breathing", "type": "video", "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep." },
-            { "day": 3, "title": "Coherent Breathing", "type": "video", "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm." },
-            { "day": 4, "title": "Alternate Nostril Breathing (Nadi Shodhana)", "type": "video", "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog." },
-            { "day": 5, "title": "Breath of Fire (Kapalabhati)", "type": "video", "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation." }
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Breathing",
+              "type": "video",
+              "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Breathing",
+              "type": "video",
+              "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm."
+            },
+            {
+              "day": 4,
+              "title": "Alternate Nostril Breathing (Nadi Shodhana)",
+              "type": "video",
+              "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog."
+            },
+            {
+              "day": 5,
+              "title": "Breath of Fire (Kapalabhati)",
+              "type": "video",
+              "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation."
+            }
           ]
         },
         "nl": {
@@ -112,17 +763,186 @@
           "subtitle": "5 Technieken voor Directe Kalmte",
           "description": "Je adem is het krachtigste hulpmiddel dat je bij je draagt. Leer 5 wetenschappelijk onderbouwde ademtechnieken.",
           "modules": [
-            { "day": 1, "title": "Box Breathing", "type": "video", "content": "De Navy SEAL techniek. Adem 4s in, houd 4s vast, adem 4s uit, houd 4s vast." },
-            { "day": 2, "title": "4-7-8 Ademhaling", "type": "video", "content": "De 'natuurlijke kalmeringspil'. Perfect om in slaap te vallen." },
-            { "day": 3, "title": "Coherent Ademen", "type": "video", "content": "5,5 ademhalingen per minuut — de resonantiefrequentie van het hart-longsysteem." },
-            { "day": 4, "title": "Wisselende Neusgat Ademhaling", "type": "video", "content": "Een eeuwenoude yogatechniek voor het balanceren van de hersenhelften." },
-            { "day": 5, "title": "Vuuraadem (Kapalabhati)", "type": "video", "content": "Energiek en reinigend. Gebruik wanneer je energie nodig hebt, niet ontspanning." }
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "De Navy SEAL techniek. Adem 4s in, houd 4s vast, adem 4s uit, houd 4s vast."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Ademhaling",
+              "type": "video",
+              "content": "De 'natuurlijke kalmeringspil'. Perfect om in slaap te vallen."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Ademen",
+              "type": "video",
+              "content": "5,5 ademhalingen per minuut — de resonantiefrequentie van het hart-longsysteem."
+            },
+            {
+              "day": 4,
+              "title": "Wisselende Neusgat Ademhaling",
+              "type": "video",
+              "content": "Een eeuwenoude yogatechniek voor het balanceren van de hersenhelften."
+            },
+            {
+              "day": 5,
+              "title": "Vuuraadem (Kapalabhati)",
+              "type": "video",
+              "content": "Energiek en reinigend. Gebruik wanneer je energie nodig hebt, niet ontspanning."
+            }
           ]
         },
-        "es": { "title": "Esenciales de Respiración", "subtitle": "5 Técnicas para Calma Instantánea", "description": "Tu respiración es la herramienta más poderosa.", "modules": [] },
-        "de": { "title": "Atemarbeit Grundlagen", "subtitle": "5 Techniken für sofortige Ruhe", "description": "Dein Atem ist das mächtigste Werkzeug.", "modules": [] },
-        "fr": { "title": "Essentiels de Respiration", "subtitle": "5 Techniques pour un Calme Instantané", "description": "Votre respiration est l'outil le plus puissant.", "modules": [] },
-        "hi": { "title": "श्वास क्रिया की अनिवार्यताएं", "subtitle": "तत्काल शांति के लिए 5 तकनीकें", "description": "आपकी सांस सबसे शक्तिशाली उपकरण है।", "modules": [] }
+        "es": {
+          "title": "Esenciales de Respiración",
+          "subtitle": "5 Técnicas para Calma Instantánea",
+          "description": "Tu respiración es la herramienta más poderosa.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Breathing",
+              "type": "video",
+              "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Breathing",
+              "type": "video",
+              "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm."
+            },
+            {
+              "day": 4,
+              "title": "Alternate Nostril Breathing (Nadi Shodhana)",
+              "type": "video",
+              "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog."
+            },
+            {
+              "day": 5,
+              "title": "Breath of Fire (Kapalabhati)",
+              "type": "video",
+              "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation."
+            }
+          ]
+        },
+        "de": {
+          "title": "Atemarbeit Grundlagen",
+          "subtitle": "5 Techniken für sofortige Ruhe",
+          "description": "Dein Atem ist das mächtigste Werkzeug.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Breathing",
+              "type": "video",
+              "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Breathing",
+              "type": "video",
+              "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm."
+            },
+            {
+              "day": 4,
+              "title": "Alternate Nostril Breathing (Nadi Shodhana)",
+              "type": "video",
+              "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog."
+            },
+            {
+              "day": 5,
+              "title": "Breath of Fire (Kapalabhati)",
+              "type": "video",
+              "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation."
+            }
+          ]
+        },
+        "fr": {
+          "title": "Essentiels de Respiration",
+          "subtitle": "5 Techniques pour un Calme Instantané",
+          "description": "Votre respiration est l'outil le plus puissant.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Breathing",
+              "type": "video",
+              "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Breathing",
+              "type": "video",
+              "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm."
+            },
+            {
+              "day": 4,
+              "title": "Alternate Nostril Breathing (Nadi Shodhana)",
+              "type": "video",
+              "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog."
+            },
+            {
+              "day": 5,
+              "title": "Breath of Fire (Kapalabhati)",
+              "type": "video",
+              "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation."
+            }
+          ]
+        },
+        "hi": {
+          "title": "श्वास क्रिया की अनिवार्यताएं",
+          "subtitle": "तत्काल शांति के लिए 5 तकनीकें",
+          "description": "आपकी सांस सबसे शक्तिशाली उपकरण है।",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Box Breathing",
+              "type": "video",
+              "content": "The Navy SEAL technique. Inhale 4s, hold 4s, exhale 4s, hold 4s. Resets your nervous system in under a minute. Use before meetings, presentations, or anytime stress spikes."
+            },
+            {
+              "day": 2,
+              "title": "4-7-8 Breathing",
+              "type": "video",
+              "content": "The 'natural tranquilizer.' Inhale 4s, hold 7s, exhale 8s. Developed by Dr. Andrew Weil, this technique signals your parasympathetic nervous system to relax. Perfect for falling asleep."
+            },
+            {
+              "day": 3,
+              "title": "Coherent Breathing",
+              "type": "video",
+              "content": "5.5 breaths per minute — the resonance frequency of the heart-lung system. Equal inhale and exhale at a slow, steady pace. Balances heart rate variability for deep calm."
+            },
+            {
+              "day": 4,
+              "title": "Alternate Nostril Breathing (Nadi Shodhana)",
+              "type": "video",
+              "content": "An ancient yogic technique for balancing the left and right hemispheres of the brain. Calming, centering, and surprisingly effective for headaches and mental fog."
+            },
+            {
+              "day": 5,
+              "title": "Breath of Fire (Kapalabhati)",
+              "type": "video",
+              "content": "Energizing and cleansing. Rapid exhales with passive inhales. Builds heat, clears the mind, and awakens the body. Use when you need energy, not relaxation."
+            }
+          ]
+        }
       }
     },
     {
@@ -137,11 +957,36 @@
           "subtitle": "Using Music as Your Focus Tool",
           "description": "Turn sound into your superpower. Discover how lofi music activates your brain's focus networks, why certain frequencies enhance concentration, and how to build your personal focus soundtrack. Science meets beats.",
           "modules": [
-            { "day": 1, "title": "Why Lofi Works for Focus", "type": "text", "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%." },
-            { "day": 2, "title": "Building Your Focus Routine", "type": "video", "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi." },
-            { "day": 3, "title": "Soundscapes for Different Tasks", "type": "text", "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task." },
-            { "day": 4, "title": "The Power of Silence Between Tracks", "type": "video", "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions." },
-            { "day": 5, "title": "Your Personal Focus Mix", "type": "video", "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack." }
+            {
+              "day": 1,
+              "title": "Why Lofi Works for Focus",
+              "type": "text",
+              "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%."
+            },
+            {
+              "day": 2,
+              "title": "Building Your Focus Routine",
+              "type": "video",
+              "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes for Different Tasks",
+              "type": "text",
+              "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task."
+            },
+            {
+              "day": 4,
+              "title": "The Power of Silence Between Tracks",
+              "type": "video",
+              "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions."
+            },
+            {
+              "day": 5,
+              "title": "Your Personal Focus Mix",
+              "type": "video",
+              "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack."
+            }
           ]
         },
         "nl": {
@@ -149,17 +994,186 @@
           "subtitle": "Muziek als Jouw Focus Tool",
           "description": "Maak van geluid jouw superkracht. Ontdek hoe lofi muziek de focusnetwerken van je brein activeert.",
           "modules": [
-            { "day": 1, "title": "Waarom Lofi Werkt voor Focus", "type": "text", "content": "De wetenschap achter lofi's focus-versterkende effecten: gematigd tempo, geen songteksten, zachte onregelmatigheid." },
-            { "day": 2, "title": "Bouw Je Focus Routine", "type": "video", "content": "Creëer een ritueel: dezelfde playlist, dezelfde tijd, dezelfde ruimte." },
-            { "day": 3, "title": "Soundscapes voor Verschillende Taken", "type": "text", "content": "Niet elk werk heeft hetzelfde geluid nodig. Creatieve brainstorming gedijt bij ambient texturen." },
-            { "day": 4, "title": "De Kracht van Stilte Tussen Tracks", "type": "video", "content": "De pauze tussen nummers is net zo belangrijk als de muziek zelf." },
-            { "day": 5, "title": "Jouw Persoonlijke Focus Mix", "type": "video", "content": "Stel je ultieme focus playlist samen. Combineer wat je hebt geleerd over tempo, textuur en timing." }
+            {
+              "day": 1,
+              "title": "Waarom Lofi Werkt voor Focus",
+              "type": "text",
+              "content": "De wetenschap achter lofi's focus-versterkende effecten: gematigd tempo, geen songteksten, zachte onregelmatigheid."
+            },
+            {
+              "day": 2,
+              "title": "Bouw Je Focus Routine",
+              "type": "video",
+              "content": "Creëer een ritueel: dezelfde playlist, dezelfde tijd, dezelfde ruimte."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes voor Verschillende Taken",
+              "type": "text",
+              "content": "Niet elk werk heeft hetzelfde geluid nodig. Creatieve brainstorming gedijt bij ambient texturen."
+            },
+            {
+              "day": 4,
+              "title": "De Kracht van Stilte Tussen Tracks",
+              "type": "video",
+              "content": "De pauze tussen nummers is net zo belangrijk als de muziek zelf."
+            },
+            {
+              "day": 5,
+              "title": "Jouw Persoonlijke Focus Mix",
+              "type": "video",
+              "content": "Stel je ultieme focus playlist samen. Combineer wat je hebt geleerd over tempo, textuur en timing."
+            }
           ]
         },
-        "es": { "title": "Lofi y Enfoque Profundo", "subtitle": "Usando la Música como Herramienta de Concentración", "description": "Convierte el sonido en tu superpoder.", "modules": [] },
-        "de": { "title": "Lofi & Tiefe Konzentration", "subtitle": "Musik als Fokus-Werkzeug", "description": "Mach Klang zu deiner Superkraft.", "modules": [] },
-        "fr": { "title": "Lofi & Concentration Profonde", "subtitle": "Utiliser la Musique comme Outil de Concentration", "description": "Transformez le son en superpouvoir.", "modules": [] },
-        "hi": { "title": "लोफाई और गहन एकाग्रता", "subtitle": "संगीत को अपना फोकस उपकरण बनाएं", "description": "ध्वनि को अपनी महाशक्ति बनाएं।", "modules": [] }
+        "es": {
+          "title": "Lofi y Enfoque Profundo",
+          "subtitle": "Usando la Música como Herramienta de Concentración",
+          "description": "Convierte el sonido en tu superpoder.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Why Lofi Works for Focus",
+              "type": "text",
+              "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%."
+            },
+            {
+              "day": 2,
+              "title": "Building Your Focus Routine",
+              "type": "video",
+              "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes for Different Tasks",
+              "type": "text",
+              "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task."
+            },
+            {
+              "day": 4,
+              "title": "The Power of Silence Between Tracks",
+              "type": "video",
+              "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions."
+            },
+            {
+              "day": 5,
+              "title": "Your Personal Focus Mix",
+              "type": "video",
+              "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack."
+            }
+          ]
+        },
+        "de": {
+          "title": "Lofi & Tiefe Konzentration",
+          "subtitle": "Musik als Fokus-Werkzeug",
+          "description": "Mach Klang zu deiner Superkraft.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Why Lofi Works for Focus",
+              "type": "text",
+              "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%."
+            },
+            {
+              "day": 2,
+              "title": "Building Your Focus Routine",
+              "type": "video",
+              "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes for Different Tasks",
+              "type": "text",
+              "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task."
+            },
+            {
+              "day": 4,
+              "title": "The Power of Silence Between Tracks",
+              "type": "video",
+              "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions."
+            },
+            {
+              "day": 5,
+              "title": "Your Personal Focus Mix",
+              "type": "video",
+              "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack."
+            }
+          ]
+        },
+        "fr": {
+          "title": "Lofi & Concentration Profonde",
+          "subtitle": "Utiliser la Musique comme Outil de Concentration",
+          "description": "Transformez le son en superpouvoir.",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Why Lofi Works for Focus",
+              "type": "text",
+              "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%."
+            },
+            {
+              "day": 2,
+              "title": "Building Your Focus Routine",
+              "type": "video",
+              "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes for Different Tasks",
+              "type": "text",
+              "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task."
+            },
+            {
+              "day": 4,
+              "title": "The Power of Silence Between Tracks",
+              "type": "video",
+              "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions."
+            },
+            {
+              "day": 5,
+              "title": "Your Personal Focus Mix",
+              "type": "video",
+              "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack."
+            }
+          ]
+        },
+        "hi": {
+          "title": "लोफाई और गहन एकाग्रता",
+          "subtitle": "संगीत को अपना फोकस उपकरण बनाएं",
+          "description": "ध्वनि को अपनी महाशक्ति बनाएं।",
+          "modules": [
+            {
+              "day": 1,
+              "title": "Why Lofi Works for Focus",
+              "type": "text",
+              "content": "The science behind lofi's focus-enhancing effects: moderate tempo (60-90 BPM), lack of lyrics, and gentle irregularity keep your brain engaged without distraction. Research shows background music at 70 BPM improves concentration by up to 15%."
+            },
+            {
+              "day": 2,
+              "title": "Building Your Focus Routine",
+              "type": "video",
+              "content": "Create a ritual: same playlist, same time, same space. Your brain learns to associate the music with deep work. We'll help you design a 25-minute Pomodoro session with curated lofi."
+            },
+            {
+              "day": 3,
+              "title": "Soundscapes for Different Tasks",
+              "type": "text",
+              "content": "Not all work needs the same sound. Creative brainstorming thrives with ambient textures. Analytical work needs steady, predictable beats. Learn to match your soundtrack to your task."
+            },
+            {
+              "day": 4,
+              "title": "The Power of Silence Between Tracks",
+              "type": "video",
+              "content": "The pause between songs matters as much as the music. Short silences reset attention and prevent auditory fatigue. We'll explore how to use intentional silence in your focus sessions."
+            },
+            {
+              "day": 5,
+              "title": "Your Personal Focus Mix",
+              "type": "video",
+              "content": "Curate your ultimate focus playlist. Combine what you've learned about tempo, texture, and timing. Walk away with a personalized 60-minute deep work soundtrack."
+            }
+          ]
+        }
       }
     }
   ]

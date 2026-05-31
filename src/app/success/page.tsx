@@ -35,7 +35,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
     ],
     nextSteps: [
       { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes and Lofi mixes", href: "/browse" },
-      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "/browse" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "https://aibuddha.net/#chat" },
       { icon: "music", label: "This week's playlist", desc: "Your first weekly curated Lofi playlist is ready", href: "/browse" },
     ],
     ctaLabel: "Begin your practice",
@@ -55,8 +55,8 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Priority support & early access" },
     ],
     nextSteps: [
-      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "/browse" },
-      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "/browse" },
+      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "https://aibuddha.net/#chat" },
+      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "https://aibuddha.net/#chat" },
       { icon: "music", label: "Premium library", desc: "Full access to all ambient albums and exclusive tracks", href: "/browse" },
     ],
     ctaLabel: "Begin your journey",
@@ -79,7 +79,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
     ],
     nextSteps: [
       { icon: "headphones", label: "Start listening", desc: "Tune into our live-syncing Lofi radio stream — no sign-in needed", href: "/browse" },
-      { icon: "heart", label: "Try box breathing", desc: "Open the 4-4-4 breathing visualizer for instant calm", href: "/browse" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Begin a spiritual conversation with your AI guide", href: "https://aibuddha.net/#chat" },
       { icon: "music", label: "Explore premium", desc: "See what's unlocked on the Mindful and Enlightened paths", href: "/signup" },
     ],
     ctaLabel: "Begin your practice",
