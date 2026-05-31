@@ -3,29 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="bodhi-icon-32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="bodhi-icon-192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="bodhi-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="lofibuddha.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="lofibuddha.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="lofibuddha.png">
   <title data-i18n="legal-terms-title">Terms & Conditions — LofiBuddha</title>
-  <meta name="description" content="LofiBuddha terms and conditions — subscriptions, content usage, and limitations.">
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="LofiBuddha terms and conditions — subscriptions, content usage, and limitations. Understand your rights and our commitments.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://lofibuddha.com/legal/terms">
+  <meta property="og:title" content="Terms & Conditions — LofiBuddha">
+  <meta property="og:description" content="Terms of use for LofiBuddha — subscriptions, content usage, and legal limitations.">
+  <meta property="og:url" content="https://lofibuddha.com/legal/terms">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Terms & Conditions — LofiBuddha">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #faf8f5;
+      --warm: #f5f0e8;
+      --stone: #78716c;
+      --ink: #1c1917;
+      --gold: #b08050;
+      --gold-light: #d4a060;
+      --border: rgba(0,0,0,0.06);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; }
+    /* Nav */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,248,245,0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+      height: 4.5rem; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .logo-img { width: 32px; height: 32px; border-radius: 8px; }
+    .logo-text { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--ink); font-weight: 500; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      text-decoration: none; color: var(--stone); font-size: 0.8rem;
+      letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    /* Legal */
+    .legal-page { padding: 7rem 2rem 4rem; }
+    .legal-container { max-width: 700px; margin: 0 auto; }
+    .legal-container h1 {
+      font-family: "Playfair Display", serif; font-size: 2rem;
+      font-weight: 400; margin-bottom: 0.5rem; color: var(--ink);
+    }
+    .legal-updated {
+      font-size: 0.8rem; color: var(--stone); font-style: italic;
+      margin-bottom: 2rem; font-weight: 300;
+    }
+    .legal-notice {
+      background: var(--warm); border-radius: 12px; padding: 1.5rem;
+      margin-bottom: 2rem; font-size: 0.85rem; line-height: 1.7;
+      border: 1px solid rgba(0,0,0,0.04); color: #44403c;
+    }
+    .legal-container h2 {
+      font-family: "Playfair Display", serif; font-size: 1.3rem;
+      margin: 2rem 0 0.75rem; font-weight: 500;
+    }
+    .legal-container h3 {
+      font-size: 1rem; margin: 1.5rem 0 0.5rem; font-weight: 500;
+      color: var(--gold);
+    }
+    .legal-container p { color: var(--stone); line-height: 1.8; margin-bottom: 1rem; font-weight: 300; }
+    .legal-container ul { margin: 0.5rem 0 1rem 1.5rem; }
+    .legal-container li { color: var(--stone); margin-bottom: 0.4rem; font-weight: 300; }
+    .legal-container strong { color: var(--ink); font-weight: 500; }
+    .legal-back {
+      display: inline-block; margin-bottom: 2rem; color: var(--stone);
+      text-decoration: none; font-size: 0.85rem; transition: color 0.3s;
+    }
+    .legal-back:hover { color: var(--ink); }
+    /* Footer */
+    .footer {
+      padding: 4rem 2rem 2rem; background: var(--warm);
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 700px; margin: 0 auto; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;
+    }
+    .footer-tagline { font-size: 0.8rem; color: var(--stone); margin-top: 0.5rem; font-weight: 300; }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      text-decoration: none; color: var(--stone); font-size: 0.75rem;
+      letter-spacing: 0.04em; transition: color 0.3s; font-weight: 300;
+    }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-bottom {
+      max-width: 700px; margin: 3rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid var(--border); text-align: center;
+    }
+    .footer-bottom p { font-size: 0.7rem; color: var(--stone); font-weight: 300; }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 1rem; }
+      .legal-page { padding: 5rem 1rem 3rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
 </head>
 <body>
-  <header class="header" id="header">
-    <div class="container nav">
-      <a href="/" class="logo" style="gap:0.6rem;">
-        <img src="bodhi-icon-32.png" class="logo-icon" alt="Bodhi" width="32" height="32">
-        <span>LofiBuddha</span>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <img src="lofibuddha.png" alt="LofiBuddha" width="32" height="32" class="logo-img">
+        <span class="logo-text">LofiBuddha</span>
       </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+      </div>
     </div>
-  </header>
+  </nav>
 
   <main class="legal-page">
     <div class="legal-container">
       <h1 data-i18n="legal-terms-h1">Terms & Conditions</h1>
       <p class="legal-updated" data-i18n="legal-updated">Last updated: June 2026</p>
 
-      <p data-i18n="legal-terms-lofi-intro">By using <strong>LofiBuddha</strong> (lofibuddha.com), you agree to these Terms & Conditions.</p>
+      <p data-i18n="legal-terms-lofi-intro">By using <strong>LofiBuddha</strong> (lofibuddha.com) and its related services, you agree to these Terms & Conditions.</p>
 
       <h2 data-i18n="legal-terms-lofi-s1">1. Services</h2>
       <p data-i18n="legal-terms-lofi-s1-p">LofiBuddha provides lofi music streaming, guided yoga flows, breathwork exercises, meditation content, and community features. Premium content is available via paid subscription.</p>
@@ -34,8 +147,8 @@
       <p data-i18n="legal-terms-lofi-s2-p">Our yoga, meditation, and wellness content is for <strong>general wellbeing and entertainment</strong>. LofiBuddha is not a substitute for professional medical advice. Consult your physician before beginning any exercise program.</p>
 
       <h2 data-i18n="legal-terms-lofi-s3">3. Subscriptions & Payments</h2>
-      <h3 data-i18n="legal-terms-lofi-s3a">3.1 Free Trial</h3>
-      <p data-i18n="legal-terms-lofi-s3a-p">We may offer a 7-day free trial. Cancel anytime during the trial without charge. After the trial, your subscription begins automatically.</p>
+      <h3 data-i18n="legal-terms-lofi-s3a">3.1 Free Tier</h3>
+      <p data-i18n="legal-terms-lofi-s3a-p">LofiBuddha offers a free tier with lofi soundscapes, limited AI Buddha chat queries (10/day), and a basic meditation timer.</p>
       <h3 data-i18n="legal-terms-lofi-s3b">3.2 Billing</h3>
       <p data-i18n="legal-terms-lofi-s3b-p">Fees are billed in advance via Stripe. Prices are in Euros (€) including VAT. No refunds for partial periods unless required by law.</p>
       <h3 data-i18n="legal-terms-lofi-s3c">3.3 Cancellation</h3>
@@ -60,7 +173,7 @@
       <p data-i18n="legal-terms-s9-p">Updates will be posted on this page.</p>
 
       <h2 data-i18n="legal-terms-s10">10. Contact</h2>
-      <p data-i18n="legal-terms-lofi-s10-p">📧 <strong>legal@lofibuddha.com</strong></p>
+      <p data-i18n="legal-terms-lofi-s10-p"><strong>legal@lofibuddha.com</strong></p>
 
       <a href="/" class="legal-back" data-i18n="legal-back">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -70,8 +183,23 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer-bottom">
-      <div class="footer-copyright">&copy; 2026 LofiBuddha. <span data-i18n="footer-rights">All rights reserved.</span></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <img src="lofibuddha.png" alt="LofiBuddha" width="28" height="28" class="logo-img">
+          <span class="logo-text">LofiBuddha</span>
+        </a>
+        <p class="footer-tagline">A space for calm in a busy world.</p>
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="mailto:info@lofibuddha.com">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 LofiBuddha. <span data-i18n="footer-rights">All rights reserved.</span></p>
     </div>
   </footer>
 
