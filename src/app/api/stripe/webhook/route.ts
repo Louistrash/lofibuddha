@@ -3,6 +3,15 @@ import Stripe from "stripe";
 import fs from "fs";
 import path from "path";
 import { sendWelcomeEmail } from "@/lib/welcome-email";
+import {
+  createSubscriber,
+  addToList,
+  triggerEvent,
+  addTag,
+  removeTag,
+  getTierTags,
+  getTierListId,
+} from "@/lib/sequenzy";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY || "", {
@@ -146,6 +155,7 @@ export async function POST(request: NextRequest) {
       const name = session.customer_details?.name || "";
 
       if (email) {
+        // 1. Local subscriber store
         upsertSubscriber({
           email,
           name,
@@ -157,9 +167,34 @@ export async function POST(request: NextRequest) {
           startDate: new Date().toISOString(),
         });
 
-        // Send welcome email (fire-and-forget)
-        sendWelcomeEmail(email, tier, session.metadata?.language || "en")
-          .catch(() => {/* silent fail — don't block webhook */});
+        // 2. Sequenzy — create subscriber + tag + list + event (fire-and-forget)
+        const tags = getTierTags(tier);
+        const listId = getTierListId(tier);
+        const lang = session.metadata?.language || "en";
+
+        createSubscriber({
+          email,
+          firstName: name,
+          language: lang,
+          tags,
+          attributes: {
+            tier,
+            stripe_customer_id: session.customer as string,
+            signup_source: "stripe_checkout",
+          },
+        })
+          .then((result) => {
+            if (result.success) {
+              // Add to list + trigger event
+              addToList(listId, [email]).catch(() => {});
+              triggerEvent(email, "subscription.started", { tier, plan: tier }).catch(() => {});
+            }
+          })
+          .catch(() => {/* silent fail */});
+
+        // 3. Legacy Resend welcome email (keep as fallback)
+        sendWelcomeEmail(email, tier, lang)
+          .catch(() => {/* silent fail */});
       }
       break;
     }
@@ -183,6 +218,13 @@ export async function POST(request: NextRequest) {
           status: newStatus,
           stripeSubscriptionId: sub.id,
         });
+
+        // Sync tags to Sequenzy
+        if (newStatus === "past_due") {
+          addTag(match.email, "past-due").catch(() => {});
+        } else if (newStatus === "active") {
+          removeTag(match.email, "past-due").catch(() => {});
+        }
       }
       break;
     }
@@ -199,6 +241,14 @@ export async function POST(request: NextRequest) {
           email: match.email,
           status: "cancelled",
         });
+
+        // Sync churn tag to Sequenzy
+        removeTag(match.email, "subscriber").catch(() => {});
+        removeTag(match.email, "paid").catch(() => {});
+        addTag(match.email, "churned").catch(() => {});
+        triggerEvent(match.email, "subscription.cancelled", {
+          tier: match.tier,
+        }).catch(() => {});
       }
       break;
     }
