@@ -2,6 +2,12 @@
   "mindful": {
     "title": "The Mindful Path",
     "subtitle": "30 days of deepening awareness",
+    "downloads": {
+      "breathwork": { "label": "Breathwork Essentials (PDF)", "url": "/api/drip/download/breathwork-essentials" },
+      "mindfulness": { "label": "Beginner's Mindfulness Guide (PDF)", "url": "/api/drip/download/beginners-mindfulness" },
+      "yoga": { "label": "Yoga Foundations Guide (PDF)", "url": "/api/drip/download/yoga-foundations" },
+      "lofi": { "label": "Lofi & Deep Focus Guide (PDF)", "url": "/api/drip/download/lofi-deep-focus" }
+    },
     "days": {
       "1": {
         "type": "welcome",
@@ -21,15 +27,16 @@
         "title": "Beginner's Mindfulness — Part 1",
         "courseId": "beginners-mindfulness",
         "modules": [1, 2],
-        "body": "**Module 1: The Breath as Anchor**\n\nSit comfortably. Close your eyes. Bring your attention to the sensation of breathing — the cool air entering your nostrils, the gentle rise of your chest. Don't try to change anything. Just notice.\n\nWhen your mind wanders (and it will), gently return to the breath. This is the practice — not staying focused, but returning.\n\nTry this for 2 minutes today. Tomorrow, try 3.\n\n**Module 2: Body Scan**\n\nLie down or sit comfortably. Starting at the crown of your head, slowly move your attention down through your body — forehead, jaw, neck, shoulders, arms, hands, chest, belly, hips, legs, feet.\n\nNotice any tension, warmth, tingling, or numbness. Don't judge. Just observe.\n\nThis is your first lesson in embodied awareness.",
+        "body": "**Module 1: The Breath as Anchor**\n\nSit comfortably. Close your eyes. Bring your attention to the sensation of breathing — the cool air entering your nostrils, the gentle rise of your chest. Don't try to change anything. Just notice.\n\nWhen your mind wanders (and it will), gently return to the breath. This is the practice — not staying focused, but returning.\n\nTry this for 2 minutes today. Tomorrow, try 3.\n\n**Module 2: Body Scan**\n\nLie down or sit comfortably. Starting at the crown of your head, slowly move your attention down through your body — forehead, jaw, neck, shoulders, arms, hands, chest, belly, hips, legs, feet.\n\nNotice any tension, warmth, tingling, or numbness. Don't judge. Just observe.",
         "duration": "10 min"
       },
       "5": {
         "type": "guide",
         "title": "4-4-4 Box Breathing",
         "subtitle": "The Navy SEAL technique for calm",
-        "body": "Box breathing is used by Navy SEALs, first responders, and meditators alike. It activates the parasympathetic nervous system — your body's natural brake pedal.\n\n**How it works:**\n\n1. **Inhale** through your nose for 4 seconds\n2. **Hold** your breath for 4 seconds\n3. **Exhale** slowly through your mouth for 4 seconds\n4. **Hold** empty for 4 seconds\n\nRepeat 4 times. Feel the shift.\n\nTry this before difficult conversations, before sleep, or anytime you feel your nervous system running the show.",
-        "action": { "label": "Try the breathing visualizer", "url": "/browse" }
+        "body": "Box breathing is used by Navy SEALs, first responders, and meditators alike. It activates the parasympathetic nervous system — your body's natural brake pedal.\n\n**How it works:**\n\n1. **Inhale** through your nose for 4 seconds\n2. **Hold** your breath for 4 seconds\n3. **Exhale** slowly through your mouth for 4 seconds\n4. **Hold** empty for 4 seconds\n\nRepeat 4 times. Feel the shift.",
+        "action": { "label": "Try the breathing visualizer", "url": "/browse" },
+        "download": { "label": "Breathwork Essentials (PDF)", "url": "/api/drip/download/breathwork-essentials" }
       },
       "7": {
         "type": "playlist",
@@ -43,23 +50,25 @@
         "title": "Beginner's Mindfulness — Part 2",
         "courseId": "beginners-mindfulness",
         "modules": [3, 4, 5],
-        "body": "**Module 3: Labeling Thoughts**\n\nSit quietly. When a thought arises, silently label it: 'planning,' 'worrying,' 'remembering,' 'judging.' Then let it go, like a leaf floating downstream.\n\n**Module 4: Walking Meditation**\n\nWalk slowly, deliberately. Feel each foot touch the ground — heel, ball, toes. Match your breath to your steps. The world becomes your meditation cushion.\n\n**Module 5: Mindful Eating**\n\nChoose one meal today. Eat slowly. Notice colors, textures, temperatures, flavors. Put your fork down between bites. This is presence.",
-        "duration": "15 min"
+        "body": "**Module 3: Labeling Thoughts** — When a thought arises, silently label it. Then let it go.\n**Module 4: Walking Meditation** — Walk slowly. Feel each foot. The world becomes your cushion.\n**Module 5: Mindful Eating** — One meal, fully present.",
+        "duration": "15 min",
+        "download": { "label": "Beginner's Mindfulness Guide (PDF)", "url": "/api/drip/download/beginners-mindfulness" }
       },
       "12": {
         "type": "course",
         "title": "Yoga Foundations — Part 1",
         "courseId": "yoga-foundations",
         "modules": [1, 2, 3],
-        "body": "**Module 1: Mountain Pose (Tadasana)**\n\nStand with feet hip-width apart. Root down through all four corners of your feet. Lift your kneecaps, engage your thighs, lengthen your spine. Crown of the head reaches toward the sky.\n\n**Module 2: Cat-Cow (Marjaryasana-Bitilasana)**\n\nOn hands and knees. Inhale: drop belly, lift gaze (Cow). Exhale: round spine, tuck chin (Cat). Flow with your breath for 2 minutes.\n\n**Module 3: Child's Pose (Balasana)**\n\nKnees wide, big toes touching. Fold forward, forehead to the ground. Arms extended or resting alongside. Breathe into your back body. Surrender.",
-        "duration": "20 min"
+        "body": "**Mountain Pose** — Root down, rise up. **Cat-Cow** — Flow with breath. **Child's Pose** — Surrender into stillness.",
+        "duration": "20 min",
+        "download": { "label": "Yoga Foundations Guide (PDF)", "url": "/api/drip/download/yoga-foundations" }
       },
       "16": {
         "type": "course",
         "title": "Beginner's Mindfulness — Part 3",
         "courseId": "beginners-mindfulness",
         "modules": [6, 7],
-        "body": "**Module 6: Loving-Kindness (Metta)**\n\nSit quietly. Picture yourself. Silently repeat: 'May I be happy. May I be healthy. May I be safe. May I live with ease.'\n\nNow picture someone you love. Same phrases. Then a neutral person. Then someone you find difficult. Finally, all beings everywhere.\n\n**Module 7: Open Awareness**\n\nDon't focus on anything. Don't push anything away. Let sounds, sensations, thoughts come and go like clouds across a vast sky. You are the sky — not the clouds.",
+        "body": "**Module 6: Loving-Kindness (Metta)** — May I be happy. May you be happy. May all beings be free.\n**Module 7: Open Awareness** — You are the sky, not the clouds.",
         "duration": "15 min"
       },
       "19": {
@@ -67,7 +76,7 @@
         "title": "Breathwork Essentials — Part 1",
         "courseId": "breathwork-essentials",
         "modules": [1, 2],
-        "body": "**Module 1: Diaphragmatic Breathing**\n\nLie on your back, one hand on belly, one on chest. Breathe so the belly hand rises while the chest hand stays still. This is how you breathed as a baby. Relearn it now.\n\n**Module 2: 4-7-8 Breathing**\n\nInhale 4 seconds. Hold 7 seconds. Exhale 8 seconds (through mouth, making a whoosh sound). 4 cycles max. This is a natural tranquilizer for the nervous system.",
+        "body": "**Diaphragmatic Breathing** — Relearn how you breathed as a baby. **4-7-8 Breathing** — A natural tranquilizer. Maximum 4 cycles.",
         "duration": "12 min"
       },
       "23": {
@@ -75,7 +84,7 @@
         "title": "Yoga Foundations — Part 2",
         "courseId": "yoga-foundations",
         "modules": [4, 5, 6, 7],
-        "body": "**Module 4: Downward Dog (Adho Mukha Svanasana)**\n\nHands shoulder-width, feet hip-width. Hips lift toward the sky. Pedal out your feet. This is both a resting pose and a strength builder.\n\n**Module 5: Warrior I (Virabhadrasana I)**\n\nStep one foot forward, bend the front knee. Back leg straight, heel grounded. Arms reach up. Gaze forward. Feel the power in stillness.\n\n**Module 6: Tree Pose (Vrksasana)**\n\nShift weight to one foot. Place the other foot on your ankle, calf, or inner thigh (never the knee). Hands at heart center or reaching up. Find your balance.\n\n**Module 7: Savasana**\n\nLie flat on your back. Arms slightly away from body, palms up. Legs relaxed, feet falling open. Let go completely. Stay 5-10 minutes. This is the hardest pose.",
+        "body": "**Downward Dog** — Strength meets surrender. **Warrior I** — Power in stillness. **Tree Pose** — Balance. **Savasana** — The hardest pose. Do not skip.",
         "duration": "25 min"
       },
       "26": {
@@ -83,52 +92,59 @@
         "title": "Lofi & Deep Focus — Part 1",
         "courseId": "lofi-deep-focus",
         "modules": [1, 2, 3],
-        "body": "**Module 1: The Science of Focus Music**\n\nLo-fi's imperfections — vinyl crackle, tape hiss, slight pitch variations — create what neuroscientists call 'stochastic resonance.' Your brain leans in to fill the gaps, increasing attention.\n\n**Module 2: Creating Your Sound Environment**\n\nChoose your anchor sound. Some prefer pure instrumental. Others need nature layers — rain, waves, forest ambience. Experiment. Your nervous system will tell you what's right.\n\n**Module 3: The Pomodoro Flow**\n\n25 minutes of deep work with Lofi. 5 minutes of silence or nature sounds. Repeat 4 times. Then take a longer break. Notice how music shapes your attention rhythm.",
-        "duration": "8 min"
+        "body": "**The Science of Focus Music** — Lo-fi's imperfections are features. **Creating Your Sound Environment** — Find your anchor sound. **The Pomodoro Flow** — 25 min work, 5 min rest, repeat.",
+        "duration": "8 min",
+        "download": { "label": "Lofi & Deep Focus Guide (PDF)", "url": "/api/drip/download/lofi-deep-focus" }
       }
     }
   },
   "enlightened": {
     "title": "The Enlightened Path",
     "subtitle": "A 28-day deep transformation journey",
+    "downloads": {
+      "roadmap": { "label": "Spiritual Roadmap Template (PDF)", "url": "/api/drip/download/spiritual-roadmap-template" },
+      "reflection": { "label": "Monthly Reflection Journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" }
+    },
     "days": {
       "1": {
         "type": "welcome",
         "title": "The Enlightened Path Awaits",
-        "body": "You've chosen the deepest journey — not just mindfulness, but transformation. Over the next 28 days, you'll receive personalized meditations, a custom spiritual roadmap, guided breathwork, and direct counsel from AI Buddha.\n\nThis path requires honesty with yourself. It rewards that honesty with clarity.\n\nYour first step: complete the intake form so we can tailor your journey.",
+        "body": "You've chosen the deepest journey — not just mindfulness, but transformation. Over the next 28 days, you'll receive personalized meditations, a custom spiritual roadmap, guided breathwork, and direct counsel from AI Buddha.\n\nThis path requires honesty with yourself. It rewards that honesty with clarity.",
         "action": { "label": "Complete your intake", "url": "/account?tab=intake" }
       },
       "3": {
         "type": "roadmap",
         "title": "Your Spiritual Roadmap",
-        "body": "Based on your intake, we've mapped your path across four dimensions:\n\n**Foundation** — Breathwork and body awareness (Week 1-2)\n**Inquiry** — Examining thought patterns and beliefs (Week 2-3)\n**Integration** — Bringing practice into daily life (Week 3-4)\n**Expression** — Finding your unique way to share presence (Week 4+)\n\nYour roadmap is ready. Review it, adjust it, make it yours.",
-        "action": { "label": "View your roadmap", "url": "/account?tab=roadmap" }
+        "body": "Based on your intake, we've mapped your path across four dimensions: Foundation, Inquiry, Integration, and Expression.\n\nYour roadmap is ready.",
+        "action": { "label": "View your roadmap", "url": "/account?tab=roadmap" },
+        "download": { "label": "Spiritual Roadmap Template (PDF)", "url": "/api/drip/download/spiritual-roadmap-template" }
       },
       "7": {
         "type": "video",
         "title": "Guided Breathwork Journey",
         "subtitle": "10-minute session with AI Buddha",
-        "body": "A specially recorded breathwork session combining diaphragmatic breathing, box breathing, and a brief introduction to breath retention.\n\nFind a quiet space. Use headphones. Let your breath carry you inward.",
+        "body": "A specially recorded breathwork session combining diaphragmatic breathing, box breathing, and a brief introduction to breath retention.\n\nFind a quiet space. Use headphones.",
         "duration": "10 min",
         "action": { "label": "Start session", "url": "/browse" }
       },
       "14": {
         "type": "session",
         "title": "Deep Dive with AI Buddha",
-        "body": "This is your halfway check-in. Open a conversation with AI Buddha and explore:\n\n- What has shifted since Day 1?\n- What resistance have you noticed?\n- What question are you avoiding?\n\nThe best spiritual guidance meets you exactly where you are. AI Buddha is ready.",
+        "body": "Your halfway check-in. What has shifted since Day 1? What resistance have you noticed? What question are you avoiding?",
         "action": { "label": "Begin deep dive", "url": "https://aibuddha.net/#chat" }
       },
       "21": {
         "type": "playlist",
         "title": "Your Personal Soundscape",
-        "body": "We've generated a custom Lofi mix based on your mood profile and meditation history. This is yours — no one else has this exact combination of frequencies, textures, and rhythms.\n\nListen during meditation, deep work, or simply when you need to return to center.",
+        "body": "A custom Lofi mix generated for your mood profile. This is yours.",
         "action": { "label": "Listen to your mix", "url": "/browse" }
       },
       "28": {
         "type": "reflection",
         "title": "Monthly Reflection",
-        "body": "You've completed the first 28 days. Take a moment to reflect:\n\n1. What has changed in your relationship with stillness?\n2. Where do you still resist?\n3. What practice will you carry forward?\n4. What intention do you set for the next 28 days?\n\nWrite these down. Return to them. The path continues — you just found your stride.",
-        "action": { "label": "Download reflection template (PDF)", "url": "/account?tab=reflection" }
+        "body": "What has changed in your relationship with stillness? Where do you still resist? What practice will you carry forward?",
+        "action": { "label": "Download reflection journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" },
+        "download": { "label": "Monthly Reflection Journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" }
       }
     }
   }
