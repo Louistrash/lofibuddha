@@ -2,32 +2,62 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-// ── Drip content schedule (same as webhook) ────
-const DRIP_SCHEDULE: Record<string, { day: number; type: string; label: string; action?: string; courseId?: string; modules?: number[] }[]> = {
-  mindful: [
-    { day: 1, type: "welcome", label: "Welcome to your Mindful Path" },
-    { day: 1, type: "feature", label: "Unlimited AI Buddha chat — start now", action: "https://aibuddha.net/#chat" },
-    { day: 2, type: "playlist", label: "Morning Calm — Lofi playlist #1", action: "/browse" },
-    { day: 3, type: "course", label: "Beginner's Mindfulness (Day 1-2)", courseId: "beginners-mindfulness", modules: [1, 2] },
-    { day: 5, type: "guide", label: "4-4-4 Box Breathing technique", action: "/browse" },
-    { day: 7, type: "playlist", label: "Deep Focus — Lofi playlist #2", action: "/browse" },
-    { day: 9, type: "course", label: "Beginner's Mindfulness (Day 3-5)", courseId: "beginners-mindfulness", modules: [3, 4, 5] },
-    { day: 12, type: "course", label: "Yoga Foundations (Day 1-3)", courseId: "yoga-foundations", modules: [1, 2, 3] },
-    { day: 16, type: "course", label: "Beginner's Mindfulness (Day 6-7)", courseId: "beginners-mindfulness", modules: [6, 7] },
-    { day: 19, type: "course", label: "Breathwork Essentials (Day 1-2)", courseId: "breathwork-essentials", modules: [1, 2] },
-    { day: 23, type: "course", label: "Yoga Foundations (Day 4-7)", courseId: "yoga-foundations", modules: [4, 5, 6, 7] },
-    { day: 26, type: "course", label: "Lofi & Deep Focus (Day 1-3)", courseId: "lofi-deep-focus", modules: [1, 2, 3] },
-  ],
-  enlightened: [
-    { day: 1, type: "welcome", label: "The Enlightened Path awaits" },
-    { day: 1, type: "intake", label: "Personal intake — tell us about your journey", action: "https://aibuddha.net/#chat" },
-    { day: 1, type: "feature", label: "Personalized daily meditation is ready", action: "https://aibuddha.net/#chat" },
-    { day: 3, type: "roadmap", label: "Your spiritual roadmap", action: "/account" },
-    { day: 7, type: "video", label: "Guided breathwork video (10 min)", action: "/browse" },
-    { day: 14, type: "session", label: "1-on-1 AI Buddha deep dive session", action: "https://aibuddha.net/#chat" },
-    { day: 21, type: "playlist", label: "Custom lofi mix — generated for your mood", action: "/browse" },
-    { day: 28, type: "reflection", label: "Monthly reflection template", action: "/account" },
-  ],
+// ── Types ──────────────────────────────────────
+interface DripItem {
+  day: number;
+  type: string;
+  title: string;
+  subtitle?: string;
+  body: string;
+  duration?: string;
+  courseId?: string;
+  modules?: number[];
+  action?: { label: string; url: string };
+}
+
+interface DripContent {
+  title: string;
+  subtitle: string;
+  days: Record<string, DripItem>;
+}
+
+// ── Content cache ──────────────────────────────
+let _contentCache: Record<string, DripContent> | null = null;
+
+function loadContent(): Record<string, DripContent> {
+  if (_contentCache) return _contentCache;
+  const file = path.join(process.cwd(), "data", "drip-content.json");
+  try {
+    _contentCache = JSON.parse(fs.readFileSync(file, "utf-8"));
+    return _contentCache!;
+  } catch {
+    return {};
+  }
+}
+
+// ── Schedule (day → item keys from content) ────
+const DRIP_SCHEDULE: Record<string, Record<string, { type: string; action?: string }>> = {
+  mindful: {
+    "1": { type: "welcome", action: "https://aibuddha.net/#chat" },
+    "2": { type: "playlist", action: "/browse" },
+    "3": { type: "course", action: "/account" },
+    "5": { type: "guide", action: "/browse" },
+    "7": { type: "playlist", action: "/browse" },
+    "9": { type: "course", action: "/account" },
+    "12": { type: "course", action: "/account" },
+    "16": { type: "course", action: "/account" },
+    "19": { type: "course", action: "/account" },
+    "23": { type: "course", action: "/account" },
+    "26": { type: "course", action: "/account" },
+  },
+  enlightened: {
+    "1": { type: "welcome", action: "/account?tab=intake" },
+    "3": { type: "roadmap", action: "/account?tab=roadmap" },
+    "7": { type: "video", action: "/browse" },
+    "14": { type: "session", action: "https://aibuddha.net/#chat" },
+    "21": { type: "playlist", action: "/browse" },
+    "28": { type: "reflection", action: "/account?tab=reflection" },
+  },
 };
 
 const SUBSCRIBERS_FILE = path.join(process.cwd(), "data", "subscribers.json");
@@ -39,18 +69,91 @@ function calculateDripDay(startDate: string): number {
   return Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
 }
 
+function resolveContent(tier: string, day: number): DripItem | null {
+  const content = loadContent();
+  const tierContent = content[tier];
+  if (!tierContent) return null;
+  return tierContent.days[String(day)] || null;
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const email = searchParams.get("email");
+  const dayParam = searchParams.get("day");
 
-  if (!email) {
-    return NextResponse.json(
-      { error: "email parameter required" },
-      { status: 400 }
+  // ── Zen / free tier content ──────────────────
+  const zenContent = {
+    tier: "zen",
+    dripDay: 0,
+    items: [
+      {
+        day: 0,
+        type: "feature",
+        title: "Lofi Radio",
+        subtitle: "24/7 calm soundscapes",
+        body: "Our main Lofi stream is always free. Gentle beats, ambient textures, and nature sounds to accompany your day — whether you're working, studying, or simply breathing.",
+        action: { label: "Listen now", url: "/browse" },
+      },
+      {
+        day: 0,
+        type: "feature",
+        title: "AI Buddha Chat",
+        subtitle: "10 queries per day",
+        body: "Ask AI Buddha anything — spiritual guidance, meditation tips, or simply a calming perspective on your day. Free tier includes 10 daily queries.",
+        action: { label: "Chat now", url: "https://aibuddha.net/#chat" },
+      },
+      {
+        day: 0,
+        type: "feature",
+        title: "4-4-4 Box Breathing",
+        subtitle: "Instant calm, anywhere",
+        body: "Inhale 4 seconds. Hold 4 seconds. Exhale 4 seconds. Hold 4 seconds. Our visualizer guides you through each cycle.",
+        action: { label: "Try it", url: "/browse" },
+      },
+    ],
+    nextUnlock: {
+      day: 1,
+      title: "The Mindful Path",
+      subtitle: "Upgrade to unlock full guided courses",
+      action: { label: "See plans", url: "/signup" },
+    },
+  };
+
+  // Single day lookup (for email content)
+  if (dayParam && email) {
+    const subscribers = JSON.parse(
+      fs.existsSync(SUBSCRIBERS_FILE)
+        ? fs.readFileSync(SUBSCRIBERS_FILE, "utf-8")
+        : "[]"
     );
+    const sub = subscribers.find((s: any) => s.email === email);
+    if (!sub) {
+      // Return zen-level content for requested day
+      return NextResponse.json({
+        email,
+        tier: "zen",
+        day: parseInt(dayParam),
+        content: null,
+        message: "Upgrade to unlock this content",
+      });
+    }
+
+    const content = resolveContent(sub.tier, parseInt(dayParam));
+    return NextResponse.json({
+      email,
+      tier: sub.tier,
+      dripDay: sub.startDate ? calculateDripDay(sub.startDate) : sub.dripDay,
+      day: parseInt(dayParam),
+      content,
+    });
   }
 
-  // Read subscriber
+  // Full dashboard view (no email = zen)
+  if (!email) {
+    return NextResponse.json(zenContent);
+  }
+
+  // Full subscriber view
   let subscriber: any = null;
   try {
     if (fs.existsSync(SUBSCRIBERS_FILE)) {
@@ -60,32 +163,49 @@ export async function GET(request: NextRequest) {
   } catch {}
 
   if (!subscriber) {
-    // Free tier / no subscription — return zen content
-    return NextResponse.json({
-      tier: "zen",
-      dripDay: 0,
-      unlocked: [
-        { day: 0, type: "feature", label: "Lofi radio — listen now", action: "/browse" },
-        { day: 0, type: "feature", label: "AI Buddha chat (10/day)", action: "https://aibuddha.net/#chat" },
-        { day: 0, type: "feature", label: "4-4-4 Box Breathing", action: "/browse" },
-      ],
-      nextUnlock: null,
-    });
+    return NextResponse.json(zenContent);
   }
 
   const dripDay = subscriber.startDate
     ? calculateDripDay(subscriber.startDate)
     : subscriber.dripDay || 0;
 
-  const schedule = DRIP_SCHEDULE[subscriber.tier] || [];
-  const unlocked = schedule.filter((item) => item.day <= dripDay);
-  const nextUnlock = schedule.find((item) => item.day > dripDay) || null;
+  const schedule = DRIP_SCHEDULE[subscriber.tier] || {};
+  const content = loadContent();
+  const tierContent = content[subscriber.tier];
+
+  // Build items with full content
+  const items: any[] = [];
+  const unlockedDays: number[] = [];
+
+  Object.entries(schedule).forEach(([dayStr]) => {
+    const day = parseInt(dayStr);
+    if (day <= dripDay) {
+      const item = tierContent?.days[dayStr];
+      if (item) {
+        items.push(item);
+        unlockedDays.push(day);
+      }
+    }
+  });
+
+  // Next unlock
+  const nextDay = Object.keys(schedule)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .find((d) => d > dripDay);
+  const nextUnlock = nextDay ? tierContent?.days[String(nextDay)] || null : null;
 
   return NextResponse.json({
     tier: subscriber.tier,
+    title: tierContent?.title,
+    subtitle: tierContent?.subtitle,
     dripDay,
     startDate: subscriber.startDate,
-    unlocked,
-    nextUnlock,
+    unlockedDays,
+    items,
+    nextUnlock: nextUnlock
+      ? { day: nextDay, title: nextUnlock.title }
+      : null,
   });
 }
