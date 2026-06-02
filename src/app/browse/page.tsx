@@ -79,7 +79,7 @@ export default function BrowsePage() {
       <nav className="sticky top-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-text-primary font-semibold">
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[27px] w-auto" />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[27px] w-[27px]" />
             LofiBuddha
           </Link>
           <Link href="/#pricing" className="btn-zen text-sm py-2 px-4">

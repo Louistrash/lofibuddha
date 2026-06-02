@@ -105,7 +105,7 @@ export default function SignupPage() {
             href="/landing"
             className="flex items-center gap-2 font-serif text-lg tracking-wide text-stone-800"
           >
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-auto" />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-[31px]" />
             LofiBuddha
           </Link>
           <div className="w-[100px]" /> {/* Spacer for centering */}

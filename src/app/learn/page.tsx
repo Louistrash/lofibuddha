@@ -42,7 +42,7 @@ export default function CoursesPage() {
       <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-stone-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-auto" />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-[35px]" />
             <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
           </Link>
           <div className="flex items-center gap-4">

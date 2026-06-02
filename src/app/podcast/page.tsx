@@ -20,7 +20,7 @@ export default function PodcastPage() {
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2.5 no-underline">
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-auto" style={{ borderRadius: 8 }} />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[35px] w-[35px]" style={{ borderRadius: 8 }} />
             <span style={{ fontFamily: '"Playfair Display", serif', fontSize: "1.1rem", color: "#1c1917", fontWeight: 500 }}>
               LofiBuddha
             </span>

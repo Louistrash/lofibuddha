@@ -39,7 +39,7 @@ function quoteCardHTML({ width, height, duration, caption, subtitle, backgroundI
     width: ${width}px; height: ${height}px;
     overflow: hidden;
     ${bgStyle}
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Inter', sans-serif;
   }
 
   /* Dark overlay */
@@ -60,7 +60,7 @@ function quoteCardHTML({ width, height, duration, caption, subtitle, backgroundI
   .quote-mark {
     position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
     font-size: 120px; color: rgba(196,148,100,0.08);
-    font-family: 'Georgia', serif; line-height: 1;
+    font-family: 'Inter', serif; line-height: 1;
     z-index: 2;
     animation: fadeInDown 2s ease-out;
   }
@@ -141,6 +141,12 @@ function quoteCardHTML({ width, height, duration, caption, subtitle, backgroundI
   <div class="bottom-line"></div>
   <div class="brand">lofibuddha.com</div>
 </div>
+<script>
+  window.__hf = {
+    duration: ${duration},
+    seek: function(t) {}
+  };
+</script>
 </body>
 </html>`;
 }
@@ -167,7 +173,7 @@ function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundIma
     width: ${width}px; height: ${height}px;
     overflow: hidden;
     ${bgStyle}
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Inter', sans-serif;
   }
   /* Background image layer */
   .bg-layer {
@@ -270,6 +276,10 @@ function zenLofiHTML({ width, height, duration, caption, subtitle, backgroundIma
 </div>
 
   <script>
+    window.__hf = {
+      duration: ${duration},
+      seek: function(t) {}
+    };
     window.__timelines = {
     main: {
       duration: function() { return ${duration}; },
@@ -382,7 +392,7 @@ async function generate(args) {
 
   try {
     execSync(
-      `npx hyperframes render "${tmpProject}" -o "${outputPath}" -f 30 --format mp4 --quality standard`,
+      `/usr/bin/npx --yes hyperframes render "${tmpProject}" -o "${outputPath}" -f 30 --format mp4 --quality standard`,
       { cwd: ROOT, stdio: "inherit", timeout: 300_000 }
     );
     console.log(`[Bodhi] ✅ Video: ${outputPath}`);

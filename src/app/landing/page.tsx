@@ -164,7 +164,7 @@ export default function LandingPage() {
                 height={35}
                 priority
                 unoptimized
-                className="h-[35px] w-auto"
+                className="h-[35px] w-[35px]"
               />
               <span className="font-serif text-lg tracking-wide text-stone-800">LofiBuddha</span>
             </Link>
@@ -472,7 +472,7 @@ export default function LandingPage() {
                   height={31}
                   loading="lazy"
                   unoptimized
-                  className="h-[31px] w-auto"
+                  className="h-[31px] w-[31px]"
                 />
                 <span className="font-serif text-base tracking-wide text-stone-200">LofiBuddha</span>
               </Link>

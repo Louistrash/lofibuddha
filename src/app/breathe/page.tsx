@@ -103,7 +103,7 @@ export default function BreathePage() {
       >
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2.5 no-underline">
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-auto" style={{ borderRadius: 8 }} />
+            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-[31px]" style={{ borderRadius: 8 }} />
             <span style={{ fontFamily: '"Playfair Display", serif', fontSize: "1.1rem", color: "#1c1917", fontWeight: 500 }}>
               LofiBuddha
             </span>
