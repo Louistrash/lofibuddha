@@ -154,6 +154,7 @@
     }
     .subscribe-form input {
       flex: 1;
+      min-width: 0;
       padding: 0.85rem 1.25rem;
       border-radius: 100px;
       border: 1px solid var(--border);
@@ -184,9 +185,21 @@
       font-family: system-ui, sans-serif;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
       white-space: nowrap;
+      flex-shrink: 0;
       transition: background 0.3s ease;
+    }
+
+    /* Mobile: stack form vertically */
+    @media (max-width: 480px) {
+      .subscribe-form {
+        flex-direction: column;
+      }
+      .subscribe-form button {
+        justify-content: center;
+      }
     }
     .subscribe-form button:hover {
       background: #292524;
