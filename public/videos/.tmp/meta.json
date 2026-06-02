@@ -1,0 +1,7 @@
+{
+  "width": 1080,
+  "height": 1080,
+  "fps": 30,
+  "duration": 30,
+  "output": "/opt/data/bodhi-dashboard/public/videos/square/zen-lofi-square.mp4"
+}

@@ -1,0 +1,87 @@
+{
+  "task": "t_9be25ec6",
+  "rendered_at": "2026-05-31 16:40:48",
+  "duration": 30,
+  "format": "9:16",
+  "audio_sources": [
+    "slaap",
+    "ochtend",
+    "yoga",
+    "avond",
+    "focus"
+  ],
+  "total_rendered": 10,
+  "total_with_audio": 10,
+  "videos": [
+    {
+      "post_id": "tt-01",
+      "file": "tt-tt-01-audio-1780244910.mp4",
+      "audio_track": "ochtend",
+      "audio_start": 0,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-03",
+      "file": "tt-tt-03-audio-1780244910.mp4",
+      "audio_track": "focus",
+      "audio_start": 0,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-02",
+      "file": "tt-tt-02-audio-1780244910.mp4",
+      "audio_track": "ochtend",
+      "audio_start": 40,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-05",
+      "file": "tt-tt-05-audio-1780245098.mp4",
+      "audio_track": "avond",
+      "audio_start": 0,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-06",
+      "file": "tt-tt-06-audio-1780245098.mp4",
+      "audio_track": "avond",
+      "audio_start": 35,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-04",
+      "file": "tt-tt-04-audio-1780245098.mp4",
+      "audio_track": "focus",
+      "audio_start": 45,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-09",
+      "file": "tt-tt-09-audio-1780245311.mp4",
+      "audio_track": "slaap",
+      "audio_start": 0,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-08",
+      "file": "tt-tt-08-audio-1780245311.mp4",
+      "audio_track": "yoga",
+      "audio_start": 50,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-07",
+      "file": "tt-tt-07-audio-1780245311.mp4",
+      "audio_track": "yoga",
+      "audio_start": 0,
+      "has_audio": true
+    },
+    {
+      "post_id": "tt-10",
+      "file": "tt-tt-10-audio-1780245500.mp4",
+      "audio_track": "slaap",
+      "audio_start": 40,
+      "has_audio": true
+    }
+  ]
+}

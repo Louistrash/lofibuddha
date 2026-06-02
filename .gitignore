@@ -1,9 +1,5 @@
 node_modules/
 .next/
-.tiktok-tokens.json
-*.log
-.DS_Store
-public/videos/
-.env.local
 .env
-.env.*
+*.log
+.env*
