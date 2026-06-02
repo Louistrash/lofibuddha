@@ -40,9 +40,9 @@ export default function OverviewPage() {
           Your creative command center.
         </p>
         <div className="flex items-center gap-3 mt-3">
-          <Link href="/landing" className="text-xs text-accent-light hover:text-accent transition-colors">
-            ← View public site
-          </Link>
+          <a href="https://aibuddha.net" target="_blank" rel="noopener" className="text-xs text-accent-light hover:text-accent transition-colors">
+            ← View AI Buddha site
+          </a>
         </div>
       </div>
 

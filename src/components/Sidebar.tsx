@@ -78,7 +78,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
                   className="rounded-xl flex-shrink-0"
                 />
                 <span className="font-semibold text-text-primary text-sm tracking-wide">
-                  Bodhi OS
+                  AI Buddha CMS
                 </span>
               </div>
 
@@ -148,7 +148,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
               animate={{ opacity: 1 }}
               className="font-semibold text-text-primary text-sm tracking-wide"
             >
-              Bodhi OS
+              AI Buddha CMS
             </motion.span>
           )}
         </div>
