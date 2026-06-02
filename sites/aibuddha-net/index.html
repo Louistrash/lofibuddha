@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>AI Buddha — Coming Soon</title>
   <meta name="description" content="AI Buddha — Your spiritual AI companion. Guided meditation, wisdom, and breathwork. Coming soon.">
   <meta name="robots" content="index, follow">
@@ -15,28 +15,30 @@
       --ink: #1c1917;
       --ink-light: #44403c;
       --gold: #b08050;
-      --gold-light: #d4a060;
       --stone: #78716c;
       --stone-light: #a8a29e;
       --stone-xlight: #c4bfb8;
       --border: rgba(0,0,0,0.06);
     }
 
+    html { overflow-x: hidden; width: 100%; }
     body {
       font-family: system-ui, -apple-system, sans-serif;
       background: var(--cream);
       color: var(--ink);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
       position: relative;
-      padding: 2rem;
+      padding: 1.5rem;
     }
 
-    /* Background orbs */
     .orb {
       position: fixed;
       border-radius: 50%;
@@ -57,19 +59,13 @@
       background: radial-gradient(circle, rgba(140,180,160,0.14) 0%, transparent 70%);
     }
 
-    /* Enso */
     .enso-container {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 0;
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; z-index: 0;
     }
     .enso-container svg {
-      width: min(500px, 85vw);
-      height: min(500px, 85vw);
+      width: min(500px, 85vw); height: min(500px, 85vw);
       opacity: 0.05;
       animation: ensoRotate 40s linear infinite;
     }
@@ -78,90 +74,74 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Main content */
     .content {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       text-align: center;
-      max-width: 560px;
-      width: 100%;
+      width: 100%; max-width: 560px;
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 1.2s cubic-bezier(0.25,0.46,0.45,0.94), transform 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .content.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .content.visible { opacity: 1; transform: translateY(0); }
 
-    /* Logo */
     .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.65rem;
-      margin-bottom: 3rem;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.65rem; margin-bottom: 2.5rem;
     }
-    .logo img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-    }
+    .logo img { width: 40px; height: 40px; border-radius: 10px; }
     .logo span {
       font-family: Georgia, 'Times New Roman', serif;
-      font-size: 1.15rem;
-      letter-spacing: 0.04em;
-      color: var(--ink-light);
+      font-size: 1.15rem; letter-spacing: 0.04em; color: var(--ink-light);
     }
 
-    /* Label */
     .label {
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 2rem;
-      font-weight: 500;
+      font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.25rem; font-weight: 500;
     }
 
-    /* Headline */
+    /* Lang switcher */
+    .lang-switcher {
+      display: flex; justify-content: center; gap: 0.35rem;
+      margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .lang-switcher button {
+      background: none; border: 1px solid transparent;
+      font-size: 0.65rem; letter-spacing: 0.08em;
+      color: var(--stone-light); cursor: pointer;
+      padding: 0.3rem 0.5rem; border-radius: 6px;
+      font-family: system-ui, sans-serif;
+      transition: all 0.2s ease;
+    }
+    .lang-switcher button:hover { color: var(--stone); border-color: var(--border); }
+    .lang-switcher button.active {
+      color: var(--gold); border-color: rgba(180,130,80,0.25);
+      background: rgba(180,130,80,0.06);
+    }
+
     h1 {
       font-family: Georgia, 'Times New Roman', serif;
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 300;
-      line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 1.75rem;
-      white-space: pre-line;
+      font-size: clamp(2rem, 5.5vw, 4.5rem);
+      font-weight: 300; line-height: 1.15; color: var(--ink);
+      margin-bottom: 1.5rem; white-space: pre-line;
     }
 
-    /* Subtitle */
     .subtitle {
-      font-size: 0.95rem;
-      line-height: 1.8;
-      color: var(--stone);
-      font-weight: 300;
-      max-width: 440px;
-      margin: 0 auto 2.5rem;
+      font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+      line-height: 1.8; color: var(--stone); font-weight: 300;
+      max-width: 440px; margin: 0 auto 2rem;
+      padding: 0 0.5rem;
     }
 
-    /* Form */
     .subscribe-form {
-      display: flex;
-      gap: 0.75rem;
-      max-width: 420px;
-      margin: 0 auto 3rem;
+      display: flex; gap: 0.75rem;
+      width: 100%; max-width: 420px; margin: 0 auto 2.5rem;
+      padding: 0 0.5rem;
     }
     .subscribe-form input {
-      flex: 1;
-      min-width: 0;
-      padding: 0.85rem 1.25rem;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 0.875rem;
-      color: var(--ink);
-      outline: none;
+      flex: 1; min-width: 0;
+      padding: 0.85rem 1.25rem; border-radius: 100px;
+      border: 1px solid var(--border); background: #fff;
+      font-size: 0.875rem; color: var(--ink); outline: none;
       font-family: system-ui, sans-serif;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
@@ -169,102 +149,56 @@
       border-color: rgba(180,130,80,0.4);
       box-shadow: 0 0 0 3px rgba(180,130,80,0.06);
     }
-    .subscribe-form input::placeholder {
-      color: var(--stone-xlight);
-    }
+    .subscribe-form input::placeholder { color: var(--stone-xlight); }
     .subscribe-form button {
-      padding: 0.85rem 1.75rem;
-      border-radius: 100px;
-      background: var(--ink);
-      color: var(--cream);
-      border: none;
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      cursor: pointer;
-      font-family: system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-      flex-shrink: 0;
+      padding: 0.85rem 1.5rem; border-radius: 100px;
+      background: var(--ink); color: var(--cream); border: none;
+      font-size: 0.85rem; font-weight: 400; letter-spacing: 0.02em;
+      cursor: pointer; font-family: system-ui, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.4rem; white-space: nowrap; flex-shrink: 0;
       transition: background 0.3s ease;
     }
+    .subscribe-form button:hover { background: #292524; }
+    .subscribe-form button.success { background: var(--gold); cursor: default; }
+    .subscribe-form button svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-    /* Mobile: stack form vertically */
     @media (max-width: 480px) {
-      .subscribe-form {
-        flex-direction: column;
-      }
-      .subscribe-form button {
-        justify-content: center;
-      }
-    }
-    .subscribe-form button:hover {
-      background: #292524;
-    }
-    .subscribe-form button.success {
-      background: var(--gold);
-      cursor: default;
-    }
-    .subscribe-form button svg {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
+      body { padding: 1rem; }
+      .subscribe-form { flex-direction: column; }
+      .subscribe-form button { width: 100%; justify-content: center; }
+      .lang-switcher { gap: 0.15rem; }
+      .lang-switcher button { padding: 0.35rem 0.45rem; font-size: 0.62rem; }
     }
 
-    /* Social */
     .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
+      display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem;
     }
     .social-links a {
-      font-size: 0.78rem;
-      color: var(--stone-light);
-      text-decoration: none;
-      letter-spacing: 0.04em;
+      font-size: 0.78rem; color: var(--stone-light);
+      text-decoration: none; letter-spacing: 0.04em;
       transition: color 0.3s ease;
     }
-    .social-links a:hover {
-      color: var(--stone);
-    }
+    .social-links a:hover { color: var(--stone); }
 
-    /* Footer */
     .footer {
-      border-top: 1px solid rgba(0,0,0,0.05);
-      padding-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
+      border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1.25rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
     }
     .footer-tagline {
-      font-size: 0.7rem;
-      color: var(--stone-light);
-      letter-spacing: 0.03em;
+      font-size: 0.7rem; color: var(--stone-light); letter-spacing: 0.03em;
     }
-    .footer-links {
-      display: flex;
-      gap: 1.25rem;
-    }
+    .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
     .footer-links a, .footer-links span {
-      font-size: 0.68rem;
-      color: var(--stone-xlight);
-      text-decoration: none;
+      font-size: 0.68rem; color: var(--stone-xlight); text-decoration: none;
     }
-    .footer-links a:hover {
-      color: var(--stone-light);
-    }
+    .footer-links a:hover { color: var(--stone-light); }
   </style>
 </head>
 <body>
 
   <div class="orb orb-gold"></div>
   <div class="orb orb-sage"></div>
-
   <div class="enso-container">
     <svg viewBox="0 0 400 400">
       <circle cx="200" cy="200" r="175" fill="none" stroke="#b08050" stroke-width="0.8" stroke-dasharray="6 14"/>
@@ -280,14 +214,24 @@
     </div>
 
     <p class="label" id="label">Coming Soon</p>
+
+    <div class="lang-switcher" id="langSwitcher">
+      <button data-lang="en">EN</button>
+      <button data-lang="nl">NL</button>
+      <button data-lang="es">ES</button>
+      <button data-lang="de">DE</button>
+      <button data-lang="fr">FR</button>
+      <button data-lang="hi">HI</button>
+    </div>
+
     <h1 id="headline">Something beautiful
 is on its way</h1>
     <p class="subtitle" id="subtitle">Your spiritual AI companion for guided meditation, wisdom, and breathwork. We're crafting an experience of deep presence and inner calm.</p>
 
-    <form class="subscribe-form" id="subscribeForm">
-      <input type="email" id="email" required placeholder="your@email.com">
+    <form class="subscribe-form" id="subscribeForm" onSubmit="return false">
+      <input type="email" id="email" required placeholder="your@email.com" autocomplete="email">
       <button type="submit" id="submitBtn">
-        Notify me
+        <span id="btnText">Notify me</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
           <path d="m21.854 2.147-10.94 10.939"/>
@@ -307,92 +251,81 @@ is on its way</h1>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
         <a href="disclaimer.html">Disclaimer</a>
-        <span id="copyright"></span>
+        <span>© <span id="year"></span> LofiBuddha</span>
       </div>
     </div>
   </div>
 
   <script>
-    // ── Translations ──
-    const T = {
-      comingSoon: {
-        en: 'Coming Soon', nl: 'Binnenkort', es: 'Próximamente', de: 'Demnächst', fr: 'Bientôt', hi: 'जल्द आ रहा है'
-      },
-      headline: {
-        en: 'Something beautiful\nis on its way',
-        nl: 'Er is iets moois\nonderweg',
-        es: 'Algo hermoso\nestá en camino',
-        de: 'Etwas Schönes\nist unterwegs',
-        fr: 'Quelque chose de beau\narrive',
-        hi: 'कुछ सुंदर\nआने वाला है'
-      },
-      subtitle: {
-        en: 'Your spiritual AI companion for guided meditation, wisdom, and breathwork. We\'re crafting an experience of deep presence and inner calm.',
-        nl: 'Je spirituele AI-metgezel voor geleide meditatie, wijsheid en ademwerk. We bouwen aan een ervaring van diepe aanwezigheid en innerlijke rust.',
-        es: 'Tu compañero espiritual de IA para meditación guiada, sabiduría y ejercicios de respiración. Estamos creando una experiencia de presencia profunda y calma interior.',
-        de: 'Dein spiritueller KI-Begleiter für geführte Meditation, Weisheit und Atemarbeit. Wir gestalten eine Erfahrung tiefer Präsenz und innerer Ruhe.',
-        fr: 'Votre compagnon spirituel IA pour la méditation guidée, la sagesse et la respiration. Nous créons une expérience de présence profonde et de calme intérieur.',
-        hi: 'निर्देशित ध्यान, ज्ञान और श्वास अभ्यास के लिए आपका आध्यात्मिक AI साथी। हम गहरी उपस्थिति और आंतरिक शांति का अनुभव बना रहे हैं।'
-      },
-      emailPlaceholder: {
-        en: 'your@email.com', nl: 'jouw@email.com', es: 'tu@email.com', de: 'deine@email.de', fr: 'ton@email.fr', hi: 'आपका@ईमेल.com'
-      },
-      notifyMe: {
-        en: 'Notify me', nl: 'Houd me op de hoogte', es: 'Avísame', de: 'Benachrichtige mich', fr: 'Préviens-moi', hi: 'मुझे सूचित करें'
-      },
-      subscribed: {
-        en: 'You\'re on the list.', nl: 'Je staat op de lijst.', es: 'Estás en la lista.', de: 'Du bist auf der Liste.', fr: 'Tu es sur la liste.', hi: 'आप सूची में हैं।'
-      },
-      footerTagline: {
-        en: 'A space for calm in a busy world.',
-        nl: 'Een plek van rust in een drukke wereld.',
-        es: 'Un espacio de calma en un mundo ocupado.',
-        de: 'Ein Ort der Ruhe in einer geschäftigen Welt.',
-        fr: 'Un espace de calme dans un monde agité.',
-        hi: 'व्यस्त दुनिया में शांति का एक स्थान।'
+    (function(){
+      var T = {
+        comingSoon: { en:'Coming Soon', nl:'Binnenkort', es:'Próximamente', de:'Demnächst', fr:'Bientôt', hi:'जल्द आ रहा है' },
+        headline: { en:'Something beautiful\nis on its way', nl:'Er is iets moois\nonderweg', es:'Algo hermoso\nestá en camino', de:'Etwas Schönes\nist unterwegs', fr:'Quelque chose de beau\narrive', hi:'कुछ सुंदर\nआने वाला है' },
+        subtitle: { en:"Your spiritual AI companion for guided meditation, wisdom, and breathwork. We're crafting an experience of deep presence and inner calm.", nl:'Je spirituele AI-metgezel voor geleide meditatie, wijsheid en ademwerk. We bouwen aan een ervaring van diepe aanwezigheid en innerlijke rust.', es:'Tu compañero espiritual de IA para meditación guiada, sabiduría y ejercicios de respiración. Estamos creando una experiencia de presencia profunda y calma interior.', de:'Dein spiritueller KI-Begleiter für geführte Meditation, Weisheit und Atemarbeit. Wir gestalten eine Erfahrung tiefer Präsenz und innerer Ruhe.', fr:"Votre compagnon spirituel IA pour la méditation guidée, la sagesse et la respiration. Nous créons une expérience de présence profonde et de calme intérieur.", hi:'निर्देशित ध्यान, ज्ञान और श्वास अभ्यास के लिए आपका आध्यात्मिक AI साथी। हम गहरी उपस्थिति और आंतरिक शांति का अनुभव बना रहे हैं।' },
+        emailPlaceholder: { en:'your@email.com', nl:'jouw@email.com', es:'tu@email.com', de:'deine@email.de', fr:'ton@email.fr', hi:'आपका@ईमेल.com' },
+        notifyMe: { en:'Notify me', nl:'Houd me op de hoogte', es:'Avísame', de:'Benachrichtige mich', fr:'Préviens-moi', hi:'मुझे सूचित करें' },
+        subscribed: { en:"You're on the list.", nl:'Je staat op de lijst.', es:'Estás en la lista.', de:'Du bist auf der Liste.', fr:'Tu es sur la liste.', hi:'आप सूची में हैं।' },
+        footerTagline: { en:'A space for calm in a busy world.', nl:'Een plek van rust in een drukke wereld.', es:'Un espacio de calma en un mundo ocupado.', de:'Ein Ort der Ruhe in einer geschäftigen Welt.', fr:'Un espace de calme dans un monde agité.', hi:'व्यस्त दुनिया में शांति का एक स्थान।' }
+      };
+
+      var LANGS = ['en','nl','es','de','fr','hi'];
+      var currentLang;
+
+      function detectLang() {
+        var s = localStorage.getItem('aibuddha-lang');
+        if (s && LANGS.indexOf(s) >= 0) return s;
+        var b = navigator.language.toLowerCase().split('-')[0];
+        return LANGS.indexOf(b) >= 0 ? b : 'en';
       }
-    };
 
-    // ── Language detection ──
-    const LANGS = ['en','nl','es','de','fr','hi'];
-    function detectLang() {
-      const stored = localStorage.getItem('aibuddha-lang');
-      if (stored && LANGS.includes(stored)) return stored;
-      const browser = navigator.language.toLowerCase().split('-')[0];
-      return LANGS.includes(browser) ? browser : 'en';
-    }
-    const lang = detectLang();
+      function applyLang(lang) {
+        currentLang = lang;
+        document.getElementById('label').textContent = T.comingSoon[lang];
+        document.getElementById('headline').textContent = T.headline[lang];
+        document.getElementById('subtitle').textContent = T.subtitle[lang];
+        document.getElementById('email').placeholder = T.emailPlaceholder[lang];
+        document.getElementById('btnText').textContent = T.notifyMe[lang];
+        document.getElementById('footerTagline').textContent = T.footerTagline[lang];
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ── Apply translations ──
-    document.getElementById('label').textContent = T.comingSoon[lang];
-    document.getElementById('headline').textContent = T.headline[lang];
-    document.getElementById('subtitle').textContent = T.subtitle[lang];
-    document.getElementById('email').placeholder = T.emailPlaceholder[lang];
-    document.getElementById('submitBtn').childNodes[0].textContent = T.notifyMe[lang];
-    document.getElementById('footerTagline').textContent = T.footerTagline[lang];
-    document.getElementById('copyright').textContent = '© ' + new Date().getFullYear() + ' LofiBuddha';
+        // Update active button
+        var btns = document.querySelectorAll('#langSwitcher button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].getAttribute('data-lang') === lang);
+        }
+      }
 
-    // ── Fade in ──
-    setTimeout(function() {
-      document.getElementById('content').classList.add('visible');
-    }, 100);
+      currentLang = detectLang();
+      applyLang(currentLang);
 
-    // ── Subscribe ──
-    document.getElementById('subscribeForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var email = document.getElementById('email').value;
-      var btn = document.getElementById('submitBtn');
-      if (!email || btn.classList.contains('success')) return;
+      // Lang switcher clicks
+      document.getElementById('langSwitcher').addEventListener('click', function(e) {
+        var btn = e.target.closest('button');
+        if (!btn) return;
+        var lang = btn.getAttribute('data-lang');
+        if (!lang || lang === currentLang) return;
+        localStorage.setItem('aibuddha-lang', lang);
+        applyLang(lang);
+      });
 
-      fetch('https://lofibuddha.com/api/subscribers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, language: lang })
-      }).catch(function(){});
+      // Fade in
+      setTimeout(function(){ document.getElementById('content').classList.add('visible'); }, 100);
 
-      btn.classList.add('success');
-      btn.childNodes[0].textContent = T.subscribed[lang];
-    });
+      // Subscribe
+      document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var email = document.getElementById('email').value;
+        var btn = document.getElementById('submitBtn');
+        if (!email || btn.classList.contains('success')) return;
+        fetch('https://lofibuddha.com/api/subscribers', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email: email, language: currentLang})
+        }).catch(function(){});
+        btn.classList.add('success');
+        document.getElementById('btnText').textContent = T.subscribed[currentLang];
+      });
+    })();
   </script>
 
 </body>
