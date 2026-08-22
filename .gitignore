@@ -41,3 +41,4 @@ Thumbs.db
 
 # Hermes local state
 .hermes/cache/
+data/meditations/.tmp/
