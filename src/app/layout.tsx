@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Manrope, Playfair_Display, DM_Serif_Display } from "next/font/google";
+import { AuthProvider } from "@/lib/AuthProvider";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
-const inter = Inter({
+const jakarta = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -12,6 +14,14 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
+  display: "swap",
+  preload: true,
+});
+
+const dmSerif = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
   display: "swap",
   preload: true,
 });
@@ -33,9 +43,7 @@ export const metadata: Metadata = {
     "study music", "sleep music", "wellness", "guided meditation",
   ],
   robots: { index: true, follow: true },
-  alternates: {
-    canonical: "https://lofibuddha.com",
-  },
+  alternates: { canonical: "https://lofibuddha.com" },
   icons: {
     icon: [
       { url: "/lofibuddha.png", type: "image/png" },
@@ -54,14 +62,7 @@ export const metadata: Metadata = {
     description:
       "Curated lofi music, guided meditation, yoga flows, and breathwork for focus, relaxation, and deep calm.",
     url: "https://lofibuddha.com",
-    images: [
-      {
-        url: "/images/bg/bg-youtube.png",
-        width: 1280,
-        height: 720,
-        alt: "LofiBuddha — Your daily dose of calm",
-      },
-    ],
+    images: [{ url: "/images/bg/bg-youtube.png", width: 1280, height: 720, alt: "LofiBuddha — Your daily dose of calm" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -72,19 +73,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.variable} ${playfair.variable} antialiased bg-bg-primary text-text-primary`}>
-        {children}
+      <body className={jakarta.variable + " " + playfair.variable + " " + dmSerif.variable + " antialiased bg-bg-primary text-text-primary"}>
+        <AuthProvider>{children}</AuthProvider>
+        <CookieConsent />
       </body>
     </html>
   );

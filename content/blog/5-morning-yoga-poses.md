@@ -43,4 +43,4 @@ Stand tall, feet grounded, arms at your sides. Close your eyes. Feel your weight
 
 Set a timer for 10 minutes. Move through these 5 poses at your own pace. Don't judge. Just breathe.
 
-*Ready for a guided flow? Join our [free morning yoga session](/browse).*
+*Ready for a guided flow? Join our [relax and body scan](/mindfulness/relax).*

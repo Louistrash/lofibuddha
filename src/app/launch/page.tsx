@@ -73,7 +73,7 @@ export default function LaunchPage() {
           <Link href="/landing" className="font-semibold text-text-primary">
             🧘 LofiBuddha
           </Link>
-          <Link href="/browse" className="text-sm text-accent-light hover:text-accent">
+          <Link href="/mindfulness" className="text-sm text-accent-light hover:text-accent">
             Browse Content →
           </Link>
         </div>

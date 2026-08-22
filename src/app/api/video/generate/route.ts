@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     console.log("[Bodhi API] Generating video:", outputName);
 
-    const cwd = join(process.cwd());
+    const cwd = join(process.cwd(), '..', '..');  // navigate from .next/standalone to project root
     const stdout = execSync(cmd, {
       cwd,
       timeout: 300_000,

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Home,
   FileText,
   Share2,
   Video,
@@ -19,16 +18,17 @@ import {
   Bot,
   Mail,
   Users,
+  Music,
 } from "lucide-react";
 
 import NextImage from "next/image";
 
 const navItems = [
-  { href: "/", label: "Overview", icon: Home },
   { href: "/content", label: "Content", icon: FileText, badge: "AI" },
   { href: "/social", label: "Social", icon: Share2 },
   { href: "/video", label: "Video", icon: Video },
   { href: "/images", label: "Images", icon: Image },
+  { href: "/sounds", label: "Sounds", icon: Music },
   { href: "/studio", label: "Studio", icon: Podcast },
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/newsletter", label: "Newsletter", icon: Mail },

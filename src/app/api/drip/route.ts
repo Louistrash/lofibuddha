@@ -38,11 +38,11 @@ function loadContent(): Record<string, DripContent> {
 // ── Schedule (day → item keys from content) ────
 const DRIP_SCHEDULE: Record<string, Record<string, { type: string; action?: string }>> = {
   mindful: {
-    "1": { type: "welcome", action: "https://aibuddha.net/#chat" },
-    "2": { type: "playlist", action: "/browse" },
+    "1": { type: "welcome", action: "https://lofibuddha.com/chat" },
+    "2": { type: "playlist", action: "/mindfulness" },
     "3": { type: "course", action: "/account" },
-    "5": { type: "guide", action: "/browse" },
-    "7": { type: "playlist", action: "/browse" },
+    "5": { type: "guide", action: "/mindfulness" },
+    "7": { type: "playlist", action: "/mindfulness" },
     "9": { type: "course", action: "/account" },
     "12": { type: "course", action: "/account" },
     "16": { type: "course", action: "/account" },
@@ -53,9 +53,9 @@ const DRIP_SCHEDULE: Record<string, Record<string, { type: string; action?: stri
   enlightened: {
     "1": { type: "welcome", action: "/account?tab=intake" },
     "3": { type: "roadmap", action: "/account?tab=roadmap" },
-    "7": { type: "video", action: "/browse" },
-    "14": { type: "session", action: "https://aibuddha.net/#chat" },
-    "21": { type: "playlist", action: "/browse" },
+    "7": { type: "video", action: "/mindfulness" },
+    "14": { type: "session", action: "https://lofibuddha.com/chat" },
+    "21": { type: "playlist", action: "/mindfulness" },
     "28": { type: "reflection", action: "/account?tab=reflection" },
   },
 };
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
         title: "Lofi Radio",
         subtitle: "24/7 calm soundscapes",
         body: "Our main Lofi stream is always free. Gentle beats, ambient textures, and nature sounds to accompany your day — whether you're working, studying, or simply breathing.",
-        action: { label: "Listen now", url: "/browse" },
+        action: { label: "Listen now", url: "/mindfulness" },
       },
       {
         day: 0,
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
         title: "AI Buddha Chat",
         subtitle: "10 queries per day",
         body: "Ask AI Buddha anything — spiritual guidance, meditation tips, or simply a calming perspective on your day. Free tier includes 10 daily queries.",
-        action: { label: "Chat now", url: "https://aibuddha.net/#chat" },
+        action: { label: "Chat now", url: "https://lofibuddha.com/chat" },
       },
       {
         day: 0,
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
         title: "4-4-4 Box Breathing",
         subtitle: "Instant calm, anywhere",
         body: "Inhale 4 seconds. Hold 4 seconds. Exhale 4 seconds. Hold 4 seconds. Our visualizer guides you through each cycle.",
-        action: { label: "Try it", url: "/browse" },
+        action: { label: "Try it", url: "/mindfulness" },
       },
     ],
     nextUnlock: {

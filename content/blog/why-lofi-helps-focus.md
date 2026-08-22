@@ -32,4 +32,4 @@ Most lofi tracks sit between 60-80 beats per minute — roughly the same as a re
 - **Keep volume low** — it should be felt, not heard
 - **Pair it with the Pomodoro Technique** for optimal productivity
 
-*Ready to try? Browse our free lofi collection at [lofibuddha.com/browse](/browse).*
+*Ready to try? Browse our free lofi collection at [deep work experience](/mindfulness/focus).*

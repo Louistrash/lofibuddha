@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 import { Moon, ArrowRight, ArrowLeft, CheckCircle2, Play, FileText, Clock, ChevronDown, ChevronRight } from "lucide-react";
 
 const LANGS = ["en", "nl", "es", "de", "fr", "hi"] as const;
@@ -11,6 +11,7 @@ const FLAGS: Record<Lang, string> = { en: "🇬🇧", nl: "🇳🇱", es: "🇪�
 
 interface Module {
   day: number; title: string; type: string; content: string;
+  experience?: string;
 }
 
 interface CourseDetail {
@@ -19,19 +20,39 @@ interface CourseDetail {
   modules: Module[]; availableLanguages: string[];
 }
 
-export default function CourseDetailPage({ params }: { params: { slug: string } }) {
+// Experience → categorie-pad (voor de practice knop)
+const EXPERIENCE_PATHS: Record<string, string> = {
+  "focus-anchor": "/mindfulness/focus", "deep-work": "/mindfulness/focus", "mindful-reset": "/mindfulness/focus",
+  "one-point-focus": "/mindfulness/focus", "the-listener": "/mindfulness/focus", "pomodoro": "/mindfulness/focus",
+  "box-breathing": "/mindfulness/breathe", "breath-of-life": "/mindfulness/breathe", "the-witness": "/mindfulness/breathe",
+  "deep-sleep": "/mindfulness/sleep", "letting-go": "/mindfulness/sleep", "gratitude": "/mindfulness/sleep",
+  "body-scan": "/mindfulness/relax", "stillness-within": "/mindfulness/relax", "zen-garden": "/mindfulness/relax",
+};
+
+export default function CourseDetailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-stone-400">Loading...</div>}>
+      <CourseDetailInner />
+    </Suspense>
+  );
+}
+
+function CourseDetailInner() {
   const searchParams = useSearchParams();
+  const params = useParams();
+  const slug = typeof params.slug === "string" ? params.slug : "";
   const lang = (searchParams.get("lang") || "en") as Lang;
   const [course, setCourse] = useState<CourseDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(0);
 
   useEffect(() => {
-    fetch(`/api/courses/public?slug=${params.slug}&lang=${lang}`)
+    if (!slug) return;
+    fetch(`/api/courses/public?slug=${slug}&lang=${lang}`)
       .then(r => r.json())
       .then(d => setCourse(d))
       .finally(() => setLoading(false));
-  }, [params.slug, lang]);
+  }, [slug, lang]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center text-stone-400">Loading...</div>;
@@ -117,6 +138,14 @@ export default function CourseDetailPage({ params }: { params: { slug: string } 
                     <div className="mt-4 bg-stone-100 rounded-xl p-4 text-center text-xs text-stone-400">
                       🎬 Video content — available with full access
                     </div>
+                  )}
+                  {mod.experience && EXPERIENCE_PATHS[mod.experience] && (
+                    <Link
+                      href={EXPERIENCE_PATHS[mod.experience]}
+                      className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-amber-700 text-white text-xs font-medium hover:bg-amber-800 transition-colors"
+                    >
+                      <Play size={12} /> Practice: {mod.experience.replace(/-/g, " ")}
+                    </Link>
                   )}
                 </div>
               )}

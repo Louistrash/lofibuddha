@@ -1,0 +1,40 @@
+import { NextRequest, NextResponse } from "next/server";
+import { readFile, stat } from "fs/promises";
+import { join } from "path";
+import { getProjectRoot } from "@/lib/paths";
+
+// GET /api/focus/audio/[id] — stream a guided focus audio file
+export async function GET(
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+    const safeId = id.replace(/[^a-zA-Z0-9._-]/g, "");
+    if (!safeId || safeId !== id) {
+      return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+    }
+
+    const filePath = join(getProjectRoot(), "data", "focus", "audio", safeId);
+    let info;
+    try {
+      info = await stat(filePath);
+    } catch {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    const data = await readFile(filePath);
+    return new NextResponse(new Uint8Array(data), {
+      status: 200,
+      headers: {
+        "Content-Type": "audio/mpeg",
+        "Content-Length": String(info.size),
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+  } catch (err: any) {
+    console.error("[Focus Audio]", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}

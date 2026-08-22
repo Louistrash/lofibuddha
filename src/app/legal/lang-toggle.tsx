@@ -42,68 +42,20 @@ export default function LangToggle() {
   const current = LANGS.find((l) => l.code === lang) || LANGS[0];
 
   return (
-    <div className="lang-select" style={{ position: "relative" }}>
-      <button
-        onClick={() => setOpen(!open)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.3rem",
-          padding: "0.4rem 0.6rem",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "#78716c",
-          fontSize: "0.75rem",
-          fontFamily: '"Inter", sans-serif',
-          borderRadius: 6,
-        }}
-      >
-        <span>
-          {current.flag} {current.code.toUpperCase()}
-        </span>
+    <div className="lang-select">
+      <button className="lang-select-btn" onClick={() => setOpen(!open)}>
+        <span>{current.flag} {current.code.toUpperCase()}</span>
         <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path d="M19 9l-7 7-7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
       {open && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            right: 0,
-            marginTop: "0.5rem",
-            background: "white",
-            border: "1px solid rgba(0,0,0,0.06)",
-            borderRadius: 12,
-            boxShadow: "0 12px 40px rgba(0,0,0,0.08)",
-            padding: "0.4rem",
-            minWidth: 140,
-            display: "flex",
-            flexDirection: "column",
-            zIndex: 200,
-          }}
-        >
+        <div className="lang-select-menu">
           {LANGS.map((l) => (
             <button
               key={l.code}
               onClick={() => changeLang(l.code)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                padding: "0.5rem 0.75rem",
-                border: "none",
-                background: l.code === lang ? "#f5f0e8" : "none",
-                cursor: "pointer",
-                fontSize: "0.8rem",
-                color: l.code === lang ? "#1c1917" : "#78716c",
-                fontFamily: '"Inter", sans-serif',
-                borderRadius: 8,
-                width: "100%",
-                textAlign: "left",
-                fontWeight: l.code === lang ? 500 : 300,
-              }}
+              className={`lang-select-item ${l.code === lang ? "lang-select-item-active" : ""}`}
             >
               {l.flag} {l.label}
             </button>

@@ -34,12 +34,12 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Complete ad-free experience" },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes and Lofi mixes", href: "/browse" },
-      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "https://aibuddha.net/#chat" },
-      { icon: "music", label: "This week's playlist", desc: "Your first weekly curated Lofi playlist is ready", href: "/browse" },
+      { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes and Lofi mixes", href: "/mindfulness" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "https://lofibuddha.com/chat" },
+      { icon: "music", label: "This week's playlist", desc: "Your first weekly curated Lofi playlist is ready", href: "/mindfulness" },
     ],
     ctaLabel: "Begin your practice",
-    ctaHref: "/browse",
+    ctaHref: "/mindfulness",
   },
   enlightened: {
     headline: "The Enlightened Path awaits",
@@ -55,12 +55,12 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Priority support & early access" },
     ],
     nextSteps: [
-      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "https://aibuddha.net/#chat" },
-      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "https://aibuddha.net/#chat" },
-      { icon: "music", label: "Premium library", desc: "Full access to all ambient albums and exclusive tracks", href: "/browse" },
+      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "https://lofibuddha.com/chat" },
+      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "https://lofibuddha.com/chat" },
+      { icon: "music", label: "Premium library", desc: "Full access to all ambient albums and exclusive tracks", href: "/mindfulness" },
     ],
     ctaLabel: "Begin your journey",
-    ctaHref: "/browse",
+    ctaHref: "/mindfulness",
   },
   zen: {
     headline: "Welcome to the community",
@@ -78,12 +78,12 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Personalized guided meditations", locked: true },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Start listening", desc: "Tune into our live-syncing Lofi radio stream — no sign-in needed", href: "/browse" },
-      { icon: "heart", label: "Chat with AI Buddha", desc: "Begin a spiritual conversation with your AI guide", href: "https://aibuddha.net/#chat" },
+      { icon: "headphones", label: "Start listening", desc: "Tune into our live-syncing Lofi radio stream — no sign-in needed", href: "/mindfulness" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Begin a spiritual conversation with your AI guide", href: "https://lofibuddha.com/chat" },
       { icon: "music", label: "Explore premium", desc: "See what's unlocked on the Mindful and Enlightened paths", href: "/signup" },
     ],
     ctaLabel: "Begin your practice",
-    ctaHref: "/browse",
+    ctaHref: "/mindfulness",
   },
 };
 
@@ -96,11 +96,11 @@ const UNKNOWN_CONTENT: TierContent = {
   tierLabel: "",
   features: [],
   nextSteps: [
-    { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes", href: "/browse" },
-    { icon: "heart", label: "Start a practice", desc: "Begin with a simple breathing exercise", href: "/browse" },
+    { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes", href: "/mindfulness" },
+    { icon: "heart", label: "Start a practice", desc: "Begin with a simple breathing exercise", href: "/mindfulness" },
   ],
   ctaLabel: "Begin your practice",
-  ctaHref: "/browse",
+  ctaHref: "/mindfulness",
 };
 
 const iconMap: Record<string, React.ElementType> = {
@@ -613,7 +613,7 @@ function SuccessContent() {
                   Plans
                 </Link>
                 <Link
-                  href="/browse"
+                  href="/mindfulness"
                   className="hover:text-stone-600 transition-colors"
                 >
                   Browse

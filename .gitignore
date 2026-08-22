@@ -1,5 +1,43 @@
+# Dependencies
 node_modules/
 .next/
+out/
+
+# Env & secrets — NOOIT pushen
 .env
+.env.local
+.env*.local
+.env.production
+.env.development
+
+# Runtime data met gebruikers/secrets
+data/youtube-tokens.json
+data/users.json
+data/chat_messages.json
+data/subscribers.json
+data/welcome_emails.json
+data/email_templates.json
+data/youtube-posts.json
+data/social-content-*.json
+data/articles/
+public/data/subscribers.json
+
+# Gegenereerde audio (regeneerbaar via ElevenLabs scripts)
+data/*/audio/
+data/music/tracks/
+data/music/files/
+public/audio/
+
+# Gegenereerde video's
+public/videos/
+
+# Logs
 *.log
-.env*
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hermes local state
+.hermes/cache/

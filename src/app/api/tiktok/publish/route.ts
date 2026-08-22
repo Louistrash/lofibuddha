@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Construct the public URL of the video
-    const host = process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net";
+    const host = process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com";
     const videoUrl = `${host}${videoPath}`;
 
     // Prepare payload for Direct Post v2 API

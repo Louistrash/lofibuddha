@@ -6,7 +6,7 @@ const TIKTOK_TOKEN_URL = "https://open.tiktokapis.com/v2/oauth/token/";
 const TIKTOK_REVOKE_URL = "https://open.tiktokapis.com/v2/oauth/revoke/";
 
 function getRedirectUri() {
-  const host = process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net";
+  const host = process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com";
   return `${host}/api/tiktok/auth?action=callback`;
 }
 
@@ -53,11 +53,11 @@ export async function GET(req: NextRequest) {
     const stored = loadTokens();
 
     if (error) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net"}/social?tiktok=error&msg=${encodeURIComponent(error)}`);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com"}/social?tiktok=error&msg=${encodeURIComponent(error)}`);
     }
 
     if (!code || returnedState !== stored.state) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net"}/social?tiktok=error&msg=invalid_state`);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com"}/social?tiktok=error&msg=invalid_state`);
     }
 
     try {
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
       const data = await response.json();
 
       if (data.error) {
-        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net"}/social?tiktok=error&msg=${encodeURIComponent(data.error_description || data.error)}`);
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com"}/social?tiktok=error&msg=${encodeURIComponent(data.error_description || data.error)}`);
       }
 
       saveTokens({
@@ -88,9 +88,9 @@ export async function GET(req: NextRequest) {
         connected: true,
       });
 
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net"}/social?tiktok=connected`);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com"}/social?tiktok=connected`);
     } catch (err) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://bodhi.aibuddha.net"}/social?tiktok=error&msg=token_exchange_failed`);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com"}/social?tiktok=error&msg=token_exchange_failed`);
     }
   }
 

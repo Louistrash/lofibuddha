@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   Clapperboard, Music2, Camera, Globe, MapPin, Calendar,
   Download, Film, Loader2, Tv, Smartphone, Square, Play,
-  Send, Edit3, Trash2, Plus, X, Check, Clock,
+  Send, Edit3, Trash2, Plus, X, Check, Clock, PlaySquare,
 } from "lucide-react";
 
 // ── Types ──
@@ -187,6 +187,16 @@ export default function SocialPage() {
   const [publishSuccess, setPublishSuccess] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
 
+  // YouTube Review & Draft Upload
+  const [reviewVideo, setReviewVideo] = useState<VideoEntry | null>(null);
+  const [ytTitle, setYtTitle] = useState("");
+  const [ytDescription, setYtDescription] = useState("");
+  const [ytTags, setYtTags] = useState("");
+  const [ytUploading, setYtUploading] = useState(false);
+  const [ytSuccess, setYtSuccess] = useState<string | null>(null);
+  const [ytError, setYtError] = useState<string | null>(null);
+  const [ytStatus, setYtStatus] = useState<"unknown" | "connected" | "disconnected">("unknown");
+
   // Load videos
   useEffect(() => {
     fetch("/api/videos/list")
@@ -241,7 +251,13 @@ export default function SocialPage() {
       .finally(() => setTiktokLoading(false));
   }, []);
 
-  // Handle OAuth callback params
+  // Check YouTube connection status
+  useEffect(() => {
+    fetch("/api/youtube/auth?action=status")
+      .then((r) => r.json())
+      .then((d) => setYtStatus(d.connected ? "connected" : "disconnected"))
+      .catch(() => setYtStatus("disconnected"));
+  }, []);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tiktok = params.get("tiktok");
@@ -309,6 +325,66 @@ export default function SocialPage() {
       setPublishError(err.message || "Failed to publish video. Please check connection.");
     } finally {
       setPublishing(false);
+    }
+  };
+
+  // ── YouTube Review & Draft Upload ──
+
+  /** Slimme titel/beschrijving op basis van bestandsnaam + platform */
+  const buildYouTubeMeta = (video: VideoEntry) => {
+    const name = video.name.replace(/\.mp4$/, "").replace(/[-_]+/g, " ").trim();
+    const title = `Lofi Buddha — ${name}`;
+    const platform = video.format === "shorts" ? "shorts" : video.format === "square" ? "square" : "video";
+    const description =
+      `🌿 ${name} — calm sounds for ${platform === "shorts" ? "your moment of peace" : "meditation and focus"}.\n\n` +
+      `Breathe in. Let go. Find your calm at lofibuddha.com.\n\n` +
+      `🎧 More soundscapes & guided meditations: https://lofibuddha.com/mindfulness\n` +
+      `💬 Chat with Buddha: https://lofibuddha.com/chat`;
+    return { title, description, tags: ["lofi", "meditation", "mindfulness", "calm", "lofibuddha"] };
+  };
+
+  const handleOpenReview = (video: VideoEntry) => {
+    setReviewVideo(video);
+    const meta = buildYouTubeMeta(video);
+    setYtTitle(meta.title);
+    setYtDescription(meta.description);
+    setYtTags(meta.tags.join(", "));
+    setYtSuccess(null);
+    setYtError(null);
+    setYtUploading(false);
+  };
+
+  const handleUploadToYouTube = async () => {
+    if (!reviewVideo) return;
+    setYtUploading(true);
+    setYtSuccess(null);
+    setYtError(null);
+
+    try {
+      const response = await fetch("/api/youtube", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          videoPath: reviewVideo.path,
+          title: ytTitle,
+          description: ytDescription,
+          tags: ytTags.split(",").map((t) => t.trim()).filter(Boolean),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        setYtError(data.error);
+      } else {
+        setYtSuccess(
+          `✅ Uploaded as DRAFT to YouTube Studio.\n${data.url}\n\nReview & publish it there when ready.`
+        );
+      }
+    } catch (err: any) {
+      setYtError(err.message || "Failed to upload video.");
+    } finally {
+      setYtUploading(false);
     }
   };
 
@@ -763,6 +839,12 @@ export default function SocialPage() {
                       >
                         <Send size={12} /> Publish to TikTok
                       </button>
+                      <button
+                        onClick={() => handleOpenReview(video)}
+                        className="flex items-center gap-2 text-xs text-red-300 hover:text-red-200 transition-all py-1.5 px-3 rounded-lg bg-red-500/10 hover:bg-red-500/20 w-fit border border-red-400/20"
+                      >
+                        <PlaySquare size={12} /> Review → YouTube draft
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -872,6 +954,139 @@ export default function SocialPage() {
                       <>
                         <Send size={14} />
                         Publish Direct
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {/* ── YouTube Review & Draft Upload Modal ── */}
+      {reviewVideo && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="glass max-w-2xl w-full p-6 space-y-4 relative border border-red-400/20 max-h-[92vh] overflow-y-auto">
+            <button
+              onClick={() => setReviewVideo(null)}
+              className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="space-y-1">
+              <h3 className="text-base font-semibold text-text-primary flex items-center gap-2">
+                <PlaySquare size={16} className="text-red-400" /> Review → Upload as Draft
+              </h3>
+              <p className="text-xs text-text-muted">
+                Bekijk en beluister de video, pas titel/beschrijving aan, en upload als <b>draft</b> naar YouTube Studio. Niets wordt gepubliceerd zonder jouw goedkeuring.
+              </p>
+            </div>
+
+            {/* Video preview — met geluid! */}
+            <div className="bg-black aspect-video rounded-xl overflow-hidden flex items-center justify-center border border-border">
+              <video
+                src={reviewVideo.path}
+                controls
+                preload="metadata"
+                autoPlay
+                className="max-h-full w-full"
+              />
+            </div>
+
+            {/* YouTube connection check */}
+            {ytStatus !== "connected" ? (
+              <div className="bg-error/10 border border-error/20 p-4 rounded-xl space-y-3 text-center">
+                <p className="text-xs text-error">
+                  YouTube is niet verbonden. Verbind eerst je Google account om als draft te uploaden.
+                </p>
+                <a
+                  href="/api/youtube/auth?action=login"
+                  className="inline-block text-xs font-semibold px-4 py-2 bg-error/20 hover:bg-error/30 text-error-light rounded-lg transition-all"
+                >
+                  Connect YouTube Account
+                </a>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {/* Title */}
+                <div>
+                  <label className="text-[10px] text-text-muted block mb-1">Video Title</label>
+                  <input
+                    value={ytTitle}
+                    onChange={(e) => setYtTitle(e.target.value)}
+                    className="w-full bg-bg-card border border-border rounded-lg p-3 text-sm text-text-primary outline-none focus:border-accent/50 font-sans"
+                    maxLength={100}
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label className="text-[10px] text-text-muted block mb-1">Description (met deeplinks)</label>
+                  <textarea
+                    rows={6}
+                    value={ytDescription}
+                    onChange={(e) => setYtDescription(e.target.value)}
+                    className="w-full bg-bg-card border border-border rounded-lg p-3 text-sm text-text-primary outline-none focus:border-accent/50 resize-none font-sans"
+                  />
+                </div>
+
+                {/* Tags */}
+                <div>
+                  <label className="text-[10px] text-text-muted block mb-1">Tags (komma-gescheiden)</label>
+                  <input
+                    value={ytTags}
+                    onChange={(e) => setYtTags(e.target.value)}
+                    className="w-full bg-bg-card border border-border rounded-lg p-3 text-sm text-text-primary outline-none focus:border-accent/50 font-sans"
+                  />
+                </div>
+
+                {/* Deeplink preview */}
+                <div className="bg-bg-hover border border-border rounded-xl p-3">
+                  <span className="text-[10px] text-text-muted block mb-1">Deeplink (automatisch uit content)</span>
+                  <span className="text-xs text-accent-light break-all">
+                    {/(breath|breathe|box)/i.test(ytTitle) && "https://lofibuddha.com/mindfulness/breathe"}
+                    {/(sleep|night|drift|rain|unwind|evening)/i.test(ytTitle) && "https://lofibuddha.com/mindfulness/sleep"}
+                    {/(relax|body scan|zen|release)/i.test(ytTitle) && "https://lofibuddha.com/mindfulness/relax"}
+                    {/(focus|study|work|deep|lofi|beat)/i.test(ytTitle) && "https://lofibuddha.com/mindfulness/focus"}
+                    {!/(breath|breathe|box|sleep|night|drift|rain|unwind|evening|relax|body scan|zen|release|focus|study|work|deep|lofi|beat)/i.test(ytTitle) && "https://lofibuddha.com/mindfulness"}
+                  </span>
+                </div>
+
+                {ytSuccess && (
+                  <div className="bg-success/15 border border-success/35 text-success text-xs p-3 rounded-xl whitespace-pre-line">
+                    {ytSuccess}
+                  </div>
+                )}
+
+                {ytError && (
+                  <div className="bg-error/15 border border-error/35 text-error text-xs p-3 rounded-xl">
+                    {ytError}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    onClick={() => setReviewVideo(null)}
+                    disabled={ytUploading}
+                    className="text-xs text-text-muted hover:text-text-primary px-4 py-2 transition-colors disabled:opacity-50"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleUploadToYouTube}
+                    disabled={ytUploading}
+                    className="btn-zen text-xs py-2 px-5 flex items-center gap-2"
+                  >
+                    {ytUploading ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <PlaySquare size={14} />
+                        Upload as Draft
                       </>
                     )}
                   </button>

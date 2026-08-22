@@ -72,11 +72,11 @@ function calculateDripDay(startDate: string): number {
 const DRIP_SCHEDULE = {
   mindful: [
     { day: 1, type: "welcome", label: "Welcome to your Mindful Path" },
-    { day: 1, type: "feature", label: "Unlimited AI Buddha chat — start now", action: "https://aibuddha.net/#chat" },
-    { day: 2, type: "playlist", label: "Morning Calm — Lofi playlist #1", action: "/browse" },
+    { day: 1, type: "feature", label: "Unlimited AI Buddha chat — start now", action: "https://lofibuddha.com/chat" },
+    { day: 2, type: "playlist", label: "Morning Calm — Lofi playlist #1", action: "/mindfulness" },
     { day: 3, type: "course", label: "Beginner's Mindfulness (Day 1-2)", courseId: "beginners-mindfulness", modules: [1, 2] },
-    { day: 5, type: "guide", label: "4-4-4 Box Breathing technique", action: "/browse" },
-    { day: 7, type: "playlist", label: "Deep Focus — Lofi playlist #2", action: "/browse" },
+    { day: 5, type: "guide", label: "4-4-4 Box Breathing technique", action: "/mindfulness" },
+    { day: 7, type: "playlist", label: "Deep Focus — Lofi playlist #2", action: "/mindfulness" },
     { day: 9, type: "course", label: "Beginner's Mindfulness (Day 3-5)", courseId: "beginners-mindfulness", modules: [3, 4, 5] },
     { day: 12, type: "course", label: "Yoga Foundations (Day 1-3)", courseId: "yoga-foundations", modules: [1, 2, 3] },
     { day: 16, type: "course", label: "Beginner's Mindfulness (Day 6-7)", courseId: "beginners-mindfulness", modules: [6, 7] },
@@ -87,7 +87,7 @@ const DRIP_SCHEDULE = {
   enlightened: [
     { day: 1, type: "welcome", label: "The Enlightened Path awaits" },
     { day: 1, type: "intake", label: "Personal intake — tell us about your journey" },
-    { day: 1, type: "feature", label: "Personalized daily meditation is ready", action: "https://aibuddha.net/#chat" },
+    { day: 1, type: "feature", label: "Personalized daily meditation is ready", action: "https://lofibuddha.com/chat" },
     { day: 3, type: "roadmap", label: "Your spiritual roadmap — download PDF" },
     { day: 7, type: "video", label: "Guided breathwork video (10 min)" },
     { day: 14, type: "session", label: "1-on-1 AI Buddha deep dive session" },

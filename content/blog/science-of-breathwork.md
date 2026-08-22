@@ -47,4 +47,4 @@ Research published in the Journal of Clinical Psychology found that just 5 minut
 
 You don't need an app. You don't need a quiet room. You just need to remember: when stress hits, your breath is always there — waiting to bring you back to center.
 
-*Try our free [5-minute guided breathwork session](/browse).*
+*Try our free [5-minute guided breathwork session](/mindfulness/breathe).*

@@ -1,56 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { ArrowLeft, ArrowRight, Check, Moon } from "lucide-react";
 
-// ─── Tier definitions ──────────────────────────
 const tiers = [
   {
     id: "zen",
     name: "Zen Beginner",
-    price: "€0",
-    period: "always free",
-    description: "Begin your mindfulness journey with the essentials.",
-    features: [
-      "Live-syncing Lofi soundscapes",
-      "10 AI Buddha chats per day",
-      "4-4-4 box breathing visualizer",
-    ],
-    highlight: false,
+    price: "Free",
+    period: "always",
+    description: "Begin your mindfulness journey.",
+    features: ["Lofi soundscapes", "10 AI Buddha chats/day", "Breathing visualizer"],
     cta: "Start for free",
+    accent: "#7a9a6a",
   },
   {
     id: "mindful",
     name: "Mindful Path",
     price: "€4,99",
-    period: "per month",
-    description: "Daily practices for a calmer, more present life.",
-    features: [
-      "Everything in Zen Beginner",
-      "Unlimited AI Buddha spiritual chat",
-      "Weekly curated Lofi playlist syncs",
-      "Ad-free ambient audio downloads",
-      "Complete ad-free experience",
-    ],
-    highlight: true,
+    period: "/month",
+    description: "Daily practices for a calmer life.",
+    features: ["Everything in Zen", "Unlimited AI Buddha chats", "Weekly curated playlists", "Ad-free audio downloads", "Ad-free experience"],
     cta: "Begin Mindful Path",
+    highlight: true,
+    accent: "#c49464",
   },
   {
     id: "enlightened",
     name: "Enlightened Path",
     price: "€12,99",
-    period: "per month",
-    description: "Deep transformation with personalized guidance.",
-    features: [
-      "Everything in Mindful Path",
-      "Personalized daily guided meditations",
-      "Custom spiritual roadmaps",
-      "Priority support",
-      "Early access to new ambient tracks",
-    ],
-    highlight: false,
+    period: "/month",
+    description: "Deep transformation with guidance.",
+    features: ["Everything in Mindful", "Personalized meditations", "Custom spiritual roadmaps", "Priority support", "Early access to new tracks"],
     cta: "Begin Enlightened Path",
+    accent: "#b08050",
   },
 ];
 
@@ -60,230 +44,105 @@ export default function SignupPage() {
 
   const handleCheckout = async (tierId: string) => {
     setError(null);
-
-    // Zen is free — no Stripe needed
-    if (tierId === "zen") {
-      window.location.href = "/landing";
-      return;
-    }
-
+    if (tierId === "zen") { window.location.href = "/mindfulness"; return; }
     setLoadingTier(tierId);
     try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier: tierId }),
-      });
-
+      const res = await fetch("/api/stripe/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tier: tierId }) });
       const data = await res.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError(data.error || "Something went wrong. Please try again.");
-        setLoadingTier(null);
-      }
-    } catch {
-      setError("Unable to connect. Please try again later.");
-      setLoadingTier(null);
-    }
+      if (data.url) window.location.href = data.url;
+      else setError(data.error || "Something went wrong.");
+    } catch { setError("Could not reach the server."); }
+    setLoadingTier(null);
   };
 
   return (
-    <div className="min-h-screen editorial-theme">
-      {/* ── Navigation ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/80 backdrop-blur-xl border-b border-stone-200/60">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
-          <Link
-            href="/landing"
-            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-800 transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Back to LofiBuddha
-          </Link>
-          <Link
-            href="/landing"
-            className="flex items-center gap-2 font-serif text-lg tracking-wide text-stone-800"
-          >
-            <img src="/lofibuddha.png" alt="LofiBuddha" className="h-[31px] w-[31px]" />
-            LofiBuddha
-          </Link>
-          <div className="w-[100px]" /> {/* Spacer for centering */}
-        </div>
-      </nav>
+    <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#e8e2d8", fontFamily: "'Inter', system-ui, sans-serif" }}>
+      {/* Ambient orbs */}
+      <div style={{ position: "fixed", top: "-20%", right: "-10%", width: "800px", height: "800px", borderRadius: "50%", filter: "blur(200px)", opacity: 0.05, background: "radial-gradient(circle, rgba(212,180,138,0.5) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+      <div style={{ position: "fixed", bottom: "-20%", left: "-10%", width: "600px", height: "600px", borderRadius: "50%", filter: "blur(180px)", opacity: 0.04, background: "radial-gradient(circle, rgba(180,140,100,0.4) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
 
-      {/* ── Hero ── */}
-      <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 px-6 sm:px-10 text-center">
-        <p className="text-[11px] tracking-[0.3em] uppercase text-amber-700 font-medium mb-6 animate-fade-in">
-          Choose your path
-        </p>
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-stone-800 mb-6 animate-fade-in">
-          A practice for <span className="italic text-amber-700">every</span>{" "}
-          stage of the journey
-        </h1>
-        <p className="text-stone-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light animate-fade-in">
-          Whether you&apos;re taking your first mindful breath or deepening a
-          lifelong practice — there is a space for you here.
-        </p>
-      </section>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: "1000px", margin: "0 auto", padding: "clamp(2rem,5vw,4rem) 24px" }}>
+        {/* Back */}
+        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#6b655a", fontSize: "13px", textDecoration: "none", marginBottom: "clamp(2rem,5vw,3rem)", transition: "color 0.2s" }}>
+          <ArrowLeft size={14} /> Back to home
+        </Link>
 
-      {/* ── Error message ── */}
-      {error && (
-        <div className="max-w-lg mx-auto px-6 mb-8">
-          <div className="bg-red-50 border border-red-100 rounded-xl px-5 py-4 text-sm text-red-700 text-center">
-            {error}
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "clamp(3rem,6vw,5rem)" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+            <span style={{ width: "20px", height: "1px", background: "linear-gradient(90deg, transparent, #d4b48a)" }} />
+            <Moon size={16} color="#d4b48a" strokeWidth={1.5} />
+            <span style={{ width: "20px", height: "1px", background: "linear-gradient(90deg, #d4b48a, transparent)" }} />
           </div>
+          <h1 style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 400, color: "#f5ede0", marginBottom: "12px", lineHeight: 1.15 }}>
+            Choose your path
+          </h1>
+          <p style={{ fontSize: "clamp(1rem,2vw,1.1rem)", color: "#7a7468", maxWidth: "460px", margin: "0 auto", lineHeight: 1.6 }}>
+            Start free. Upgrade when you're ready for deeper practice.
+          </p>
         </div>
-      )}
 
-      {/* ── Tier cards ── */}
-      <section className="max-w-5xl mx-auto px-6 sm:px-10 pb-24 sm:pb-36">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-start">
+        {/* Tiers */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px", marginBottom: "clamp(2rem,4vw,3rem)" }}>
           {tiers.map((tier) => (
-            <div
-              key={tier.id}
-              className={`relative rounded-2xl p-8 sm:p-10 transition-all duration-500 ${
-                tier.highlight
-                  ? "bg-stone-800 text-white ring-2 ring-amber-500/30 scale-[1.02] shadow-2xl shadow-stone-900/10"
-                  : "bg-white border border-stone-200/80 hover:border-stone-300 hover:shadow-lg"
-              }`}
-            >
-              {/* Popular badge */}
+            <div key={tier.id} className="tier-card" style={{
+              background: tier.highlight ? "linear-gradient(180deg, rgba(196,148,100,0.06) 0%, rgba(26,26,24,0.8) 100%)" : "rgba(26,26,24,0.6)",
+              backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+              border: tier.highlight ? "1px solid rgba(196,148,100,0.2)" : "1px solid rgba(255,255,255,0.06)",
+              borderRadius: "24px", padding: "clamp(1.5rem,3vw,2rem)",
+              display: "flex", flexDirection: "column", position: "relative",
+              transition: "all 0.3s ease",
+            }}>
               {tier.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-block px-4 py-1 rounded-full bg-amber-500 text-[11px] font-medium tracking-wider uppercase text-white shadow-lg shadow-amber-500/20">
-                    Most Popular
-                  </span>
+                <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, #c49464, #b08050)", color: "#0a0a0a", padding: "4px 16px", borderRadius: "100px", fontSize: "11px", fontWeight: 600, letterSpacing: "0.03em" }}>
+                  Most Popular
                 </div>
               )}
-
-              {/* Tier name */}
-              <p
-                className={`text-[10px] tracking-[0.3em] uppercase font-medium mb-4 ${
-                  tier.highlight ? "text-amber-400" : "text-amber-700"
-                }`}
-              >
-                {tier.id === "zen"
-                  ? "Free"
-                  : tier.id === "mindful"
-                    ? "Daily Practice"
-                    : "Deep Transformation"}
-              </p>
-
-              <h3
-                className={`font-serif text-2xl sm:text-3xl font-light mb-2 ${
-                  tier.highlight ? "text-white" : "text-stone-800"
-                }`}
-              >
-                {tier.name}
-              </h3>
-
-              <p
-                className={`text-sm leading-relaxed mb-6 ${
-                  tier.highlight ? "text-stone-300" : "text-stone-500"
-                }`}
-              >
-                {tier.description}
-              </p>
-
-              {/* Price */}
-              <div className="mb-8">
-                <span
-                  className={`font-serif text-4xl sm:text-5xl font-light ${
-                    tier.highlight ? "text-white" : "text-stone-800"
-                  }`}
-                >
-                  {tier.price}
-                </span>
-                <span
-                  className={`text-sm ml-2 ${
-                    tier.highlight ? "text-stone-400" : "text-stone-400"
-                  }`}
-                >
-                  {tier.period}
-                </span>
+              <div style={{ marginBottom: "20px" }}>
+                <h3 style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: "22px", fontWeight: 400, color: "#f5ede0", marginBottom: "4px" }}>{tier.name}</h3>
+                <p style={{ fontSize: "13px", color: "#7a7468", margin: 0 }}>{tier.description}</p>
               </div>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-10">
-                {tier.features.map((feat, i) => (
-                  <li
-                    key={i}
-                    className={`flex items-start gap-3 text-sm ${
-                      tier.highlight ? "text-stone-300" : "text-stone-600"
-                    }`}
-                  >
-                    <span
-                      className={`mt-0.5 flex-shrink-0 ${
-                        tier.highlight ? "text-amber-400" : "text-amber-600"
-                      }`}
-                    >
-                      —
-                    </span>
-                    {feat}
+              <div style={{ marginBottom: "24px" }}>
+                <span style={{ fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, color: tier.highlight ? "#d4b48a" : "#f5ede0", fontFamily: "'DM Serif Display', Georgia, serif" }}>{tier.price}</span>
+                <span style={{ fontSize: "14px", color: "#6b655a", marginLeft: "4px" }}>{tier.period}</span>
+              </div>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
+                {tier.features.map((f, i) => (
+                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "10px", fontSize: "13px", color: "#8a8278", lineHeight: 1.5 }}>
+                    <Check size={14} color={tier.accent} style={{ marginTop: "2px", flexShrink: 0 }} />
+                    {f}
                   </li>
                 ))}
               </ul>
-
-              {/* CTA */}
-              <button
-                onClick={() => handleCheckout(tier.id)}
-                disabled={loadingTier !== null}
-                className={`w-full py-3.5 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 flex items-center justify-center gap-2 ${
-                  tier.highlight
-                    ? "bg-amber-500 text-white hover:bg-amber-400 disabled:bg-amber-600/50"
-                    : "bg-stone-100 text-stone-800 hover:bg-stone-200 disabled:bg-stone-50 disabled:text-stone-400"
-                }`}
-              >
-                {loadingTier === tier.id ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Redirecting...
-                  </>
-                ) : tier.id === "zen" ? (
-                  tier.cta
-                ) : (
-                  <>
-                    {tier.cta}
-                  </>
-                )}
+              <button onClick={() => handleCheckout(tier.id)} disabled={loadingTier === tier.id} style={{
+                width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                background: tier.highlight ? "linear-gradient(135deg, #c49464, #b08050)" : "rgba(255,255,255,0.05)",
+                color: tier.highlight ? "#0a0a0a" : "#e8e2d8",
+                border: tier.highlight ? "none" : "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "14px", padding: "14px", fontSize: "14px", fontWeight: 600,
+                cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif",
+                transition: "all 0.3s ease", opacity: loadingTier === tier.id ? 0.7 : 1,
+              }}>
+                {loadingTier === tier.id ? "Redirecting..." : tier.cta}
+                {loadingTier !== tier.id && <ArrowRight size={15} />}
               </button>
             </div>
           ))}
         </div>
 
-        {/* ── Footer note ── */}
-        <p className="text-center text-xs text-stone-400 mt-12 max-w-md mx-auto leading-relaxed">
-          All prices include VAT where applicable. Cancel anytime. Payments
-          processed securely via Stripe. By subscribing you agree to our{" "}
-          <Link
-            href="/legal/terms"
-            className="underline hover:text-stone-600 transition-colors"
-          >
-            Terms
-          </Link>{" "}
-          and{" "}
-          <Link
-            href="/legal/privacy"
-            className="underline hover:text-stone-600 transition-colors"
-          >
-            Privacy Policy
-          </Link>
-          .
-        </p>
-      </section>
+        {/* Error */}
+        {error && (
+          <div style={{ background: "rgba(176,96,80,0.1)", border: "1px solid rgba(176,96,80,0.2)", borderRadius: "12px", padding: "12px 16px", fontSize: "13px", color: "#c08070", textAlign: "center", maxWidth: "400px", margin: "0 auto" }}>
+            {error}
+          </div>
+        )}
 
-      {/* ── Quote ── */}
-      <section className="pb-24 sm:pb-36 px-6 sm:px-10">
-        <div className="max-w-lg mx-auto text-center">
-          <p className="font-serif text-xl sm:text-2xl italic text-stone-400 font-light leading-relaxed">
-            &ldquo;Peace comes from within. Do not seek it without.&rdquo;
-          </p>
-          <p className="text-xs tracking-[0.2em] uppercase text-stone-400 mt-4">
-            — Buddha
-          </p>
-        </div>
-      </section>
+        {/* Footer */}
+        <p style={{ textAlign: "center", fontSize: "12px", color: "#4a4540", marginTop: "clamp(2rem,4vw,3rem)" }}>
+          All plans include a 7-day free trial. Cancel anytime.
+        </p>
+      </div>
+      <style jsx>{`.tier-card:hover { border-color: rgba(212,180,138,0.2) !important; transform: translateY(-2px); }`}</style>
     </div>
   );
 }
