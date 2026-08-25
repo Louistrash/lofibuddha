@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Separate Expo mobile app + legacy components (not part of the web build)
+    "mobile/**",
+    "_legacy/**",
   ]),
 ]);
 
