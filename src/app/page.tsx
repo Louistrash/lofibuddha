@@ -110,7 +110,7 @@ function FlowingLine({ delay = 0, width = "60%", top = "50%" }: { delay?: number
         <defs>
           <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="transparent" />
-            <stop offset="50%" stopColor="#d4b48a" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#e0b185" stopOpacity="0.6" />
             <stop offset="100%" stopColor="transparent" />
           </linearGradient>
         </defs>
@@ -134,10 +134,10 @@ function FeatureCard({ icon: Icon, title, desc }: { icon: any; title: string; de
       <div style={{ width: "40px", height: "40px", borderRadius: "12px",
         background: "linear-gradient(135deg, rgba(196,148,100,0.12), rgba(180,130,80,0.06))",
         display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-        <Icon size={20} color="#d4b48a" strokeWidth={1.5} />
+        <Icon size={20} color="#e0b185" strokeWidth={1.5} />
       </div>
-      <h3 style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "16px", fontWeight: 600, color: "#e8e2d8", marginBottom: "8px", letterSpacing: "-0.01em" }}>{title}</h3>
-      <p style={{ fontSize: "13px", color: "#7a7468", lineHeight: 1.6, margin: 0, fontWeight: 400 }}>{desc}</p>
+      <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", fontSize: "16px", fontWeight: 600, color: "#f5f5f7", marginBottom: "8px", letterSpacing: "-0.01em" }}>{title}</h3>
+      <p style={{ fontSize: "13px", color: "#a1a1a6", lineHeight: 1.6, margin: 0, fontWeight: 400 }}>{desc}</p>
     </div>
   );
 }
@@ -167,30 +167,30 @@ export default function LandingPage() {
   const features = (T.features as any)[lang] || T.features.en;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#e8e2d8", fontFamily: "'Inter', system-ui, sans-serif", position: "relative", overflow: "hidden" }}>
-      {/* Ambient orbs */}
-      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: "clamp(600px,80vw,1000px)", height: "clamp(600px,80vw,1000px)", borderRadius: "50%", filter: "blur(200px)", opacity: 0.06, background: "radial-gradient(circle, rgba(212,180,138,0.5) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
-      <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: "clamp(400px,60vw,700px)", height: "clamp(400px,60vw,700px)", borderRadius: "50%", filter: "blur(180px)", opacity: 0.04, background: "radial-gradient(circle, rgba(180,140,100,0.4) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+    <div style={{ minHeight: "100vh", background: "#0a0a0c", color: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", position: "relative", overflow: "hidden" }}>
+      {/* Ambient orbs — mobiel-vriendelijk (niet breder dan viewport) */}
+      <div style={{ position: "absolute", top: "-20%", right: "-25%", width: "clamp(280px, 90vw, 1000px)", height: "clamp(280px, 90vw, 1000px)", borderRadius: "50%", filter: "blur(120px)", opacity: 0.06, background: "radial-gradient(circle, rgba(212,180,138,0.5) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+      <div style={{ position: "absolute", bottom: "-30%", left: "-25%", width: "clamp(240px, 80vw, 700px)", height: "clamp(240px, 80vw, 700px)", borderRadius: "50%", filter: "blur(100px)", opacity: 0.04, background: "radial-gradient(circle, rgba(180,140,100,0.4) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
       <FlowingLine delay={0} top="28%" width="40%" />
       <FlowingLine delay={2} top="72%" width="50%" />
 
       {/* Hero video */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, opacity: videoLoaded ? 0.22 : 0, transition: "opacity 2.5s ease" }}>
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, opacity: videoLoaded ? 0.4 : 0, transition: "opacity 2.5s ease" }}>
         <video ref={videoRef} autoPlay muted loop playsInline onCanPlay={() => setVideoLoaded(true)}
-          style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.3) saturate(0.4)" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.55) saturate(0.6)" }}
           poster="/images/bg/bg-youtube.png">
-          <source src="/videos/shorts/buddha-zen.mp4" type="video/mp4" />
+          <source src="/videos/shorts/temple-loop.mp4" type="video/mp4" />
         </video>
       </div>
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", background: "linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.6) 55%, #0a0a0a 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", background: "linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.45) 55%, #0a0a0c 100%)" }} />
 
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "clamp(1.5rem,5vw,4rem)", textAlign: "center" }}>
+      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "clamp(4.5rem,8vw,4rem) clamp(1.5rem,5vw,4rem) clamp(2.5rem,6vw,4rem)", textAlign: "center" }}>
         {/* Lang switcher */}
-        <div style={{ position: "absolute", top: "clamp(1.5rem,4vw,2.5rem)", right: "clamp(1.5rem,4vw,2.5rem)", display: "flex", gap: "2px", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(-8px)", transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s" }}>
+        <div style={{ position: "absolute", top: "clamp(1rem,3vw,2rem)", left: "50%", transform: `translateX(-50%) ${visible ? "translateY(0)" : "translateY(-8px)"}`, display: "flex", gap: "3px", opacity: visible ? 1 : 0, transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s", background: "rgba(10,10,10,0.5)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "100px", padding: "4px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", zIndex: 5 }}>
           {LANGS.map((l) => (
             <button key={l} onClick={() => { setLang(l); localStorage.setItem("lofibuddha-lang", l); }}
-              style={{ background: lang===l ? "rgba(212,180,138,0.12)" : "transparent", color: lang===l ? "#d4b48a" : "#5a5550", border: lang===l ? "1px solid rgba(212,180,138,0.2)" : "1px solid transparent", borderRadius: "8px", padding: "5px 10px", fontSize: "11px", fontWeight: 500, letterSpacing: "0.04em", cursor: "pointer", transition: "all 0.25s ease", fontFamily: "'Inter', system-ui, sans-serif" }}>
+              style={{ background: lang===l ? "rgba(212,180,138,0.18)" : "transparent", color: lang===l ? "#e0b185" : "#a1a1a6", border: lang===l ? "1px solid rgba(212,180,138,0.25)" : "1px solid transparent", borderRadius: "100px", padding: "5px 9px", fontSize: "10.5px", fontWeight: 600, letterSpacing: "0.04em", cursor: "pointer", transition: "all 0.25s ease", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
               {l.toUpperCase()}
             </button>
           ))}
@@ -200,46 +200,46 @@ export default function LandingPage() {
         <div style={{ maxWidth: "680px", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "all 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "clamp(2rem,5vw,3rem)" }}>
             <span style={{ width: "24px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(212,180,138,0.5))" }} />
-            <span style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "#7a7060" }}>Your daily dose of peace</span>
+            <span style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "#6e6e73" }}>Your daily dose of peace</span>
             <span style={{ width: "24px", height: "1px", background: "linear-gradient(90deg, rgba(212,180,138,0.5), transparent)" }} />
           </div>
-          <h1 style={{ fontFamily: "'DM Serif Display','Georgia','Times New Roman',serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", fontWeight: 400, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#f5ede0", marginBottom: "clamp(1.2rem,3vw,2rem)", whiteSpace: "pre-line" }}>{t("headline")}</h1>
-          <p style={{ fontSize: "clamp(1rem,2vw,1.15rem)", lineHeight: 1.75, color: "#8a8278", maxWidth: "520px", margin: "0 auto clamp(2.5rem,6vw,3.5rem)", fontWeight: 350, letterSpacing: "0.01em" }}>{t("subtitle")}</p>
+          <h1 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", fontWeight: 400, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#f5f5f7", marginBottom: "clamp(1.2rem,3vw,2rem)", whiteSpace: "pre-line" }}>{t("headline")}</h1>
+          <p style={{ fontSize: "clamp(1rem,2vw,1.15rem)", lineHeight: 1.75, color: "#a1a1a6", maxWidth: "520px", margin: "0 auto clamp(2.5rem,6vw,3.5rem)", fontWeight: 350, letterSpacing: "0.01em" }}>{t("subtitle")}</p>
 
           {/* CTAs — NO Sparkles */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "center", marginBottom: "clamp(4rem,10vw,6rem)" }}>
-            <Link href="/mindfulness" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(135deg, #c49464 0%, #b08050 100%)", color: "#0a0a0a", border: "none", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease", boxShadow: "0 4px 24px rgba(196,148,100,0.15)" }}>
+            <Link href="/mindfulness" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(135deg, #e0b185 0%, #e0b185 100%)", color: "#0a0a0c", border: "none", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease", boxShadow: "0 4px 24px rgba(196,148,100,0.15)" }}>
               <Play size={15} /> {t("ctaBrowse")}
             </Link>
-            <Link href="/signup" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.04)", color: "#d4b48a", border: "1px solid rgba(212,180,138,0.15)", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 500, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
+            <Link href="/signup" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.04)", color: "#e0b185", border: "1px solid rgba(212,180,138,0.15)", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 500, cursor: "pointer", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
               <ArrowRight size={15} /> {t("ctaApp")}
             </Link>
           </div>
         </div>
 
-        {/* Feature Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", maxWidth: "780px", width: "100%", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.7s", marginBottom: "clamp(3rem,8vw,5rem)" }}>
+        {/* Feature Cards — swipebaar op mobiel, grid op desktop */}
+        <div className="feature-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", maxWidth: "780px", width: "100%", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.7s", marginBottom: "clamp(3rem,8vw,5rem)" }}>
           {features.map((f: any, i: number) => <FeatureCard key={i} icon={f.icon} title={f.title} desc={f.desc} />)}
         </div>
 
         {/* Newsletter */}
         <div style={{ maxWidth: "420px", width: "100%", opacity: visible ? 1 : 0, transition: "all 1s ease 1s" }}>
-          <p style={{ fontSize: "13px", color: "#6b655a", marginBottom: "14px", fontWeight: 500, letterSpacing: "0.02em" }}>{t("newsletterLabel")}</p>
-          <form onSubmit={handleSubscribe} style={{ display: "flex", gap: "6px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "4px" }}>
+          <p style={{ fontSize: "13px", color: "#a1a1a6", marginBottom: "14px", fontWeight: 500, letterSpacing: "0.02em" }}>{t("newsletterLabel")}</p>
+          <form onSubmit={handleSubscribe} className="nl-form" style={{ display: "flex", gap: "6px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "4px" }}>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("emailPlaceholder")} required
-              style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: "#e8e2d8", fontSize: "14px", padding: "14px 18px", fontFamily: "'Inter', system-ui, sans-serif" }} />
-            <button type="submit" disabled={subscribed} style={{ background: subscribed ? "linear-gradient(135deg, #7a9a6a, #6a8a5a)" : "linear-gradient(135deg, #c49464, #b08050)", color: "#0a0a0a", border: "none", borderRadius: "12px", padding: "14px 22px", fontSize: "13px", fontWeight: 600, cursor: subscribed ? "default" : "pointer", display: "flex", alignItems: "center", gap: "6px", fontFamily: "'Inter', system-ui, sans-serif", whiteSpace: "nowrap", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
+              style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: "#f5f5f7", fontSize: "14px", padding: "14px 18px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }} />
+            <button type="submit" disabled={subscribed} style={{ background: subscribed ? "linear-gradient(135deg, #7a9a6a, #6a8a5a)" : "linear-gradient(135deg, #e0b185, #e0b185)", color: "#0a0a0c", border: "none", borderRadius: "12px", padding: "14px 22px", fontSize: "13px", fontWeight: 600, cursor: subscribed ? "default" : "pointer", display: "flex", alignItems: "center", gap: "6px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
               {subscribed ? "✓" : <Send size={13} />} {subscribed ? t("subscribed") : t("subscribe")}
             </button>
           </form>
         </div>
 
-        {/* Footer */}
-        <div style={{ position: "absolute", bottom: "clamp(1.5rem,4vw,2.5rem)", display: "flex", flexWrap: "wrap", gap: "20px", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#3d3832", fontWeight: 400, letterSpacing: "0.03em", opacity: visible ? 1 : 0, transition: "all 1s ease 1.3s" }}>
+        {/* Footer — normaal element (niet absoluut), stroomt onder de content */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#6e6e73", fontWeight: 400, letterSpacing: "0.03em", opacity: visible ? 1 : 0, transition: "all 1s ease 1.3s", marginTop: "clamp(2.5rem,6vw,3.5rem)", paddingBottom: "1rem" }}>
           <span>{t("footer")}</span>
           <span style={{ opacity: 0.2 }}>·</span>
-          <Link href="/legal/privacy" style={{ color: "#3d3832", textDecoration: "none" }}>Privacy</Link>
-          <Link href="/legal/terms" style={{ color: "#3d3832", textDecoration: "none" }}>Terms</Link>
+          <Link href="/legal/privacy" style={{ color: "#6e6e73", textDecoration: "none" }}>Privacy</Link>
+          <Link href="/legal/terms" style={{ color: "#6e6e73", textDecoration: "none" }}>Terms</Link>
         </div>
       </div>
       <style jsx>{`.fcard:hover { border-color: rgba(212,180,138,0.2) !important; transform: translateY(-2px); }`}</style>

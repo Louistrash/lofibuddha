@@ -15,7 +15,7 @@ const REDIRECT_AFTER_LOGIN = {
 
 export default function LoginPageWrapper() {
   return (
-    <Suspense fallback={<div style={{ minHeight:"100vh",background:"#0a0a0a",display:"flex",alignItems:"center",justifyContent:"center" }}><div style={{ width:24,height:24,border:"2px solid rgba(196,148,100,0.15)",borderTopColor:"#c49464",borderRadius:"50%",animation:"spin 0.8s linear infinite" }} /></div>}>
+    <Suspense fallback={<div style={{ minHeight:"100vh",background:"#0a0a0c",display:"flex",alignItems:"center",justifyContent:"center" }}><div style={{ width:24,height:24,border:"2px solid rgba(196,148,100,0.15)",borderTopColor:"#e0b185",borderRadius:"50%",animation:"spin 0.8s linear infinite" }} /></div>}>
       <LoginContent />
     </Suspense>
   );
@@ -70,9 +70,9 @@ function LoginContent() {
 
   return (
     <div style={{
-      minHeight: "100vh", background: "#0a0a0a",
+      minHeight: "100vh", background: "#0a0a0c",
       display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "2rem", fontFamily: "'Inter', system-ui, sans-serif",
+      padding: "2rem", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
         width: "600px", height: "600px", borderRadius: "50%", filter: "blur(200px)", opacity: 0.04,
@@ -84,12 +84,12 @@ function LoginContent() {
           <div style={{ width: "48px", height: "48px", borderRadius: "14px",
             background: "linear-gradient(135deg, rgba(196,148,100,0.2), rgba(180,130,80,0.1))",
             display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: "16px" }}>
-            <Moon size={24} color="#d4b48a" strokeWidth={1.5} />
+            <Moon size={24} color="#e0b185" strokeWidth={1.5} />
           </div>
-          <h2 style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: "26px", fontWeight: 400, color: "#f5ede0", marginBottom: "6px" }}>
+          <h2 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", fontSize: "26px", fontWeight: 400, color: "#f5f5f7", marginBottom: "6px" }}>
             Welcome back
           </h2>
-          <p style={{ fontSize: "13px", color: "#6b655a" }}>
+          <p style={{ fontSize: "13px", color: "#a1a1a6" }}>
             Sign in to your LofiBuddha account
           </p>
         </div>
@@ -106,29 +106,29 @@ function LoginContent() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px",
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "12px", padding: "12px 16px" }}>
-              <Mail size={16} color="#6b655a" />
+              <Mail size={16} color="#a1a1a6" />
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com" required
                 style={{ flex: 1, background: "transparent", border: "none", outline: "none",
-                  color: "#e8e2d8", fontSize: "14px", fontFamily: "'Inter', system-ui, sans-serif" }} />
+                  color: "#f5f5f7", fontSize: "14px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }} />
             </div>
           </div>
           <div style={{ marginBottom: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px",
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "12px", padding: "12px 16px" }}>
-              <Lock size={16} color="#6b655a" />
+              <Lock size={16} color="#a1a1a6" />
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password" required
                 style={{ flex: 1, background: "transparent", border: "none", outline: "none",
-                  color: "#e8e2d8", fontSize: "14px", fontFamily: "'Inter', system-ui, sans-serif" }} />
+                  color: "#f5f5f7", fontSize: "14px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }} />
             </div>
           </div>
           <button type="submit" disabled={loading} style={{
             width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-            background: "linear-gradient(135deg, #c49464, #b08050)", color: "#0a0a0a",
+            background: "linear-gradient(135deg, #e0b185, #e0b185)", color: "#0a0a0c",
             border: "none", borderRadius: "14px", padding: "14px", fontSize: "14px", fontWeight: 600,
-            cursor: loading ? "wait" : "pointer", fontFamily: "'Inter', system-ui, sans-serif",
+            cursor: loading ? "wait" : "pointer", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
             opacity: loading ? 0.7 : 1, transition: "all 0.2s ease",
           }}>
             <LogIn size={15} /> {loading ? "Signing in..." : "Sign in"}
@@ -137,7 +137,7 @@ function LoginContent() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
           <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.06)" }} />
-          <span style={{ fontSize: "11px", color: "#4a4540" }}>or</span>
+          <span style={{ fontSize: "11px", color: "#6e6e73" }}>or</span>
           <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.06)" }} />
         </div>
 
@@ -145,8 +145,8 @@ function LoginContent() {
           width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
           background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: "14px", padding: "14px", fontSize: "14px", fontWeight: 500,
-          color: "#e8e2d8", cursor: loading ? "wait" : "pointer",
-          fontFamily: "'Inter', system-ui, sans-serif", transition: "all 0.2s ease",
+          color: "#f5f5f7", cursor: loading ? "wait" : "pointer",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", transition: "all 0.2s ease",
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
@@ -157,9 +157,9 @@ function LoginContent() {
           Continue with Google
         </button>
 
-        <p style={{ textAlign: "center", fontSize: "12px", color: "#4a4540", marginTop: "24px" }}>
+        <p style={{ textAlign: "center", fontSize: "12px", color: "#6e6e73", marginTop: "24px" }}>
           New here?{" "}
-          <a href="/signup" style={{ color: "#d4b48a", textDecoration: "none" }}>Explore free content first</a>
+          <a href="/signup" style={{ color: "#e0b185", textDecoration: "none" }}>Explore free content first</a>
         </p>
       </div>
     </div>

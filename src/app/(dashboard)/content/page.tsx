@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import {
-  Film, Play, Download, Loader2, Sparkles, Calendar,
-  Clapperboard, Smartphone, Square, Clock, Edit3, Check,
+  Film, Play, Loader2, Sparkles, Calendar,
+  Clapperboard, Clock, Edit3, Check,
   Plus, Wand2,
 } from "lucide-react";
 import Link from "next/link";
+import YouTubeBulkPublish from "@/components/YouTubeBulkPublish";
 
 // ── Types ──
 
@@ -52,8 +53,6 @@ function formatDate(iso: string): string {
   return new Date(iso + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
 
-const platformIcons: Record<string, typeof Clapperboard> = { youtube: Clapperboard, shorts: Smartphone, square: Square };
-const platformColors: Record<string, string> = { youtube: "text-red-400", shorts: "text-pink-400", square: "text-purple-400" };
 const statusBadge: Record<string, string> = { draft: "bg-bg-hover text-text-muted", scheduled: "bg-accent/10 text-accent-light", released: "bg-success/10 text-success" };
 
 // ── Component ──
@@ -162,48 +161,16 @@ export default function ContentPage() {
         })}
       </div>
 
-      {/* ── Media Gallery ── */}
+      {/* ── Media Gallery + Publish to YouTube ── */}
       <div className="glass p-5 space-y-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Film size={18} className="text-accent-light" />
             <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Media Gallery</h2>
-            {!loadingVideos && <span className="text-[10px] text-text-muted">{videos.length} videos</span>}
           </div>
           <Link href="/video" className="text-xs text-accent-light hover:text-accent transition-all flex items-center gap-1"><Plus size={12} /> Generate More</Link>
         </div>
-        {loadingVideos ? (
-          <div className="flex items-center justify-center py-12"><Loader2 size={24} className="animate-spin text-accent-light" /></div>
-        ) : videos.length === 0 ? (
-          <div className="text-center py-12 space-y-3">
-            <Film size={36} className="mx-auto text-text-muted opacity-30" />
-            <p className="text-sm text-text-muted">No videos yet. Generate them in the Video Studio.</p>
-            <Link href="/video" className="btn-zen inline-flex items-center gap-2 text-xs py-2 px-4 mt-2"><Film size={14} /> Open Video Studio</Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {videos.map((video, i) => {
-              const Icon = platformIcons[video.format] || Film;
-              const color = platformColors[video.format] || "text-text-secondary";
-              return (
-                <div key={i} className="bg-bg-hover rounded-xl border border-border overflow-hidden hover:border-accent/20 transition-all group">
-                  <div className="bg-black aspect-video flex items-center justify-center overflow-hidden relative">
-                    <video src={video.path} controls muted preload="metadata" className="max-w-full max-h-full" />
-                  </div>
-                  <div className="p-3 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Icon size={14} className={color} />
-                      <span className="text-xs text-text-secondary capitalize">{video.platform}</span>
-                    </div>
-                    <p className="text-sm font-medium text-text-primary truncate capitalize">{video.name}</p>
-                    <p className="text-[10px] text-text-muted">{video.width}×{video.height} · {video.sizeFormatted}</p>
-                    <a href={video.path} download className="flex items-center gap-2 text-xs text-accent-light hover:text-accent transition-all py-1.5 px-3 rounded-lg bg-accent/5 hover:bg-accent/10 w-fit"><Download size={12} /> Download</a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <YouTubeBulkPublish />
       </div>
 
       {/* ── Content Calendar ── */}

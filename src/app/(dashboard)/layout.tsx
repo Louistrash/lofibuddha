@@ -15,11 +15,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <ProtectedRoute>
       <div className="flex min-h-screen">
         {!isHermes && <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
-        <main className={`flex-1 transition-all duration-300 ${isHermes ? "" : "lg:ml-[260px]"}`}>
+        <main className="flex-1 min-w-0 overflow-x-hidden transition-all duration-300">
           {!isHermes && (
             <Header onMenuToggle={() => setMobileOpen(prev => !prev)} mobileOpen={mobileOpen} />
           )}
-          <div className={isHermes ? "h-screen" : "p-4 sm:p-6 max-w-7xl"}>
+          <div className={isHermes ? "h-screen" : "p-4 sm:p-6 max-w-7xl mx-auto"}>
             {children}
           </div>
         </main>

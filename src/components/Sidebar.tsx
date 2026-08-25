@@ -128,10 +128,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
         )}
       </AnimatePresence>
 
-      {/* Desktop sidebar */}
+      {/* Desktop sidebar — sticky rail (neemt ruimte in de flow, overlapt dus nooit content) */}
       <motion.aside
         animate={{ width: collapsed ? 72 : 260 }}
-        className={`hidden lg:flex fixed left-0 top-0 h-screen z-40 bg-bg-surface border-r border-border flex-col transition-none`}
+        className={`hidden lg:flex sticky top-0 shrink-0 h-screen z-40 bg-bg-surface border-r border-border flex-col transition-none`}
       >
         {/* Logo */}
         <div className="h-16 flex items-center gap-3 px-5 border-b border-border">

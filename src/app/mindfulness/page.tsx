@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Activity, MessageCircle, Timer, Moon, Volume2, VolumeX } from "lucide-react";
+import { Activity, MessageCircle, Timer, Moon, Play, Volume2, VolumeX } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import CarouselDots from "@/components/CarouselDots";
+import Mandala from "@/components/Mandala";
 import { useAuth } from "@/lib/AuthProvider";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -33,7 +34,7 @@ function VisualLoop({ src, label }: { src: string; label: string }) {
       title={unmuted ? "Tap to mute" : "Tap for sound"}
     >
       <video ref={ref} src={src} loop muted autoPlay playsInline className="mindful-visual-video" />
-      <span className="mindful-visual-sound">{unmuted ? <Volume2 size={13} /> : <VolumeX size={13} />}</span>
+      <span className="mindful-visual-sound">{unmuted ? <Volume2 size={15} /> : <VolumeX size={15} />}</span>
       <span className="mindful-visual-label">{label}</span>
     </div>
   );
@@ -42,7 +43,7 @@ function VisualLoop({ src, label }: { src: string; label: string }) {
 export default function MindfulnessPage() {
   const { user: fbUser, loading: fbLoading } = useAuth();
   const [checked, setChecked] = useState(false);
-  const servicesRef = useRef<HTMLElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!fbLoading) setChecked(true);
@@ -69,12 +70,17 @@ export default function MindfulnessPage() {
 
   return (
     <div className="mindful-page">
+      <Mandala />
+
       {/* Nav */}
       <nav className="mindful-nav">
         <div className="mindful-nav-inner">
           <Link href="/" className="mindful-nav-home">
             <img src="/bodhi-icon.png" alt="LofiBuddha" className="mindful-nav-icon" />
-            <span className="mindful-nav-name">LofiBuddha</span>
+            <span>
+              <span className="mindful-nav-name">LofiBuddha</span>
+              <span className="mindful-nav-script">ध्यान • शांति</span>
+            </span>
           </Link>
           <div className="mindful-nav-right">
             {user ? (
@@ -92,40 +98,80 @@ export default function MindfulnessPage() {
       <main className="mindful-main">
         {/* Hero */}
         <div className="mindful-hero">
-          <h1 className="mindful-hero-title">Your mindfulness space</h1>
+          <span className="mindful-hero-eyebrow">साँस • ध्यान • शांति</span>
+          <h1 className="mindful-hero-title">Your <span className="gold">mindfulness</span> space</h1>
           <p className="mindful-hero-sub">
             Breathe, focus, and unwind — one calm place for everything that helps you settle.
           </p>
+          <div className="mindful-hero-cta">
+            <Link href="/mindfulness/breathe" className="mindful-btn mindful-btn-primary">
+              <Play size={16} strokeWidth={0} fill="currentColor" /> Start breathing
+            </Link>
+            <Link href="/mindfulness/sleep" className="mindful-btn mindful-btn-ghost">Explore sounds</Link>
+          </div>
         </div>
 
         {/* Hoofd-categorieën — het ecosysteem */}
-        <section className="mindful-services" ref={servicesRef}>
-          <Link href="/mindfulness/sleep" className="mindful-card mindful-card-featured" style={{ textDecoration: "none" }}>
-            <Moon className="mindful-card-icon" size={26} strokeWidth={1.6} />
-            <h3 className="mindful-card-title">Sleep & Relax</h3>
-            <p className="mindful-card-desc">Drift Into Sleep, Letting Go, Gratitude — each with its own soundscape and guidance.</p>
-            <span className="mindful-card-cta">Explore →</span>
-          </Link>
-          <Link href="/mindfulness/breathe" className="mindful-card" style={{ textDecoration: "none" }}>
-            <Activity className="mindful-card-icon" size={26} strokeWidth={1.6} />
-            <h3 className="mindful-card-title">Breathe</h3>
-            <p className="mindful-card-desc">Breath of Life, Box Breathing, The Witness — calm the nervous system.</p>
-            <span className="mindful-card-cta">Explore →</span>
-          </Link>
-          <Link href="/mindfulness/focus" className="mindful-card" style={{ textDecoration: "none" }}>
-            <Timer className="mindful-card-icon" size={26} strokeWidth={1.6} />
-            <h3 className="mindful-card-title">Focus</h3>
-            <p className="mindful-card-desc">Focus Anchor, Deep Work, Mindful Reset + Pomodoro — deep work, guided.</p>
-            <span className="mindful-card-cta">Explore →</span>
-          </Link>
-          <Link href="/mindfulness/relax" className="mindful-card" style={{ textDecoration: "none" }}>
-            <MessageCircle className="mindful-card-icon" size={26} strokeWidth={1.6} />
-            <h3 className="mindful-card-title">Relax</h3>
-            <p className="mindful-card-desc">Body Scan, Stillness, Zen Garden — unwind, release, rest.</p>
-            <span className="mindful-card-cta">Explore →</span>
-          </Link>
+        <section className="mindful-section">
+          <div className="mindful-section-head">
+            <h2 className="mindful-section-title">Journeys</h2>
+            <span className="mindful-section-script">चार मार्ग — four paths</span>
+          </div>
+          <div className="mindful-services" ref={servicesRef}>
+            <Link href="/mindfulness/sleep" className="mindful-card mindful-card-featured" style={{ textDecoration: "none" }}>
+              <div className="mindful-card-art mindful-card-art--sleep" />
+              <div className="mindful-card-body">
+                <div className="mindful-card-icon"><Moon size={24} strokeWidth={1.6} /></div>
+                <h3 className="mindful-card-title">Sleep &amp; Relax</h3>
+                <p className="mindful-card-desc">Drift into sleep, let go, and rest in gratitude — each with its own soundscape and guidance.</p>
+                <div className="mindful-card-foot">
+                  <span className="mindful-card-play"><Play size={20} strokeWidth={0} fill="currentColor" /></span>
+                  <span className="mindful-card-cta">Explore <span className="arr">→</span></span>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/mindfulness/breathe" className="mindful-card mindful-card-breathe" style={{ textDecoration: "none" }}>
+              <div className="mindful-card-art mindful-card-art--breathe" />
+              <div className="mindful-card-body">
+                <div className="mindful-card-icon"><Activity size={24} strokeWidth={1.6} /></div>
+                <h3 className="mindful-card-title">Breathe</h3>
+                <p className="mindful-card-desc">Breath of Life, Box Breathing, The Witness — settle the nervous system.</p>
+                <div className="mindful-card-foot">
+                  <span className="mindful-card-play"><Play size={20} strokeWidth={0} fill="currentColor" /></span>
+                  <span className="mindful-card-cta">Explore <span className="arr">→</span></span>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/mindfulness/focus" className="mindful-card mindful-card-focus" style={{ textDecoration: "none" }}>
+              <div className="mindful-card-art mindful-card-art--focus" />
+              <div className="mindful-card-body">
+                <div className="mindful-card-icon"><Timer size={24} strokeWidth={1.6} /></div>
+                <h3 className="mindful-card-title">Focus</h3>
+                <p className="mindful-card-desc">Focus Anchor, Deep Work, Mindful Reset + Pomodoro — deep work, guided.</p>
+                <div className="mindful-card-foot">
+                  <span className="mindful-card-play"><Play size={20} strokeWidth={0} fill="currentColor" /></span>
+                  <span className="mindful-card-cta">Explore <span className="arr">→</span></span>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/mindfulness/relax" className="mindful-card mindful-card-relax" style={{ textDecoration: "none" }}>
+              <div className="mindful-card-art mindful-card-art--relax" />
+              <div className="mindful-card-body">
+                <div className="mindful-card-icon"><MessageCircle size={24} strokeWidth={1.6} /></div>
+                <h3 className="mindful-card-title">Relax</h3>
+                <p className="mindful-card-desc">Body Scan, Stillness, Zen Garden — unwind, release, rest.</p>
+                <div className="mindful-card-foot">
+                  <span className="mindful-card-play"><Play size={20} strokeWidth={0} fill="currentColor" /></span>
+                  <span className="mindful-card-cta">Explore <span className="arr">→</span></span>
+                </div>
+              </div>
+            </Link>
+          </div>
         </section>
-        <CarouselDots containerRef={servicesRef} color="#b89258" label="Categories" />
+        <CarouselDots containerRef={servicesRef} color="#e0b185" label="Categories" />
 
         {/* Visual loops — looping relaxatie video's */}
         <section className="mindful-visuals">

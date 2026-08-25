@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   if (action === "login") {
     const qs = new URLSearchParams({
       client_id: cId, redirect_uri: redirectUri, response_type: "code",
-      scope, access_type: "offline", prompt: "consent",
+      scope, access_type: "offline", prompt: "consent select_account",
     });
     return NextResponse.redirect("https://accounts.google.com/o/oauth2/v2/auth?" + qs);
   }

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display, DM_Serif_Display } from "next/font/google";
+import { Manrope, Playfair_Display, DM_Serif_Display, Fraunces, Rozha_One } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthProvider";
 import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
@@ -24,6 +24,22 @@ const dmSerif = DM_Serif_Display({
   variable: "--font-display",
   display: "swap",
   preload: true,
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-fraunces",
+  display: "swap",
+  preload: true,
+});
+
+const rozha = Rozha_One({
+  subsets: ["latin", "latin-ext", "devanagari"],
+  weight: "400",
+  variable: "--font-hindi",
+  display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -80,7 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={jakarta.variable + " " + playfair.variable + " " + dmSerif.variable + " antialiased bg-bg-primary text-text-primary"}>
+      <body className={jakarta.variable + " " + playfair.variable + " " + dmSerif.variable + " " + fraunces.variable + " " + rozha.variable + " antialiased bg-bg-primary text-text-primary"}>
         <AuthProvider>{children}</AuthProvider>
         <CookieConsent />
       </body>

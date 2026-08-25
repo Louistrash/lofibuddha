@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, X, RotateCcw, ChevronDown, Waves, Music } from "lucide-react";
+import { Play, Pause, X, RotateCcw, Waves, Music } from "lucide-react";
+import Chip from "@/components/ui/Chip";
+import SegmentedControl from "@/components/ui/SegmentedControl";
 import Scene from "@/components/Scene";
 import type { Experience } from "@/lib/experiences";
 import { getCategory } from "@/lib/experiences";
@@ -49,8 +51,6 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
   const [soundscape, setSoundscape] = useState(experience.soundscape);
   const [musicOn, setMusicOn] = useState(experience.music !== "off");
   const [musicTrack, setMusicTrack] = useState(experience.music);
-  // Accordions: soundscape en music openen standaard (mobiel: compact)
-  const [openSections, setOpenSections] = useState<{ sound: boolean; music: boolean }>({ sound: true, music: true });
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [elapsed, setElapsed] = useState(0);
@@ -201,12 +201,11 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
     if (isBox) { startBoxBreathing(); return; }
     if (isPomodoro) { startPomodoro(); return; }
 
-    setPhase("chime");
+    // Guided experiences hebben al een chime-intro in hun voice-audio
+    // (generate-meditation.mjs zet "chime + segmenten"), dus geen aparte
+    // chime hier — anders klinkt de bel dubbel.
     if (experience.guide) {
-      const chime = new Audio("/api/breathe/audio/chime.mp3");
-      chime.onended = () => { chimeRef.current = null; startVoice(); };
-      chime.play().catch(() => startVoice());
-      chimeRef.current = chime;
+      startVoice();
     } else {
       setPhase("playing");
     }
@@ -247,7 +246,7 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
   const soundOptions = SOUNDS.filter(s => s.category === "Water" || s.category === "Nature" || s.category === "Spiritual" || s.category === "Warmth");
 
   return (
-    <div className="exp-player">
+    <div className="exp-player" style={{ "--accent": accent } as React.CSSProperties}>
       {/* Levende scene — full screen */}
       <Scene type={experience.scene} variant="full" breathe={breathe} />
 
@@ -260,6 +259,7 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
         </div>
 
         <div className="exp-player-mid">
+          <span className="exp-player-script">{cat.script}</span>
           <h2 className="exp-player-title">{experience.title}</h2>
           <p className="exp-player-desc">{experience.description}</p>
 
@@ -278,15 +278,11 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
             /* ── Pomodoro visual ── */
             <div className="exp-pomodoro" style={{ "--accent": accent } as React.CSSProperties}>
               <div className="exp-pomodoro-presets">
-                {FOCUS_PRESETS.map(p => (
-                  <button
-                    key={p.min}
-                    className={`exp-chip ${pomodoroMin === p.min ? "exp-chip-active" : ""}`}
-                    onClick={() => { setPomodoroMin(p.min); setPomodoroLeft(p.min * 60); }}
-                  >
-                    {p.label} · {p.min}m
-                  </button>
-                ))}
+                <SegmentedControl
+                  options={FOCUS_PRESETS.map(p => ({ value: String(p.min), label: `${p.label} · ${p.min}m` }))}
+                  value={String(pomodoroMin)}
+                  onChange={(v) => { setPomodoroMin(Number(v)); setPomodoroLeft(Number(v) * 60); }}
+                />
               </div>
               <span className="exp-pomodoro-time">{fmt(pomodoroLeft)}</span>
             </div>
@@ -294,11 +290,16 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
             /* ── Normale player ring ── */
             <div className="exp-player-ring-wrap" style={{ "--accent": accent } as React.CSSProperties}>
               <button className="exp-player-play" onClick={toggle} aria-label={phase === "playing" ? "pause" : "play"}>
-                {phase === "playing" || phase === "chime" ? <Pause size={30} /> : <Play size={30} style={{ marginLeft: 4 }} />}
+                {phase === "playing" ? <Pause size={30} /> : <Play size={30} style={{ marginLeft: 4 }} />}
               </button>
               <span className="exp-player-time">
-                {phase === "chime" ? "chime…" : experience.guide ? `${fmt(elapsed)}` : "playing"}
+                {experience.guide ? `${fmt(elapsed)}` : "playing"}
               </span>
+              {experience.guide && duration > 0 && (
+                <div className="exp-player-progress">
+                  <div className="exp-player-progress-fill" style={{ width: `${progress * 100}%`, background: accent }} />
+                </div>
+              )}
             </div>
           )}
 
@@ -316,80 +317,31 @@ export default function ExperiencePlayer({ experience, onClose }: ExperiencePlay
           )}
         </div>
 
-        {/* Live mix controls — accordions */}
+        {/* Live mix controls — soundscape + music */}
         <div className="exp-player-settings">
           <div className="exp-player-setting">
-            <button
-              className={`exp-player-setting-head ${openSections.sound ? "open" : ""}`}
-              onClick={() => setOpenSections(s => ({ ...s, sound: !s.sound }))}
-              aria-expanded={openSections.sound}
-            >
-              <span className="exp-player-setting-head-label">
-                <Waves size={15} /> soundscape
-              </span>
-              <span className="exp-player-setting-head-summary">
-                {soundscape === "off" ? "off" : soundscape.replace(/-/g, " ")}
-                <ChevronDown size={14} className={`exp-player-chevron ${openSections.sound ? "open" : ""}`} />
-              </span>
-            </button>
-            <div className={`exp-player-setting-body ${openSections.sound ? "open" : ""}`}>
-              <div className="exp-player-setting-body-inner">
-                <div className="exp-player-choices">
-                  <button
-                    className={`exp-chip ${soundscape === "off" ? "exp-chip-active" : ""}`}
-                    onClick={() => chooseSoundscape("off")}
-                  >
-                    Off
-                  </button>
-                  {soundOptions.slice(0, 8).map(s => (
-                    <button
-                      key={s.slug}
-                      className={`exp-chip ${soundscape === s.slug ? "exp-chip-active" : ""}`}
-                      onClick={() => chooseSoundscape(s.slug)}
-                    >
-                      {s.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="exp-player-setting-label">
+              <Waves size={14} /> Soundscape
+              <span className="exp-player-setting-value">{soundscape === "off" ? "off" : soundscape.replace(/-/g, " ")}</span>
+            </div>
+            <div className="exp-player-choices">
+              <Chip active={soundscape === "off"} onClick={() => chooseSoundscape("off")}>Off</Chip>
+              {soundOptions.slice(0, 8).map(s => (
+                <Chip key={s.slug} active={soundscape === s.slug} onClick={() => chooseSoundscape(s.slug)}>{s.name}</Chip>
+              ))}
             </div>
           </div>
 
           <div className="exp-player-setting">
-            <button
-              className={`exp-player-setting-head ${openSections.music ? "open" : ""}`}
-              onClick={() => setOpenSections(s => ({ ...s, music: !s.music }))}
-              aria-expanded={openSections.music}
-            >
-              <span className="exp-player-setting-head-label">
-                <Music size={15} /> music
-              </span>
-              <span className="exp-player-setting-head-summary">
-                {!musicOn ? "off" : musicTrack.replace(/-/g, " ")}
-                <ChevronDown size={14} className={`exp-player-chevron ${openSections.music ? "open" : ""}`} />
-              </span>
-            </button>
-            <div className={`exp-player-setting-body ${openSections.music ? "open" : ""}`}>
-              <div className="exp-player-setting-body-inner">
-                <div className="exp-player-choices">
-                  <button
-                    className={`exp-chip ${!musicOn ? "exp-chip-active" : ""}`}
-                    onClick={toggleMusic}
-                  >
-                    off
-                  </button>
-                  {MUSIC_TRACKS.map(t => (
-                    <button
-                      key={t.id}
-                      className={`exp-chip ${musicOn && musicTrack === t.id ? "exp-chip-active" : ""}`}
-                      onClick={() => chooseMusic(t.id)}
-                      title={t.description}
-                    >
-                      {t.title.replace(" · ", " ")}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="exp-player-setting-label">
+              <Music size={14} /> Music
+              <span className="exp-player-setting-value">{!musicOn ? "off" : musicTrack.replace(/-/g, " ")}</span>
+            </div>
+            <div className="exp-player-choices">
+              <Chip active={!musicOn} onClick={toggleMusic}>Off</Chip>
+              {MUSIC_TRACKS.map(t => (
+                <Chip key={t.id} active={musicOn && musicTrack === t.id} onClick={() => chooseMusic(t.id)} title={t.description}>{t.title.replace(" · ", " ")}</Chip>
+              ))}
             </div>
           </div>
         </div>

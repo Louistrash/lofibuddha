@@ -42,3 +42,7 @@ Thumbs.db
 # Hermes local state
 .hermes/cache/
 data/meditations/.tmp/
+
+# Local edit backups
+*.bak
+*.bak-*

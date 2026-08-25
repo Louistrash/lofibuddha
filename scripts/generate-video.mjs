@@ -7,7 +7,9 @@
  *   node scripts/generate-video.mjs --size 9:16 --duration 30 --template ocean \
  *     --caption "Soft ocean waves — let go." --audio ocean-waves --output shorts/ocean-loop.mp4
  *
- * Templates: quote-card, zen-lofi, ocean, night, temple, breathe, focus, rain
+ * Templates: quote-card, zen-lofi, ocean, night, temple, breathe, focus, rain,
+ *   night-sky (Infinite Stars), milky-way, moon-temple, himalayan-night,
+ *   zen-lake, buddha-stars, ancient-temple, cosmic-void
  * Sizes: 9:16 (shorts/tiktok), 16:9 (youtube), 1:1 (square), 4:5
  * Audio: --audio <slug> mixes data/sounds/audio/<slug>.mp3 (looped) into the video
  */
@@ -25,13 +27,21 @@ const SOUNDS_DIR = join(ROOT, "data", "sounds", "audio");
 // ── Scene templates ──────────────────────────────────────────────────────────
 
 /** Live animated scene (CSS/canvas) — shared look with the site's experience scenes */
-function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage, template }) {
+function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage, template, clean }) {
   const safeCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
   const safeSub = (subtitle || "lofibuddha.com").replace(/"/g, "&quot;");
 
   // Per-template scene layer
   const sceneFn = SCENES[template] || SCENES["zen-lofi"];
   const scene = sceneFn({ width, height, duration });
+
+  const overlay = clean ? "" : `
+  <!-- Caption -->
+  <div class="caption-wrap">
+    <div class="caption">${safeCaption}</div>
+    <div class="subtitle">${safeSub}</div>
+  </div>
+  <div class="brand">lofibuddha.com</div>`;
 
   return `<!DOCTYPE html>
 <html>
@@ -91,11 +101,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
      style="width:${width}px;height:${height}px;position:relative;overflow:hidden;">
   <div class="bg">${scene.html}</div>
   <div class="vignette"></div>
-  <div class="caption-wrap">
-    <div class="caption">${safeCaption}</div>
-    <div class="subtitle">${safeSub}</div>
-  </div>
-  <div class="brand">lofibuddha.com</div>
+${overlay}
 </div>
 <script>
   window.__hf = { duration: ${duration}, seek: function(t) {} };
@@ -106,6 +112,68 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
 }
 
 // ── Scene definitions (HTML + CSS + JS per scene) ────────────────────────────
+
+// ── Shared starfield generator (Infinite Night Sky family) ───────────────────
+function makeSky({ width, height, duration, count = 1800, milkyway = 1, tint = "cool", speed = 1, reflect = false, extraCss = "", extraHtml = "" }) {
+  const cool = tint === "warm" ? "255,232,200" : "205,218,245";
+  const mw = milkyway;
+  const refl = reflect
+    ? `
+        if (py < H * 0.56) {
+          const ry = H * 0.62 + (H * 0.62 - py);
+          const ra = a * 0.30;
+          ctx.fillStyle = s.warm ? 'rgba(255,228,190,' + ra.toFixed(3) + ')' : 'rgba(${cool},' + ra.toFixed(3) + ')';
+          ctx.beginPath(); ctx.arc(px, ry, size * 0.8, 0, Math.PI * 2); ctx.fill();
+        }`
+    : "";
+  return {
+    css: `
+      .milkyway { position: absolute; inset: 0; z-index: 0;
+        background:
+          linear-gradient(112deg, transparent 26%, rgba(120,140,195,${(0.09 * mw).toFixed(3)}) 42%, rgba(150,170,220,${(0.06 * mw).toFixed(3)}) 52%, transparent 68%),
+          linear-gradient(112deg, transparent 30%, rgba(110,130,190,${(0.05 * mw).toFixed(3)}) 46%, transparent 62%);
+        filter: blur(26px); }
+      ${extraCss}`,
+    html: `
+      <div class="milkyway"></div>
+      <canvas id="sky"></canvas>
+      ${extraHtml}`,
+    js: `
+      const canvas = document.getElementById('sky');
+      const ctx = canvas.getContext('2d');
+      canvas.width = ${width}; canvas.height = ${height};
+      const W = canvas.width, H = canvas.height;
+      const D = ${duration};
+      let seed = 20260823;
+      function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+      const stars = Array.from({ length: ${count} }, () => ({
+        x: rnd() * 2 - 1, y: rnd() * 2 - 1, z: rnd(),
+        tw: 1 + Math.floor(rnd() * 3), ph: rnd() * Math.PI * 2,
+        mag: 0.35 + rnd() * 0.65, warm: rnd() > 0.88
+      }));
+      const t0 = performance.now();
+      function draw() {
+        const t = ((performance.now() - t0) / 1000) % D;
+        ctx.clearRect(0, 0, W, H);
+        for (const s of stars) {
+          const z = (s.z + (t / D) * ${speed}) % 1;
+          const fade = Math.sin(Math.PI * z);
+          if (fade < 0.04) continue;
+          const scale = 0.5 + z * 1.3;
+          const px = W / 2 + s.x * scale * (W / 2);
+          const py = H / 2 + s.y * scale * (H / 2) * 0.92;
+          if (px < -4 || px > W + 4 || py < -4 || py > H + 4) continue;
+          const size = (0.55 + z * 1.5) * (0.5 + s.mag * 0.9);
+          const twinkle = 0.78 + 0.22 * Math.sin(2 * Math.PI * s.tw * t / D + s.ph);
+          const a = s.mag * fade * twinkle;
+          ctx.fillStyle = s.warm ? 'rgba(255,228,190,' + a.toFixed(3) + ')' : 'rgba(${cool},' + a.toFixed(3) + ')';
+          ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();${refl}
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();`
+  };
+}
 
 const SCENES = {
   "zen-lofi": ({ width, height }) => ({
@@ -329,6 +397,164 @@ const SCENES = {
       <div class="f-core"></div>
       <div class="f-ray"></div>`,
   }),
+
+  "night-sky": ({ width, height, duration }) => ({
+    css: `
+      .milkyway { position: absolute; inset: 0; z-index: 0;
+        background:
+          linear-gradient(112deg, transparent 26%, rgba(120,140,195,0.09) 42%, rgba(150,170,220,0.06) 52%, transparent 68%),
+          linear-gradient(112deg, transparent 30%, rgba(110,130,190,0.05) 46%, transparent 62%);
+        filter: blur(26px); }
+      .silhouette { position: absolute; bottom: 0; left: 0; right: 0; height: 20%; z-index: 2;
+        background:
+          radial-gradient(120% 90% at 50% 120%, rgba(8,10,18,0.9) 0%, rgba(6,8,14,0.6) 40%, transparent 70%);
+        pointer-events: none; }
+    `,
+    html: `
+      <div class="milkyway"></div>
+      <canvas id="sky"></canvas>
+      <div class="silhouette"></div>`,
+    js: `
+      const canvas = document.getElementById('sky');
+      const ctx = canvas.getContext('2d');
+      canvas.width = ${width}; canvas.height = ${height};
+      const W = canvas.width, H = canvas.height;
+      const D = ${duration};
+      let seed = 20260823;
+      function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+      const N = 1800;
+      const stars = Array.from({ length: N }, () => ({
+        x: rnd() * 2 - 1,
+        y: rnd() * 2 - 1,
+        z: rnd(),
+        tw: 1 + Math.floor(rnd() * 3),
+        ph: rnd() * Math.PI * 2,
+        mag: 0.35 + rnd() * 0.65,
+        warm: rnd() > 0.88
+      }));
+      const t0 = performance.now();
+      function draw() {
+        const t = ((performance.now() - t0) / 1000) % D;
+        ctx.clearRect(0, 0, W, H);
+        for (const s of stars) {
+          const z = (s.z + t / D) % 1;
+          const fade = Math.sin(Math.PI * z);
+          if (fade < 0.04) continue;
+          const scale = 0.5 + z * 1.3;
+          const px = W / 2 + s.x * scale * (W / 2);
+          const py = H / 2 + s.y * scale * (H / 2) * 0.92;
+          if (px < -4 || px > W + 4 || py < -4 || py > H + 4) continue;
+          const size = (0.55 + z * 1.5) * (0.5 + s.mag * 0.9);
+          const twinkle = 0.78 + 0.22 * Math.sin(2 * Math.PI * s.tw * t / D + s.ph);
+          const a = s.mag * fade * twinkle;
+          ctx.fillStyle = s.warm
+            ? 'rgba(255,232,200,' + a.toFixed(3) + ')'
+            : 'rgba(205,218,245,' + a.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();`,
+  }),
+
+  "milky-way": ({ width, height, duration }) => makeSky({ width, height, duration, count: 2400, milkyway: 2.6, speed: 0.7 }),
+
+  "moon-temple": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 1600, milkyway: 0.6,
+    extraCss: `
+      .moon { position: absolute; top: 11%; right: 15%; width: 17%; aspect-ratio: 1; border-radius: 50%; z-index: 1;
+        background: radial-gradient(circle at 56% 42%, #f6f1e0, #d9d2be 62%, #a89f85);
+        box-shadow: 0 0 90px rgba(240,230,200,0.45), 0 0 220px rgba(240,230,200,0.18); }
+      .temple { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 42%; height: 36%; z-index: 2; }`,
+    extraHtml: `
+      <div class="moon"></div>
+      <svg class="temple" viewBox="0 0 400 240" preserveAspectRatio="xMidYMax meet">
+        <rect x="120" y="128" width="160" height="112" fill="#04050b"/>
+        <path d="M88 128 L200 94 L312 128 Z" fill="#04050b"/>
+        <rect x="152" y="46" width="96" height="48" fill="#04050b"/>
+        <path d="M130 46 L200 20 L270 46 Z" fill="#04050b"/>
+        <path d="M200 0 L212 20 L188 20 Z" fill="#04050b"/>
+      </svg>`,
+  }),
+
+  "himalayan-night": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 2000, milkyway: 1.4, speed: 0.8,
+    extraCss: `
+      .mountains { position: absolute; bottom: 0; left: 0; width: 100%; height: 38%; z-index: 2; }
+      .mist { position: absolute; bottom: 0; left: 0; right: 0; height: 16%; z-index: 3;
+        background: linear-gradient(180deg, transparent, rgba(6,8,16,0.85)); }`,
+    extraHtml: `
+      <svg class="mountains" viewBox="0 0 1920 400" preserveAspectRatio="xMidYMax slice">
+        <path d="M0 400 L280 140 L540 400 Z" fill="#05070f"/>
+        <path d="M360 400 L720 60 L1060 400 Z" fill="#03050b"/>
+        <path d="M880 400 L1260 170 L1660 400 Z" fill="#05070f"/>
+        <path d="M1440 400 L1780 220 L2000 400 Z" fill="#03050b"/>
+      </svg>
+      <div class="mist"></div>`,
+  }),
+
+  "zen-lake": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 1800, milkyway: 1.1, speed: 0.6, reflect: true,
+    extraCss: `
+      .water { position: absolute; bottom: 0; left: 0; right: 0; height: 42%; z-index: 1;
+        background: linear-gradient(180deg, rgba(8,12,22,0.35) 0%, rgba(3,5,10,0.92) 100%); }
+      .waterline { position: absolute; bottom: 42%; left: 0; right: 0; height: 1px; z-index: 3;
+        background: rgba(150,175,215,0.18); }`,
+    extraHtml: `
+      <div class="waterline"></div>
+      <div class="water"></div>`,
+  }),
+
+  "buddha-stars": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 1500, milkyway: 0.8, tint: "warm", speed: 0.6,
+    extraCss: `
+      .halo { position: absolute; top: 16%; left: 50%; transform: translateX(-50%); width: 24%; aspect-ratio: 1;
+        border-radius: 50%; z-index: 1; background: radial-gradient(circle, rgba(240,220,180,0.16), transparent 70%); }
+      .buddha { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 32%; height: 40%; z-index: 2; }`,
+    extraHtml: `
+      <div class="halo"></div>
+      <svg class="buddha" viewBox="0 0 300 250" preserveAspectRatio="xMidYMax meet">
+        <ellipse cx="150" cy="50" rx="26" ry="24" fill="#04050b"/>
+        <path d="M150 76 C118 76 98 90 90 114 C96 148 130 210 150 212 C170 210 204 148 210 114 C202 90 182 76 150 76 Z" fill="#04050b"/>
+        <path d="M58 150 Q150 170 242 150 L246 210 Q150 224 54 210 Z" fill="#04050b"/>
+      </svg>`,
+  }),
+
+  "ancient-temple": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 1700, milkyway: 0.7, speed: 0.7,
+    extraCss: `
+      .moon { position: absolute; top: 9%; left: 18%; width: 13%; aspect-ratio: 1; border-radius: 50%; z-index: 1;
+        background: radial-gradient(circle at 56% 42%, #f3ecd8, #cbc2a8 64%, #94896e);
+        box-shadow: 0 0 60px rgba(235,225,195,0.35), 0 0 160px rgba(235,225,195,0.14); }
+      .temple { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 46%; height: 38%; z-index: 2; }
+      .temple-glow { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 62%; height: 16%; z-index: 1;
+        background: radial-gradient(ellipse, rgba(235,225,195,0.10), transparent 70%); }`,
+    extraHtml: `
+      <div class="moon"></div>
+      <div class="temple-glow"></div>
+      <svg class="temple" viewBox="0 0 400 240" preserveAspectRatio="xMidYMax meet">
+        <rect x="100" y="130" width="200" height="110" fill="#04050b"/>
+        <path d="M70 130 L200 92 L330 130 Z" fill="#04050b"/>
+        <rect x="140" y="48" width="120" height="52" fill="#04050b"/>
+        <path d="M114 48 L200 18 L286 48 Z" fill="#04050b"/>
+        <path d="M200 0 L214 20 L186 20 Z" fill="#04050b"/>
+      </svg>`,
+  }),
+
+  "cosmic-void": ({ width, height, duration }) => makeSky({
+    width, height, duration, count: 700, milkyway: 0, speed: 0.5,
+    extraCss: `
+      .nebula { position: absolute; inset: 0; z-index: 0;
+        background:
+          radial-gradient(42% 32% at 30% 38%, rgba(88,78,160,0.14), transparent 70%),
+          radial-gradient(36% 30% at 72% 62%, rgba(58,70,140,0.12), transparent 70%),
+          radial-gradient(30% 24% at 55% 20%, rgba(120,100,180,0.08), transparent 70%);
+        filter: blur(32px); }`,
+    extraHtml: `
+      <div class="nebula"></div>`,
+  }),
 };
 
 // ── Quote Card Template (unchanged, still available) ─────────────────────────
@@ -413,6 +639,7 @@ async function generate(args) {
   const bgImage = args.background || args.bg || "";
   const audioSlug = args.audio || "";
   const audioVol = parseFloat(args.audiovol) || 0.85;
+  const clean = args.clean === "true" || args.clean === "1";
 
   let resolvedBg = bgImage;
   if (bgImage && bgImage.startsWith("/images/")) {
@@ -436,7 +663,7 @@ async function generate(args) {
   // Template: quote-card of scene template
   const html = template === "quote-card"
     ? quoteCardHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath })
-    : sceneHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath, template });
+    : sceneHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath, template, clean });
   writeFileSync(join(tmpProject, "index.html"), html);
 
   console.log(`[Bodhi] Rendering: ${width}x${height} | ${duration}s | template:${template} → ${outputName}`);

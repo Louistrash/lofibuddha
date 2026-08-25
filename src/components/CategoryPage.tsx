@@ -6,6 +6,7 @@ import { ArrowLeft, Heart } from "lucide-react";
 import ExperienceCard from "@/components/ExperienceCard";
 import ExperiencePlayer from "@/components/ExperiencePlayer";
 import CarouselDots from "@/components/CarouselDots";
+import Mandala from "@/components/Mandala";
 import { useRef } from "react";
 import type { Experience, ExperienceCategory } from "@/lib/experiences";
 import { getCategory, getCategoryExperiences } from "@/lib/experiences";
@@ -43,16 +44,21 @@ export default function CategoryPage({ category }: CategoryPageProps) {
 
   return (
     <div className="breathe-page">
+      <Mandala />
+
       <nav className="breathe-nav">
         <Link href="/mindfulness" className="breathe-nav-home">
           <img src="/bodhi-icon.png" alt="LofiBuddha" className="breathe-nav-icon" />
-          <span className="breathe-nav-name">LofiBuddha</span>
+          <span>
+            <span className="breathe-nav-name">LofiBuddha</span>
+            <span className="breathe-nav-script">{cat.script}</span>
+          </span>
         </Link>
         <Link href="/mindfulness" className="breathe-nav-back"><ArrowLeft size={13} /> mindfulness</Link>
       </nav>
 
       <main className="breathe-main">
-        <p className="breathe-kicker" style={{ color: cat.accent }}>{category}</p>
+        <span className="exp-page-eyebrow">{cat.script}</span>
         <h1 className="exp-page-title">{cat.name}</h1>
         <p className="exp-page-sub">{cat.tagline} — pick an experience, it brings its own sound and guidance.</p>
 

@@ -20,7 +20,7 @@ interface CarouselDotsProps {
  */
 export default function CarouselDots({
   containerRef,
-  color = "#b89258",
+  color = "#e0b185",
   label = "carousel",
 }: CarouselDotsProps) {
   const [count, setCount] = useState(0);

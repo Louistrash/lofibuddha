@@ -30,7 +30,7 @@ export async function GET(
         "Content-Type": "audio/mpeg",
         "Content-Length": String(info.size),
         "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": "no-cache",
       },
     });
   } catch (err: any) {

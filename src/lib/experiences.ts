@@ -35,11 +35,11 @@ export interface Experience {
 }
 
 // Categorie-info voor de hub
-export const CATEGORIES: { id: ExperienceCategory; name: string; tagline: string; scene: SceneType; accent: string }[] = [
-  { id: "focus", name: "Focus", tagline: "deep work, guided", scene: "focus", accent: "#E8A33D" },
-  { id: "breathe", name: "Breathe", tagline: "calm the nervous system", scene: "breathe", accent: "#2DD4BF" },
-  { id: "sleep", name: "Sleep & Relax", tagline: "drift off, let go", scene: "night", accent: "#b89258" },
-  { id: "relax", name: "Relax", tagline: "unwind, release, rest", scene: "ocean", accent: "#A855F7" },
+export const CATEGORIES: { id: ExperienceCategory; name: string; tagline: string; scene: SceneType; accent: string; script: string }[] = [
+  { id: "focus", name: "Focus", tagline: "deep work, guided", scene: "focus", accent: "#E8A33D", script: "एकाग्रता" },
+  { id: "breathe", name: "Breathe", tagline: "calm the nervous system", scene: "breathe", accent: "#2DD4BF", script: "श्वास" },
+  { id: "sleep", name: "Sleep & Relax", tagline: "drift off, let go", scene: "night", accent: "#b89258", script: "निद्रा" },
+  { id: "relax", name: "Relax", tagline: "unwind, release, rest", scene: "ocean", accent: "#A855F7", script: "विश्राम" },
 ];
 
 export const EXPERIENCES: Experience[] = [
@@ -124,7 +124,7 @@ export const EXPERIENCES: Experience[] = [
     category: "breathe",
     title: "Box Breathing",
     description: "In 4 · hold 4 · out 4 · rest 4 — the circle follows you.",
-    duration: "3 stages",
+    duration: "4×4 box",
     guide: null,
     soundscape: "temple-ambience",
     music: "lofi-buddha-temple",
@@ -154,6 +154,19 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "temple-ambience",
     music: "forgotten-temple",
     scene: "breathe",
+    accent: "#2DD4BF",
+  },
+
+  {
+    id: "ocean-breath",
+    category: "breathe",
+    title: "Ocean Breath",
+    description: "Ujjayi — a soft ocean sound as the breath rolls in and out.",
+    duration: "5 min",
+    guide: null,
+    soundscape: "ocean-waves",
+    music: "ocean-temple",
+    scene: "ocean",
     accent: "#2DD4BF",
   },
 
@@ -242,7 +255,7 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "mountain-wind",
     music: "midnight-temple",
     scene: "nature",
-    accent: "#E8A33D",
+    accent: "#A855F7",
   },
   {
     id: "loving-kindness",
@@ -278,7 +291,7 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "gentle-rain",
     music: "temple-rain",
     scene: "rain",
-    accent: "#2DD4BF",
+    accent: "#A855F7",
   },
   {
     id: "grounding",
