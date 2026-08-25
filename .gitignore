@@ -46,3 +46,9 @@ data/meditations/.tmp/
 # Local edit backups
 *.bak
 *.bak-*
+
+# Expo
+mobile/.expo/
+mobile/dist/
+mobile/web-build/
+.expo/

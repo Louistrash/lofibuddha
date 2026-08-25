@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { corsPreflight, withCors } from "@/lib/cors";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY || "", {
@@ -13,17 +14,19 @@ const PRICE_MAP: Record<string, string> = {
   enlightened: "price_1TchJuB7GXjClDhqJRbsTgHt", // €12,99/month
 };
 
+export async function OPTIONS(request: NextRequest) {
+  return corsPreflight(request);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { tier, email } = await request.json();
     const priceId = PRICE_MAP[tier];
 
-    // Use public app URL (handles reverse proxy — Apache → Docker)
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
 
-    // Zen tier is free — redirect directly to signup, no Stripe needed
     if (tier === "zen" || !priceId) {
-      return NextResponse.json({ url: `${baseUrl}/signup?tier=zen` });
+      return withCors(request, NextResponse.json({ url: `${baseUrl}/signup?tier=zen` }));
     }
 
     const session = await getStripe().checkout.sessions.create({
@@ -34,12 +37,12 @@ export async function POST(request: NextRequest) {
       cancel_url: `${baseUrl}/cancel`,
       allow_promotion_codes: true,
       billing_address_collection: "auto",
-      metadata: { tier, source: "bodhi-landing" },
+      metadata: { tier, source: "lofibuddha-expo" },
     });
 
-    return NextResponse.json({ url: session.url });
+    return withCors(request, NextResponse.json({ url: session.url }));
   } catch (err: any) {
     console.error("[Stripe Checkout]", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: err.message }, { status: 500 }));
   }
 }

@@ -2,17 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFile, stat } from "fs/promises";
 import { join } from "path";
 import { getProjectRoot } from "@/lib/paths";
+import { corsHeaders, corsPreflight, withCors } from "@/lib/cors";
 
-// GET /api/breathe/audio/[name] — stream a guided breathing voice cue
+export async function OPTIONS(request: NextRequest) {
+  return corsPreflight(request);
+}
+
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ name: string }> }
 ) {
   try {
     const { name } = await context.params;
     const safeName = name.replace(/[^a-zA-Z0-9._-]/g, "");
     if (!safeName || safeName !== name) {
-      return NextResponse.json({ error: "Invalid name" }, { status: 400 });
+      return withCors(request, NextResponse.json({ error: "Invalid name" }, { status: 400 }));
     }
 
     const filePath = join(getProjectRoot(), "data", "breathe", "audio", safeName);
@@ -20,7 +24,7 @@ export async function GET(
     try {
       info = await stat(filePath);
     } catch {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return withCors(request, NextResponse.json({ error: "Not found" }, { status: 404 }));
     }
 
     const data = await readFile(filePath);
@@ -31,10 +35,11 @@ export async function GET(
         "Content-Length": String(info.size),
         "Accept-Ranges": "bytes",
         "Cache-Control": "no-cache",
+        ...corsHeaders(request),
       },
     });
   } catch (err: any) {
     console.error("[Breathe Audio]", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: err.message }, { status: 500 }));
   }
 }

@@ -2,17 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFile, stat } from "fs/promises";
 import { join } from "path";
 import { getProjectRoot } from "@/lib/paths";
+import { corsHeaders, corsPreflight, withCors } from "@/lib/cors";
 
-// GET /api/focus/audio/[id] — stream a guided focus audio file
+export async function OPTIONS(request: NextRequest) {
+  return corsPreflight(request);
+}
+
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await context.params;
     const safeId = id.replace(/[^a-zA-Z0-9._-]/g, "");
     if (!safeId || safeId !== id) {
-      return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+      return withCors(request, NextResponse.json({ error: "Invalid id" }, { status: 400 }));
     }
 
     const filePath = join(getProjectRoot(), "data", "focus", "audio", safeId);
@@ -20,7 +24,7 @@ export async function GET(
     try {
       info = await stat(filePath);
     } catch {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return withCors(request, NextResponse.json({ error: "Not found" }, { status: 404 }));
     }
 
     const data = await readFile(filePath);
@@ -31,10 +35,11 @@ export async function GET(
         "Content-Length": String(info.size),
         "Accept-Ranges": "bytes",
         "Cache-Control": "no-cache",
+        ...corsHeaders(request),
       },
     });
   } catch (err: any) {
     console.error("[Focus Audio]", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: err.message }, { status: 500 }));
   }
 }

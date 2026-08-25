@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { chatWithBuddha } from "@/lib/deepseek";
 import { getUserById, updateUser, createChatMessage, getChatMessages, createUser } from "@/lib/db";
 import { hasUnlimitedTokens } from "@/lib/tokens";
+import { corsPreflight, withCors } from "@/lib/cors";
+
+export async function OPTIONS(request: NextRequest) {
+  return corsPreflight(request);
+}
 
 function getUserIdFromSession(req: NextRequest): string | null {
   // Firebase-users: uid via header (gezet door de client na Firebase login)
@@ -91,26 +96,26 @@ export async function POST(req: NextRequest) {
 
   const user = getUserById(userId);
   if (!user) {
-    return NextResponse.json({ error: "Session expired. Please refresh." }, { status: 404 });
+    return withCors(req, NextResponse.json({ error: "Session expired. Please refresh." }, { status: 404 }));
   }
 
   if (!user.email && (user.chatCount || 0) >= 10) {
-    return NextResponse.json({
+    return withCors(req, NextResponse.json({
       error: "Your 10 free chats are used. Enter your email for 10 more.",
       code: "EMAIL_REQUIRED",
-    }, { status: 403 });
+    }, { status: 403 }));
   }
 
   if (!hasUnlimitedTokens(user.plan) && user.tokens <= 0) {
-    return NextResponse.json({
+    return withCors(req, NextResponse.json({
       error: "No tokens left. Upgrade to continue.",
       code: "OUT_OF_TOKENS",
-    }, { status: 402 });
+    }, { status: 402 }));
   }
 
   const userMessage = body.message?.trim();
   if (!userMessage) {
-    return NextResponse.json({ error: "Message is required" }, { status: 400 });
+    return withCors(req, NextResponse.json({ error: "Message is required" }, { status: 400 }));
   }
   const language: string = body.language || "english";
 
@@ -184,9 +189,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return jsonResponse;
+    return withCors(req, jsonResponse);
   } catch (error) {
     console.error("DeepSeek API error:", error);
-    return NextResponse.json({ error: "Buddha is meditating. Please try again." }, { status: 500 });
+    return withCors(req, NextResponse.json({ error: "Buddha is meditating. Please try again." }, { status: 500 }));
   }
 }

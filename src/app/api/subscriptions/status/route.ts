@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { corsPreflight, withCors } from "@/lib/cors";
 
 const SUBSCRIBERS_FILE = path.join(process.cwd(), "data", "subscribers.json");
 
@@ -9,18 +10,23 @@ interface Subscriber {
   tier: string;
   status: string;
   createdAt: string;
+  dripDay?: number;
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return corsPreflight(request);
 }
 
 export async function GET(request: NextRequest) {
   const email = request.nextUrl.searchParams.get("email");
 
   if (!email) {
-    return NextResponse.json({ error: "Email required" }, { status: 400 });
+    return withCors(request, NextResponse.json({ error: "Email required" }, { status: 400 }));
   }
 
   try {
     if (!fs.existsSync(SUBSCRIBERS_FILE)) {
-      return NextResponse.json({ active: false, tier: null });
+      return withCors(request, NextResponse.json({ active: false, tier: null }));
     }
 
     const subscribers: Subscriber[] = JSON.parse(
@@ -32,19 +38,23 @@ export async function GET(request: NextRequest) {
     );
 
     if (!sub) {
-      return NextResponse.json({ active: false, tier: null });
+      return withCors(request, NextResponse.json({ active: false, tier: null }));
     }
 
-    return NextResponse.json({
-      active: sub.status === "active",
-      tier: sub.tier,
-      status: sub.status,
-      since: sub.createdAt,
-    });
+    return withCors(
+      request,
+      NextResponse.json({
+        active: sub.status === "active",
+        tier: sub.tier,
+        status: sub.status,
+        since: sub.createdAt,
+        dripDay: sub.dripDay ?? null,
+      })
+    );
   } catch {
-    return NextResponse.json(
-      { error: "Failed to check subscription" },
-      { status: 500 }
+    return withCors(
+      request,
+      NextResponse.json({ error: "Failed to check subscription" }, { status: 500 })
     );
   }
 }
