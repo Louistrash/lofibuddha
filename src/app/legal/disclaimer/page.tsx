@@ -59,7 +59,7 @@ export default function DisclaimerPage() {
       <h2>8. Contact</h2>
       <p>For questions about this disclaimer:</p>
       <ul>
-        <li>Email: <strong>legal@lofibuddha.com</strong></li>
+        <li>Email: <strong>contact@lofibuddha.com</strong></li>
       </ul>
     </>
   );

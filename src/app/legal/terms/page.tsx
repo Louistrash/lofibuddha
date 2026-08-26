@@ -82,7 +82,7 @@ export default function TermsPage() {
 
       <h2>9. Contact</h2>
       <ul>
-        <li>Email: <strong>legal@lofibuddha.com</strong></li>
+        <li>Email: <strong>contact@lofibuddha.com</strong></li>
         <li>Website: <strong>lofibuddha.com</strong></li>
       </ul>
     </>

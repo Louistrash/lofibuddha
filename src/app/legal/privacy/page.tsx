@@ -80,7 +80,7 @@ export default function PrivacyPage() {
         <li><strong>Portability</strong> — receive your data in a standard format</li>
         <li><strong>Objection</strong> — object to processing of your data</li>
       </ul>
-      <p>To exercise any of these rights, email us at <strong>privacy@lofibuddha.com</strong>.</p>
+      <p>To exercise any of these rights, email us at <strong>contact@lofibuddha.com</strong>.</p>
 
       <h2>6. Data Retention</h2>
       <p>
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
       <h2>9. Contact</h2>
       <p>For privacy-related questions or requests:</p>
       <ul>
-        <li>Email: <strong>privacy@lofibuddha.com</strong></li>
+        <li>Email: <strong>contact@lofibuddha.com</strong></li>
         <li>Website: <strong>lofibuddha.com</strong></li>
       </ul>
     </>

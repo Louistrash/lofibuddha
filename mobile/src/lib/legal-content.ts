@@ -133,7 +133,7 @@ export const privacy: LegalDoc = {
         },
         {
           kind: "p",
-          text: "To exercise any of these rights, email us at **privacy@lofibuddha.com**.",
+          text: "To exercise any of these rights, email us at **contact@lofibuddha.com**.",
         },
       ],
     },
@@ -166,7 +166,7 @@ export const privacy: LegalDoc = {
     },
   ],
   contact: [
-    { label: "Email", value: "privacy@lofibuddha.com" },
+    { label: "Email", value: "contact@lofibuddha.com" },
     { label: "Website", value: "lofibuddha.com" },
   ],
 };
@@ -287,7 +287,7 @@ export const terms: LegalDoc = {
     },
   ],
   contact: [
-    { label: "Email", value: "legal@lofibuddha.com" },
+    { label: "Email", value: "contact@lofibuddha.com" },
     { label: "Website", value: "lofibuddha.com" },
   ],
 };
@@ -375,7 +375,7 @@ export const disclaimer: LegalDoc = {
       ],
     },
   ],
-  contact: [{ label: "Email", value: "legal@lofibuddha.com" }],
+  contact: [{ label: "Email", value: "contact@lofibuddha.com" }],
 };
 
 export const LEGAL_DOCS = { privacy, terms, disclaimer } as const;

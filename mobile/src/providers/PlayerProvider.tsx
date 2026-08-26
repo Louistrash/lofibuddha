@@ -50,6 +50,17 @@ async function unload(ref: React.MutableRefObject<Audio.Sound | null>) {
   }
 }
 
+/**
+ * "10 min" -> 600, "10–30 min" -> 1800, "2 min" -> 120.
+ * Ranges take the upper bound so an open session is never cut short.
+ */
+function parseDurationSeconds(label: string): number {
+  const nums = label.match(/\d+/g);
+  if (!nums?.length) return 0;
+  const minutes = Number(nums[nums.length - 1]);
+  return Number.isFinite(minutes) ? minutes * 60 : 0;
+}
+
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [experience, setExperience] = useState<Experience | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -212,11 +223,40 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     }, 500);
   }, []);
 
-  const startVoice = useCallback(async (exp: Experience) => {
-    if (!exp.guide) {
+  /**
+   * Unguided sessions (soundscape/music only) have no voice track to report
+   * playback position, so the clock is driven by wall time instead. Without
+   * this the timer sat at 0:00 for the whole session.
+   */
+  const startAmbientClock = useCallback(
+    (exp: Experience) => {
+      const target = parseDurationSeconds(exp.duration);
+      const startedAt = Date.now();
+
+      clearTimer();
+      setDuration(target);
+      setElapsed(0);
+      setProgress(0);
       setPhase("playing");
-      return;
-    }
+
+      timerRef.current = setInterval(() => {
+        const secs = (Date.now() - startedAt) / 1000;
+        setElapsed(secs);
+        if (target > 0) {
+          setProgress(Math.min(1, secs / target));
+          if (secs >= target) void stopAll();
+        }
+      }, 250);
+    },
+    [stopAll]
+  );
+
+  const startVoice = useCallback(
+    async (exp: Experience) => {
+      if (!exp.guide) {
+        startAmbientClock(exp);
+        return;
+      }
 
     const session = sessionRef.current;
     const kind = exp.category === "focus" ? "focus" : "meditations";
@@ -252,10 +292,13 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         }
       });
     } catch {
-      // Guide unavailable: keep the ambient layers running rather than failing hard.
-      setPhase("playing");
+      // Guide unavailable: fall back to the wall clock so the session still
+      // reports progress while the ambient layers keep playing.
+      startAmbientClock(exp);
     }
-  }, []);
+    },
+    [startAmbientClock]
+  );
 
   const playExperience = useCallback(
     async (exp: Experience) => {
