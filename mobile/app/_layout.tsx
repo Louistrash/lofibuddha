@@ -71,9 +71,10 @@ export default function RootLayout() {
               <Stack.Screen name="worlds/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
               <Stack.Screen
-                name="paywall"
+                name="deepen"
                 options={{ headerShown: false, presentation: "modal" }}
               />
+              <Stack.Screen name="paywall" options={{ headerShown: false }} />
               <Stack.Screen name="auth/login" options={{ headerShown: false, presentation: "modal" }} />
               <Stack.Screen name="auth/signup" options={{ headerShown: false, presentation: "modal" }} />
               <Stack.Screen name="legal/index" options={{ headerShown: false }} />

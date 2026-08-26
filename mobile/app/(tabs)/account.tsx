@@ -89,7 +89,7 @@ export default function AccountScreen() {
           label={isPro ? "Your plan" : "Upgrade to Bodhi Pro"}
           value={isPro ? (tier ?? "Pro") : undefined}
           icon="guide"
-          onPress={() => router.push("/paywall")}
+          onPress={() => router.push("/deepen")}
         />
         {Platform.OS === "web" && user ? (
           <ListRow

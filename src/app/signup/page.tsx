@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Moon } from "lucide-react";
+import { TIER_AMOUNTS, currencyFromClientHints, formatPrice, type PaidTier } from "@/lib/pricing";
 
 const tiers = [
   {
@@ -18,7 +19,7 @@ const tiers = [
   {
     id: "mindful",
     name: "Mindful Path",
-    price: "€1,99",
+    priceTier: "mindful" as const,
     period: "/month",
     description: "Daily practices for a calmer life.",
     features: ["Everything in Zen", "Unlimited AI Buddha chats", "Weekly curated playlists", "Ad-free audio downloads", "Ad-free experience"],
@@ -29,7 +30,7 @@ const tiers = [
   {
     id: "enlightened",
     name: "Enlightened Path",
-    price: "€4,99",
+    priceTier: "enlightened" as const,
     period: "/month",
     description: "Deep transformation with guidance.",
     features: ["Everything in Mindful", "Personalized meditations", "Custom spiritual roadmaps", "Priority support", "Early access to new tracks"],
@@ -38,7 +39,25 @@ const tiers = [
   },
 ];
 
+
+/** Country decides the currency, the reader's language only decides notation. */
+function usePricingDisplay() {
+  return useMemo(() => {
+    const locale = typeof navigator !== "undefined" ? navigator.language : null;
+    let timeZone: string | null = null;
+    try {
+      timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || null;
+    } catch {}
+    const currency = currencyFromClientHints({ locale, timeZone });
+    return {
+      currency,
+      price: (tier: PaidTier) => formatPrice(TIER_AMOUNTS[tier][currency], currency, locale),
+    };
+  }, []);
+}
+
 export default function SignupPage() {
+  const pricing = usePricingDisplay();
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -103,7 +122,7 @@ export default function SignupPage() {
                 <p style={{ fontSize: "13px", color: "#7a7468", margin: 0 }}>{tier.description}</p>
               </div>
               <div style={{ marginBottom: "24px" }}>
-                <span style={{ fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, color: tier.highlight ? "#d4b48a" : "#f5ede0", fontFamily: "'DM Serif Display', Georgia, serif" }}>{tier.price}</span>
+                <span style={{ fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, color: tier.highlight ? "#d4b48a" : "#f5ede0", fontFamily: "'DM Serif Display', Georgia, serif" }}>{tier.priceTier ? pricing.price(tier.priceTier) : tier.price}</span>
                 <span style={{ fontSize: "14px", color: "#6b655a", marginLeft: "4px" }}>{tier.period}</span>
               </div>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>

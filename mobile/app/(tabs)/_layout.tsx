@@ -25,7 +25,7 @@ export default function TabLayout() {
         <Sidebar
           activeRoute={activeRoute}
           isPro={isPro}
-          onUpgrade={() => router.push("/paywall")}
+          onUpgrade={() => router.push("/deepen")}
           onNavigate={(route) => router.push(route === "index" ? "/" : (`/${route}` as never))}
         />
       ) : null}

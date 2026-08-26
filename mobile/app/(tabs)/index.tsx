@@ -62,7 +62,7 @@ export default function TodayScreen() {
       })}
       actions={
         l.isMedium && !isPro ? (
-          <Button label="Bodhi Pro" icon="guide" size="sm" onPress={() => router.push("/paywall")} />
+          <Button label="Bodhi Pro" icon="guide" size="sm" onPress={() => router.push("/deepen")} />
         ) : null
       }
     >
@@ -159,7 +159,7 @@ export default function TodayScreen() {
         </View>
       </View>
 
-      {!isPro ? <UpgradeBanner onPress={() => router.push("/paywall")} /> : null}
+      {!isPro ? <UpgradeBanner onPress={() => router.push("/deepen")} /> : null}
     </Screen>
   );
 }
