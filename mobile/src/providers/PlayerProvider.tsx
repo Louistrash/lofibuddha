@@ -92,6 +92,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const musicRef = useRef<Audio.Sound | null>(null);
   const bgRef = useRef<Audio.Sound | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const clockRef = useRef<{ base: number; startedAt: number; target: number } | null>(null);
   const pomodoroEndRef = useRef(0);
   /** Bumped on every stop so ambient layers loading in the background can tell they are stale. */
   const sessionRef = useRef(0);
@@ -119,6 +120,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
   const stopAll = useCallback(async () => {
     clearTimer();
+    clockRef.current = null;
     sessionRef.current += 1;
     await unload(voiceRef);
     await unload(musicRef);
@@ -224,31 +226,57 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   /**
+   * Wall clock for unguided sessions, in a form that survives pause/resume.
+   * `base` is the seconds already banked; `startedAt` is when the current run
+   * began. Without the base, resuming restarted the count from zero, and
+   * pausing left the interval ticking so the timer climbed while silent.
+   */
+
+  const runClock = useCallback(
+    (target: number, base = 0) => {
+      clearTimer();
+      clockRef.current = { base, startedAt: Date.now(), target };
+      setDuration(target);
+      setElapsed(base);
+      setProgress(target > 0 ? Math.min(1, base / target) : 0);
+
+      timerRef.current = setInterval(() => {
+        const c = clockRef.current;
+        if (!c) return;
+        const secs = c.base + (Date.now() - c.startedAt) / 1000;
+        setElapsed(secs);
+        if (c.target > 0) {
+          setProgress(Math.min(1, secs / c.target));
+          if (secs >= c.target) void stopAll();
+        }
+      }, 250);
+    },
+    [stopAll]
+  );
+
+  const pauseClock = useCallback(() => {
+    const c = clockRef.current;
+    if (!c) return;
+    c.base += (Date.now() - c.startedAt) / 1000;
+    clearTimer();
+  }, []);
+
+  const resumeClock = useCallback(() => {
+    const c = clockRef.current;
+    if (c) runClock(c.target, c.base);
+  }, [runClock]);
+
+  /**
    * Unguided sessions (soundscape/music only) have no voice track to report
    * playback position, so the clock is driven by wall time instead. Without
    * this the timer sat at 0:00 for the whole session.
    */
   const startAmbientClock = useCallback(
     (exp: Experience) => {
-      const target = parseDurationSeconds(exp.duration);
-      const startedAt = Date.now();
-
-      clearTimer();
-      setDuration(target);
-      setElapsed(0);
-      setProgress(0);
       setPhase("playing");
-
-      timerRef.current = setInterval(() => {
-        const secs = (Date.now() - startedAt) / 1000;
-        setElapsed(secs);
-        if (target > 0) {
-          setProgress(Math.min(1, secs / target));
-          if (secs >= target) void stopAll();
-        }
-      }, 250);
+      runClock(parseDurationSeconds(exp.duration));
     },
-    [stopAll]
+    [runClock]
   );
 
   const startVoice = useCallback(
@@ -321,6 +349,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     [stopAll, startMusic, startBg, startBox, startPomodoro, startVoice, pomodoroMin]
   );
 
+
   const toggle = useCallback(async () => {
     if (!experience) return;
 
@@ -335,6 +364,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
     if (phase === "playing") {
       setPhase("idle");
+      pauseClock();
       await Promise.all(
         layers.map(async (r) => {
           try {
@@ -347,6 +377,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
     if (layers.length) {
       setPhase("playing");
+      resumeClock();
       await Promise.all(
         layers.map(async (r) => {
           try {
@@ -358,7 +389,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     }
 
     await playExperience(experience);
-  }, [experience, phase, stopAll, playExperience]);
+  }, [experience, phase, stopAll, playExperience, pauseClock, resumeClock]);
 
   const value = useMemo<PlayerContextValue>(
     () => ({
@@ -398,7 +429,8 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       async toggleMusic() {
         const next = !musicOn;
         setMusicOn(next);
-        if (phase !== "playing") return;
+        // Act immediately instead of only while a session runs: gating on
+        // phase made the button a silent no-op whenever nothing was playing.
         if (next) await startMusic(musicTrack);
         else await unload(musicRef);
       },
@@ -406,18 +438,52 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         setPomodoroMinState(min);
         setPomodoroLeft(min * 60);
       },
+      /**
+       * Restarts the current session from the top.
+       *
+       * This used to only handle box-breathing and pomodoro, so for every
+       * ordinary experience — guided meditations, soundscapes, worlds — the
+       * button did nothing at all.
+       */
       async resetSpecial() {
         if (!experience) return;
+
         if (experience.special === "box-breathing") {
-          setBoxPhase("inhale");
-          setBoxCount(4);
+          setBoxPhase(BOX_PHASES[0]);
+          setBoxCount(BOX_DUR[BOX_PHASES[0]]);
           setBreathe(0);
-          if (phase === "playing") await playExperience(experience);
         }
         if (experience.special === "pomodoro") {
           setPomodoroLeft(pomodoroMin * 60);
-          if (phase === "playing") await playExperience(experience);
         }
+
+        if (phase === "playing") {
+          await playExperience(experience);
+          return;
+        }
+
+        setProgress(0);
+        setElapsed(0);
+
+        // Rewind the wall clock as well; zeroing the state alone was
+        // immediately overwritten by the next interval tick.
+        const c = clockRef.current;
+        if (c) {
+          c.base = 0;
+          c.startedAt = Date.now();
+        }
+
+        // Paused or idle: rewind in place so the next play starts at the
+        // beginning rather than resuming mid-session.
+        try {
+          await voiceRef.current?.setPositionAsync(0);
+        } catch {}
+        try {
+          await musicRef.current?.setPositionAsync(0);
+        } catch {}
+        try {
+          await bgRef.current?.setPositionAsync(0);
+        } catch {}
       },
       async clear() {
         await stopAll();

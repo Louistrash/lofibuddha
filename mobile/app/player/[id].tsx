@@ -160,7 +160,7 @@ export default function PlayerScreen() {
                 size={48}
                 color={player.musicOn ? accent : colors.textSecondary}
                 onPress={() => player.toggleMusic()}
-                accessibilityLabel="Toggle music"
+                accessibilityLabel={player.musicOn ? "Mute soundtrack" : "Unmute soundtrack"}
               />
             </View>
 
