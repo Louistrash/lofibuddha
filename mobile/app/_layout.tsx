@@ -76,6 +76,9 @@ export default function RootLayout() {
               />
               <Stack.Screen name="auth/login" options={{ headerShown: false, presentation: "modal" }} />
               <Stack.Screen name="auth/signup" options={{ headerShown: false, presentation: "modal" }} />
+              <Stack.Screen name="legal/privacy" options={{ headerShown: false }} />
+              <Stack.Screen name="legal/terms" options={{ headerShown: false }} />
+              <Stack.Screen name="legal/disclaimer" options={{ headerShown: false }} />
             </Stack>
           </PlayerProvider>
         </EntitlementProvider>

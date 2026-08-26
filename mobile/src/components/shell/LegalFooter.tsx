@@ -1,6 +1,7 @@
 import React from "react";
-import { Linking, Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import { api, colors, space, type } from "@/src/theme/tokens";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { colors, space, type } from "@/src/theme/tokens";
 
 const LINKS = [
   { label: "Privacy", path: "/legal/privacy" },
@@ -9,15 +10,12 @@ const LINKS = [
 ];
 
 /**
- * Legal links are a web requirement only. On iOS and Android the same
- * information lives in the store listing and the Account screen.
+ * Legal links live inside the app on every platform. Navigating in-app (instead
+ * of opening lofibuddha.com in a browser) keeps the design consistent and gives
+ * the user a real way back — an external tab was a dead end.
  */
 export function LegalFooter({ compact }: { compact?: boolean }) {
-  if (Platform.OS !== "web") return null;
-
-  const open = (path: string) => {
-    Linking.openURL(`${api.baseUrl.replace(/\/$/, "")}${path}`);
-  };
+  const router = useRouter();
 
   return (
     <View style={[styles.root, compact && styles.compact]}>
@@ -25,7 +23,7 @@ export function LegalFooter({ compact }: { compact?: boolean }) {
         {LINKS.map((link) => (
           <Pressable
             key={link.path}
-            onPress={() => open(link.path)}
+            onPress={() => router.push(link.path as never)}
             style={({ hovered }: any) => [hovered && { opacity: 0.7 }]}
           >
             <Text style={styles.link}>{link.label}</Text>
