@@ -61,41 +61,61 @@ export default function PaywallScreen() {
 
   const [busy, setBusy] = useState<string | null>(null);
   const [packages, setPackages] = useState<any[]>([]);
+  /**
+   * Alert.alert is a no-op on react-native-web, so every failure path was
+   * silent in the browser — the Subscribe buttons looked dead. Feedback is
+   * rendered inline instead, which works on web and native alike.
+   */
+  const [notice, setNotice] = useState<{ kind: "info" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     getOfferings().then((o) => setPackages(o?.current?.availablePackages ?? []));
   }, []);
+
+  function fail(text: string) {
+    setNotice({ kind: "error", text });
+    if (Platform.OS !== "web") Alert.alert("Bodhi Pro", text);
+  }
 
   async function subscribe(tier: string) {
     if (tier === "zen") {
       dismiss();
       return;
     }
+    setNotice(null);
+
+    // Signing in is a prerequisite, not an error: send them to it and come
+    // straight back (AuthForm dismisses to the previous screen).
+    if (Platform.OS === "web" && !user?.email) {
+      setNotice({ kind: "info", text: "Create a free account first — we bring you right back here." });
+      router.push("/auth/login");
+      return;
+    }
+
     setBusy(tier);
     try {
       if (Platform.OS === "web") {
-        if (!user?.email) {
-          Alert.alert("Sign in required", "Create an account first to subscribe.");
-          return;
-        }
         const res = await apiFetch(
           "/api/stripe/checkout",
-          { method: "POST", body: JSON.stringify({ tier, email: user.email, ...pricing.hints }) },
-          user.uid
+          { method: "POST", body: JSON.stringify({ tier, email: user!.email, ...pricing.hints }) },
+          user!.uid
         );
         const data = await res.json();
-        if (data?.url) await WebBrowser.openBrowserAsync(data.url);
-        else Alert.alert("Checkout", data?.error || "No checkout URL returned.");
+        if (data?.url) {
+          // Same-tab redirect. A popup opened after an await has lost the user
+          // gesture and browsers block it, which also read as a dead button.
+          if (typeof window !== "undefined") window.location.assign(data.url);
+          else await WebBrowser.openBrowserAsync(data.url);
+          return;
+        }
+        fail(data?.error || "Could not start checkout. Please try again.");
         return;
       }
 
       const pkg =
         packages.find((p) => String(p.identifier).toLowerCase().includes(tier)) ?? packages[0];
       if (!pkg) {
-        Alert.alert(
-          "Store not configured",
-          "Set EXPO_PUBLIC_REVENUECAT_IOS_KEY / ANDROID_KEY and publish your store products."
-        );
+        fail("The store is not configured yet. Please try again later.");
         return;
       }
       await purchasePackage(pkg);
@@ -111,7 +131,7 @@ export default function PaywallScreen() {
       }
       await refresh();
     } catch (e: any) {
-      if (!e?.userCancelled) Alert.alert("Purchase failed", e?.message || "Please try again.");
+      if (!e?.userCancelled) fail(e?.message || "Something went wrong. Please try again.");
     } finally {
       setBusy(null);
     }
@@ -168,6 +188,25 @@ export default function PaywallScreen() {
           <View style={styles.active}>
             <Icon name="checkCircle" size={18} color={colors.jade} />
             <Text style={styles.activeText}>Your membership is active</Text>
+          </View>
+        ) : null}
+
+        {notice ? (
+          <View
+            style={[
+              styles.notice,
+              {
+                borderColor: tint(notice.kind === "error" ? colors.danger : colors.gold, 0.4),
+                backgroundColor: tint(notice.kind === "error" ? colors.danger : colors.gold, 0.1),
+              },
+            ]}
+          >
+            <Icon
+              name={notice.kind === "error" ? "alert" : "checkCircle"}
+              size={16}
+              color={notice.kind === "error" ? colors.danger : colors.gold}
+            />
+            <Text style={styles.noticeText}>{notice.text}</Text>
           </View>
         ) : null}
 
@@ -277,6 +316,19 @@ const styles = StyleSheet.create({
     backgroundColor: tint(colors.jade, 0.12),
   },
   activeText: { ...type.label, color: colors.jade },
+
+  notice: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.sm,
+    marginTop: space.lg,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    maxWidth: 520,
+  },
+  noticeText: { ...type.bodySmall, color: colors.text, flex: 1, lineHeight: 20 },
 
   tiers: {
     width: "100%",
