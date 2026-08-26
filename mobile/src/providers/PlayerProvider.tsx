@@ -380,14 +380,20 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       playExperience,
       toggle,
       stop: stopAll,
+      /**
+       * Starts the layer immediately, even when no session is running. It used
+       * to only take effect while already playing, so picking a soundscape from
+       * Explore silently set state and stayed silent — indistinguishable from a
+       * broken button. Passing "off" unloads, which makes the cards a toggle.
+       */
       async chooseSoundscape(slug) {
         setSoundscape(slug);
-        if (phase === "playing") await startBg(slug);
+        await startBg(slug);
       },
       async chooseMusic(id) {
         setMusicTrack(id);
-        setMusicOn(true);
-        if (phase === "playing") await startMusic(id);
+        setMusicOn(id !== "off");
+        await startMusic(id);
       },
       async toggleMusic() {
         const next = !musicOn;

@@ -6,11 +6,12 @@ import { Screen } from "@/src/components/ui/Screen";
 import { Chip, SectionHeader, EmptyState } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
+import { SoundCard } from "@/src/components/content/SoundCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
-import { accentByCategory, colors, radius, space, tint, type } from "@/src/theme/tokens";
+import { accentByCategory, colors, radius, space, type } from "@/src/theme/tokens";
 import { useLayout } from "@/src/theme/useLayout";
-import { Icon, type IconName } from "@/src/components/ui/Icon";
+import { Icon } from "@/src/components/ui/Icon";
 
 type Filter = "all" | "focus" | "breathe" | "sleep" | "relax";
 
@@ -19,7 +20,8 @@ export default function ExploreScreen() {
   const [filter, setFilter] = useState<Filter>("all");
   const router = useRouter();
   const l = useLayout();
-  const { playExperience, chooseSoundscape, chooseMusic } = usePlayer();
+  const { playExperience, chooseSoundscape, chooseMusic, soundscape, musicTrack, musicOn } =
+    usePlayer();
   const { toggle, isFavorite } = useFavorites();
 
   const results = useMemo(() => {
@@ -120,67 +122,48 @@ export default function ExploreScreen() {
 
       <View style={styles.block}>
         <SectionHeader title="Soundscapes" caption="Layer a background under anything" />
-        <View style={styles.tokens}>
-          {SOUNDS.filter((s) => s.category !== "Noise").map((s) => (
-            <MiniTile
-              key={s.slug}
-              icon="water"
-              label={s.name}
-              caption={s.category}
-              accent={colors.jade}
-              onPress={() => chooseSoundscape(s.slug)}
-            />
-          ))}
+        <View style={styles.grid}>
+          {SOUNDS.filter((s) => s.category !== "Noise").map((s) => {
+            const active = soundscape === s.slug;
+            return (
+              <SoundCard
+                key={s.slug}
+                label={s.name}
+                caption={s.category}
+                category={s.category}
+                active={active}
+                // Tapping the running sound stops it, so the grid is a toggle
+                // rather than a one-way switch with no way back.
+                onPress={() => chooseSoundscape(active ? "off" : s.slug)}
+              />
+            );
+          })}
         </View>
       </View>
 
       <View style={styles.block}>
         <SectionHeader title="Soundtracks" caption="Long-form temple lo-fi" />
-        <View style={styles.tokens}>
-          {MUSIC_TRACKS.map((t) => (
-            <MiniTile
-              key={t.id}
-              icon="music"
-              label={t.title.replace(" · ", " ")}
-              caption={t.mood}
-              accent={colors.gold}
-              onPress={() => chooseMusic(t.id)}
-            />
-          ))}
+        <View style={styles.grid}>
+          {MUSIC_TRACKS.map((t) => {
+            const active = musicOn && musicTrack === t.id;
+            return (
+              <SoundCard
+                key={t.id}
+                label={t.title.replace(" · ", " ")}
+                caption={t.mood}
+                category="Music"
+                icon="music"
+                active={active}
+                onPress={() => chooseMusic(active ? "off" : t.id)}
+              />
+            );
+          })}
         </View>
       </View>
     </Screen>
   );
 }
 
-function MiniTile({
-  icon,
-  label,
-  caption,
-  accent,
-  onPress,
-}: {
-  icon: IconName;
-  label: string;
-  caption: string;
-  accent: string;
-  onPress: () => void;
-}) {
-  return (
-    <View style={styles.tileWrap}>
-      <Text
-        onPress={onPress}
-        suppressHighlighting
-        style={[styles.tile, { borderColor: tint(accent, 0.25) }]}
-      >
-        <Icon name={icon} size={14} color={accent} />
-        {"  "}
-        <Text style={styles.tileLabel}>{label}</Text>
-      </Text>
-      <Text style={styles.tileCaption}>{caption}</Text>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   search: {
@@ -206,16 +189,5 @@ const styles = StyleSheet.create({
   filters: { gap: space.sm, paddingBottom: space["2xl"] },
   block: { marginBottom: space["3xl"] },
   list: { gap: 2 },
-  tokens: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
-  tileWrap: { gap: 4 },
-  tile: {
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderRadius: radius.sm,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
-    overflow: "hidden",
-  },
-  tileLabel: { ...type.label, color: colors.text },
-  tileCaption: { ...type.caption, color: colors.textMuted, marginLeft: space.sm },
+  grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
 });
