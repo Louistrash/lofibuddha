@@ -9,8 +9,8 @@ function getStripe() {
 
 // Price IDs to tier + amount mapping
 const PRICE_META: Record<string, { tier: string; amount: number }> = {
-  price_1TchJtB7GXjClDhqDj2dLJDn: { tier: "mindful", amount: 4.99 },
-  price_1TchJuB7GXjClDhqJRbsTgHt: { tier: "enlightened", amount: 12.99 },
+  price_1U8ktSB7GXjClDhqrR3xTq4O: { tier: "mindful", amount: 1.99 },
+  price_1U8ktTB7GXjClDhqZxNDBoY5: { tier: "enlightened", amount: 4.99 },
 };
 
 interface SubscriberStats {

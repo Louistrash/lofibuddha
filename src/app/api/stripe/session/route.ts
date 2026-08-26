@@ -15,8 +15,8 @@ const TIER_NAMES: Record<string, string> = {
 
 const TIER_PRICES: Record<string, string> = {
   zen: "Free",
-  mindful: "€4,99/month",
-  enlightened: "€12,99/month",
+  mindful: "€1,99/month",
+  enlightened: "€4,99/month",
 };
 
 export async function GET(request: NextRequest) {

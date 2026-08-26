@@ -18,7 +18,7 @@ const tiers = [
   {
     id: "mindful",
     name: "Mindful Path",
-    price: "€4,99",
+    price: "€1,99",
     period: "/month",
     description: "Daily practices for a calmer life.",
     features: ["Everything in Zen", "Unlimited AI Buddha chats", "Weekly curated playlists", "Ad-free audio downloads", "Ad-free experience"],
@@ -29,7 +29,7 @@ const tiers = [
   {
     id: "enlightened",
     name: "Enlightened Path",
-    price: "€12,99",
+    price: "€4,99",
     period: "/month",
     description: "Deep transformation with guidance.",
     features: ["Everything in Mindful", "Personalized meditations", "Custom spiritual roadmaps", "Priority support", "Early access to new tracks"],

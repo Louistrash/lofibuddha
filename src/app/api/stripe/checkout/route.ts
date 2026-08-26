@@ -10,8 +10,8 @@ function getStripe() {
 
 const PRICE_MAP: Record<string, string> = {
   zen: "", // Free tier — no Stripe checkout needed
-  mindful: "price_1TchJtB7GXjClDhqDj2dLJDn", // €4,99/month
-  enlightened: "price_1TchJuB7GXjClDhqJRbsTgHt", // €12,99/month
+  mindful: "price_1U8ktSB7GXjClDhqrR3xTq4O", // €1,99/month
+  enlightened: "price_1U8ktTB7GXjClDhqZxNDBoY5", // €4,99/month
 };
 
 export async function OPTIONS(request: NextRequest) {

@@ -32,7 +32,7 @@ const checklist = [
       { task: "Webhook endpoint", done: true },
       { task: "Success / Cancel pages", done: true },
       { task: "Plan metadata mapping", done: true },
-      { task: "Live Stripe price IDs (Mindful €4,99 / Enlightened €12,99)", done: true },
+      { task: "Live Stripe price IDs (Mindful €1,99 / Enlightened €4,99)", done: true },
       { task: "Webhook subscriber provisioning", done: true },
     ],
   },

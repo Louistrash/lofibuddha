@@ -212,7 +212,7 @@ export const terms: LegalDoc = {
         { kind: "h3", text: "2.2 Paid Membership" },
         {
           kind: "p",
-          text: "We offer two paid tiers — **Mindful** (€4.99/month) and **Enlightened** (€12.99/month). Prices are in Euros (€) and include applicable VAT. On the web, fees are billed in advance via Stripe. On iOS and Android, purchases are handled by Apple or Google and billed to your store account.",
+          text: "We offer two paid tiers — **Mindful** (€1.99/month) and **Enlightened** (€4.99/month). Prices are in Euros (€) and include applicable VAT. On the web, fees are billed in advance via Stripe. On iOS and Android, purchases are handled by Apple or Google and billed to your store account.",
         },
         { kind: "h3", text: "2.3 Renewal & Cancellation" },
         {

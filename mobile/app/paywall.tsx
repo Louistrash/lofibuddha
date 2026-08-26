@@ -27,7 +27,7 @@ const TIERS = [
   {
     id: "mindful",
     name: "Mindful",
-    price: "€4.99",
+    price: "€1.99",
     period: "/month",
     accent: colors.gold,
     featured: true,
@@ -41,7 +41,7 @@ const TIERS = [
   {
     id: "enlightened",
     name: "Enlightened",
-    price: "€12.99",
+    price: "€4.99",
     period: "/month",
     accent: colors.lotus,
     perks: ["Everything in Mindful", "Full course library", "Early access to new worlds", "Priority support"],

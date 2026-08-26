@@ -35,7 +35,7 @@ export default function TermsPage() {
 
       <h3>2.2 Paid Subscriptions</h3>
       <p>
-        We offer two paid tiers — Mindful Path (€4.99/month) and Enlightened Path (€12.99/month). Subscription fees are billed in advance via Stripe. Prices are in Euros (€) and include applicable VAT.
+        We offer two paid tiers — Mindful Path (€1.99/month) and Enlightened Path (€4.99/month). Subscription fees are billed in advance via Stripe. Prices are in Euros (€) and include applicable VAT.
       </p>
 
       <h3>2.3 Cancellation</h3>

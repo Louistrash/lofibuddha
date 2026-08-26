@@ -26,7 +26,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
       "You now have unlimited access to AI Buddha spiritual guidance, weekly curated Lofi playlist syncs, and ad-free ambient audio downloads. A calm space awaits.",
     quote: "The present moment is filled with joy and happiness. If you are attentive, you will see it.",
     quoteAttribution: "Thich Nhat Hanh",
-    tierLabel: "Mindful Path · €4,99/month",
+    tierLabel: "Mindful Path · €1,99/month",
     features: [
       { label: "Unlimited AI Buddha spiritual chat" },
       { label: "Weekly curated Lofi playlist syncs" },
@@ -47,7 +47,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
       "You've unlocked everything — personalized daily meditations, custom spiritual roadmaps, and priority access. This is deep transformation.",
     quote: "The way is not in the sky. The way is in the heart.",
     quoteAttribution: "Buddha",
-    tierLabel: "Enlightened Path · €12,99/month",
+    tierLabel: "Enlightened Path · €4,99/month",
     features: [
       { label: "Everything in Mindful Path" },
       { label: "Personalized daily guided meditations" },
