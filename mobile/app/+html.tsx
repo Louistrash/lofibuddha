@@ -24,12 +24,11 @@ export default function Root({ children }: { children: ReactNode }) {
         <meta name="description" content={DESCRIPTION} />
         <meta name="theme-color" content="#08070C" />
 
-        {/* SVG first: modern browsers pick it and render crisply at any size. */}
-        <link rel="icon" href={`${SITE}/icon-mark.svg`} type="image/svg+xml" />
-        <link rel="icon" href={`${SITE}/favicon.ico`} sizes="16x16 32x32 48x48" />
-        <link rel="icon" href={`${SITE}/bodhi-icon-32.png`} sizes="32x32" type="image/png" />
-        <link rel="icon" href={`${SITE}/bodhi-icon-192.png`} sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href={`${SITE}/bodhi-icon-180.png`} sizes="180x180" />
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" href="/bodhi-icon-48.png" sizes="48x48" type="image/png" />
+        <link rel="icon" href="/bodhi-icon-32.png" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/bodhi-icon-192.png" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/bodhi-icon-180.png" sizes="180x180" />
         <meta name="apple-mobile-web-app-title" content="LofiBuddha" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

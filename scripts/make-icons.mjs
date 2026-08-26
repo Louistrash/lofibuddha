@@ -21,6 +21,8 @@ import { dirname, resolve } from "node:path";
 const ROOT = resolve(import.meta.dirname, "..");
 const MASTER = resolve(ROOT, "public/lb.png");
 const MARK = resolve(ROOT, "public/icon-mark.svg");
+/** Circular 3D render (transparent corners) — the web favicon and app logo. */
+const STATUE = resolve(ROOT, "public/bodhi-statue.png");
 
 const INK = { r: 0x08, g: 0x07, b: 0x0c, alpha: 1 }; // brand background #08070C
 
@@ -91,6 +93,62 @@ async function renderMark(size) {
     .toBuffer();
 }
 
+/**
+ * Web icon from the circular statue render.
+ *
+ * `tight` crops in on the head before resizing: at 16-48px the full
+ * composition loses the face, and a measurably more readable icon matters more
+ * in a browser tab than showing the whole figure.
+ * Corners stay transparent so no black square appears around the circle.
+ */
+async function renderStatue(size, { tight = false, ring = true } = {}) {
+  const meta = await sharp(STATUE).metadata();
+  const S = meta.width;
+
+  let img = sharp(STATUE);
+  if (tight) {
+    const w = Math.round(S * 0.74);
+    img = sharp(
+      await sharp(STATUE)
+        .extract({ left: Math.round((S - w) / 2), top: Math.round(S * 0.1), width: w, height: w })
+        .png()
+        .toBuffer()
+    );
+  }
+
+  const scaled = await img
+    .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png()
+    .toBuffer();
+
+  if (!ring) return sharp(scaled).png({ compressionLevel: 9, palette: false }).toBuffer();
+
+  // The artwork's own background is near-black, so on a dark browser tab the
+  // circle dissolves into the chrome. A hairline gold edge keeps the silhouette
+  // readable on light and dark tabs alike — the same trick the in-app Logo
+  // component uses with colors.goldEdge.
+  const w = Math.max(1, Math.round(size * 0.045));
+  const r = size / 2 - w / 2;
+  const edge = Buffer.from(
+    `<svg width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" ` +
+      `fill="none" stroke="#E4B872" stroke-width="${w}" stroke-opacity="0.85"/></svg>`
+  );
+
+  return sharp(scaled)
+    .composite([{ input: edge }])
+    .png({ compressionLevel: 9, palette: false })
+    .toBuffer();
+}
+
+/** Statue flattened onto the brand ink — iOS home-screen tiles ignore alpha. */
+async function renderStatueOnInk(size) {
+  return sharp(await renderStatue(size))
+    .flatten({ background: INK })
+    .removeAlpha()
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+}
+
 /** Solid colour square (Android adaptive background layer). */
 async function solid(size, colour) {
   return sharp({ create: { width: size, height: size, channels: 4, background: colour } })
@@ -142,14 +200,16 @@ async function save(relPath, buffer) {
 
 const targets = [
   // ---- Web favicons (filenames match what layout.tsx and +html.tsx expect) ----
-  // 16-48px: simplified mark. Anything larger: the detailed artwork.
-  ["public/bodhi-icon-32.png", () => renderMark(32)],
-  ["public/bodhi-icon-48.png", () => renderMark(48)],
-  ["public/bodhi-icon-180.png", () => render(180, { scale: 0.8, bg: INK })],
-  ["public/bodhi-icon-192.png", () => render(192, { scale: 0.8, bg: INK })],
-  ["public/bodhi-icon-512.png", () => render(512, { scale: 0.8, bg: INK })],
-  ["public/bodhi-icon.png", () => render(512, { scale: 0.8, bg: INK })],
-  ["public/apple-touch-icon.png", () => render(180, { scale: 0.8, bg: INK })],
+  // Web favicons: the statue render, transparent corners (no black square).
+  // Small sizes crop tighter so the face survives; 180px+ shows the full circle.
+  ["public/bodhi-icon-32.png", () => renderStatue(32, { tight: true })],
+  ["public/bodhi-icon-48.png", () => renderStatue(48, { tight: true })],
+  ["public/bodhi-icon-180.png", () => renderStatue(180)],
+  ["public/bodhi-icon-192.png", () => renderStatue(192)],
+  ["public/bodhi-icon-512.png", () => renderStatue(512)],
+  ["public/bodhi-icon.png", () => renderStatue(512)],
+  // apple-touch-icon is composited on a solid tile: iOS shows no transparency.
+  ["public/apple-touch-icon.png", () => renderStatueOnInk(180)],
   // Transparent logo for use on top of existing surfaces
   ["public/lb-logo-512.png", () => render(512, { scale: 0.94 })],
   ["public/lb-logo-1024.png", () => render(1024, { scale: 0.94 })],
@@ -159,14 +219,15 @@ const targets = [
   ["mobile/assets/images/icon.png", () => render(1024, { scale: 0.78, bg: INK })],
   // Splash renders on #08070C already, so keep it transparent.
   ["mobile/assets/images/splash-icon.png", () => render(1024, { scale: 0.9 })],
-  ["mobile/assets/images/favicon.png", () => renderMark(48)],
+  ["mobile/assets/images/favicon.png", () => renderStatue(48, { tight: true })],
   // Android adaptive: launcher masks to a circle, so the art must sit inside
   // the inner ~66% safe zone or the edges get clipped.
   ["mobile/assets/images/android-icon-foreground.png", () => render(1024, { scale: 0.58 })],
   ["mobile/assets/images/android-icon-background.png", () => solid(1024, INK)],
   ["mobile/assets/images/android-icon-monochrome.png",
     () => render(1024, { scale: 0.58, tint: { r: 255, g: 255, b: 255 } })],
-  ["mobile/assets/images/logo.png", () => render(512, { scale: 0.94 })],
+  // In-app logo (Logo/Wordmark clip it to a circle, so transparency is right).
+  ["mobile/assets/images/logo.png", () => renderStatue(512, { ring: false })],
 ];
 
 console.log("Generating icons from public/lb.png\n");
@@ -178,7 +239,7 @@ for (const [path, make] of targets) {
 const icoSizes = [16, 32, 48];
 const icoPngs = [];
 for (const size of icoSizes) {
-  icoPngs.push({ size, data: await renderMark(size) });
+  icoPngs.push({ size, data: await renderStatue(size, { tight: true }) });
 }
 await save("public/favicon.ico", buildIco(icoPngs));
 
@@ -188,7 +249,7 @@ const { copyFile } = await import("node:fs/promises");
 const mirrored = [
   "favicon.ico", "bodhi-icon-32.png", "bodhi-icon-48.png", "bodhi-icon-180.png",
   "bodhi-icon-192.png", "bodhi-icon-512.png", "bodhi-icon.png",
-  "apple-touch-icon.png", "lb-logo-512.png", "icon-mark.svg",
+  "apple-touch-icon.png", "lb-logo-512.png", "icon-mark.svg", "bodhi-statue.png",
 ];
 await mkdir(resolve(ROOT, "mobile/public"), { recursive: true });
 for (const f of mirrored) {
