@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="LofiBuddha">
+  <title>LofiBuddha</title>
+  <!--
+    Small-size mark. The detailed lb.png line art collapses into a grey smudge
+    below ~48px, so this is a deliberately reduced sibling: filled shapes
+    instead of thin strokes, no hair dots, no robe folds. Same brand palette.
+    Used for 16/32/48px favicons; lb.png takes over from 180px up.
+  -->
+  <defs>
+    <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F3D8A4"/>
+      <stop offset="100%" stop-color="#E0C0A0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="100" height="100" fill="#08070C"/>
+
+  <!-- Ushnisha: the crown bump that makes the silhouette read as Buddha -->
+  <ellipse cx="50" cy="30.5" rx="5.6" ry="4.6" fill="url(#cream)"/>
+
+  <!-- Head -->
+  <ellipse cx="50" cy="52" rx="17.5" ry="19.5" fill="url(#cream)"/>
+
+  <!-- Closed eyes: downward arcs, the whole serenity of the face in two strokes -->
+  <path d="M41.5 50.5q3.4 3.2 6.8 0" fill="none" stroke="#08070C" stroke-width="2.1" stroke-linecap="round"/>
+  <path d="M52.4 50.5q3.4 3.2 6.8 0" fill="none" stroke="#08070C" stroke-width="2.1" stroke-linecap="round"/>
+
+  <!-- Urna -->
+  <circle cx="50" cy="41.5" r="1.5" fill="#08070C" opacity="0.75"/>
+
+  <!-- Headphone band, over the crown -->
+  <path d="M25 55C25 31 75 31 75 55" fill="none" stroke="url(#cream)" stroke-width="6.4" stroke-linecap="round"/>
+
+  <!-- Ear cups -->
+  <rect x="17.5" y="47" width="14" height="22" rx="7" fill="url(#cream)"/>
+  <rect x="68.5" y="47" width="14" height="22" rx="7" fill="url(#cream)"/>
+  <rect x="22" y="52" width="5" height="12" rx="2.5" fill="#08070C" opacity="0.45"/>
+  <rect x="73" y="52" width="5" height="12" rx="2.5" fill="#08070C" opacity="0.45"/>
+
+  <!-- Shoulders, just enough to seat the head -->
+  <path d="M28 84c4.5-9.5 12-14.5 22-14.5S67.5 74.5 72 84z" fill="url(#cream)" opacity="0.92"/>
+</svg>

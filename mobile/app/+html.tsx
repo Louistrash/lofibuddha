@@ -24,6 +24,9 @@ export default function Root({ children }: { children: ReactNode }) {
         <meta name="description" content={DESCRIPTION} />
         <meta name="theme-color" content="#08070C" />
 
+        {/* SVG first: modern browsers pick it and render crisply at any size. */}
+        <link rel="icon" href={`${SITE}/icon-mark.svg`} type="image/svg+xml" />
+        <link rel="icon" href={`${SITE}/favicon.ico`} sizes="16x16 32x32 48x48" />
         <link rel="icon" href={`${SITE}/bodhi-icon-32.png`} sizes="32x32" type="image/png" />
         <link rel="icon" href={`${SITE}/bodhi-icon-192.png`} sizes="192x192" type="image/png" />
         <link rel="apple-touch-icon" href={`${SITE}/bodhi-icon-180.png`} sizes="180x180" />

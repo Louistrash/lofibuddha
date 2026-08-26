@@ -62,8 +62,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lofibuddha.com" },
   icons: {
     icon: [
-      { url: "/lofibuddha.png", type: "image/png" },
+      // SVG first: modern browsers prefer it and render crisply at any size.
+      { url: "/icon-mark.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
       { url: "/bodhi-icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/bodhi-icon-48.png", sizes: "48x48", type: "image/png" },
     ],
     apple: "/bodhi-icon-180.png",
     other: [
