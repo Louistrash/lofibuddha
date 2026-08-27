@@ -14,7 +14,7 @@ export default function HermesPage() {
         width: "100%",
         height: "100vh",
         border: "none",
-        background: "#0f0f0f",
+        background: "var(--bg-surface)",
         display: "block",
       }}
       title="Hermes OS — Full AI Workspace"

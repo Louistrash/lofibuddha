@@ -1,33 +1,17 @@
 /**
- * Bodhi design system — one source of truth for the Expo app.
+ * Bodhi design system — the Expo app face of the shared tokens.
  *
  * Two faces, one language:
  *  - phone: iOS-native feel (grouped surfaces, blur chrome, large titles)
  *  - desktop/tablet: calm dashboard (persistent sidebar, wide content grid)
+ *
+ * The palette lives in packages/shared/src/design-tokens.ts so the app and the
+ * Next.js CMS read the exact same values; everything below derives from it.
  */
 
-export const palette = {
-  ink: "#08070C",
-  inkRaised: "#101019",
-  inkCard: "#15141F",
-  inkHover: "#1C1A28",
+import { palette } from "@lofibuddha/shared";
 
-  gold: "#E4B872",
-  goldBright: "#F3D8A4",
-  goldDeep: "#A67C3D",
-
-  saffron: "#FF9A3D",
-  jade: "#3ED9A4",
-  indigo: "#6C74FF",
-  lotus: "#FF5C9B",
-
-  textPrimary: "#F6F2EA",
-  textSecondary: "#9E9AAB",
-  textMuted: "#63606F",
-
-  danger: "#FF5A4E",
-  success: "#39D98A",
-} as const;
+export { palette };
 
 export const colors = {
   ...palette,

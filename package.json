@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && bash scripts/postbuild.sh",
+    "build": "node --experimental-strip-types scripts/build-css-tokens.mjs && next build && bash scripts/postbuild.sh",
     "start": "next start",
     "lint": "eslint",
     "postbuild": "bash scripts/postbuild.sh",
