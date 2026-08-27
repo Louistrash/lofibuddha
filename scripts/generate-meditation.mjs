@@ -31,9 +31,10 @@ const API_KEY = env.ELEVENLABS_API_KEY;
 const VOICE_ID = env.ELEVENLABS_VOICE_ID || "iJkzOEXKLoZ6ZquIAnOA";
 if (!API_KEY) { console.error("❌ ELEVENLABS_API_KEY niet gevonden"); process.exit(1); }
 
-// Parse meditations/focus-guides uit de juiste bron
+// Parse meditations/focus-guides uit de juiste bron.
+// NB: deze bestanden zijn verhuisd van src/lib/ naar packages/shared/src/.
 const srcFile = source === "focus" ? "focus-guides.ts" : "meditations.ts";
-const ts = readFileSync(join(ROOT, "src", "lib", srcFile), "utf-8");
+const ts = readFileSync(join(ROOT, "packages", "shared", "src", srcFile), "utf-8");
 const blockRe = /\{\s*id:\s*"([^"]+)",[\s\S]*?segments:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
 let m, med = null;
 while ((m = blockRe.exec(ts)) !== null) {
@@ -65,13 +66,23 @@ async function tts(text, outPath) {
   writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-// 1) Genereer elk segment
+// 1) Genereer elk segment en normaliseer de STEM vóór het mengen.
+//    Normaliseren op de eindtrack faalt: de pauzes (8-16s stilte) trekken de
+//    gemeten luidheid omlaag, dus een genormaliseerde stem klinkt alsnog zacht.
+//    Per segment loudnormen houdt elke stem op -23 LUFS, onafhankelijk van
+//    hoeveel stilte er volgt.
 const segFiles = [];
 for (let i = 0; i < med.segments.length; i++) {
   const seg = med.segments[i];
-  const f = join(TMP, `${id}-seg${i}.mp3`);
+  const rawF = join(TMP, `${id}-seg${i}.mp3`);
   console.log(`🎙️  Segment ${i + 1}/${med.segments.length}...`);
-  await tts(seg.text, f);
+  await tts(seg.text, rawF);
+  const f = join(TMP, `${id}-seg${i}-norm.mp3`);
+  execFileSync("ffmpeg", [
+    "-y", "-v", "error", "-i", rawF,
+    "-af", "loudnorm=I=-23:TP=-1.5:LRA=11",
+    "-c:a", "libmp3lame", "-b:a", "192k", f,
+  ]);
   segFiles.push(f);
 }
 
@@ -100,12 +111,14 @@ writeFileSync(concatList, parts.join("\n") + "\n");
 const raw = join(TMP, `${id}-raw.mp3`);
 execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-c:a", "libmp3lame", "-b:a", "192k", raw]);
 
-// 3) Normaliseer op ~-23 dB (zoals de bestaande meditaties: mean -22.5)
+// 3) Segments zijn al per-stem genormaliseerd; de eindtrack alleen concat-en.
+//    (De oude loudnorm op de eindtrack telde de pauzes mee en dempte de stem.)
 const out = join(AUDIO_DIR, id + ".mp3");
-execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-af", "loudnorm=I=-23:TP=-1.5:LRA=11", "-c:a", "libmp3lame", "-b:a", "192k", out]);
+execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-c:a", "copy", out]);
 
 // cleanup
 for (const f of segFiles) { try { execFileSync("rm", ["-f", f]); } catch {} }
+for (let i = 0; i < med.segments.length; i++) { try { execFileSync("rm", ["-f", join(TMP, `${id}-seg${i}.mp3`)]); } catch {} }
 try { execFileSync("rm", ["-f", concatList, raw]); } catch {}
 
 const dur = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out], { encoding: "utf-8" }).trim();
