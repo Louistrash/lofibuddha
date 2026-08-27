@@ -23,28 +23,52 @@ function getUserIdFromSession(req: NextRequest): string | null {
   }
 }
 
-// Deep links to REAL pages in the Bodhi Dashboard
+// Journey hints for the app. The client owns the actual routing (only it knows
+// its own routes), so these are intent signals — keep the ids in sync with the
+// four journeys in packages/shared/src/experiences.ts.
 const DEEP_LINKS: Array<{ keywords: string[]; url: string; label: string }> = [
   {
-    keywords: ["breathe", "breathing", "anxious", "anxiety", "stressed", "stress", "calm", "relax", "panic", "overwhelmed", "nervous", "inhale", "exhale"],
-    url: "/breathe",
+    keywords: ["breathe", "breathing", "anxious", "anxiety", "panic", "nervous", "overwhelmed", "inhale", "exhale", "tight chest", "hyperventilat"],
+    url: "/category/breathe",
     label: "breathe with me",
   },
   {
-    keywords: ["sound", "music", "mix", "soundscape", "listen", "audio", "playlist", "noise", "rain sounds", "ocean", "forest sounds", "meditat", "visual", "scene", "ambient", "soundtrack"],
-    url: "/mindfulness",
-    label: "open the mindfulness space",
+    keywords: ["sleep", "insomnia", "awake", "bedtime", "night", "restless", "exhausted", "wind down", "nightmare"],
+    url: "/category/sleep",
+    label: "let the day dissolve",
+  },
+  {
+    keywords: ["focus", "concentrate", "concentration", "distract", "procrastinat", "deep work", "study", "attention", "scattered"],
+    url: "/category/focus",
+    label: "settle into deep work",
+  },
+  {
+    keywords: ["relax", "unwind", "rest", "let go", "release", "tension", "soften", "stillness", "quiet", "peace", "settle"],
+    url: "/category/relax",
+    label: "unwind with me",
+  },
+  {
+    keywords: ["sound", "music", "mix", "soundscape", "listen", "audio", "playlist", "rain sounds", "ocean", "forest sounds", "meditat", "ambient", "soundtrack"],
+    url: "/explore",
+    label: "open the sound library",
   },
 ];
 
+/** Strongest match wins, so a message about stress *and* sleep resolves sensibly. */
 function getDeepLink(userMessage: string, aiResponse: string): { url: string; label: string } | null {
   const combined = (userMessage + " " + aiResponse).toLowerCase();
+  let best: { url: string; label: string } | null = null;
+  let bestScore = 0;
+
   for (const entry of DEEP_LINKS) {
-    if (entry.keywords.some((k) => combined.includes(k))) {
-      return { url: entry.url, label: entry.label };
+    const score = entry.keywords.reduce((n, k) => (combined.includes(k) ? n + 1 : n), 0);
+    if (score > bestScore) {
+      bestScore = score;
+      best = { url: entry.url, label: entry.label };
     }
   }
-  return null;
+
+  return best;
 }
 
 export async function POST(req: NextRequest) {
