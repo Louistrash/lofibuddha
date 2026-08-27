@@ -158,12 +158,25 @@ export async function POST(req: NextRequest) {
     const isReturningVisit = isReturning && !isFirstChat;
 
     let prefix = "";
+    // Only ever greet by a name we actually have. This used to fall back to
+    // `userMessage`, so an anonymous visitor was introduced to the model as
+    // being *named* after whatever they typed — which is why first replies came
+    // back as "hey, i can't sleep. welcome...".
+    const knownName = (user.name || "").trim();
+
     if (isFirstChat) {
-      prefix = `${user.name || userMessage} just joined. This is their very first moment with you. Their name is exactly "${user.name || userMessage}" — greet them using EXACTLY this name with a capital first letter, never lowercase it. Keep it short and personal. Then ask how they are feeling right now, offering the 4 action choices on their own lines starting with --- so they become separate clickable bubbles:\n\n--- i want to focus\n--- my mind feels busy\n--- i can't sleep\n--- i just need to talk\n\nKeep the welcome warm and human. Do not add any text after the 4 choices.`;
+      prefix = knownName
+        ? `${knownName} just arrived — their first moment with you. Their name is exactly "${knownName}"; use it once, capitalised. Welcome them in one short line, then respond to what they actually said and ask a single gentle question about how they feel right now.`
+        : `Someone just arrived — their first moment with you, and you do not know their name. Do not ask for it and do not invent one. Welcome them in one short line, then respond to what they actually said and ask a single gentle question about how they feel right now.`;
+    } else if (isReturningVisit && knownName) {
+      prefix = `${knownName} is returning after a break — a new session, not a continuation. Their name is exactly "${knownName}". Welcome them back by name, then check in gently: how they are today, how they slept, and what they need. Keep it to three sentences at most.`;
     } else if (isReturningVisit) {
-      // Check-in: herken de terugkeer, vraag hoe het gaat + slaap
-      prefix = `${user.name} is returning to you after a break (this is a NEW session, not a continuation of the previous chat). Their name is exactly "${user.name}". Greet them warmly by name — like "welcome back, ${user.name}" — and do a gentle check-in. Ask how they are feeling today, and specifically how their sleep was, and what they need right now. Offer 4 choices on their own lines starting with --- :\n\n--- i slept well\n--- i slept badly\n--- i feel anxious\n--- i just want to talk\n\nKeep it warm and human, max 3 sentences before the choices. Do not add any text after the 4 choices.`;
+      prefix = `This person is returning after a break — a new session, not a continuation. You do not know their name, so do not use one. Check in gently: how they are today, how they slept, and what they need. Keep it to three sentences at most.`;
     }
+
+    // Note: no "--- choice" blocks. Those were never parsed into buttons, so
+    // they surfaced as literal dashed lines inside the bubble; the app renders
+    // real preset chips instead.
 
     const messagesToSend = prefix
       ? [{ role: "user" as const, content: prefix }, ...conversationHistory, { role: "user" as const, content: userMessage }]
