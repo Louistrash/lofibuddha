@@ -35,8 +35,9 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-// --- Parse prompts from src/lib/sounds.ts (single source of truth) ---
-const soundsTs = readFileSync(join(ROOT, "src", "lib", "sounds.ts"), "utf-8");
+// --- Parse prompts from packages/shared/src/sounds.ts (single source of truth;
+//     it moved here from src/lib/ during the monorepo split) ---
+const soundsTs = readFileSync(join(ROOT, "packages", "shared", "src", "sounds.ts"), "utf-8");
 const SOUNDS = [];
 const entryRe = /\{\s*slug:\s*"([^"]+)",\s*name:\s*"[^"]+",\s*description:\s*"[^"]*",\s*category:\s*"[^"]+",\s*prompt:\s*"((?:[^"\\]|\\.)*)"\s*\}/g;
 let m;
