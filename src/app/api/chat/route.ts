@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { chatWithBuddha } from "@/lib/deepseek";
 import { getUserById, updateUser, createChatMessage, getChatMessages, createUser } from "@/lib/db";
 import { hasUnlimitedTokens } from "@/lib/tokens";
+import { detectLanguage } from "@/lib/detect-language";
 import { corsPreflight, withCors } from "@/lib/cors";
 
 export async function OPTIONS(request: NextRequest) {
@@ -141,7 +142,9 @@ export async function POST(req: NextRequest) {
   if (!userMessage) {
     return withCors(req, NextResponse.json({ error: "Message is required" }, { status: 400 }));
   }
-  const language: string = body.language || "english";
+  // Reply in the language of the message when possible; an explicit body.language
+  // (future UI setting) still wins over the heuristic.
+  const language: string = body.language || detectLanguage(body.message);
 
   const recentMessages = getChatMessages(userId, 10);
   const conversationHistory = recentMessages.map((m) => ({

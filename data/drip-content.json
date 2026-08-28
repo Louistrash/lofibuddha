@@ -3,30 +3,51 @@
     "title": "The Mindful Path",
     "subtitle": "30 days of deepening awareness",
     "downloads": {
-      "breathwork": { "label": "Breathwork Essentials (PDF)", "url": "/api/drip/download/breathwork-essentials" },
-      "mindfulness": { "label": "Beginner's Mindfulness Guide (PDF)", "url": "/api/drip/download/beginners-mindfulness" },
-      "yoga": { "label": "Yoga Foundations Guide (PDF)", "url": "/api/drip/download/yoga-foundations" },
-      "lofi": { "label": "Lofi & Deep Focus Guide (PDF)", "url": "/api/drip/download/lofi-deep-focus" }
+      "breathwork": {
+        "label": "Breathwork Essentials (PDF)",
+        "url": "/api/drip/download/breathwork-essentials"
+      },
+      "mindfulness": {
+        "label": "Beginner's Mindfulness Guide (PDF)",
+        "url": "/api/drip/download/beginners-mindfulness"
+      },
+      "yoga": {
+        "label": "Yoga Foundations Guide (PDF)",
+        "url": "/api/drip/download/yoga-foundations"
+      },
+      "lofi": {
+        "label": "Lofi & Deep Focus Guide (PDF)",
+        "url": "/api/drip/download/lofi-deep-focus"
+      }
     },
     "days": {
       "1": {
         "type": "welcome",
         "title": "Welcome to your Mindful Path",
         "body": "You've taken the first step. Over the next 30 days, you'll explore mindfulness, breathwork, yoga foundations, and the art of deep focus — all supported by our Lofi soundscapes.\n\nYour journey unfolds naturally. New content unlocks every few days. No rush, no pressure — simply arrive when you're ready.",
-        "action": { "label": "Start chatting with AI Buddha", "url": "https://aibuddha.net/#chat" }
+        "action": {
+          "label": "Start chatting with AI Buddha",
+          "url": "/ai"
+        }
       },
       "2": {
         "type": "playlist",
         "title": "Morning Calm",
         "subtitle": "Lofi playlist #1",
         "body": "Start your morning with gentle piano Lo-fi. This playlist is curated to ease you into the day — soft keys, warm bass, and subtle nature samples.\n\nListen while you make coffee, stretch, or simply sit in stillness.",
-        "action": { "label": "Listen now", "url": "/browse" }
+        "action": {
+          "label": "Listen now",
+          "url": "/explore"
+        }
       },
       "3": {
         "type": "course",
         "title": "Beginner's Mindfulness — Part 1",
         "courseId": "beginners-mindfulness",
-        "modules": [1, 2],
+        "modules": [
+          1,
+          2
+        ],
         "body": "**Module 1: The Breath as Anchor**\n\nSit comfortably. Close your eyes. Bring your attention to the sensation of breathing — the cool air entering your nostrils, the gentle rise of your chest. Don't try to change anything. Just notice.\n\nWhen your mind wanders (and it will), gently return to the breath. This is the practice — not staying focused, but returning.\n\nTry this for 2 minutes today. Tomorrow, try 3.\n\n**Module 2: Body Scan**\n\nLie down or sit comfortably. Starting at the crown of your head, slowly move your attention down through your body — forehead, jaw, neck, shoulders, arms, hands, chest, belly, hips, legs, feet.\n\nNotice any tension, warmth, tingling, or numbness. Don't judge. Just observe.",
         "duration": "10 min"
       },
@@ -35,39 +56,65 @@
         "title": "4-4-4 Box Breathing",
         "subtitle": "The Navy SEAL technique for calm",
         "body": "Box breathing is used by Navy SEALs, first responders, and meditators alike. It activates the parasympathetic nervous system — your body's natural brake pedal.\n\n**How it works:**\n\n1. **Inhale** through your nose for 4 seconds\n2. **Hold** your breath for 4 seconds\n3. **Exhale** slowly through your mouth for 4 seconds\n4. **Hold** empty for 4 seconds\n\nRepeat 4 times. Feel the shift.",
-        "action": { "label": "Try the breathing visualizer", "url": "/browse" },
-        "download": { "label": "Breathwork Essentials (PDF)", "url": "/api/drip/download/breathwork-essentials" }
+        "action": {
+          "label": "Try the breathing visualizer",
+          "url": "/category/breathe"
+        },
+        "download": {
+          "label": "Breathwork Essentials (PDF)",
+          "url": "/api/drip/download/breathwork-essentials"
+        }
       },
       "7": {
         "type": "playlist",
         "title": "Deep Focus",
         "subtitle": "Lofi playlist #2",
         "body": "One hour of uninterrupted focus music. No lyrics, no sharp transitions — just steady, flowing soundscapes engineered for deep work.\n\nThis playlist uses binaural-inspired frequencies to promote alpha brainwave states associated with relaxed concentration.",
-        "action": { "label": "Listen now", "url": "/browse" }
+        "action": {
+          "label": "Listen now",
+          "url": "/explore"
+        }
       },
       "9": {
         "type": "course",
         "title": "Beginner's Mindfulness — Part 2",
         "courseId": "beginners-mindfulness",
-        "modules": [3, 4, 5],
+        "modules": [
+          3,
+          4,
+          5
+        ],
         "body": "**Module 3: Labeling Thoughts** — When a thought arises, silently label it. Then let it go.\n**Module 4: Walking Meditation** — Walk slowly. Feel each foot. The world becomes your cushion.\n**Module 5: Mindful Eating** — One meal, fully present.",
         "duration": "15 min",
-        "download": { "label": "Beginner's Mindfulness Guide (PDF)", "url": "/api/drip/download/beginners-mindfulness" }
+        "download": {
+          "label": "Beginner's Mindfulness Guide (PDF)",
+          "url": "/api/drip/download/beginners-mindfulness"
+        }
       },
       "12": {
         "type": "course",
         "title": "Yoga Foundations — Part 1",
         "courseId": "yoga-foundations",
-        "modules": [1, 2, 3],
+        "modules": [
+          1,
+          2,
+          3
+        ],
         "body": "**Mountain Pose** — Root down, rise up. **Cat-Cow** — Flow with breath. **Child's Pose** — Surrender into stillness.",
         "duration": "20 min",
-        "download": { "label": "Yoga Foundations Guide (PDF)", "url": "/api/drip/download/yoga-foundations" }
+        "download": {
+          "label": "Yoga Foundations Guide (PDF)",
+          "url": "/api/drip/download/yoga-foundations"
+        }
       },
       "16": {
         "type": "course",
         "title": "Beginner's Mindfulness — Part 3",
         "courseId": "beginners-mindfulness",
-        "modules": [6, 7],
+        "modules": [
+          6,
+          7
+        ],
         "body": "**Module 6: Loving-Kindness (Metta)** — May I be happy. May you be happy. May all beings be free.\n**Module 7: Open Awareness** — You are the sky, not the clouds.",
         "duration": "15 min"
       },
@@ -75,7 +122,10 @@
         "type": "course",
         "title": "Breathwork Essentials — Part 1",
         "courseId": "breathwork-essentials",
-        "modules": [1, 2],
+        "modules": [
+          1,
+          2
+        ],
         "body": "**Diaphragmatic Breathing** — Relearn how you breathed as a baby. **4-7-8 Breathing** — A natural tranquilizer. Maximum 4 cycles.",
         "duration": "12 min"
       },
@@ -83,7 +133,12 @@
         "type": "course",
         "title": "Yoga Foundations — Part 2",
         "courseId": "yoga-foundations",
-        "modules": [4, 5, 6, 7],
+        "modules": [
+          4,
+          5,
+          6,
+          7
+        ],
         "body": "**Downward Dog** — Strength meets surrender. **Warrior I** — Power in stillness. **Tree Pose** — Balance. **Savasana** — The hardest pose. Do not skip.",
         "duration": "25 min"
       },
@@ -91,10 +146,17 @@
         "type": "course",
         "title": "Lofi & Deep Focus — Part 1",
         "courseId": "lofi-deep-focus",
-        "modules": [1, 2, 3],
+        "modules": [
+          1,
+          2,
+          3
+        ],
         "body": "**The Science of Focus Music** — Lo-fi's imperfections are features. **Creating Your Sound Environment** — Find your anchor sound. **The Pomodoro Flow** — 25 min work, 5 min rest, repeat.",
         "duration": "8 min",
-        "download": { "label": "Lofi & Deep Focus Guide (PDF)", "url": "/api/drip/download/lofi-deep-focus" }
+        "download": {
+          "label": "Lofi & Deep Focus Guide (PDF)",
+          "url": "/api/drip/download/lofi-deep-focus"
+        }
       }
     }
   },
@@ -102,22 +164,37 @@
     "title": "The Enlightened Path",
     "subtitle": "A 28-day deep transformation journey",
     "downloads": {
-      "roadmap": { "label": "Spiritual Roadmap Template (PDF)", "url": "/api/drip/download/spiritual-roadmap-template" },
-      "reflection": { "label": "Monthly Reflection Journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" }
+      "roadmap": {
+        "label": "Spiritual Roadmap Template (PDF)",
+        "url": "/api/drip/download/spiritual-roadmap-template"
+      },
+      "reflection": {
+        "label": "Monthly Reflection Journal (PDF)",
+        "url": "/api/drip/download/monthly-reflection-journal"
+      }
     },
     "days": {
       "1": {
         "type": "welcome",
         "title": "The Enlightened Path Awaits",
         "body": "You've chosen the deepest journey — not just mindfulness, but transformation. Over the next 28 days, you'll receive personalized meditations, a custom spiritual roadmap, guided breathwork, and direct counsel from AI Buddha.\n\nThis path requires honesty with yourself. It rewards that honesty with clarity.",
-        "action": { "label": "Complete your intake", "url": "/account?tab=intake" }
+        "action": {
+          "label": "Complete your intake",
+          "url": "/account"
+        }
       },
       "3": {
         "type": "roadmap",
         "title": "Your Spiritual Roadmap",
         "body": "Based on your intake, we've mapped your path across four dimensions: Foundation, Inquiry, Integration, and Expression.\n\nYour roadmap is ready.",
-        "action": { "label": "View your roadmap", "url": "/account?tab=roadmap" },
-        "download": { "label": "Spiritual Roadmap Template (PDF)", "url": "/api/drip/download/spiritual-roadmap-template" }
+        "action": {
+          "label": "View your roadmap",
+          "url": "/account"
+        },
+        "download": {
+          "label": "Spiritual Roadmap Template (PDF)",
+          "url": "/api/drip/download/spiritual-roadmap-template"
+        }
       },
       "7": {
         "type": "video",
@@ -125,26 +202,41 @@
         "subtitle": "10-minute session with AI Buddha",
         "body": "A specially recorded breathwork session combining diaphragmatic breathing, box breathing, and a brief introduction to breath retention.\n\nFind a quiet space. Use headphones.",
         "duration": "10 min",
-        "action": { "label": "Start session", "url": "/browse" }
+        "action": {
+          "label": "Start session",
+          "url": "/category/breathe"
+        }
       },
       "14": {
         "type": "session",
         "title": "Deep Dive with AI Buddha",
         "body": "Your halfway check-in. What has shifted since Day 1? What resistance have you noticed? What question are you avoiding?",
-        "action": { "label": "Begin deep dive", "url": "https://aibuddha.net/#chat" }
+        "action": {
+          "label": "Begin deep dive",
+          "url": "/ai"
+        }
       },
       "21": {
         "type": "playlist",
         "title": "Your Personal Soundscape",
         "body": "A custom Lofi mix generated for your mood profile. This is yours.",
-        "action": { "label": "Listen to your mix", "url": "/browse" }
+        "action": {
+          "label": "Listen to your mix",
+          "url": "/explore"
+        }
       },
       "28": {
         "type": "reflection",
         "title": "Monthly Reflection",
         "body": "What has changed in your relationship with stillness? Where do you still resist? What practice will you carry forward?",
-        "action": { "label": "Download reflection journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" },
-        "download": { "label": "Monthly Reflection Journal (PDF)", "url": "/api/drip/download/monthly-reflection-journal" }
+        "action": {
+          "label": "Download reflection journal (PDF)",
+          "url": "/api/drip/download/monthly-reflection-journal"
+        },
+        "download": {
+          "label": "Monthly Reflection Journal (PDF)",
+          "url": "/api/drip/download/monthly-reflection-journal"
+        }
       }
     }
   }
