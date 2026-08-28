@@ -13,6 +13,9 @@ export interface Meditation {
   duration: string;
   theme: string;
   background: string; // background sound slug
+  /** Seconds of silence after the chime, before the voice begins — lets the
+   *  user settle in / put the device down. */
+  introPause?: number;
   segments: MeditationSegment[];
 }
 
@@ -24,6 +27,7 @@ export const MEDITATIONS: Meditation[] = [
     duration: "2 min",
     theme: "Stillness",
     background: "temple-ambience",
+    introPause: 15,
     segments: [
       { text: "Sit comfortably. Close your eyes. There is nowhere to go, and nothing to do. Just sit.", pauseAfter: 8 },
       { text: "Feel the weight of your body, settling into the earth. Now bring your attention to your breath. Do not change it. Just watch it.", pauseAfter: 12 },
@@ -52,6 +56,7 @@ export const MEDITATIONS: Meditation[] = [
     duration: "2 min",
     theme: "Release",
     background: "ocean-waves",
+    introPause: 15,
     segments: [
       { text: "Sit quietly. Close your eyes. Notice where you are holding tension. In your shoulders. In your jaw. In your belly.", pauseAfter: 8 },
       { text: "You have been carrying so much. Thoughts. Worries. The past. But look. The past is only memory. The future is only imagination.", pauseAfter: 12 },
@@ -80,6 +85,7 @@ export const MEDITATIONS: Meditation[] = [
     duration: "2 min",
     theme: "Awareness",
     background: "temple-ambience",
+    introPause: 15,
     segments: [
       { text: "Close your eyes. Settle into stillness. Now, watch your thoughts. Do not stop them. Do not follow them. Just watch.", pauseAfter: 8 },
       { text: "Thoughts come, like clouds drifting across the sky. They are not you. You are the sky.", pauseAfter: 12 },
@@ -94,6 +100,7 @@ export const MEDITATIONS: Meditation[] = [
     duration: "3 min",
     theme: "Relax",
     background: "ocean-waves",
+    introPause: 15,
     segments: [
       { text: "Lie down, or sit comfortably. Close your eyes. Let your body be completely supported by the ground beneath you.", pauseAfter: 10 },
       { text: "Bring your attention to your feet. Feel the soles of your feet, the toes, the ankles. Let them soften and sink into the ground.", pauseAfter: 14 },
@@ -110,6 +117,7 @@ export const MEDITATIONS: Meditation[] = [
     duration: "2 min",
     theme: "Sleep",
     background: "gentle-rain",
+    introPause: 15,
     segments: [
       { text: "Close your eyes. Let the day fall away. You have done enough. Now it is time to rest.", pauseAfter: 10 },
       { text: "Feel your body growing heavy. Your head sinking into the pillow. Your shoulders softening. Your jaw relaxing.", pauseAfter: 14 },
