@@ -16,6 +16,7 @@ import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
 import { JourneyCard, WorldCard } from "@/src/components/content/JourneyCard";
 import { Mandala } from "@/src/components/content/Mandala";
+import { AffirmationCard } from "@/src/components/content/AffirmationCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useAuth } from "@/src/providers/AuthProvider";
 import { useEntitlement } from "@/src/providers/EntitlementProvider";
@@ -80,6 +81,8 @@ export default function TodayScreen() {
           catalog={EXPERIENCES.length}
         />
       </View>
+
+      <AffirmationCard />
 
       <View style={styles.block}>
         <SectionHeader title="Journeys" caption="Four paths, one stillness" />

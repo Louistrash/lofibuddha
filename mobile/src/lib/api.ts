@@ -1,11 +1,12 @@
 import { api } from "@/src/theme/tokens";
 
-export function audioUrl(kind: "sounds" | "music-tracks" | "meditations" | "focus" | "breathe", id: string) {
+export function audioUrl(kind: "sounds" | "music-tracks" | "meditations" | "focus" | "breathe" | "affirmations", id: string) {
   const base = api.baseUrl.replace(/\/$/, "");
   if (kind === "sounds") return `${base}/api/sounds/audio/${id}.mp3`;
   if (kind === "music-tracks") return `${base}/api/music-tracks/audio/${id}.mp3`;
   if (kind === "meditations") return `${base}/api/meditations/audio/${id}.mp3`;
   if (kind === "focus") return `${base}/api/focus/audio/${id}.mp3`;
+  if (kind === "affirmations") return `${base}/api/affirmations/audio/${id}.mp3`;
   return `${base}/api/breathe/audio/${id}.mp3`;
 }
 
