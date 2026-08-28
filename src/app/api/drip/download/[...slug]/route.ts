@@ -56,6 +56,19 @@ export async function GET(
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   }
 
+  // Serve the branded PDF when available, falling back to raw markdown.
+  const pdfPath = path.join(CONTENT_DIR, "pdf", `${contentId}.pdf`);
+  if (fs.existsSync(pdfPath)) {
+    const pdf = fs.readFileSync(pdfPath);
+    return new NextResponse(new Uint8Array(pdf), {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${contentId}.pdf"`,
+        "Cache-Control": "no-cache",
+      },
+    });
+  }
+
   const content = fs.readFileSync(filePath, "utf-8");
   return new NextResponse(content, {
     headers: {
