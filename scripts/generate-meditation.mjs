@@ -14,9 +14,12 @@ import { execFileSync } from "child_process";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const id = process.argv[2];
-const source = process.argv[3] || "meditations"; // "meditations" (default) of "focus"
-if (!id) { console.error("Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus]"); process.exit(1); }
+const source = process.argv[3] || "meditations"; // "meditations" | "focus" | "workshops"
+if (!id) { console.error("Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]"); process.exit(1); }
 
+// Workshops audio gaat voorlopig naar de meditations-dir, zodat de bestaande
+// /api/meditations/audio/<id> route hem direct serveert (proef). Bij uitrol:
+// eigen data/workshops/audio/ + route.
 const AUDIO_DIR = join(ROOT, "data", source === "focus" ? "focus" : "meditations", "audio");
 mkdirSync(AUDIO_DIR, { recursive: true });
 const TMP = join(ROOT, "data", "meditations", ".tmp");
@@ -31,15 +34,20 @@ const API_KEY = env.ELEVENLABS_API_KEY;
 const VOICE_ID = env.ELEVENLABS_VOICE_ID || "iJkzOEXKLoZ6ZquIAnOA";
 if (!API_KEY) { console.error("❌ ELEVENLABS_API_KEY niet gevonden"); process.exit(1); }
 
-// Parse meditations/focus-guides uit de juiste bron.
+// Parse meditations/focus-guides/workshops uit de juiste bron.
 // NB: deze bestanden zijn verhuisd van src/lib/ naar packages/shared/src/.
-const srcFile = source === "focus" ? "focus-guides.ts" : "meditations.ts";
+const srcFile =
+  source === "focus" ? "focus-guides.ts" :
+  source === "workshops" ? "workshops.ts" :
+  "meditations.ts";
 const ts = readFileSync(join(ROOT, "packages", "shared", "src", srcFile), "utf-8");
 const blockRe = /\{\s*id:\s*"([^"]+)",[\s\S]*?segments:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
 let m, med = null;
 while ((m = blockRe.exec(ts)) !== null) {
   if (m[1] === id) {
-    const segRe = /\{\s*text:\s*"((?:[^"\\]|\\.)*)",\s*pauseAfter:\s*(\d+)\s*\}/g;
+    // Optional trailing comma after pauseAfter: meditations are single-line,
+    // workshops are multi-line and keep the trailing comma.
+    const segRe = /\{\s*text:\s*"((?:[^"\\]|\\.)*)",\s*pauseAfter:\s*(\d+)\s*,?\s*\}/g;
     const segments = [];
     let s;
     while ((s = segRe.exec(m[2])) !== null) {

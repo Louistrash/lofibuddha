@@ -5,3 +5,4 @@ export * from "./meditations";
 export * from "./focus-guides";
 export * from "./pricing";
 export * from "./design-tokens";
+export * from "./workshops";
