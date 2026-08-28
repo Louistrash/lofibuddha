@@ -13,6 +13,9 @@ export type Workshop = {
   theme: string;
   category: "focus" | "breathe" | "sleep" | "relax";
   background: string;
+  /** Seconds of silence after the chime, before the voice begins — lets the
+   *  user put the device down and settle in. */
+  introPause?: number;
   segments: { text: string; pauseAfter: number }[];
 };
 
@@ -26,6 +29,7 @@ export const WORKSHOPS: Workshop[] = [
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "ocean-waves",
+    introPause: 25,
     segments: [
       {
         text: "Welcome. This is the first night of your deep sleep reset. Find a comfortable position, lying down if you can. Let your arms rest at your sides, palms open. Allow the room to be as dark and quiet as it needs to be. There is nothing you need to fix, nothing you need to hold. This time belongs only to you.",
