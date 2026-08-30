@@ -21,6 +21,25 @@ export interface Meditation {
 
 export const MEDITATIONS: Meditation[] = [
   {
+    id: "ocean-breath",
+    title: "Ocean Breath",
+    description: "Breathe with the tide — a slow return to the deep, calm water inside you.",
+    duration: "6 min",
+    theme: "Breath",
+    background: "ocean-waves",
+    introPause: 20,
+    segments: [
+      { text: "Come into stillness. Let your body settle, like a stone returning to the sand. There is a shore, and there is you. The tide is already breathing.", pauseAfter: 14 },
+      { text: "Close your eyes and see the sea. Endless, patient, older than the sky. The water moves in slow silver breaths, in and out, without effort.", pauseAfter: 16 },
+      { text: "Now let your breath become the tide. Breathe in as the wave rises. Breathe out as it draws back, taking the whole shoreline with it.", pauseAfter: 18 },
+      { text: "With each out-breath, let something go. A thought. A tension. A weight you have been carrying without ever deciding to.", pauseAfter: 18 },
+      { text: "You are not swimming. You are floating. Held by water that has cradled life since the very beginning. You do not need to try.", pauseAfter: 20 },
+      { text: "Beneath you, the deep is calm. The surface may ripple, but the deep never moves. Let yourself sink, softly, into that quiet.", pauseAfter: 20 },
+      { text: "The waves soften. The tide slows. And slowly, gently, you become the silence between them.", pauseAfter: 18 },
+      { text: "When you are ready, hear the water once more. Feel the ground beneath you. And carry this deep calm back with you, into the rest of your day.", pauseAfter: 12 },
+    ],
+  },
+  {
     id: "stillness-within",
     title: "The Stillness Within",
     description: "Rest in the silence between breaths — your true home.",
