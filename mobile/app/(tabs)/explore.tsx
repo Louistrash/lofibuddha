@@ -88,19 +88,20 @@ export default function ExploreScreen() {
             caption={searching ? `for "${query}"` : undefined}
           />
           {l.isCompact ? (
-            <View style={styles.list}>
+            <View style={styles.grid}>
               {results.map((exp) => (
-                <ExperienceCard
-                  key={exp.id}
-                  experience={exp}
-                  variant="row"
-                  onPress={async () => {
-                    await playExperience(exp);
-                    router.push(`/player/${exp.id}`);
-                  }}
-                  isFavorite={isFavorite(exp.id)}
-                  onToggleFavorite={() => toggle(exp.id)}
-                />
+                <View key={exp.id} style={styles.gridCell}>
+                  <ExperienceCard
+                    experience={exp}
+                    variant="tile"
+                    onPress={async () => {
+                      await playExperience(exp);
+                      router.push(`/player/${exp.id}`);
+                    }}
+                    isFavorite={isFavorite(exp.id)}
+                    onToggleFavorite={() => toggle(exp.id)}
+                  />
+                </View>
               ))}
             </View>
           ) : (
@@ -188,6 +189,6 @@ const styles = StyleSheet.create({
   } as any,
   filters: { gap: space.sm, paddingBottom: space["2xl"] },
   block: { marginBottom: space["3xl"] },
-  list: { gap: 2 },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
+  gridCell: { flexGrow: 1, flexBasis: 160, minWidth: 150, maxWidth: "100%" },
 });

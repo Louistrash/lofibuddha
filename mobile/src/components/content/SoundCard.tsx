@@ -70,7 +70,9 @@ export function SoundCard({
         pressed && { transform: [{ scale: 0.975 }], opacity: 0.9 },
       ]}
     >
-      {/* Mandala backdrop, brighter once the sound is running. */}
+      {/* Mandala backdrop — golden style, brighter once the sound is running.
+          The category keeps its colour on the badge/border; the mandala stays
+          a consistent brand gold. */}
       <View style={styles.mandala} pointerEvents="none">
         <Mandala
           size={168}
@@ -78,7 +80,7 @@ export function SoundCard({
           speed={active ? 0.5 : 0.16}
           intensity={active ? 0.55 : 0.25}
           detail="simple"
-          colors={[accent, tint(accent, 0.75) as unknown as string, colors.goldBright]}
+          colors={[colors.gold, colors.goldBright, tint(colors.gold, 0.72) as unknown as string]}
         />
       </View>
 
