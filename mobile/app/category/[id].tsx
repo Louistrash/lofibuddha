@@ -72,16 +72,17 @@ export default function CategoryScreen() {
       </View>
 
       {l.isCompact ? (
-        <View style={styles.list}>
+        <View style={styles.grid}>
           {items.map((exp) => (
-            <ExperienceCard
-              key={exp.id}
-              experience={exp}
-              variant="row"
-              onPress={() => open(exp.id)}
-              isFavorite={isFavorite(exp.id)}
-              onToggleFavorite={() => toggle(exp.id)}
-            />
+            <View key={exp.id} style={styles.gridCell}>
+              <ExperienceCard
+                experience={exp}
+                variant="tile"
+                onPress={() => open(exp.id)}
+                isFavorite={isFavorite(exp.id)}
+                onToggleFavorite={() => toggle(exp.id)}
+              />
+            </View>
           ))}
         </View>
       ) : (
@@ -123,5 +124,6 @@ const styles = StyleSheet.create({
   heroTagline: { ...type.body, color: colors.textSecondary },
   heroMeta: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: space.sm },
   heroMetaText: { ...type.caption, color: colors.textMuted },
-  list: { gap: 2 },
+  grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
+  gridCell: { flexGrow: 1, flexBasis: 160, minWidth: 150, maxWidth: "100%" },
 });

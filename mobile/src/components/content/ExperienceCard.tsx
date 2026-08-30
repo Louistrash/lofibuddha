@@ -100,9 +100,20 @@ export function ExperienceCard({
         <View style={[styles.pill, { borderColor: tint(accent, 0.45) }]}>
           <Text style={[styles.pillText, { color: accent }]}>{experience.duration}</Text>
         </View>
-        {experience.special ? (
-          <Icon name="timer" size={15} color={colors.textSecondary} />
-        ) : null}
+        <View style={styles.tileTopRight}>
+          {experience.special ? (
+            <Icon name="timer" size={15} color={colors.textSecondary} />
+          ) : null}
+          {onToggleFavorite ? (
+            <Pressable onPress={onToggleFavorite} hitSlop={10}>
+              <Icon
+                name={isFavorite ? "heart" : "heartOutline"}
+                size={17}
+                color={isFavorite ? accent : colors.textMuted}
+              />
+            </Pressable>
+          ) : null}
+        </View>
       </View>
 
       <View style={styles.tileBottom}>
@@ -161,6 +172,7 @@ const styles = StyleSheet.create({
   // the outer petals sweep through the corner.
   mandala: { position: "absolute", top: -116, right: -104 },
   tileTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  tileTopRight: { flexDirection: "row", alignItems: "center", gap: space.sm },
   pill: {
     paddingHorizontal: space.md,
     paddingVertical: 3,
