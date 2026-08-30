@@ -67,7 +67,7 @@ async function tts(text, outPath) {
     body: JSON.stringify({
       text,
       model_id: "eleven_v3",
-      voice_settings: { stability: 0.45, similarity_boost: 0.75, style: 0.2, use_speaker_boost: true },
+      voice_settings: { stability: 0.5, similarity_boost: 0.72, style: 0.1, use_speaker_boost: false },
     }),
   });
   if (!res.ok) throw new Error(`ElevenLabs ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -88,7 +88,7 @@ for (let i = 0; i < med.segments.length; i++) {
   const f = join(TMP, `${id}-seg${i}-norm.mp3`);
   execFileSync("ffmpeg", [
     "-y", "-v", "error", "-i", rawF,
-    "-af", "loudnorm=I=-23:TP=-1.5:LRA=11",
+    "-af", "highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11",
     "-c:a", "libmp3lame", "-b:a", "192k", f,
   ]);
   segFiles.push(f);
