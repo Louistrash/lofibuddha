@@ -28,7 +28,7 @@ export const WORKSHOPS: Workshop[] = [
     duration: "20 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
-    background: "ocean-waves",
+    background: "temple-rain",
     introPause: 25,
     segments: [
       {
