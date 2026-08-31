@@ -49,7 +49,7 @@ while ((m = blockRe.exec(ts)) !== null) {
     while ((s = segRe.exec(m[2])) !== null) {
       segments.push({ text: s[1].replace(/\\"/g, '"'), pauseAfter: Number(s[2]) });
     }
-    med = { id, introPause: Number((m[0].match(/introPause:\s*(\d+)/) || [0, 0])[1]), segments };
+    med = { id, introPause: Number((m[0].match(/introPause:\s*(\d+)/) || [0, 0])[1]), noChime: /noChime:\s*true/.test(m[0]), segments };
     break;
   }
 }
@@ -91,7 +91,7 @@ for (let i = 0; i < med.segments.length; i++) {
 const chime = join(ROOT, "data", "breathe", "audio", "chime.mp3");
 const concatList = join(TMP, `${id}-list.txt`);
 const parts = [];
-if (existsSync(chime)) parts.push(`file '${chime}'`);
+if (existsSync(chime) && !med.noChime) parts.push(`file '${chime}'`);
 if (med.introPause > 0) parts.push(`file '${join(TMP, 'silence-' + med.introPause + '.mp3')}'`);
 for (const [i, f] of segFiles.entries()) {
   parts.push(`file '${f}'`);

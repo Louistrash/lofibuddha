@@ -16,6 +16,8 @@ export interface Meditation {
   /** Seconds of silence after the chime, before the voice begins — lets the
    *  user settle in / put the device down. */
   introPause?: number;
+  /** Skip the 10s chime entirely (e.g. voice must start at an exact time). */
+  noChime?: boolean;
   segments: MeditationSegment[];
 }
 
@@ -259,6 +261,28 @@ export const MEDITATIONS: Meditation[] = [
       { text: "Notice what you are holding. The tension in your shoulders.", pauseAfter: 4 },
       { text: "Soften. Release.", pauseAfter: 4 },
       { text: "You do not have to carry it anymore.", pauseAfter: 6 },
+    ],
+  },
+  {
+    id: "stop-for-a-moment",
+    title: "Stop for a Moment",
+    description: "A minute of presence — nothing to solve, nowhere to become.",
+    duration: "1 min",
+    theme: "Presence",
+    background: "temple-ambience",
+    introPause: 7,
+    noChime: true,
+    segments: [
+      { text: "Stop for a moment.", pauseAfter: 4 },
+      { text: "You don't have to solve everything today.", pauseAfter: 6 },
+      { text: "Take a slow breath.", pauseAfter: 5 },
+      { text: "Feel the air entering your body.", pauseAfter: 2 },
+      { text: "Feel it leaving.", pauseAfter: 6 },
+      { text: "Let this moment be enough.", pauseAfter: 7 },
+      { text: "What happened before is gone.", pauseAfter: 4 },
+      { text: "What comes next has not arrived.", pauseAfter: 7 },
+      { text: "Right now, you are here.", pauseAfter: 4 },
+      { text: "And here, there is nothing you need to become.", pauseAfter: 8 },
     ],
   },
 ];
