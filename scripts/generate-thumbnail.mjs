@@ -80,13 +80,6 @@ function thumbnailHTML({ title, subtitle, bgPath }) {
     border-radius: 2px;
   }
 
-  /* Bodhi icon / emoji */
-  .emoji-accent {
-    position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 64px; z-index: 2;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
-  }
-
   /* Title */
   .title-wrap {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -154,7 +147,6 @@ function thumbnailHTML({ title, subtitle, bgPath }) {
   <div class="corner-tl"></div>
   <div class="corner-br"></div>
   <div class="accent-line"></div>
-  <div class="emoji-accent">🧘</div>
   <div class="badge">YOGA &amp; MINDFULNESS</div>
   <div class="title-wrap">
     <div class="title">${safeTitle}</div>
