@@ -230,7 +230,7 @@ export const MEDITATIONS: Meditation[] = [
     segments: [
       { text: "Slowly breathe in through your nose.", pauseAfter: 4 },
       { text: "Hold it for a moment.", pauseAfter: 4 },
-      { text: "And let it all go.", pauseAfter: 6 },
+      { text: "And let it all go.", pauseAfter: 12 },
     ],
   },
   {
