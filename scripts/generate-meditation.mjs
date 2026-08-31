@@ -4,12 +4,11 @@
  *
  * Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]
  *
- * De hele meditatie wordt in EEN doorlopende TTS-take gesproken — dat houdt de
- * intonatie en de woorden volledig (per-zin concat sneed de audio af). Pauzes
- * komen van de interpunctie in de tekst; alleen de chime en de intro-stilte
- * worden er apart omheen gezet.
+ * Simpel en robuust: de hele meditatie wordt in één take ingesproken, daarna
+ * alleen een de-esser (tegen sibilantie) en een piek-normalisatie (voorkomt
+ * clipping). Geen loudnorm, geen fades, geen per-zin concat — dat brak de audio.
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { execFileSync, spawnSync } from "child_process";
@@ -23,29 +22,26 @@ const TMP = join(AUDIO_DIR, ".tmp");
 mkdirSync(TMP, { recursive: true });
 
 if (!id) {
-  console.error("Gebruik: node scripts/generate-meditation.mjs <id> [source]");
+  console.error("Geef een id op: node scripts/generate-meditation.mjs <id>");
   process.exit(1);
 }
 
-// --- .env lezen ---
+// --- .env laden (ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID) ---
 const env = {};
 for (const line of readFileSync(join(ROOT, ".env"), "utf-8").split("\n")) {
-  const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
-  if (m) env[m[1]] = m[2].trim();
+  const eq = line.indexOf("=");
+  if (eq > 0) env[line.slice(0, eq).trim()] = line.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
 }
 const API_KEY = env.ELEVENLABS_API_KEY;
-const VOICE_ID = env.ELEVENLABS_VOICE_ID || "iJkzOEXKLoZ6ZquIAnOA";
-if (!API_KEY) {
-  console.error("ELEVENLABS_API_KEY ontbreekt in .env");
+const VOICE_ID = env.ELEVENLABS_VOICE_ID;
+if (!API_KEY || !VOICE_ID) {
+  console.error("ELEVENLABS_API_KEY of ELEVENLABS_VOICE_ID ontbreekt in .env");
   process.exit(1);
 }
 
-// --- Meditatie uit de bron parsen ---
-const srcFile =
-  source === "focus" ? "focus-guides.ts" :
-  source === "workshops" ? "workshops.ts" : "meditations.ts";
+// --- Parse de meditatie uit packages/shared ---
+const srcFile = source === "focus" ? "focus-guides.ts" : source === "workshops" ? "workshops.ts" : "meditations.ts";
 const ts = readFileSync(join(ROOT, "packages", "shared", "src", srcFile), "utf-8");
-
 const blockRe = /\{\s*id:\s*"([^"]+)",[\s\S]*?segments:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
 let m, med = null;
 while ((m = blockRe.exec(ts)) !== null) {
@@ -65,52 +61,50 @@ while ((m = blockRe.exec(ts)) !== null) {
     break;
   }
 }
-if (!med) {
-  console.error(`Meditatie '${id}' niet gevonden in ${srcFile}`);
+if (!med || med.segments.length === 0) {
+  console.error(`Meditatie '${id}' niet gevonden (of geen segments).`);
   process.exit(1);
 }
 
-// --- TTS (één doorlopende take) ---
-const fullText = med.segments.map((s) => s.text).join(" ");
-console.log(`🎙️  Eén doorlopende take (${fullText.length} tekens)…`);
-const rawVoice = join(TMP, `${id}-voice.mp3`);
-{
+// --- TTS: één doorlopende take ---
+async function tts(text, outPath) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
     method: "POST",
     headers: { "xi-api-key": API_KEY, "Content-Type": "application/json" },
     body: JSON.stringify({
-      text: fullText,
+      text,
       model_id: "eleven_v3",
       voice_settings: { stability: 0.5, similarity_boost: 0.72, style: 0.1, use_speaker_boost: false },
     }),
   });
   if (!res.ok) {
-    console.error(`ElevenLabs ${res.status}: ${await res.text()}`);
-    process.exit(1);
+    const body = await res.text();
+    throw new Error(`ElevenLabs ${res.status}: ${body.slice(0, 200)}`);
   }
-  writeFileSync(rawVoice, Buffer.from(await res.arrayBuffer()));
+  writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-// --- Two-pass loudnorm + warmte-EQ ---
-const probe = spawnSync("ffmpeg", [
-  "-i", rawVoice,
-  "-af", "loudnorm=I=-23:TP=-1.5:LRA=11:print_format=json",
-  "-f", "null", "-",
-], { encoding: "utf-8" });
-const probeOut = (probe.stderr || "") + (probe.stdout || "");
-const jm = probeOut.match(/\{[\s\S]*?"input_i"[\s\S]*?\}/);
-if (!jm) throw new Error("loudnorm probe mislukt");
-const lm = JSON.parse(jm[0]);
+console.log(`🎙️  Eén doorlopende take (stem ${VOICE_ID})…`);
+const fullText = med.segments.map((s) => s.text).join(" ");
+const raw = join(TMP, `${id}-raw.mp3`);
+await tts(fullText, raw);
 
-const voice = join(TMP, `${id}-voice-norm.mp3`);
+// --- Peak-normalisatie: alleen verlagen om clipping te voorkomen ---
+const probe = spawnSync("ffmpeg", ["-i", raw, "-af", "volumedetect", "-f", "null", "-"], { encoding: "utf-8" });
+const maxMatch = (probe.stderr || "").match(/max_volume:\s*(-?[\d.]+) dB/);
+const maxDb = maxMatch ? Number(maxMatch[1]) : -3;
+const gain = Math.min(0, -3 - maxDb); // nooit verhogen, alleen terugdraaien naar -3dB piek
+console.log(`   piek ${maxDb}dB → gain ${gain.toFixed(1)}dB`);
+
+const norm = join(TMP, `${id}-norm.mp3`);
 execFileSync("ffmpeg", [
-  "-y", "-v", "error", "-i", rawVoice,
-  "-af", `highshelf=f=6000:g=-4.5:t=q,lowpass=f=14000,bass=g=+1.5,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${lm.input_i}:measured_TP=${lm.input_tp}:measured_LRA=${lm.input_lra}:measured_thresh=${lm.input_thresh}:offset=${lm.target_offset}:linear=true`,
+  "-y", "-v", "error", "-i", raw,
+  "-af", `highshelf=f=6000:g=-4.5:t=q,lowpass=f=14000${gain !== 0 ? `,volume=${gain.toFixed(1)}dB` : ""}`,
   "-ar", "44100",
-  "-c:a", "libmp3lame", "-b:a", "192k", voice,
+  "-c:a", "libmp3lame", "-b:a", "192k", norm,
 ]);
 
-// --- Chime + intro-stilte + de stem samenvoegen ---
+// --- Chime (optioneel) + intro-stilte + de stem ---
 const chime = join(ROOT, "data", "breathe", "audio", "chime.mp3");
 const concatList = join(TMP, `${id}-list.txt`);
 const parts = [];
@@ -123,16 +117,13 @@ if (med.introPause > 0) {
   }
   parts.push(`file '${sp}'`);
 }
-parts.push(`file '${voice}'`);
+parts.push(`file '${norm}'`);
 writeFileSync(concatList, parts.join("\n") + "\n");
 
 const out = join(AUDIO_DIR, id + ".mp3");
-execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList,
-  "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "192k", out]);
+execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "192k", out]);
 
 // cleanup
-for (const f of [rawVoice, voice, concatList]) {
-  try { execFileSync("rm", ["-f", f]); } catch {}
-}
+try { execFileSync("rm", ["-f", raw, norm, concatList]); } catch {}
 
-console.log(`✅ ${out} — klaar.`);
+console.log(`✅ ${out}`);
