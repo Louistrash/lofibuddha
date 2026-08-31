@@ -105,7 +105,7 @@ const lm = JSON.parse(jm[0]);
 const voice = join(TMP, `${id}-voice-norm.mp3`);
 execFileSync("ffmpeg", [
   "-y", "-v", "error", "-i", rawVoice,
-  "-af", `highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${lm.input_i}:measured_TP=${lm.input_tp}:measured_LRA=${lm.input_lra}:measured_thresh=${lm.input_thresh}:offset=${lm.target_offset}:linear=true`,
+  "-af", `highshelf=f=6000:g=-4.5:t=q,lowpass=f=14000,bass=g=+1.5,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${lm.input_i}:measured_TP=${lm.input_tp}:measured_LRA=${lm.input_lra}:measured_thresh=${lm.input_thresh}:offset=${lm.target_offset}:linear=true`,
   "-ar", "44100",
   "-c:a", "libmp3lame", "-b:a", "192k", voice,
 ]);
