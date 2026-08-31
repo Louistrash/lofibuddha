@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /**
  * Genereer een geleide meditatie audio via ElevenLabs TTS.
- * Leest de segments uit src/lib/meditations.ts en bouwt:
- *   [chime 10s] segment1 [stilte] segment2 [stilte] ... 
- * Gebruik: node scripts/generate-meditation.mjs <meditation-id>
- *          node scripts/generate-meditation.mjs body-scan
+ *
+ * Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]
+ *
+ * Natuurlijke timing: de hele meditatie wordt in één doorlopende take gesproken
+ * (niet per zin geplakt). De intonatie loopt daardoor door en de stem neemt haar
+ * eigen ademruimte bij punten en ellipses. Alleen de chime en de intro-pauze
+ * worden als losse stilte toegevoegd.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
@@ -17,9 +20,6 @@ const id = process.argv[2];
 const source = process.argv[3] || "meditations"; // "meditations" | "focus" | "workshops"
 if (!id) { console.error("Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]"); process.exit(1); }
 
-// Workshops audio gaat voorlopig naar de meditations-dir, zodat de bestaande
-// /api/meditations/audio/<id> route hem direct serveert (proef). Bij uitrol:
-// eigen data/workshops/audio/ + route.
 const AUDIO_DIR = join(ROOT, "data", source === "focus" ? "focus" : "meditations", "audio");
 mkdirSync(AUDIO_DIR, { recursive: true });
 const TMP = join(ROOT, "data", "meditations", ".tmp");
@@ -34,8 +34,7 @@ const API_KEY = env.ELEVENLABS_API_KEY;
 const VOICE_ID = env.ELEVENLABS_VOICE_ID || "iJkzOEXKLoZ6ZquIAnOA";
 if (!API_KEY) { console.error("❌ ELEVENLABS_API_KEY niet gevonden"); process.exit(1); }
 
-// Parse meditations/focus-guides/workshops uit de juiste bron.
-// NB: deze bestanden zijn verhuisd van src/lib/ naar packages/shared/src/.
+// Parse meditations/focus-guides/workshops uit packages/shared/src/.
 const srcFile =
   source === "focus" ? "focus-guides.ts" :
   source === "workshops" ? "workshops.ts" :
@@ -45,8 +44,6 @@ const blockRe = /\{\s*id:\s*"([^"]+)",[\s\S]*?segments:\s*\[([\s\S]*?)\]\s*,?\s*
 let m, med = null;
 while ((m = blockRe.exec(ts)) !== null) {
   if (m[1] === id) {
-    // Optional trailing comma after pauseAfter: meditations are single-line,
-    // workshops are multi-line and keep the trailing comma.
     const segRe = /\{\s*text:\s*"((?:[^"\\]|\\.)*)",\s*pauseAfter:\s*(\d+)\s*,?\s*\}/g;
     const segments = [];
     let s;
@@ -74,62 +71,71 @@ async function tts(text, outPath) {
   writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-// 1) Genereer elk segment en normaliseer de STEM vóór het mengen.
-//    Normaliseren op de eindtrack faalt: de pauzes (8-16s stilte) trekken de
-//    gemeten luidheid omlaag, dus een genormaliseerde stem klinkt alsnog zacht.
-//    Per segment loudnormen houdt elke stem op -23 LUFS, onafhankelijk van
-//    hoeveel stilte er volgt.
-const segFiles = [];
-for (let i = 0; i < med.segments.length; i++) {
-  const seg = med.segments[i];
-  const rawF = join(TMP, `${id}-seg${i}.mp3`);
-  console.log(`🎙️  Segment ${i + 1}/${med.segments.length}...`);
-  await tts(seg.text, rawF);
-  const f = join(TMP, `${id}-seg${i}-norm.mp3`);
+// 1) Eén doorlopende take. De ellipses en punten in de tekst geven de stem haar
+//    eigen ademruimte, zodat het als één gesproken meditatie klinkt i.p.v. losse
+//    fragmenten met harde stiltes. Split alleen bij de TTS-tekstlimiet (~5k chars)
+//    op een zinsgrens.
+const fullText = med.segments.map(s => s.text).join(" ");
+
+function splitChunks(text, max = 4600) {
+  if (text.length <= max) return [text];
+  const chunks = [];
+  let rest = text;
+  while (rest.length > max) {
+    let cut = rest.lastIndexOf(". ", max);
+    if (cut < max * 0.5) cut = rest.lastIndexOf(" ", max);
+    if (cut <= 0) cut = max;
+    chunks.push(rest.slice(0, cut + 1).trim());
+    rest = rest.slice(cut + 1).trim();
+  }
+  if (rest) chunks.push(rest);
+  return chunks;
+}
+const chunks = splitChunks(fullText);
+console.log(`🎙️  ${chunks.length} take(s)…`);
+
+const voiceFiles = [];
+for (let i = 0; i < chunks.length; i++) {
+  const rawF = join(TMP, `${id}-chunk${i}.mp3`);
+  await tts(chunks[i], rawF);
+  const f = join(TMP, `${id}-chunk${i}-norm.mp3`);
+  // warme EQ + loudnorm + een zachte fade-out aan het einde van de laatste take.
+  const isLast = i === chunks.length - 1;
+  const filters = "highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11"
+    + (isLast ? ",afade=t=out:d=0.6" : "");
   execFileSync("ffmpeg", [
     "-y", "-v", "error", "-i", rawF,
-    "-af", "highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11",
+    "-af", filters,
     "-c:a", "libmp3lame", "-b:a", "192k", f,
   ]);
-  segFiles.push(f);
+  voiceFiles.push(f);
 }
 
-// 2) Bouw de volledige meditatie: chime + intro-stilte + segmenten met stilte ertussen
-//    Chime = data/breathe/audio/chime.mp3 (10s)
+// 2) Chime + intro-stilte + de doorlopende stem.
 const chime = join(ROOT, "data", "breathe", "audio", "chime.mp3");
 const concatList = join(TMP, `${id}-list.txt`);
 const parts = [];
 if (existsSync(chime)) parts.push(`file '${chime}'`);
-// Intro pause lets the user put the device down and settle before the voice.
-if (med.introPause > 0) parts.push(`file '${join(TMP, 'silence-' + med.introPause + '.mp3')}'`);
-for (const [i, f] of segFiles.entries()) {
-  parts.push(`file '${f}'`);
-  const pause = med.segments[i].pauseAfter;
-  if (pause > 0) parts.push(`file '${join(TMP, 'silence-' + pause + '.mp3')}'`);
-}
-// pre-make silence files
-const silences = new Set(med.segments.map(s => s.pauseAfter).filter(p => p > 0));
-if (med.introPause > 0) silences.add(med.introPause);
-for (const p of silences) {
-  const sp = join(TMP, `silence-${p}.mp3`);
+if (med.introPause > 0) {
+  const sp = join(TMP, `silence-${med.introPause}.mp3`);
   if (!existsSync(sp)) {
-    execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "lavfi", "-i", `anullsrc=r=44100:cl=mono`,
-      "-t", String(p), "-c:a", "libmp3lame", "-b:a", "128k", sp]);
+    execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
+      "-t", String(med.introPause), "-c:a", "libmp3lame", "-b:a", "128k", sp]);
   }
+  parts.push(`file '${sp}'`);
 }
+for (const f of voiceFiles) parts.push(`file '${f}'`);
 writeFileSync(concatList, parts.join("\n") + "\n");
 
 const raw = join(TMP, `${id}-raw.mp3`);
 execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-c:a", "libmp3lame", "-b:a", "192k", raw]);
 
-// 3) Segments zijn al per-stem genormaliseerd; de eindtrack alleen concat-en.
-//    (De oude loudnorm op de eindtrack telde de pauzes mee en dempte de stem.)
 const out = join(AUDIO_DIR, id + ".mp3");
 execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-c:a", "copy", out]);
 
 // cleanup
-for (const f of segFiles) { try { execFileSync("rm", ["-f", f]); } catch {} }
-for (let i = 0; i < med.segments.length; i++) { try { execFileSync("rm", ["-f", join(TMP, `${id}-seg${i}.mp3`)]); } catch {} }
+for (const f of voiceFiles) { try { execFileSync("rm", ["-f", f]); } catch {} }
+for (let i = 0; i < chunks.length; i++) { try { execFileSync("rm", ["-f", join(TMP, `${id}-chunk${i}.mp3`)]); } catch {} }
 try { execFileSync("rm", ["-f", concatList, raw]); } catch {}
 
 const dur = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out], { encoding: "utf-8" }).trim();
