@@ -230,9 +230,8 @@ export const MEDITATIONS: Meditation[] = [
     background: "ocean-waves",
     introPause: 3,
     segments: [
-      { text: "Slowly breathe in through your nose.", pauseAfter: 4 },
-      { text: "Hold it for a moment.", pauseAfter: 4 },
-      { text: "And let it all go.", pauseAfter: 12 },
+      { text: "Slowly breathe in through your nose, and hold it for a moment.", pauseAfter: 4 },
+      { text: "And when you are ready, let it all go.", pauseAfter: 12 }
     ],
   },
   {
@@ -244,9 +243,8 @@ export const MEDITATIONS: Meditation[] = [
     background: "temple-ambience",
     introPause: 3,
     segments: [
-      { text: "Feel your feet on the ground.", pauseAfter: 4 },
-      { text: "Feel the weight of your body, held by the earth.", pauseAfter: 4 },
-      { text: "You are here. You are safe.", pauseAfter: 6 },
+      { text: "Feel your feet on the ground, and the weight of your body, held gently by the earth.", pauseAfter: 4 },
+      { text: "You are here, and you are safe.", pauseAfter: 6 }
     ],
   },
   {
@@ -258,9 +256,8 @@ export const MEDITATIONS: Meditation[] = [
     background: "ocean-waves",
     introPause: 3,
     segments: [
-      { text: "Notice what you are holding. The tension in your shoulders.", pauseAfter: 4 },
-      { text: "Soften. Release.", pauseAfter: 4 },
-      { text: "You do not have to carry it anymore.", pauseAfter: 6 },
+      { text: "Notice what you are holding, the tension in your shoulders, and gently soften, release.", pauseAfter: 4 },
+      { text: "You do not have to carry it anymore.", pauseAfter: 6 }
     ],
   },
   {
@@ -273,16 +270,11 @@ export const MEDITATIONS: Meditation[] = [
     introPause: 7,
     noChime: true,
     segments: [
-      { text: "Stop for a moment.", pauseAfter: 4 },
-      { text: "You don't have to solve everything today.", pauseAfter: 6 },
-      { text: "Take a slow breath.", pauseAfter: 5 },
-      { text: "Feel the air entering your body.", pauseAfter: 2 },
-      { text: "Feel it leaving.", pauseAfter: 6 },
+      { text: "Stop for a moment, because you don't have to solve everything today.", pauseAfter: 6 },
+      { text: "Take a slow breath, and feel the air entering your body, and leaving again.", pauseAfter: 6 },
       { text: "Let this moment be enough.", pauseAfter: 7 },
-      { text: "What happened before is gone.", pauseAfter: 4 },
-      { text: "What comes next has not arrived.", pauseAfter: 7 },
-      { text: "Right now, you are here.", pauseAfter: 4 },
-      { text: "And here, there is nothing you need to become.", pauseAfter: 8 },
+      { text: "What happened before is gone, and what comes next has not arrived.", pauseAfter: 7 },
+      { text: "Right now, you are here, and here there is nothing you need to become.", pauseAfter: 8 }
     ],
   },
 
@@ -296,14 +288,10 @@ export const MEDITATIONS: Meditation[] = [
     noChime: true,
     introPause: 7,
     segments: [
-      { text: "Close your eyes.", pauseAfter: 4 },
-      { text: "For a few seconds, forget the world outside.", pauseAfter: 6 },
-      { text: "Listen to your breath.", pauseAfter: 4 },
-      { text: "Listen to the silence between your thoughts.", pauseAfter: 7 },
-      { text: "Peace is not something you find.", pauseAfter: 5 },
-      { text: "It is something you uncover when you stop chasing everything else.", pauseAfter: 7 },
-      { text: "Be still.", pauseAfter: 5 },
-      { text: "And allow yourself to simply be.", pauseAfter: 8 },
+      { text: "Close your eyes gently, and for a few seconds, let the world outside drift away.", pauseAfter: 6 },
+      { text: "Can you listen to your breath, and hear the silence between your thoughts?", pauseAfter: 7 },
+      { text: "Peace is not something you find, but something you uncover when you stop chasing everything else.", pauseAfter: 7 },
+      { text: "Be still, softly, and allow yourself to simply be.", pauseAfter: 8 }
     ],
   },
   {
@@ -316,14 +304,10 @@ export const MEDITATIONS: Meditation[] = [
     noChime: true,
     introPause: 7,
     segments: [
-      { text: "For the next few minutes, you need nothing else.", pauseAfter: 6 },
-      { text: "One breath. One thought. One action.", pauseAfter: 6 },
-      { text: "Don't think about the entire journey.", pauseAfter: 5 },
-      { text: "Simply take the next step.", pauseAfter: 6 },
+      { text: "For the next few minutes, you need nothing else, just one breath, one thought, one action.", pauseAfter: 6 },
+      { text: "Don't think about the entire journey, simply take the next step.", pauseAfter: 6 },
       { text: "When your attention is complete, even a small moment becomes powerful.", pauseAfter: 7 },
-      { text: "Be here.", pauseAfter: 4 },
-      { text: "Do what is in front of you.", pauseAfter: 5 },
-      { text: "Let everything else wait.", pauseAfter: 8 },
+      { text: "Be here, do what is in front of you, and let everything else wait.", pauseAfter: 8 }
     ],
   },
   {
@@ -336,14 +320,10 @@ export const MEDITATIONS: Meditation[] = [
     noChime: true,
     introPause: 7,
     segments: [
-      { text: "You spend so much time trying to become someone.", pauseAfter: 5 },
-      { text: "More successful. More peaceful. More worthy.", pauseAfter: 6 },
-      { text: "But for this moment, stop trying.", pauseAfter: 6 },
-      { text: "Breathe.", pauseAfter: 5 },
-      { text: "You are already here.", pauseAfter: 5 },
-      { text: "You are already alive.", pauseAfter: 6 },
-      { text: "Perhaps peace begins when you stop asking whether you are enough.", pauseAfter: 5 },
-      { text: "And simply experience that you are.", pauseAfter: 8 },
+      { text: "You spend so much time trying to become someone, more successful, more peaceful, more worthy.", pauseAfter: 6 },
+      { text: "But for this moment, just stop trying, and breathe.", pauseAfter: 6 },
+      { text: "You are already here. You are already alive.", pauseAfter: 6 },
+      { text: "Perhaps peace begins when you stop asking whether you are enough, and simply experience that you are.", pauseAfter: 8 }
     ],
   },
 ];
