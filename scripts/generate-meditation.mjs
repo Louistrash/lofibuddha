@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import { execFileSync } from "child_process";
+import { execFileSync, spawnSync } from "child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -78,10 +78,24 @@ for (let i = 0; i < med.segments.length; i++) {
   const rawF = join(TMP, `${id}-seg${i}.mp3`);
   console.log(`🎙️  Segment ${i + 1}/${med.segments.length}…`);
   await tts(seg.text, rawF);
+
+  // Two-pass loudnorm: meet eerst de luidheid, pas dan exact toe.
+  // Single-pass dempte korte zinnen onbetrouwbaar (~-36dB).
+  const probe = spawnSync("ffmpeg", [
+    "-i", rawF,
+    "-af", "loudnorm=I=-23:TP=-1.5:LRA=11:print_format=json",
+    "-f", "null", "-",
+  ], { encoding: "utf-8" });
+  const out = (probe.stderr || "") + (probe.stdout || "");
+  const jm = out.match(/\{[\s\S]*?"input_i"[\s\S]*?\}/);
+  if (!jm) throw new Error("loudnorm probe mislukt");
+  const m = JSON.parse(jm[0]);
+
   const f = join(TMP, `${id}-seg${i}-norm.mp3`);
   execFileSync("ffmpeg", [
     "-y", "-v", "error", "-i", rawF,
-    "-af", "afade=t=in:d=0.08,highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11,afade=t=out:d=0.8",
+    "-af", `afade=t=in:d=0.08,highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true,apad=pad_dur=0.5`,
+    "-ar", "44100",
     "-c:a", "libmp3lame", "-b:a", "192k", f,
   ]);
   segFiles.push(f);
@@ -110,7 +124,7 @@ for (const p of silences) {
 writeFileSync(concatList, parts.join("\n") + "\n");
 
 const raw = join(TMP, `${id}-raw.mp3`);
-execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-c:a", "libmp3lame", "-b:a", "192k", raw]);
+execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "192k", raw]);
 
 const out = join(AUDIO_DIR, id + ".mp3");
 execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-c:a", "copy", out]);
