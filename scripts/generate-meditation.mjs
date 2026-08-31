@@ -94,7 +94,7 @@ for (let i = 0; i < med.segments.length; i++) {
   const f = join(TMP, `${id}-seg${i}-norm.mp3`);
   execFileSync("ffmpeg", [
     "-y", "-v", "error", "-i", rawF,
-    "-af", `afade=t=in:d=0.08,highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true,apad=pad_dur=0.5`,
+    "-af", `highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true,apad=pad_dur=0.5`,
     "-ar", "44100",
     "-c:a", "libmp3lame", "-b:a", "192k", f,
   ]);
