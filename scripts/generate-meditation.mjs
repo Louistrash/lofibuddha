@@ -93,13 +93,13 @@ await tts(fullText, raw);
 const probe = spawnSync("ffmpeg", ["-i", raw, "-af", "volumedetect", "-f", "null", "-"], { encoding: "utf-8" });
 const maxMatch = (probe.stderr || "").match(/max_volume:\s*(-?[\d.]+) dB/);
 const maxDb = maxMatch ? Number(maxMatch[1]) : -3;
-const gain = Math.min(0, -3 - maxDb); // nooit verhogen, alleen terugdraaien naar -3dB piek
+const gain = Math.min(0, -7 - maxDb); // nooit verhogen, alleen terugdraaien naar -7dB piek (match short2)
 console.log(`   piek ${maxDb}dB → gain ${gain.toFixed(1)}dB`);
 
 const norm = join(TMP, `${id}-norm.mp3`);
 execFileSync("ffmpeg", [
   "-y", "-v", "error", "-i", raw,
-  "-af", `highshelf=f=6000:g=-4.5:t=q,lowpass=f=14000${gain !== 0 ? `,volume=${gain.toFixed(1)}dB` : ""}`,
+  "-af", `${gain !== 0 ? `volume=${gain.toFixed(1)}dB` : "anull"}`,
   "-ar", "44100",
   "-c:a", "libmp3lame", "-b:a", "192k", norm,
 ]);
