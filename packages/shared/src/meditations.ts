@@ -228,8 +228,8 @@ export const MEDITATIONS: Meditation[] = [
     background: "ocean-waves",
     introPause: 3,
     segments: [
-      { text: "Breathe in, slowly... through your nose.", pauseAfter: 4 },
-      { text: "Hold it, just for a moment...", pauseAfter: 4 },
+      { text: "Breathe in slowly through your nose.", pauseAfter: 4 },
+      { text: "Hold it for a moment.", pauseAfter: 4 },
       { text: "And let it all go.", pauseAfter: 6 },
     ],
   },
@@ -243,7 +243,7 @@ export const MEDITATIONS: Meditation[] = [
     introPause: 3,
     segments: [
       { text: "Feel your feet on the ground.", pauseAfter: 4 },
-      { text: "Feel the weight of your body... held by the earth.", pauseAfter: 4 },
+      { text: "Feel the weight of your body, held by the earth.", pauseAfter: 4 },
       { text: "You are here. You are safe.", pauseAfter: 6 },
     ],
   },
@@ -256,9 +256,9 @@ export const MEDITATIONS: Meditation[] = [
     background: "ocean-waves",
     introPause: 3,
     segments: [
-      { text: "Notice what you are holding... the tension in your shoulders.", pauseAfter: 4 },
+      { text: "Notice what you are holding. The tension in your shoulders.", pauseAfter: 4 },
       { text: "Soften. Release.", pauseAfter: 4 },
-      { text: "You don't have to carry it anymore.", pauseAfter: 6 },
+      { text: "You do not have to carry it anymore.", pauseAfter: 6 },
     ],
   },
 ];
