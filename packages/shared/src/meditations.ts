@@ -28,7 +28,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Breathe with the tide — a slow return to the deep, calm water inside you.",
     duration: "6 min",
     theme: "Breath",
-    background: "temple-rain",
+    background: "off",
     introPause: 20,
     segments: [
       { text: "Come into stillness. Let your body settle, like a stone returning to the sand. There is a shore, and there is you. The tide is already breathing.", pauseAfter: 14 },
@@ -47,7 +47,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Rest in the silence between breaths — your true home.",
     duration: "2 min",
     theme: "Stillness",
-    background: "temple-rain",
+    background: "off",
     introPause: 15,
     segments: [
       { text: "Sit comfortably. Close your eyes. There is nowhere to go, and nothing to do. Just sit.", pauseAfter: 8 },
@@ -62,7 +62,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Notice the breath — the most intimate gift of existence.",
     duration: "2 min",
     theme: "Breath",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "Close your eyes. Turn your attention inward. The breath is the most intimate thing you have.", pauseAfter: 8 },
       { text: "Without it, you cannot be here for even a moment. Yet you never notice it. Now, notice it.", pauseAfter: 12 },
@@ -76,7 +76,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Release every weight — only this moment is real.",
     duration: "2 min",
     theme: "Release",
-    background: "temple-rain",
+    background: "off",
     introPause: 15,
     segments: [
       { text: "Sit quietly. Close your eyes. Notice where you are holding tension. In your shoulders. In your jaw. In your belly.", pauseAfter: 8 },
@@ -91,7 +91,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "A quiet thankfulness for all that works for you.",
     duration: "2 min",
     theme: "Gratitude",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "Close your eyes. Sit with a sense of ease. Think of everything that had to happen for you to be here, in this moment.", pauseAfter: 8 },
       { text: "The sun that gives warmth. The air that fills your lungs. The heart that beats without your effort.", pauseAfter: 12 },
@@ -105,7 +105,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Watch your thoughts — you are the sky, not the clouds.",
     duration: "2 min",
     theme: "Awareness",
-    background: "temple-rain",
+    background: "off",
     introPause: 15,
     segments: [
       { text: "Close your eyes. Settle into stillness. Now, watch your thoughts. Do not stop them. Do not follow them. Just watch.", pauseAfter: 8 },
@@ -120,7 +120,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Travel slowly through the body, releasing tension as you go.",
     duration: "3 min",
     theme: "Relax",
-    background: "temple-rain",
+    background: "off",
     introPause: 15,
     segments: [
       { text: "Lie down, or sit comfortably. Close your eyes. Let your body be completely supported by the ground beneath you.", pauseAfter: 10 },
@@ -137,7 +137,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Let go of the day and sink into deep, restful sleep.",
     duration: "2 min",
     theme: "Sleep",
-    background: "temple-rain",
+    background: "off",
     introPause: 15,
     segments: [
       { text: "Close your eyes. Let the day fall away. You have done enough. Now it is time to rest.", pauseAfter: 10 },
@@ -152,7 +152,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Begin the day awake to all that is already working for you.",
     duration: "2 min",
     theme: "Morning",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "You are awake. The night has passed, and you are here, in a brand new day. Before anything else, just sit with that. You are here.", pauseAfter: 8 },
       { text: "The sun is rising, whether you see it or not. The earth is turning, the air is moving, your heart is beating. So much is working for you, without you even asking.", pauseAfter: 12 },
@@ -167,7 +167,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "May you be happy, may you be safe, may you be at ease.",
     duration: "3 min",
     theme: "Compassion",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "Sit comfortably. Soften your eyes, soften your shoulders. Bring your hands to your heart, or simply rest them. This practice is about warmth — for yourself, first.", pauseAfter: 8 },
       { text: "Repeat slowly, in your mind: May I be happy. May I be safe. May I be healthy. May I live with ease. Feel each phrase like a gentle touch on your own heart.", pauseAfter: 16 },
@@ -182,7 +182,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Turn the same kindness you give others toward yourself.",
     duration: "3 min",
     theme: "Compassion",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "Close your eyes. Notice how you talk to yourself. Most of us are far kinder to others than we are to ourselves. Today, we practise the opposite.", pauseAfter: 8 },
       { text: "Place a hand on your chest. Feel its warmth. Now say to yourself, gently: It is okay to be where I am. I am doing my best. I deserve kindness, like anyone else.", pauseAfter: 16 },
@@ -197,7 +197,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Slow the nervous system down — the storm is passing.",
     duration: "3 min",
     theme: "Release",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "When anxiety rises, the mind races and the body tightens. First, just acknowledge it. Say to yourself: I notice I am anxious. That is okay. It is a signal, not a sentence.", pauseAfter: 8 },
       { text: "Now, long exhale. Breathe in through the nose for four. Breathe out slowly for six. The exhale is the body's brake pedal. Longer out, slower down.", pauseAfter: 16 },
@@ -212,7 +212,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Return to your body — the earth is holding you.",
     duration: "3 min",
     theme: "Grounding",
-    background: "temple-rain",
+    background: "off",
     segments: [
       { text: "Sit or stand with both feet on the ground. Feel the weight of your body moving down — through your legs, through your feet, into the earth. You are supported.", pauseAfter: 8 },
       { text: "Notice five things you can see. Softly, without straining. Then four things you can feel. Three things you can hear. The world is right here with you.", pauseAfter: 16 },
@@ -227,7 +227,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "A single breath to come home — a thirty-second reset.",
     duration: "30 sec",
     theme: "Breath",
-    background: "temple-rain",
+    background: "off",
     introPause: 3,
     segments: [
       { text: "Slowly breathe in through your nose, holding it for a moment.", pauseAfter: 4 },
@@ -240,7 +240,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Thirty seconds to feel your feet and come back to the present.",
     duration: "30 sec",
     theme: "Grounding",
-    background: "temple-rain",
+    background: "off",
     introPause: 3,
     segments: [
       { text: "Feel your feet on the ground, and the weight of your body, held gently by the earth.", pauseAfter: 4 },
@@ -253,7 +253,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "A quick release — soften the grip in half a minute.",
     duration: "30 sec",
     theme: "Release",
-    background: "temple-rain",
+    background: "off",
     introPause: 3,
     segments: [
       { text: "Notice what you are holding, the tension in your shoulders, and gently soften, release.", pauseAfter: 4 },
@@ -266,7 +266,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "A minute of presence — nothing to solve, nowhere to become.",
     duration: "1 min",
     theme: "Presence",
-    background: "temple-rain",
+    background: "off",
     introPause: 7,
     noChime: true,
     segments: [
@@ -284,7 +284,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Forget the world for a few seconds and rest in silence.",
     duration: "1 min",
     theme: "Presence",
-    background: "temple-rain",
+    background: "off",
     noChime: true,
     introPause: 7,
     segments: [
@@ -300,7 +300,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "One breath, one thought, one action — just the next step.",
     duration: "1 min",
     theme: "Focus",
-    background: "temple-rain",
+    background: "off",
     noChime: true,
     introPause: 7,
     segments: [
@@ -316,7 +316,7 @@ export const MEDITATIONS: Meditation[] = [
     description: "Stop trying to become someone — you are already enough.",
     duration: "1 min",
     theme: "Self-compassion",
-    background: "temple-rain",
+    background: "off",
     noChime: true,
     introPause: 7,
     segments: [

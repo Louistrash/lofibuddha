@@ -26,7 +26,6 @@ export const SOUNDS: Sound[] = [
   { slug: "fireplace", name: "Fireplace", description: "Slowly crackling fire.", category: "Warmth", prompt: "Gentle fireplace ambience, soft slow crackle, warm and cozy, no loud pops, no music, continuous and even" },
   { slug: "mountain-wind", name: "Mountain Wind", description: "Soft, wide wind without hard gusts.", category: "Wind", prompt: "Clean soft wide mountain wind, gentle breeze, no harsh gusts, clear and airy, no music" },
   { slug: "temple-ambience", name: "Temple Ambience", description: "Very subtle space, distant gong or singing bowl.", category: "Spiritual", prompt: "Temple ambience, very subtle reverberant space, distant gong and singing bowl, clean sparse and sacred, no music" },
-  { slug: "temple-rain", name: "Temple Rain", description: "Soft rain on a temple roof, distant bowl.", category: "Spiritual", prompt: "Soft rain falling on a wooden temple roof, gentle steady rainfall, an occasional very distant singing bowl, calm and soothing, clearly audible, no thunder, no music, no drone, clean continuous rain texture" },
   { slug: "brown-noise", name: "Brown Noise", description: "Warm and low, great for focus and sleep.", category: "Noise", prompt: "Pure smooth brown noise, deep low continuous rumble, no crackle, no clicking, no artifacts, steady and even" },
   { slug: "pink-noise", name: "Pink Noise", description: "Softer and more natural than white noise.", category: "Noise", prompt: "Pure smooth pink noise, soft continuous hiss, no crackle, no static, gentle and even" },
   { slug: "deep-space", name: "Deep Space", description: "Near-abstract, very soft ambient drone.", category: "Ambient", prompt: "Smooth deep ambient pad, soft low continuous drone, slowly evolving, no melody, no glitches, no static" },
@@ -51,6 +50,6 @@ export const MODES: Mode[] = [
     slug: "sleep",
     name: "Sleep",
     description: "Soft ocean, night and fire — to drift off.",
-    mix: { "ocean-waves": 0.55, "temple-rain": 0.3, "fireplace": 0.2 },
+    mix: { "ocean-waves": 0.55, "gentle-rain": 0.3, "fireplace": 0.2 },
   },
 ];
