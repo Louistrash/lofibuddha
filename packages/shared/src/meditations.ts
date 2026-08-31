@@ -228,7 +228,7 @@ export const MEDITATIONS: Meditation[] = [
     background: "ocean-waves",
     introPause: 3,
     segments: [
-      { text: "Breathe in slowly through your nose.", pauseAfter: 4 },
+      { text: "Slowly breathe in through your nose.", pauseAfter: 4 },
       { text: "Hold it for a moment.", pauseAfter: 4 },
       { text: "And let it all go.", pauseAfter: 6 },
     ],

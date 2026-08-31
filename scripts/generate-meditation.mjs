@@ -4,10 +4,9 @@
  *
  * Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]
  *
- * Natuurlijke timing: de hele meditatie wordt in één doorlopende take gesproken
- * (niet per zin geplakt). De intonatie loopt daardoor door en de stem neemt haar
- * eigen ademruimte bij punten en ellipses. Alleen de chime en de intro-pauze
- * worden als losse stilte toegevoegd.
+ * Elke zin wordt apart ingesproken en krijgt een zachte fade-out (natuurlijke
+ * afloop) en fade-in. De pauzes tussen zinnen (pauseAfter) blijven als stiltes,
+ * zodat de spreker tijd heeft om in/uit te ademen en de luisteraar kan volgen.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
@@ -71,60 +70,43 @@ async function tts(text, outPath) {
   writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-// 1) Eén doorlopende take. De ellipses en punten in de tekst geven de stem haar
-//    eigen ademruimte, zodat het als één gesproken meditatie klinkt i.p.v. losse
-//    fragmenten met harde stiltes. Split alleen bij de TTS-tekstlimiet (~5k chars)
-//    op een zinsgrens.
-const fullText = med.segments.map(s => s.text).join(" ");
-
-function splitChunks(text, max = 4600) {
-  if (text.length <= max) return [text];
-  const chunks = [];
-  let rest = text;
-  while (rest.length > max) {
-    let cut = rest.lastIndexOf(". ", max);
-    if (cut < max * 0.5) cut = rest.lastIndexOf(" ", max);
-    if (cut <= 0) cut = max;
-    chunks.push(rest.slice(0, cut + 1).trim());
-    rest = rest.slice(cut + 1).trim();
-  }
-  if (rest) chunks.push(rest);
-  return chunks;
-}
-const chunks = splitChunks(fullText);
-console.log(`🎙️  ${chunks.length} take(s)…`);
-
-const voiceFiles = [];
-for (let i = 0; i < chunks.length; i++) {
-  const rawF = join(TMP, `${id}-chunk${i}.mp3`);
-  await tts(chunks[i], rawF);
-  const f = join(TMP, `${id}-chunk${i}-norm.mp3`);
-  // warme EQ + loudnorm + een zachte fade-out aan het einde van de laatste take.
-  const isLast = i === chunks.length - 1;
-  const filters = "highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11"
-    + (isLast ? ",afade=t=out:d=0.6" : "");
+// 1) Elke zin apart, met een zachte fade-out zodat de stem natuurlijk uitklinkt
+//    i.p.v. abrupt afgekapt te worden. Korte fade-in tegen kliks.
+const segFiles = [];
+for (let i = 0; i < med.segments.length; i++) {
+  const seg = med.segments[i];
+  const rawF = join(TMP, `${id}-seg${i}.mp3`);
+  console.log(`🎙️  Segment ${i + 1}/${med.segments.length}…`);
+  await tts(seg.text, rawF);
+  const f = join(TMP, `${id}-seg${i}-norm.mp3`);
   execFileSync("ffmpeg", [
     "-y", "-v", "error", "-i", rawF,
-    "-af", filters,
+    "-af", "afade=t=in:d=0.08,highshelf=f=5500:g=-2.5:t=q,bass=g=+1.0,loudnorm=I=-23:TP=-1.5:LRA=11,afade=t=out:d=0.8",
     "-c:a", "libmp3lame", "-b:a", "192k", f,
   ]);
-  voiceFiles.push(f);
+  segFiles.push(f);
 }
 
-// 2) Chime + intro-stilte + de doorlopende stem.
+// 2) Chime + intro-stilte + zinnen met adempauze ertussen.
 const chime = join(ROOT, "data", "breathe", "audio", "chime.mp3");
 const concatList = join(TMP, `${id}-list.txt`);
 const parts = [];
 if (existsSync(chime)) parts.push(`file '${chime}'`);
-if (med.introPause > 0) {
-  const sp = join(TMP, `silence-${med.introPause}.mp3`);
+if (med.introPause > 0) parts.push(`file '${join(TMP, 'silence-' + med.introPause + '.mp3')}'`);
+for (const [i, f] of segFiles.entries()) {
+  parts.push(`file '${f}'`);
+  const pause = med.segments[i].pauseAfter;
+  if (pause > 0) parts.push(`file '${join(TMP, 'silence-' + pause + '.mp3')}'`);
+}
+const silences = new Set(med.segments.map(s => s.pauseAfter).filter(p => p > 0));
+if (med.introPause > 0) silences.add(med.introPause);
+for (const p of silences) {
+  const sp = join(TMP, `silence-${p}.mp3`);
   if (!existsSync(sp)) {
     execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
-      "-t", String(med.introPause), "-c:a", "libmp3lame", "-b:a", "128k", sp]);
+      "-t", String(p), "-c:a", "libmp3lame", "-b:a", "128k", sp]);
   }
-  parts.push(`file '${sp}'`);
 }
-for (const f of voiceFiles) parts.push(`file '${f}'`);
 writeFileSync(concatList, parts.join("\n") + "\n");
 
 const raw = join(TMP, `${id}-raw.mp3`);
@@ -134,8 +116,8 @@ const out = join(AUDIO_DIR, id + ".mp3");
 execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-c:a", "copy", out]);
 
 // cleanup
-for (const f of voiceFiles) { try { execFileSync("rm", ["-f", f]); } catch {} }
-for (let i = 0; i < chunks.length; i++) { try { execFileSync("rm", ["-f", join(TMP, `${id}-chunk${i}.mp3`)]); } catch {} }
+for (const f of segFiles) { try { execFileSync("rm", ["-f", f]); } catch {} }
+for (let i = 0; i < med.segments.length; i++) { try { execFileSync("rm", ["-f", join(TMP, `${id}-seg${i}.mp3`)]); } catch {} }
 try { execFileSync("rm", ["-f", concatList, raw]); } catch {}
 
 const dur = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out], { encoding: "utf-8" }).trim();
