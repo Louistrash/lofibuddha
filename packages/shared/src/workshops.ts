@@ -4,6 +4,7 @@
  * Same shape as meditations.ts so the existing player and generation script
  * pick them up unchanged. Each session targets ~20 minutes of voice + pauses.
  */
+import type { Experience } from "./experiences";
 
 export type Workshop = {
   id: string;
@@ -25,7 +26,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 1: Letting Go",
     description:
       "The first night of the Deep Sleep Reset. Release the weight of the day and let the body sink toward rest.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -103,7 +104,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 2: Softening the Body",
     description:
       "The second night. Sink deeper into the body and let every surface soften toward sleep.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -132,7 +133,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 3: Quieting the Mind",
     description:
       "The third night. Learn to let the thinking mind wind down and rest like the body.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -161,7 +162,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 4: The Breath of Sleep",
     description:
       "The fourth night. Follow the breath as it slows, deepens, and carries you into rest.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -190,7 +191,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 5: The Safe Place",
     description:
       "The fifth night. Return to a place of deep safety and let it hold you into sleep.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -219,7 +220,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 6: Letting the Day Dissolve",
     description:
       "The sixth night. Watch the whole day dissolve like mist and surrender to the dark.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -248,7 +249,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Sleep Reset — Night 7: The Deep Rest",
     description:
       "The final night. A long, deep descent into rest, and a gentle farewell to the journey.",
-    duration: "20 min",
+    duration: "10 min",
     theme: "Deep Sleep Reset",
     category: "sleep",
     background: "off",
@@ -273,3 +274,19 @@ export const WORKSHOPS: Workshop[] = [
     ],
   },
 ];
+
+/** Workshops as playable experiences — the existing player streams the guide
+ *  audio at /api/meditations/audio/<workshop-id>.mp3, so `guide` = workshop id. */
+export function workshopExperiences(): Experience[] {
+  return WORKSHOPS.map((w) => ({
+    id: w.id,
+    category: w.category,
+    title: w.title,
+    description: w.description,
+    duration: w.duration,
+    guide: w.id,
+    soundscape: "off",
+    music: "temple-rain",
+    scene: "night",
+  }));
+}

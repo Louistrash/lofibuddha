@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
-import { EXPERIENCES, getExperience } from "@lofibuddha/shared";
+import { EXPERIENCES, getExperience, workshopExperiences } from "@lofibuddha/shared";
 import { Screen } from "@/src/components/ui/Screen";
 import { SectionHeader, EmptyState, Chip } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
@@ -13,7 +13,7 @@ import { colors, radius, space, type } from "@/src/theme/tokens";
 import { useLayout } from "@/src/theme/useLayout";
 
 type Course = { id: string; title: string; description?: string; lessons?: unknown[] };
-type Tab = "saved" | "recent" | "courses";
+type Tab = "saved" | "recent" | "courses" | "workshops";
 
 export default function LibraryScreen() {
   const [tab, setTab] = useState<Tab>("saved");
@@ -41,9 +41,17 @@ export default function LibraryScreen() {
 
   const savedItems = favorites.map(getExperience).filter(Boolean);
   const recentItems = recent.map(getExperience).filter(Boolean);
+  const workshops = workshopExperiences();
 
   const open = async (id: string) => {
     const exp = getExperience(id);
+    if (!exp) return;
+    await playExperience(exp);
+    router.push(`/player/${exp.id}`);
+  };
+
+  const openWorkshop = async (id: string) => {
+    const exp = workshopExperiences().find((e) => e.id === id);
     if (!exp) return;
     await playExperience(exp);
     router.push(`/player/${exp.id}`);
@@ -55,6 +63,7 @@ export default function LibraryScreen() {
         <Chip label={`Saved · ${favorites.length}`} active={tab === "saved"} onPress={() => setTab("saved")} />
         <Chip label={`Recent · ${recent.length}`} active={tab === "recent"} onPress={() => setTab("recent")} />
         <Chip label={`Courses · ${courses.length}`} active={tab === "courses"} onPress={() => setTab("courses")} />
+        <Chip label={`Workshops · ${workshops.length}`} active={tab === "workshops"} onPress={() => setTab("workshops")} />
       </View>
 
       {tab === "saved" ? (
@@ -152,6 +161,30 @@ export default function LibraryScreen() {
             message="They sync automatically from LofiBuddha once published."
           />
         )
+      ) : null}
+
+      {tab === "workshops" ? (
+        <View style={styles.block}>
+          <SectionHeader title="Workshops" caption="Multi-night guided series for deeper practice" />
+          {l.isCompact ? (
+            <View style={styles.list}>
+              {workshops.map((exp) => (
+                <ExperienceCard
+                  key={exp.id}
+                  experience={exp}
+                  variant="row"
+                  onPress={() => openWorkshop(exp.id)}
+                />
+              ))}
+            </View>
+          ) : (
+            <CardRail minCardWidth={240}>
+              {workshops.map((exp) => (
+                <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
+              ))}
+            </CardRail>
+          )}
+        </View>
       ) : null}
     </Screen>
   );
