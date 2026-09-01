@@ -166,24 +166,11 @@ export default function LibraryScreen() {
       {tab === "workshops" ? (
         <View style={styles.block}>
           <SectionHeader title="Workshops" caption="Multi-night guided series for deeper practice" />
-          {l.isCompact ? (
-            <View style={styles.list}>
-              {workshops.map((exp) => (
-                <ExperienceCard
-                  key={exp.id}
-                  experience={exp}
-                  variant="row"
-                  onPress={() => openWorkshop(exp.id)}
-                />
-              ))}
-            </View>
-          ) : (
-            <CardRail minCardWidth={240}>
-              {workshops.map((exp) => (
-                <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
-              ))}
-            </CardRail>
-          )}
+          <CardRail minCardWidth={240}>
+            {workshops.map((exp) => (
+              <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
+            ))}
+          </CardRail>
         </View>
       ) : null}
     </Screen>
