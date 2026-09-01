@@ -19,9 +19,7 @@ export function Logo({ size = 32, style }: { size?: number; style?: ViewStyle })
   );
 }
 
-/** Mark plus wordmark, for navigation and headers.
- *  The Buddha image is no longer used as a logo (it isn't transparent) — the
- *  wordmark now stands alone in neon. */
+/** Mark plus wordmark, for navigation and headers. */
 export function Wordmark({
   size = 30,
   caption,
@@ -33,6 +31,7 @@ export function Wordmark({
 }) {
   return (
     <View style={[styles.lockup, style]}>
+      <Logo size={size} />
       <View>
         <Text style={[styles.name, { fontSize: size }]}>LofiBuddha</Text>
         {caption ? <Text style={styles.caption}>{caption}</Text> : null}
