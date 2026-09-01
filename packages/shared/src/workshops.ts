@@ -279,7 +279,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "From Anxiety to Ease — Session 1: Arriving",
     description:
       "The first session. Land gently in the present moment and let the day fall away.",
-    duration: "10 min",
+    duration: "8 min",
     theme: "From Anxiety to Ease",
     category: "relax",
     background: "off",
@@ -308,7 +308,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "From Anxiety to Ease — Session 2: The Breath as Anchor",
     description:
       "The second session. Use the breath as a steady anchor in the storm of the mind.",
-    duration: "10 min",
+    duration: "8 min",
     theme: "From Anxiety to Ease",
     category: "relax",
     background: "off",
@@ -337,7 +337,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "From Anxiety to Ease — Session 3: Meeting the Mind",
     description:
       "The third session. Meet your anxious thoughts with kindness instead of resistance.",
-    duration: "10 min",
+    duration: "8 min",
     theme: "From Anxiety to Ease",
     category: "relax",
     background: "off",
@@ -366,7 +366,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "From Anxiety to Ease — Session 4: Releasing the Body",
     description:
       "The fourth session. Melt the physical tension that anxiety holds in the body.",
-    duration: "10 min",
+    duration: "8 min",
     theme: "From Anxiety to Ease",
     category: "relax",
     background: "off",
@@ -395,7 +395,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "From Anxiety to Ease — Session 5: Ease",
     description:
       "The final session. Rest in the ease that has always been here, underneath everything.",
-    duration: "10 min",
+    duration: "8 min",
     theme: "From Anxiety to Ease",
     category: "relax",
     background: "off",
@@ -425,7 +425,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Quiet Lake",
     description:
       "A bedtime story — drift across a still lake under a fading sky.",
-    duration: "15 min",
+    duration: "7 min",
     theme: "Sleep Story",
     category: "sleep",
     background: "off",
@@ -451,7 +451,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Mountain Cabin",
     description:
       "A bedtime story — snow falling outside a warm cabin in the mountains.",
-    duration: "15 min",
+    duration: "7 min",
     theme: "Sleep Story",
     category: "sleep",
     background: "off",
@@ -477,7 +477,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Night Garden",
     description:
       "A bedtime story — wander a moonlit garden where every flower sleeps.",
-    duration: "15 min",
+    duration: "7 min",
     theme: "Sleep Story",
     category: "sleep",
     background: "off",
