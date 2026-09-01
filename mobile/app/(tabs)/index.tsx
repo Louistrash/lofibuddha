@@ -63,7 +63,7 @@ export default function TodayScreen() {
       })}
       actions={
         l.isMedium && !isPro ? (
-          <Button label="Bodhi Pro" icon="crown" size="sm" onPress={() => router.push("/deepen")} />
+          <Button label="Bodhi Pro" icon="crown" size="sm" gradient={["#FFB25C", "#F97316"]} onPress={() => router.push("/deepen")} />
         ) : null
       }
     >

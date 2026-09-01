@@ -3,6 +3,11 @@ import fs from "fs";
 import path from "path";
 import { corsPreflight, withCors } from "@/lib/cors";
 
+// Force dynamic: read subscribers.json fresh on every request (the file is
+// updated at runtime by Stripe webhooks / admin sync, so it must not be
+// prerendered into the build).
+export const dynamic = "force-dynamic";
+
 const SUBSCRIBERS_FILE = path.join(process.cwd(), "data", "subscribers.json");
 
 interface Subscriber {

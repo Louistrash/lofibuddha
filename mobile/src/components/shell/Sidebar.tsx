@@ -1,5 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { colors, layout, radius, space, type } from "@/src/theme/tokens";
 import { Wordmark } from "@/src/components/ui/Logo";
 import { LegalFooter } from "@/src/components/shell/LegalFooter";
@@ -59,8 +60,14 @@ export function Sidebar({ activeRoute, onNavigate, onUpgrade, isPro }: Props) {
             Unlock every journey, world and unlimited guidance.
           </Text>
           <View style={styles.promoCta}>
-            <Text style={styles.promoCtaText}>Upgrade</Text>
-            <Icon name="arrowRight" size={14} color={colors.gold} />
+            <LinearGradient
+              colors={["#FFB25C", "#F97316"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={StyleSheet.absoluteFill}
+            />
+            <Text style={[styles.promoCtaText, { color: colors.ink }]}>Upgrade</Text>
+            <Icon name="arrowRight" size={14} color={colors.ink} />
           </View>
         </Pressable>
       ) : null}
@@ -115,6 +122,6 @@ const styles = StyleSheet.create({
   promoTitle: { ...type.headline, color: colors.goldBright },
   promoTitleRow: { flexDirection: "row", alignItems: "center", gap: space.xs },
   promoBody: { ...type.bodySmall, color: colors.textMuted },
-  promoCta: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: space.xs },
+  promoCta: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: space.xs, alignSelf: "flex-start", paddingHorizontal: space.md, paddingVertical: 6, borderRadius: radius.pill, overflow: "hidden" },
   promoCtaText: { ...type.label, color: colors.gold },
 });

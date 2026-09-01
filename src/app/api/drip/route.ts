@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+// Force dynamic: drip content + subscriber tier are read fresh each request.
+export const dynamic = "force-dynamic";
+
 // ── Types ──────────────────────────────────────
 interface DripItem {
   day: number;
