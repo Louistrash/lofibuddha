@@ -41,6 +41,7 @@ const GLYPHS = {
   lotus: "flower-outline",
   spa: "spa-outline",
   yoga: "yoga",
+  crown: "crown-outline",
   night: "weather-night",
   candle: "candle",
   leaf: "leaf",

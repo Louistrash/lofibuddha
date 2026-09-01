@@ -33,7 +33,7 @@ export function Wordmark({
     <View style={[styles.lockup, style]}>
       <Logo size={size} />
       <View>
-        <Text style={[styles.name, { fontSize: size }]}>LofiBuddha</Text>
+        <Text style={[styles.name, { fontSize: Math.round(size * 0.63) }]}>LofiBuddha</Text>
         {caption ? <Text style={styles.caption}>{caption}</Text> : null}
       </View>
     </View>

@@ -51,7 +51,10 @@ export function Sidebar({ activeRoute, onNavigate, onUpgrade, isPro }: Props) {
           onPress={onUpgrade}
           style={({ hovered }: any) => [styles.promo, hovered && { borderColor: colors.goldEdge }]}
         >
-          <Text style={styles.promoTitle}>Bodhi Pro</Text>
+          <View style={styles.promoTitleRow}>
+            <Icon name="crown" size={16} color={colors.goldBright} />
+            <Text style={styles.promoTitle}>Bodhi Pro</Text>
+          </View>
           <Text style={styles.promoBody}>
             Unlock every journey, world and unlimited guidance.
           </Text>
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
     gap: space.sm,
   },
   promoTitle: { ...type.headline, color: colors.goldBright },
+  promoTitleRow: { flexDirection: "row", alignItems: "center", gap: space.xs },
   promoBody: { ...type.bodySmall, color: colors.textMuted },
   promoCta: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: space.xs },
   promoCtaText: { ...type.label, color: colors.gold },

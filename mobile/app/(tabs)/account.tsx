@@ -88,7 +88,7 @@ export default function AccountScreen() {
         <ListRow
           label={isPro ? "Your plan" : "Upgrade to Bodhi Pro"}
           value={isPro ? (tier ?? "Pro") : undefined}
-          icon="guide"
+          icon="crown"
           onPress={() => router.push("/deepen")}
         />
         {Platform.OS === "web" && user ? (
