@@ -1,12 +1,19 @@
 #!/usr/bin/env node
 /**
- * Genereer een geleide meditatie audio via ElevenLabs TTS.
+ * Genereer een geleide meditatie/workshop audio via ElevenLabs TTS.
  *
- * Gebruik: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops]
+ * Gebruik:
+ *   node scripts/generate-meditation.mjs <id> [meditations|focus|workshops] [--pauses]
  *
- * Simpel en robuust: de hele meditatie wordt in één take ingesproken, daarna
- * alleen een de-esser (tegen sibilantie) en een piek-normalisatie (voorkomt
- * clipping). Geen loudnorm, geen fades, geen per-zin concat — dat brak de audio.
+ * Default: de hele tekst wordt als één doorlopende take ingesproken (floating
+ * stem), daarna alleen piek-normalisatie naar -7 dB. Geen de-esser, geen
+ * loudnorm, geen fades — dat brak eerder de audio (woorden werden afgekapt /
+ * stem klonk "oud").
+ *
+ * Met `--pauses`: elke segment wordt apart ingesproken (zelfde floating stem)
+ * en de `pauseAfter`-stiltes worden ertussen geplakt. Voor slaap-workshops,
+ * waar de lange stiltes essentieel zijn om in weg te zakken. De piek-
+ * normalisatie gebeurt per segment zodat alle zinnen even luid zijn.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
@@ -17,12 +24,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const id = process.argv[2];
 const source = process.argv[3] || "meditations"; // "meditations" | "focus" | "workshops"
+const usePauses = process.argv.includes("--pauses");
 const AUDIO_DIR = join(ROOT, "data", source === "focus" ? "focus" : "meditations", "audio");
 const TMP = join(AUDIO_DIR, ".tmp");
 mkdirSync(TMP, { recursive: true });
 
 if (!id) {
-  console.error("Geef een id op: node scripts/generate-meditation.mjs <id>");
+  console.error("Geef een id op: node scripts/generate-meditation.mjs <id> [meditations|focus|workshops] [--pauses]");
   process.exit(1);
 }
 
@@ -66,7 +74,7 @@ if (!med || med.segments.length === 0) {
   process.exit(1);
 }
 
-// --- TTS: één doorlopende take ---
+// --- TTS: floating stem (stability 0.1 / style 0.95) ---
 async function tts(text, outPath) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
     method: "POST",
@@ -84,46 +92,78 @@ async function tts(text, outPath) {
   writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-console.log(`🎙️  Eén doorlopende take (stem ${VOICE_ID})…`);
-const fullText = med.segments.map((s) => s.text).join(" ");
-const raw = join(TMP, `${id}-raw.mp3`);
-await tts(fullText, raw);
+// --- Peak-normalisatie: alleen verlagen naar -7 dB piek, nooit verhogen ---
+function normalize(inPath, outPath) {
+  const probe = spawnSync("ffmpeg", ["-i", inPath, "-af", "volumedetect", "-f", "null", "-"], { encoding: "utf-8" });
+  const maxMatch = (probe.stderr || "").match(/max_volume:\s*(-?[\d.]+) dB/);
+  const maxDb = maxMatch ? Number(maxMatch[1]) : -3;
+  const gain = Math.min(0, -7 - maxDb);
+  execFileSync("ffmpeg", [
+    "-y", "-v", "error", "-i", inPath,
+    "-af", `${gain !== 0 ? `volume=${gain.toFixed(1)}dB` : "anull"}`,
+    "-ar", "44100",
+    "-c:a", "libmp3lame", "-b:a", "192k", outPath,
+  ]);
+  return gain;
+}
 
-// --- Peak-normalisatie: alleen verlagen om clipping te voorkomen ---
-const probe = spawnSync("ffmpeg", ["-i", raw, "-af", "volumedetect", "-f", "null", "-"], { encoding: "utf-8" });
-const maxMatch = (probe.stderr || "").match(/max_volume:\s*(-?[\d.]+) dB/);
-const maxDb = maxMatch ? Number(maxMatch[1]) : -3;
-const gain = Math.min(0, -7 - maxDb); // nooit verhogen, alleen terugdraaien naar -7dB piek (match short2)
-console.log(`   piek ${maxDb}dB → gain ${gain.toFixed(1)}dB`);
+// --- Stilte genereren (anullsrc) ---
+function makeSilence(dur, outPath) {
+  execFileSync("ffmpeg", [
+    "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
+    "-t", String(dur), "-c:a", "libmp3lame", "-b:a", "128k", outPath,
+  ]);
+}
 
-const norm = join(TMP, `${id}-norm.mp3`);
-execFileSync("ffmpeg", [
-  "-y", "-v", "error", "-i", raw,
-  "-af", `${gain !== 0 ? `volume=${gain.toFixed(1)}dB` : "anull"}`,
-  "-ar", "44100",
-  "-c:a", "libmp3lame", "-b:a", "192k", norm,
-]);
-
-// --- Chime (optioneel) + intro-stilte + de stem ---
 const chime = join(ROOT, "data", "breathe", "audio", "chime.mp3");
-const concatList = join(TMP, `${id}-list.txt`);
 const parts = [];
 if (existsSync(chime) && !med.noChime) parts.push(`file '${chime}'`);
 if (med.introPause > 0) {
   const sp = join(TMP, `silence-${med.introPause}.mp3`);
-  if (!existsSync(sp)) {
-    execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
-      "-t", String(med.introPause), "-c:a", "libmp3lame", "-b:a", "128k", sp]);
-  }
+  if (!existsSync(sp)) makeSilence(med.introPause, sp);
   parts.push(`file '${sp}'`);
 }
-parts.push(`file '${norm}'`);
+
+const cleanup = [];
+
+if (usePauses) {
+  console.log(`🎙️  Per-segment (${med.segments.length} zinnen) met pauzes (stem ${VOICE_ID})…`);
+  for (let i = 0; i < med.segments.length; i++) {
+    const seg = med.segments[i];
+    const raw = join(TMP, `${id}-raw-${i}.mp3`);
+    const norm = join(TMP, `${id}-norm-${i}.mp3`);
+    await tts(seg.text, raw);
+    const gain = normalize(raw, norm);
+    parts.push(`file '${norm}'`);
+    cleanup.push(raw, norm);
+    if (seg.pauseAfter > 0) {
+      const sil = join(TMP, `${id}-silence-${i}.mp3`);
+      makeSilence(seg.pauseAfter, sil);
+      parts.push(`file '${sil}'`);
+      cleanup.push(sil);
+    }
+    console.log(`   zin ${i + 1}/${med.segments.length} (gain ${gain.toFixed(1)}dB)`);
+  }
+} else {
+  console.log(`🎙️  Eén doorlopende take (stem ${VOICE_ID})…`);
+  const fullText = med.segments.map((s) => s.text).join(" ");
+  const raw = join(TMP, `${id}-raw.mp3`);
+  await tts(fullText, raw);
+  const norm = join(TMP, `${id}-norm.mp3`);
+  const gain = normalize(raw, norm);
+  console.log(`   gain ${gain.toFixed(1)}dB`);
+  parts.push(`file '${norm}'`);
+  cleanup.push(raw, norm);
+}
+
+const concatList = join(TMP, `${id}-list.txt`);
 writeFileSync(concatList, parts.join("\n") + "\n");
 
 const out = join(AUDIO_DIR, id + ".mp3");
 execFileSync("ffmpeg", ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", concatList, "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "192k", out]);
 
 // cleanup
-try { execFileSync("rm", ["-f", raw, norm, concatList]); } catch {}
+for (const f of cleanup) { try { execFileSync("rm", ["-f", f]); } catch {} }
+try { execFileSync("rm", ["-f", concatList]); } catch {}
 
 console.log(`✅ ${out}`);
