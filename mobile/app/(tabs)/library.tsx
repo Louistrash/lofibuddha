@@ -42,6 +42,16 @@ export default function LibraryScreen() {
   const savedItems = favorites.map(getExperience).filter(Boolean);
   const recentItems = recent.map(getExperience).filter(Boolean);
   const workshops = workshopExperiences();
+  const workshopSeries = workshops.reduce<{ name: string; items: typeof workshops }[]>(
+    (groups, exp) => {
+      const name = exp.series ?? "Workshops";
+      const g = groups.find((x) => x.name === name);
+      if (g) g.items.push(exp);
+      else groups.push({ name, items: [exp] });
+      return groups;
+    },
+    []
+  );
 
   const open = async (id: string) => {
     const exp = getExperience(id);
@@ -166,11 +176,16 @@ export default function LibraryScreen() {
       {tab === "workshops" ? (
         <View style={styles.block}>
           <SectionHeader title="Workshops" caption="Multi-night guided series for deeper practice" />
-          <CardRail minCardWidth={240}>
-            {workshops.map((exp) => (
-              <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
-            ))}
-          </CardRail>
+          {workshopSeries.map((series) => (
+            <View key={series.name} style={styles.seriesBlock}>
+              <SectionHeader title={series.name} caption={`${series.items.length} sessions`} />
+              <CardRail minCardWidth={240}>
+                {series.items.map((exp) => (
+                  <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
+                ))}
+              </CardRail>
+            </View>
+          ))}
         </View>
       ) : null}
     </Screen>
@@ -180,6 +195,7 @@ export default function LibraryScreen() {
 const styles = StyleSheet.create({
   tabs: { flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginBottom: space["2xl"] },
   block: { marginBottom: space["3xl"] },
+  seriesBlock: { marginBottom: space["2xl"] },
   list: { gap: 2 },
   courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
   course: {

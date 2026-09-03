@@ -34,6 +34,8 @@ export interface Experience {
   special?: "box-breathing" | "pomodoro";
   /** Premium content — alleen voor Bodhi Pro-leden */
   premium?: boolean;
+  /** Serie-naam (voor workshops — bv. "Deep Sleep Reset") */
+  series?: string;
 }
 
 // Categorie-info voor de hub

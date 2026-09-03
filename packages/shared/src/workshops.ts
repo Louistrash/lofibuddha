@@ -710,5 +710,6 @@ export function workshopExperiences(): Experience[] {
     music: "temple-rain",
     scene: "night",
     premium: true,
+    series: w.theme,
   }));
 }
