@@ -88,14 +88,25 @@ export function ExperienceCard({
         onPress={handlePress}
         style={({ pressed }: any) => [styles.mini, { width: w }, pressed && { opacity: 0.9 }]}
       >
-        <LinearGradient
-          colors={[tint(accent, 0.55), tint(accent, 0.16)]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0.6, y: 1 }}
-          style={[styles.miniArt, { width: w, height: w }]}
-        >
-          <Icon name={iconFor(experience)} size={Math.round(w * 0.22)} color={colors.ink} />
-        </LinearGradient>
+        <View>
+          <LinearGradient
+            colors={[tint(accent, 0.55), tint(accent, 0.16)]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0.6, y: 1 }}
+            style={[styles.miniArt, { width: w, height: w }]}
+          >
+            <Icon name={iconFor(experience)} size={Math.round(w * 0.22)} color={colors.ink} />
+          </LinearGradient>
+          {onToggleFavorite ? (
+            <Pressable onPress={onToggleFavorite} hitSlop={10} style={styles.miniHeart}>
+              <Icon
+                name={isFavorite ? "heart" : "heartOutline"}
+                size={15}
+                color={isFavorite ? accent : colors.text}
+              />
+            </Pressable>
+          ) : null}
+        </View>
         <Text style={styles.miniTitle} numberOfLines={2}>
           {experience.title}
         </Text>
@@ -268,4 +279,12 @@ const styles = StyleSheet.create({
   },
   miniTitle: { ...type.bodySmall, color: colors.text, marginTop: space.xs, lineHeight: 18 },
   miniMeta: { ...type.caption, color: colors.textMuted },
+  miniHeart: {
+    position: "absolute",
+    top: space.sm,
+    right: space.sm,
+    padding: 4,
+    borderRadius: radius.pill,
+    backgroundColor: "rgba(8,7,12,0.5)",
+  },
 });

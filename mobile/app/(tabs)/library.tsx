@@ -88,30 +88,20 @@ export default function LibraryScreen() {
         savedItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Saved" caption="Tap the heart while listening to add more" />
-            {l.isCompact ? (
-              <View style={styles.list}>
-                {savedItems.map((exp) =>
-                  exp ? (
-                    <ExperienceCard
-                      key={exp.id}
-                      experience={exp}
-                      variant="row"
-                      onPress={() => open(exp.id)}
-                      isFavorite={isFavorite(exp.id)}
-                      onToggleFavorite={() => toggle(exp.id)}
-                    />
-                  ) : null
-                )}
-              </View>
-            ) : (
-              <CardRail minCardWidth={240}>
-                {savedItems.map((exp) =>
-                  exp ? (
-                    <ExperienceCard key={exp.id} experience={exp} onPress={() => open(exp.id)} />
-                  ) : null
-                )}
-              </CardRail>
-            )}
+            <CardRail minCardWidth={140}>
+              {savedItems.map((exp) =>
+                exp ? (
+                  <ExperienceCard
+                    key={exp.id}
+                    experience={exp}
+                    variant="mini"
+                    onPress={() => open(exp.id)}
+                    isFavorite={isFavorite(exp.id)}
+                    onToggleFavorite={() => toggle(exp.id)}
+                  />
+                ) : null
+              )}
+            </CardRail>
           </View>
         ) : (
           <EmptyState
