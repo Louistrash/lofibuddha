@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { EXPERIENCES, getExperience, workshopExperiences } from "@lofibuddha/shared";
 import { Screen } from "@/src/components/ui/Screen";
-import { SectionHeader, EmptyState, Chip } from "@/src/components/ui/Primitives";
+import { SectionHeader, EmptyState } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
@@ -50,6 +51,12 @@ export default function LibraryScreen() {
   const savedItems = favorites.map(getExperience).filter(Boolean);
   const recentItems = recent.map(getExperience).filter(Boolean);
   const workshops = workshopExperiences();
+  const tabs: { id: Tab; label: string }[] = [
+    { id: "saved", label: `Saved · ${favorites.length}` },
+    { id: "recent", label: `Recent · ${recent.length}` },
+    { id: "courses", label: `Courses · ${courses.length}` },
+    { id: "workshops", label: `Workshops · ${workshops.length}` },
+  ];
   const workshopSeries = workshops.reduce<{ name: string; items: typeof workshops }[]>(
     (groups, exp) => {
       const name = exp.series ?? "Workshops";
@@ -77,11 +84,32 @@ export default function LibraryScreen() {
 
   return (
     <Screen title="Library" subtitle="Your saved practices and progress">
-      <View style={styles.tabs}>
-        <Chip label={`Saved · ${favorites.length}`} active={tab === "saved"} onPress={() => setTab("saved")} />
-        <Chip label={`Recent · ${recent.length}`} active={tab === "recent"} onPress={() => setTab("recent")} />
-        <Chip label={`Courses · ${courses.length}`} active={tab === "courses"} onPress={() => setTab("courses")} />
-        <Chip label={`Workshops · ${workshops.length}`} active={tab === "workshops"} onPress={() => setTab("workshops")} />
+      <View style={styles.segmented}>
+        {tabs.map((t) => (
+          <Pressable
+            key={t.id}
+            onPress={() => setTab(t.id)}
+            style={({ pressed }: any) => [
+              styles.segment,
+              pressed && { opacity: 0.8 },
+            ]}
+          >
+            {tab === t.id ? (
+              <LinearGradient
+                colors={["#F7DDA0", "#C1842E"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={StyleSheet.absoluteFill}
+              />
+            ) : null}
+            <Text
+              style={[styles.segmentText, tab === t.id && styles.segmentTextActive]}
+              numberOfLines={1}
+            >
+              {t.label}
+            </Text>
+          </Pressable>
+        ))}
       </View>
 
       {tab === "saved" ? (
@@ -189,7 +217,25 @@ export default function LibraryScreen() {
 }
 
 const styles = StyleSheet.create({
-  tabs: { flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginBottom: space["2xl"] },
+  segmented: {
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(255,255,255,0.04)",
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    padding: 4,
+    gap: 4,
+    marginBottom: space["2xl"],
+  },
+  segment: {
+    paddingHorizontal: space.lg,
+    paddingVertical: space.sm,
+    borderRadius: radius.pill,
+    overflow: "hidden",
+  },
+  segmentText: { ...type.label, color: colors.textSecondary },
+  segmentTextActive: { color: colors.ink },
   block: { marginBottom: space["3xl"] },
   seriesBlock: { marginBottom: space["2xl"] },
   playlistList: { gap: space.sm },
