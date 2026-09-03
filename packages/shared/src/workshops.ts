@@ -504,7 +504,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 1: Waking",
     description:
       "The first morning. Wake the body gently and greet the new day with ease.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -532,7 +532,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 2: The First Breath",
     description:
       "The second morning. Begin the day with the breath, your steady anchor.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -560,7 +560,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 3: Gratitude",
     description:
       "The third morning. Open the day with a quiet sense of gratitude.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -588,7 +588,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 4: Intention",
     description:
       "The fourth morning. Set a clear, gentle intention for the day ahead.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -616,7 +616,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 5: Energy",
     description:
       "The fifth morning. Wake the body's energy and meet the day with vitality.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -644,7 +644,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 6: Stillness",
     description:
       "The sixth morning. Find a moment of deep stillness before the world begins.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
@@ -672,7 +672,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Morning Ritual — Day 7: Beginning",
     description:
       "The final morning. Step into the day — and the days ahead — from a place of wholeness.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Morning Ritual",
     category: "focus",
     background: "off",
