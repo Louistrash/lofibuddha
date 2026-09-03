@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { EXPERIENCES, getExperience, workshopExperiences } from "@lofibuddha/shared";
 import { Screen } from "@/src/components/ui/Screen";
@@ -84,52 +83,44 @@ export default function LibraryScreen() {
 
   return (
     <Screen title="Library" subtitle="Your saved practices and progress">
-      <View style={styles.segmented}>
-        {tabs.map((t) => (
-          <Pressable
-            key={t.id}
-            onPress={() => setTab(t.id)}
-            style={({ pressed }: any) => [
-              styles.segment,
-              pressed && { opacity: 0.8 },
-            ]}
-          >
-            {tab === t.id ? (
-              <LinearGradient
-                colors={["#F7DDA0", "#C1842E"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFill}
-              />
-            ) : null}
-            <Text
-              style={[styles.segmentText, tab === t.id && styles.segmentTextActive]}
-              numberOfLines={1}
+      <View style={styles.underlineTabs}>
+        {tabs.map((t) => {
+          const active = tab === t.id;
+          return (
+            <Pressable
+              key={t.id}
+              onPress={() => setTab(t.id)}
+              style={({ pressed }: any) => [styles.underlineTab, pressed && { opacity: 0.8 }]}
             >
-              {t.label}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={[styles.underlineTabText, active && styles.underlineTabTextActive]}
+                numberOfLines={1}
+              >
+                {t.label}
+              </Text>
+              {active ? <View style={styles.underlineIndicator} /> : null}
+            </Pressable>
+          );
+        })}
       </View>
 
       {tab === "saved" ? (
         savedItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Saved" caption="Tap the heart while listening to add more" />
-            <View style={styles.playlistList}>
+            <CardRail minCardWidth={240}>
               {savedItems.map((exp) =>
                 exp ? (
                   <ExperienceCard
                     key={exp.id}
                     experience={exp}
-                    variant="mini"
                     onPress={() => open(exp.id)}
                     isFavorite={isFavorite(exp.id)}
                     onToggleFavorite={() => toggle(exp.id)}
                   />
                 ) : null
               )}
-            </View>
+            </CardRail>
           </View>
         ) : (
           <EmptyState
@@ -144,18 +135,17 @@ export default function LibraryScreen() {
         recentItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Recently played" />
-            <View style={styles.playlistList}>
+            <CardRail minCardWidth={240}>
               {recentItems.map((exp) =>
                 exp ? (
                   <ExperienceCard
                     key={exp.id}
                     experience={exp}
-                    variant="mini"
                     onPress={() => open(exp.id)}
                   />
                 ) : null
               )}
-            </View>
+            </CardRail>
           </View>
         ) : (
           <EmptyState
@@ -217,28 +207,29 @@ export default function LibraryScreen() {
 }
 
 const styles = StyleSheet.create({
-  segmented: {
+  underlineTabs: {
     flexDirection: "row",
-    alignSelf: "flex-start",
-    backgroundColor: "rgba(255,255,255,0.04)",
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: colors.hairline,
-    padding: 4,
-    gap: 4,
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: space.xl,
     marginBottom: space["2xl"],
+    borderBottomWidth: 1,
+    borderBottomColor: colors.hairline,
   },
-  segment: {
-    paddingHorizontal: space.lg,
+  underlineTab: {
     paddingVertical: space.sm,
-    borderRadius: radius.pill,
-    overflow: "hidden",
+    paddingHorizontal: 2,
   },
-  segmentText: { ...type.label, color: colors.textSecondary },
-  segmentTextActive: { color: colors.ink },
+  underlineTabText: { ...type.label, color: colors.textMuted },
+  underlineTabTextActive: { color: colors.text },
+  underlineIndicator: {
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: colors.gold,
+    marginTop: space.sm,
+  },
   block: { marginBottom: space["3xl"] },
   seriesBlock: { marginBottom: space["2xl"] },
-  playlistList: { gap: space.sm },
   list: { gap: 2 },
   courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
   course: {
