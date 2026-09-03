@@ -1,6 +1,7 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors, gradients, layout, space, type } from "@/src/theme/tokens";
 import { useLayout } from "@/src/theme/useLayout";
@@ -26,6 +27,7 @@ type Props = {
 export function Screen({ children, title, subtitle, actions, scroll = true, contentStyle }: Props) {
   const l = useLayout();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { experience } = usePlayer();
 
   const bottomInset =
@@ -37,7 +39,11 @@ export function Screen({ children, title, subtitle, actions, scroll = true, cont
       <View style={[styles.header, l.isMedium && styles.headerRow]}>
         <View style={styles.titleGroup}>
           {/* The sidebar already carries the brand, so the mark only anchors titles without one. */}
-          {title && !l.isDesktop ? <Logo size={40} /> : null}
+          {title && !l.isDesktop ? (
+            <Pressable onPress={() => router.push("/")} hitSlop={8}>
+              <Logo size={40} />
+            </Pressable>
+          ) : null}
           <View style={{ flex: 1 }}>
             {title ? (
               <Text style={[l.isDesktop ? type.largeTitle : type.hero, styles.title]}>{title}</Text>

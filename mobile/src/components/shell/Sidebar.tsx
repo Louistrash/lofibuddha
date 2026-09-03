@@ -18,7 +18,12 @@ type Props = {
 export function Sidebar({ activeRoute, onNavigate, onUpgrade, isPro }: Props) {
   return (
     <View style={styles.root}>
-      <Wordmark size={38} caption="Mindfulness OS" style={styles.brand} />
+      <Pressable
+        onPress={() => onNavigate("index")}
+        style={({ pressed }: any) => [styles.brand, pressed && { opacity: 0.7 }]}
+      >
+        <Wordmark size={38} caption="Mindfulness OS" />
+      </Pressable>
 
       <View style={styles.nav}>
         {NAV_ITEMS.map((item) => {
