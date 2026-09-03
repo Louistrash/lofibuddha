@@ -32,6 +32,8 @@ export interface Experience {
   accent?: string;
   /** Speciale interactieve ervaring (bv. box breathing timer, pomodoro) */
   special?: "box-breathing" | "pomodoro";
+  /** Premium content — alleen voor Bodhi Pro-leden */
+  premium?: boolean;
 }
 
 // Categorie-info voor de hub
@@ -315,8 +317,8 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "off",
     music: "temple-rain",
     scene: "breathe",
-    accent: "#2DD4BF",
-  },
+    accent: "#2DD4BF",,
+    premium: true,
   {
     id: "breath-478",
     category: "breathe",
@@ -327,8 +329,8 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "off",
     music: "temple-rain",
     scene: "breathe",
-    accent: "#2DD4BF",
-  },
+    accent: "#2DD4BF",,
+    premium: true,
   {
     id: "coherent-breathing",
     category: "breathe",
@@ -339,8 +341,8 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "off",
     music: "temple-rain",
     scene: "breathe",
-    accent: "#2DD4BF",
-  },
+    accent: "#2DD4BF",,
+    premium: true,
   {
     id: "alternate-nostril",
     category: "breathe",
@@ -351,8 +353,8 @@ export const EXPERIENCES: Experience[] = [
     soundscape: "off",
     music: "temple-rain",
     scene: "breathe",
-    accent: "#2DD4BF",
-  },
+    accent: "#2DD4BF",,
+    premium: true,
 ];
 
 export function getExperience(id: string): Experience | undefined {

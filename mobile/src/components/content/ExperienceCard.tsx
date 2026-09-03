@@ -1,9 +1,11 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import type { Experience } from "@lofibuddha/shared";
 import { accentByCategory, colors, radius, shadow, space, tint, type } from "@/src/theme/tokens";
 import { Icon, type IconName } from "@/src/components/ui/Icon";
+import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { Mandala } from "./Mandala";
 
 type Props = {
@@ -24,12 +26,22 @@ export function ExperienceCard({
   isFavorite,
   onToggleFavorite,
 }: Props) {
+  const { isPro } = useEntitlement();
+  const router = useRouter();
   const accent = accentByCategory[experience.category] ?? colors.gold;
+
+  const handlePress = () => {
+    if (experience.premium && !isPro) {
+      router.push("/deepen");
+      return;
+    }
+    onPress();
+  };
 
   if (variant === "row") {
     return (
       <Pressable
-        onPress={onPress}
+        onPress={handlePress}
         style={({ hovered, pressed }: any) => [
           styles.row,
           hovered && { backgroundColor: colors.cardHover },
@@ -71,7 +83,7 @@ export function ExperienceCard({
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handlePress}
       style={({ hovered, pressed }: any) => [
         styles.tile,
         width ? { width } : null,
@@ -97,8 +109,16 @@ export function ExperienceCard({
       </View>
 
       <View style={styles.tileTop}>
-        <View style={[styles.pill, { borderColor: tint(accent, 0.45) }]}>
-          <Text style={[styles.pillText, { color: accent }]}>{experience.duration}</Text>
+        <View style={styles.tileTopLeft}>
+          <View style={[styles.pill, { borderColor: tint(accent, 0.45) }]}>
+            <Text style={[styles.pillText, { color: accent }]}>{experience.duration}</Text>
+          </View>
+          {experience.premium ? (
+            <View style={[styles.pill, styles.proPill]}>
+              <Icon name="crown" size={12} color={colors.gold} />
+              <Text style={[styles.pillText, { color: colors.gold }]}>Pro</Text>
+            </View>
+          ) : null}
         </View>
         <View style={styles.tileTopRight}>
           {experience.special ? (
@@ -172,6 +192,7 @@ const styles = StyleSheet.create({
   // the outer petals sweep through the corner.
   mandala: { position: "absolute", top: -116, right: -104 },
   tileTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  tileTopLeft: { flexDirection: "row", alignItems: "center", gap: space.sm, flexShrink: 1 },
   tileTopRight: { flexDirection: "row", alignItems: "center", gap: space.sm },
   pill: {
     paddingHorizontal: space.md,
@@ -180,6 +201,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   pillText: { ...type.caption },
+  proPill: { flexDirection: "row", alignItems: "center", gap: 4, borderColor: tint(colors.gold, 0.45) },
   tileBottom: { gap: space.xs },
   tileTitle: { ...type.section, fontSize: 18, color: colors.text },
   tileDesc: { ...type.bodySmall, color: colors.textSecondary },

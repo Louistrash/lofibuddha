@@ -498,6 +498,202 @@ export const WORKSHOPS: Workshop[] = [
       { text: "Let the night garden carry you now, into the deep, into the dark, into a rest as soft and as sweet as the sleeping flowers. Goodnight.", pauseAfter: 0 },
     ],
   },
+
+  {
+    id: "morning-ritual-1",
+    title: "The Morning Ritual — Day 1: Waking",
+    description:
+      "The first morning. Wake the body gently and greet the new day with ease.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the first morning of your ritual. Before you reach for anything, before the day reaches for you, take this moment for yourself. You are here, and you are awake, and that is enough to begin.", pauseAfter: 12 },
+      { text: "Take a slow breath in through the nose, and let it out with a soft sigh. Feel the body answering the call of the morning, stirring from rest, coming gently back to life.", pauseAfter: 13 },
+      { text: "Notice the light in the room, and the quiet around you. This is the softest hour of the day, and it belongs to you. There is no rush. The day will wait.", pauseAfter: 13 },
+      { text: "Bring your attention to your hands. Gently open and close them, and feel the aliveness there. Then your feet, and your legs, waking slowly, as if the whole body were turning toward the light.", pauseAfter: 13 },
+      { text: "Roll your shoulders softly, and let your neck find its ease. The body has rested, and now it is ready to carry you through whatever this day will bring.", pauseAfter: 13 },
+      { text: "Take another slow breath, and let it fill you, all the way down into the belly. Feel the breath waking you from the inside, like a slow tide rising.", pauseAfter: 13 },
+      { text: "There is nothing you need to fix, nothing you need to become. You only need to be here, awake, present, exactly as you are. The rest of the day will unfold from this.", pauseAfter: 14 },
+      { text: "Notice how the body feels this morning. Heavy or light, rested or tired. Whatever is here, let it be here. You do not have to change it. You only have to notice it, with kindness.", pauseAfter: 14 },
+      { text: "Feel the ground beneath you, solid and steady. You are supported. You are held. And from this steady place, everything else can grow.", pauseAfter: 14 },
+      { text: "Let a soft intention settle in, quiet as a seed. Not a demand, not a goal. Just a gentle willingness to meet this day as it comes.", pauseAfter: 14 },
+      { text: "Breathe in the morning, and breathe out the night. Let the last of sleep leave you, and the first of the day arrive. You are crossing a threshold, and you are ready.", pauseAfter: 14 },
+      { text: "You have given yourself this gift — a few quiet moments before the world begins. It matters more than you know. It sets the tone for everything that follows.", pauseAfter: 14 },
+      { text: "Take one more slow breath, and let it go. You are awake now, in body and in spirit. Carry this quiet with you as you rise.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you to your morning. Rise gently, and step into the day with ease. You are ready.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-2",
+    title: "The Morning Ritual — Day 2: The First Breath",
+    description:
+      "The second morning. Begin the day with the breath, your steady anchor.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the second morning of your ritual. Before you move, before you think, come to the breath. It has been with you all night, and it is with you now, steady and true.", pauseAfter: 12 },
+      { text: "Take one full breath in through the nose, and let it out slowly through the mouth. Feel the cool air enter, and the warm air leave. This is the first gift of the morning.", pauseAfter: 13 },
+      { text: "Let the breath find its own rhythm now, and simply follow it. The rise of the chest, the soft fall of the belly. You are not doing the breathing. You are being breathed.", pauseAfter: 13 },
+      { text: "Notice how the breath is always here, beneath the thoughts, beneath the plans, beneath the noise. It is the one thing you can always return to, and it never asks anything of you.", pauseAfter: 13 },
+      { text: "With each breath in, feel yourself arriving a little more fully into the day. With each breath out, let go of the last threads of sleep. You are becoming present, one breath at a time.", pauseAfter: 13 },
+      { text: "Let the breath move down into the belly, slow and deep, waking the body from its center. Feel the aliveness spreading outward, into your limbs, into your hands, into the tips of your fingers.", pauseAfter: 13 },
+      { text: "If a thought of the day ahead arises, let it drift by like a cloud. You do not have to follow it now. You will meet the day soon enough. For now, there is only this breath.", pauseAfter: 14 },
+      { text: "Feel the steady rhythm of the breath, and let it settle you, the way a gentle anchor settles a boat. However the day goes, this rhythm will be here, waiting for you to return.", pauseAfter: 14 },
+      { text: "Breathe in calm, and breathe out anything that feels heavy. You do not have to carry yesterday into today. The breath is a doorway, and each exhale is a letting go.", pauseAfter: 14 },
+      { text: "Notice how the body responds to the slow, even breath. The shoulders soften, the jaw releases, the mind grows quiet. The body is waking into ease, not into urgency.", pauseAfter: 14 },
+      { text: "This is the foundation of your morning — the breath, steady and patient, always available. Wherever you go today, it goes with you.", pauseAfter: 14 },
+      { text: "Take one more slow breath in, and one long breath out. Let the exhale be a small sigh of readiness. You are here. You are breathing. You are beginning.", pauseAfter: 14 },
+      { text: "Carry this breath with you as you rise, and return to it whenever the day asks too much. It will always bring you back to yourself.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the breath, your steady companion through the day. Rise gently. You are ready.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-3",
+    title: "The Morning Ritual — Day 3: Gratitude",
+    description:
+      "The third morning. Open the day with a quiet sense of gratitude.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the third morning of your ritual. Today, before the day begins, we turn toward gratitude — not as a task, but as a quiet way of opening the heart.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Feel the simple fact of being here, awake, alive, in this moment. There is a roof above you, and breath in your lungs. That alone is a gift.", pauseAfter: 13 },
+      { text: "Bring to mind one thing you are grateful for this morning. It does not have to be large. A warm bed, a loved one, the light coming through the window. Let it come to you, simply.", pauseAfter: 13 },
+      { text: "Hold that thing gently in your attention, and notice how it feels in the body. Gratitude has a warmth to it, a softness in the chest. Let yourself feel it, without needing to name it fully.", pauseAfter: 14 },
+      { text: "Now bring to mind a second thing, something small that you often overlook. A steady job, a friend who listens, the simple comfort of a cup of tea. Notice how much is already here.", pauseAfter: 14 },
+      { text: "And perhaps a third thing, something within you — your strength, your patience, your willingness to keep going. You have carried yourself this far, and that is no small thing.", pauseAfter: 14 },
+      { text: "Notice how the list of what you have is always longer than the list of what you lack. Gratitude turns the light toward what is already here, and in that light, everything softens.", pauseAfter: 14 },
+      { text: "Breathe into this feeling of gratitude, and let it spread through you, warm and steady. This is not about pretending everything is perfect. It is about seeing what is good, even now.", pauseAfter: 14 },
+      { text: "Let the gratitude become a quiet background to your day, a soft hum beneath everything. When the day gets loud, you can return to it, and it will still be there.", pauseAfter: 14 },
+      { text: "Feel the heart opening, just a little, like a flower turning toward the sun. This is the posture of the day — open, grateful, ready to receive.", pauseAfter: 14 },
+      { text: "There is nothing you need to earn today. The day itself is a gift, and you are here to meet it. Let that be enough.", pauseAfter: 14 },
+      { text: "Take one more slow breath, and let it carry this gratitude with you as you rise. You are moving into the day from a full place, not an empty one.", pauseAfter: 14 },
+      { text: "Carry this gratitude quietly, and let it shape the way you meet everyone you encounter today. A grateful heart is a generous one.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the warmth of gratitude in your chest. Rise gently, and step into the day with an open heart.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-4",
+    title: "The Morning Ritual — Day 4: Intention",
+    description:
+      "The fourth morning. Set a clear, gentle intention for the day ahead.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the fourth morning of your ritual. Today we set an intention — not a goal to chase, but a quiet compass, a way of being that will guide you through the day.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Feel yourself arriving fully into this moment, leaving behind the pull of the day before, and the pull of the day to come.", pauseAfter: 13 },
+      { text: "Ask yourself, quietly: how do I want to meet this day? Not what do I want to do, but who do I want to be. The answer may come as a word, or a feeling, or a simple knowing.", pauseAfter: 13 },
+      { text: "Perhaps the word is calm. Or kind. Or present. Or brave. Let it rise on its own, without forcing it. You do not need the perfect word. You only need a direction.", pauseAfter: 14 },
+      { text: "Let this intention settle into you, like a stone dropped gently into still water. It does not ripple with urgency. It simply rests there, quiet and clear, at the center of you.", pauseAfter: 14 },
+      { text: "Imagine carrying this intention with you, like a small light in your pocket, through every hour of the day. In meetings, in traffic, in quiet moments, it is there, guiding you back to yourself.", pauseAfter: 14 },
+      { text: "Notice how the intention softens the day before it has even begun. The day is no longer a list of tasks. It is a journey, and you have chosen the way you want to walk it.", pauseAfter: 14 },
+      { text: "Breathe the intention in, and let it fill you. Breathe out, and let go of anything that does not serve it. You are becoming more yourself with each breath.", pauseAfter: 14 },
+      { text: "There will be moments today when you forget this intention. That is all right. Forgetting is part of the practice. When you remember, simply return to it, gently, the way you return to the breath.", pauseAfter: 14 },
+      { text: "Feel the quiet power of this intention. It is not a command, but a commitment — a promise you are making to yourself about how you want to show up.", pauseAfter: 14 },
+      { text: "Let the intention be simple enough to remember, and deep enough to matter. It does not need to be impressive. It only needs to be true.", pauseAfter: 14 },
+      { text: "Take one more slow breath, and seal the intention within you. It is yours now, and it will walk beside you all day long.", pauseAfter: 14 },
+      { text: "As you rise, carry this intention gently, and let it be the thread that holds the day together. You are not drifting. You are choosing.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with your intention, bright and clear. Rise gently, and walk into the day with purpose.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-5",
+    title: "The Morning Ritual — Day 5: Energy",
+    description:
+      "The fifth morning. Wake the body's energy and meet the day with vitality.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the fifth morning of your ritual. Today we wake the body's energy, gently, and let it flow, so that you meet the day with vitality rather than effort.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out with a soft sigh. Now begin to move, just a little — the hands, the feet, the neck. Let the body remember that it is alive.", pauseAfter: 13 },
+      { text: "Roll your shoulders, slowly, one way and then the other. Feel the blood moving, the muscles waking, the body shaking off the last of sleep. This is energy, and it is yours.", pauseAfter: 13 },
+      { text: "Stretch your arms overhead, if it feels good, and feel the long line of the body opening, from your fingertips down to your toes. Breathe into the stretch, and let it lengthen you.", pauseAfter: 14 },
+      { text: "Bring your attention to your breath, and let it grow a little deeper, a little fuller. Each breath in is energy arriving. Each breath out is tiredness leaving.", pauseAfter: 14 },
+      { text: "Feel the energy moving through you now, warm and alive, like sunlight spreading through water. It is not a forced energy, but a natural one, the body's own readiness.", pauseAfter: 14 },
+      { text: "Notice the difference between this energy and the restless energy of anxiety. This is calm and steady, a quiet vitality. It does not push. It carries.", pauseAfter: 14 },
+      { text: "Let this energy settle into your center, so that it is not scattered, but gathered — a steady current that will move you through the day without exhausting you.", pauseAfter: 14 },
+      { text: "If you feel heavy this morning, do not fight it. Simply breathe, and invite the energy in slowly. It will come. The body knows how to wake, if you give it the space.", pauseAfter: 14 },
+      { text: "Feel the aliveness in your hands, your feet, your chest. This is not something you have to earn or create. It is already here, waiting to be noticed.", pauseAfter: 14 },
+      { text: "Breathe in light, and breathe out heaviness. Breathe in clarity, and breathe out fog. With each cycle, you feel a little more awake, a little more ready.", pauseAfter: 14 },
+      { text: "This energy is a gift, and you can return to it all day. Whenever you flag, pause, breathe, and let it rise again. It is always available to you.", pauseAfter: 14 },
+      { text: "Take one more full breath, and let it fill you to the brim. You are awake, alive, and ready. The day does not stand a chance against you.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the energy flowing through you. Rise gently, and meet the day with all of yourself.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-6",
+    title: "The Morning Ritual — Day 6: Stillness",
+    description:
+      "The sixth morning. Find a moment of deep stillness before the world begins.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the sixth morning of your ritual. Today, before the day begins, we find stillness — not as an absence, but as a presence, a quiet place at the center of you.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Let the body settle, and let the mind settle too. You are not in a hurry. There is nowhere else to be but here.", pauseAfter: 13 },
+      { text: "Notice the quiet around you, and the quiet within you. Beneath the thoughts, beneath the plans, beneath the first stirrings of the day, there is a deep stillness that is always here.", pauseAfter: 13 },
+      { text: "Let your attention rest in this stillness, the way a stone rests at the bottom of a clear pool. You do not have to find it, or create it. You only have to stop stirring.", pauseAfter: 14 },
+      { text: "Feel the stillness holding you, steady and calm. The world will get loud soon enough, but for now, there is only this — the breath, the quiet, the simple fact of being.", pauseAfter: 14 },
+      { text: "If a thought arises, let it pass through the stillness without disturbing it, like a bird flying across a still sky. The stillness remains, unmoved, patient, complete.", pauseAfter: 14 },
+      { text: "Notice how, in this stillness, you can hear things you usually miss. The soft sound of your own breath. The faint hum of the morning. The quiet pulse of your own heart.", pauseAfter: 14 },
+      { text: "This stillness is not something you visit. It is something you are, underneath everything. And it goes with you, into the noise of the day, like a secret well you can draw from.", pauseAfter: 14 },
+      { text: "Let the stillness deepen, and let yourself sink into it. There is nothing to do here, nothing to solve, nothing to become. Just this, and it is enough.", pauseAfter: 14 },
+      { text: "Breathe in stillness, and breathe out restlessness. With each cycle, you are a little more rooted, a little more calm, a little more yourself.", pauseAfter: 14 },
+      { text: "When the day begins to pull at you, you will carry this stillness with you. It will be the steady place you return to, in every pause, every breath, every quiet moment.", pauseAfter: 14 },
+      { text: "Take one more slow breath, and let it anchor you in this stillness. You are not leaving it behind. You are taking it with you, like a light that does not go out.", pauseAfter: 14 },
+      { text: "As you rise, move slowly, and let the stillness guide your first steps. There is no need to rush. The day will wait for you, and it will be better for your calm.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you in the stillness. Rise gently, and carry it with you through the day.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "morning-ritual-7",
+    title: "The Morning Ritual — Day 7: Beginning",
+    description:
+      "The final morning. Step into the day — and the days ahead — from a place of wholeness.",
+    duration: "8 min",
+    theme: "The Morning Ritual",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Good morning. This is the seventh and final morning of your ritual. Take a moment to feel how far you have come — seven mornings of returning to yourself, of waking with intention, of beginning again.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out with a soft sigh. You have learned to wake the body, to follow the breath, to open the heart, to set your intention, to gather your energy, and to rest in stillness.", pauseAfter: 13 },
+      { text: "These were never separate practices. They were all one thing — the art of beginning, of meeting each day as it is, with presence and with ease. And that art is now yours.", pauseAfter: 14 },
+      { text: "Notice how this morning feels different from the first. There is a steadiness in you now, a quiet confidence, a knowing that you can meet whatever comes, one breath at a time.", pauseAfter: 14 },
+      { text: "You do not need to practice perfectly. Some mornings will be hard, and some will be easy, and both are fine. What matters is that you return, again and again, to the simple act of beginning.", pauseAfter: 14 },
+      { text: "Let this ritual become a home you can always come back to. The breath, the gratitude, the intention, the stillness — they will always be here, waiting for you, patient and kind.", pauseAfter: 14 },
+      { text: "Today is not an ending. It is a beginning — of a new way of waking, a new way of being with the morning, a new way of walking through your life with your eyes open.", pauseAfter: 14 },
+      { text: "Feel the whole of yourself, gathered and ready. The body, awake and alive. The mind, clear and calm. The heart, open and grateful. You are more than ready for this day.", pauseAfter: 14 },
+      { text: "Let a sense of quiet resolve settle into you. Not a striving, but a gentle certainty — that you will meet this day, and every day, as the person you are becoming.", pauseAfter: 14 },
+      { text: "Breathe in the morning, and breathe out the night. Breathe in the future, and breathe out the past. You are here, now, and that is the only place you ever need to be.", pauseAfter: 14 },
+      { text: "Carry everything you have learned with you, not as a burden, but as a light. It will brighten the ordinary moments, and steady you in the difficult ones.", pauseAfter: 14 },
+      { text: "Take one more slow breath, and let it be a door opening. The day is before you, wide and new. Step through it with ease, with presence, with all of yourself.", pauseAfter: 14 },
+      { text: "Thank you for walking this ritual with yourself. It matters more than you know. Now, go — and begin.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you to your day. Rise gently, and begin. You are ready.", pauseAfter: 0 }
+    ],
+  },
 ];
 
 /** Workshops as playable experiences — the existing player streams the guide
@@ -513,5 +709,6 @@ export function workshopExperiences(): Experience[] {
     soundscape: "off",
     music: "temple-rain",
     scene: "night",
+    premium: true,
   }));
 }
