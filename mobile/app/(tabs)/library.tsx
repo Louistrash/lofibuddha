@@ -126,20 +126,18 @@ export default function LibraryScreen() {
         recentItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Recently played" />
-            <View style={styles.list}>
+            <CardRail minCardWidth={140}>
               {recentItems.map((exp) =>
                 exp ? (
                   <ExperienceCard
                     key={exp.id}
                     experience={exp}
-                    variant="row"
+                    variant="mini"
                     onPress={() => open(exp.id)}
-                    isFavorite={isFavorite(exp.id)}
-                    onToggleFavorite={() => toggle(exp.id)}
                   />
                 ) : null
               )}
-            </View>
+            </CardRail>
           </View>
         ) : (
           <EmptyState

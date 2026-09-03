@@ -11,8 +11,8 @@ import { Mandala } from "./Mandala";
 type Props = {
   experience: Experience;
   onPress: () => void;
-  /** tile = card in a grid or rail, row = compact list line */
-  variant?: "tile" | "row";
+  /** tile = card in a grid or rail, row = compact list line, mini = small album-art tile */
+  variant?: "tile" | "row" | "mini";
   width?: number;
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
@@ -77,6 +77,29 @@ export function ExperienceCard({
             />
           </Pressable>
         ) : null}
+      </Pressable>
+    );
+  }
+
+  if (variant === "mini") {
+    const w = width ?? 140;
+    return (
+      <Pressable
+        onPress={handlePress}
+        style={({ pressed }: any) => [styles.mini, { width: w }, pressed && { opacity: 0.9 }]}
+      >
+        <LinearGradient
+          colors={[tint(accent, 0.55), tint(accent, 0.16)]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0.6, y: 1 }}
+          style={[styles.miniArt, { width: w, height: w }]}
+        >
+          <Icon name={iconFor(experience)} size={Math.round(w * 0.22)} color={colors.ink} />
+        </LinearGradient>
+        <Text style={styles.miniTitle} numberOfLines={2}>
+          {experience.title}
+        </Text>
+        <Text style={styles.miniMeta}>{experience.duration}</Text>
       </Pressable>
     );
   }
@@ -235,4 +258,14 @@ const styles = StyleSheet.create({
   rowSub: { ...type.bodySmall, color: colors.textMuted, marginTop: 2 },
   rowDuration: { ...type.caption, color: colors.textMuted },
   heart: { padding: space.xs },
+
+  mini: { gap: space.xs },
+  miniArt: {
+    borderRadius: radius.lg,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  miniTitle: { ...type.bodySmall, color: colors.text, marginTop: space.xs, lineHeight: 18 },
+  miniMeta: { ...type.caption, color: colors.textMuted },
 });

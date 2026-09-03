@@ -1,5 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { colors, radius, space, type } from "@/src/theme/tokens";
 import { Icon, type IconName } from "@/src/components/ui/Icon";
 
@@ -105,11 +106,19 @@ export function Chip({
       onPress={onPress}
       style={({ pressed, hovered }: any) => [
         styles.chip,
-        active && { backgroundColor: accent, borderColor: accent },
+        active && { borderColor: "transparent", backgroundColor: "transparent" },
         hovered && !active && { borderColor: colors.hairlineStrong },
         pressed && { opacity: 0.8 },
       ]}
     >
+      {active ? (
+        <LinearGradient
+          colors={["#F3D8A4", "#DDA45C"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+      ) : null}
       <Text style={[styles.chipText, active && { color: colors.ink }]} numberOfLines={1}>
         {label}
       </Text>
@@ -183,6 +192,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.hairline,
     backgroundColor: "rgba(255,255,255,0.04)",
+    overflow: "hidden",
   },
   chipText: { ...type.label, color: colors.textSecondary },
 

@@ -75,15 +75,22 @@ if (!med || med.segments.length === 0) {
 }
 
 // --- TTS: floating stem (stability 0.1 / style 0.95) ---
-async function tts(text, outPath) {
+// opts.previousText / opts.nextText geven ElevenLabs de context van de
+// omliggende zinnen mee, zodat per-zin TTS dezelfde toon/flow houdt als één
+// doorlopende take (voorkomt het "ander persoon" effect bij --pauses).
+// N.B. deze context werkt alleen op 'eleven_multilingual_v2' (niet op v3).
+async function tts(text, outPath, opts = {}) {
+  const payload = {
+    text,
+    model_id: opts.model || "eleven_v3",
+    voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.95, use_speaker_boost: false },
+  };
+  if (opts.previousText) payload.previous_text = opts.previousText;
+  if (opts.nextText) payload.next_text = opts.nextText;
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
     method: "POST",
     headers: { "xi-api-key": API_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text,
-      model_id: "eleven_v3",
-      voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.95, use_speaker_boost: false },
-    }),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) {
     const body = await res.text();
@@ -132,7 +139,11 @@ if (usePauses) {
     const seg = med.segments[i];
     const raw = join(TMP, `${id}-raw-${i}.mp3`);
     const norm = join(TMP, `${id}-norm-${i}.mp3`);
-    await tts(seg.text, raw);
+    await tts(seg.text, raw, {
+      model: "eleven_multilingual_v2",
+      previousText: i > 0 ? med.segments[i - 1].text : undefined,
+      nextText: i < med.segments.length - 1 ? med.segments[i + 1].text : undefined,
+    });
     const gain = normalize(raw, norm);
     parts.push(`file '${norm}'`);
     cleanup.push(raw, norm);
