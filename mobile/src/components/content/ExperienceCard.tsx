@@ -82,35 +82,47 @@ export function ExperienceCard({
   }
 
   if (variant === "mini") {
-    const w = width ?? 140;
     return (
       <Pressable
         onPress={handlePress}
-        style={({ pressed }: any) => [styles.mini, { width: w }, pressed && { opacity: 0.9 }]}
+        style={({ hovered, pressed }: any) => [
+          styles.playlist,
+          width ? { width } : null,
+          hovered && styles.playlistHover,
+          pressed && { opacity: 0.9 },
+        ]}
       >
-        <View>
-          <LinearGradient
-            colors={[tint(accent, 0.55), tint(accent, 0.16)]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0.6, y: 1 }}
-            style={[styles.miniArt, { width: w, height: w }]}
-          >
-            <Icon name={iconFor(experience)} size={Math.round(w * 0.22)} color={colors.ink} />
-          </LinearGradient>
-          {onToggleFavorite ? (
-            <Pressable onPress={onToggleFavorite} hitSlop={10} style={styles.miniHeart}>
-              <Icon
-                name={isFavorite ? "heart" : "heartOutline"}
-                size={15}
-                color={isFavorite ? accent : colors.text}
-              />
-            </Pressable>
-          ) : null}
+        <LinearGradient
+          colors={[tint(accent, 0.26), "rgba(17,16,25,0.95)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0.6, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+        <LinearGradient
+          colors={[tint(accent, 0.85), tint(accent, 0.35)]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.playlistArt}
+        >
+          <Icon name={iconFor(experience)} size={24} color={colors.ink} />
+        </LinearGradient>
+        <View style={styles.playlistMeta}>
+          <Text style={styles.playlistTitle} numberOfLines={1}>
+            {experience.title}
+          </Text>
+          <Text style={styles.playlistSub} numberOfLines={1}>
+            {experience.duration}
+          </Text>
         </View>
-        <Text style={styles.miniTitle} numberOfLines={2}>
-          {experience.title}
-        </Text>
-        <Text style={styles.miniMeta}>{experience.duration}</Text>
+        {onToggleFavorite ? (
+          <Pressable onPress={onToggleFavorite} hitSlop={10}>
+            <Icon
+              name={isFavorite ? "heart" : "heartOutline"}
+              size={17}
+              color={isFavorite ? accent : colors.textMuted}
+            />
+          </Pressable>
+        ) : null}
       </Pressable>
     );
   }
@@ -270,21 +282,27 @@ const styles = StyleSheet.create({
   rowDuration: { ...type.caption, color: colors.textMuted },
   heart: { padding: space.xs },
 
-  mini: { gap: space.xs },
-  miniArt: {
-    borderRadius: radius.lg,
+  playlist: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.md,
+    padding: space.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    overflow: "hidden",
+    ...shadow.card,
+  },
+  playlistHover: { borderColor: colors.hairlineStrong },
+  playlistArt: {
+    width: 56,
+    height: 56,
+    borderRadius: radius.sm,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
   },
-  miniTitle: { ...type.bodySmall, color: colors.text, marginTop: space.xs, lineHeight: 18 },
-  miniMeta: { ...type.caption, color: colors.textMuted },
-  miniHeart: {
-    position: "absolute",
-    top: space.sm,
-    right: space.sm,
-    padding: 4,
-    borderRadius: radius.pill,
-    backgroundColor: "rgba(8,7,12,0.5)",
-  },
+  playlistMeta: { flex: 1, gap: 2 },
+  playlistTitle: { ...type.body, color: colors.text },
+  playlistSub: { ...type.caption, color: colors.textMuted },
 });

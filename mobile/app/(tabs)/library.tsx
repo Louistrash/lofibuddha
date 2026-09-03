@@ -88,7 +88,7 @@ export default function LibraryScreen() {
         savedItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Saved" caption="Tap the heart while listening to add more" />
-            <CardRail minCardWidth={140}>
+            <View style={styles.playlistList}>
               {savedItems.map((exp) =>
                 exp ? (
                   <ExperienceCard
@@ -101,7 +101,7 @@ export default function LibraryScreen() {
                   />
                 ) : null
               )}
-            </CardRail>
+            </View>
           </View>
         ) : (
           <EmptyState
@@ -116,7 +116,7 @@ export default function LibraryScreen() {
         recentItems.length ? (
           <View style={styles.block}>
             <SectionHeader title="Recently played" />
-            <CardRail minCardWidth={140}>
+            <View style={styles.playlistList}>
               {recentItems.map((exp) =>
                 exp ? (
                   <ExperienceCard
@@ -127,7 +127,7 @@ export default function LibraryScreen() {
                   />
                 ) : null
               )}
-            </CardRail>
+            </View>
           </View>
         ) : (
           <EmptyState
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
   tabs: { flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginBottom: space["2xl"] },
   block: { marginBottom: space["3xl"] },
   seriesBlock: { marginBottom: space["2xl"] },
+  playlistList: { gap: space.sm },
   list: { gap: 2 },
   courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
   course: {
