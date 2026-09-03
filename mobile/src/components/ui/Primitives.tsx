@@ -113,7 +113,7 @@ export function Chip({
     >
       {active ? (
         <LinearGradient
-          colors={["#F3D8A4", "#DDA45C"]}
+          colors={["#F7DDA0", "#C1842E"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={StyleSheet.absoluteFill}
