@@ -226,6 +226,7 @@ function StatsPanel({
   catalog: number;
 }) {
   const l = useLayout();
+  const router = useRouter();
   const stats: {
     label: string;
     caption: string;
@@ -234,6 +235,7 @@ function StatsPanel({
     accent: string;
     /** 0..1, fills the rail at the foot of the card. */
     fill: number;
+    route: string;
   }[] = [
     {
       label: "Sessions",
@@ -242,6 +244,7 @@ function StatsPanel({
       icon: "meditation",
       accent: colors.jade,
       fill: Math.min(1, sessions / 20),
+      route: "/library?tab=recent",
     },
     {
       label: "Saved",
@@ -250,6 +253,7 @@ function StatsPanel({
       icon: "lotus",
       accent: colors.lotus,
       fill: Math.min(1, favorites / 10),
+      route: "/library?tab=saved",
     },
     {
       label: "Catalog",
@@ -258,13 +262,23 @@ function StatsPanel({
       icon: "catalog",
       accent: colors.gold,
       fill: 1,
+      route: "/explore",
     },
   ];
 
   return (
     <View style={[styles.stats, l.isDesktop && { flex: 1 }, !l.isDesktop && styles.statsRow]}>
       {stats.map((s) => (
-        <View key={s.label} style={[styles.stat, !l.isDesktop && { flex: 1 }]}>
+        <Pressable
+          key={s.label}
+          onPress={() => router.push(s.route)}
+          style={({ hovered, pressed }: any) => [
+            styles.stat,
+            !l.isDesktop && { flex: 1 },
+            hovered && styles.statHover,
+            pressed && { opacity: 0.9 },
+          ]}
+        >
           <LinearGradient
             colors={[tint(s.accent, 0.16), "rgba(15,14,23,0.6)"]}
             start={{ x: 1, y: 0 }}
@@ -297,7 +311,7 @@ function StatsPanel({
               ]}
             />
           </View>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
@@ -375,6 +389,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     ...shadow.card,
   },
+  statHover: { borderColor: colors.hairlineStrong },
   statMandala: { position: "absolute", top: -100, right: -84 },
   statTop: { flexDirection: "row", alignItems: "center", gap: space.sm, marginBottom: space.sm },
   statValue: { ...type.largeTitle, fontSize: 30, color: colors.text },

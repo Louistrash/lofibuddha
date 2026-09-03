@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { EXPERIENCES, getExperience, workshopExperiences } from "@lofibuddha/shared";
 import { Screen } from "@/src/components/ui/Screen";
 import { SectionHeader, EmptyState, Chip } from "@/src/components/ui/Primitives";
@@ -16,7 +16,15 @@ type Course = { id: string; title: string; description?: string; lessons?: unkno
 type Tab = "saved" | "recent" | "courses" | "workshops";
 
 export default function LibraryScreen() {
-  const [tab, setTab] = useState<Tab>("saved");
+  const params = useLocalSearchParams<{ tab?: string }>();
+  const validTabs: Tab[] = ["saved", "recent", "courses", "workshops"];
+  const [tab, setTab] = useState<Tab>(() =>
+    validTabs.includes(params.tab as Tab) ? (params.tab as Tab) : "saved"
+  );
+
+  useEffect(() => {
+    if (validTabs.includes(params.tab as Tab)) setTab(params.tab as Tab);
+  }, [params.tab]);
   const [courses, setCourses] = useState<Course[]>([]);
   const router = useRouter();
   const l = useLayout();
