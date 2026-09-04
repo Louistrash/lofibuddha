@@ -28,7 +28,7 @@ const env = Object.fromEntries(
     })
 );
 const API_KEY = env.ELEVENLABS_API_KEY;
-const VOICE_ID = env.ELEVENLABS_VOICE_ID || "iJkzOEXKLoZ6ZquIAnOA";
+const VOICE_ID = env.ELEVENLABS_VOICE_ID || "Y4J6zd7oRoHAUEGRgBGP";
 if (!API_KEY) {
   console.error("❌ ELEVENLABS_API_KEY not found in .env");
   process.exit(1);
@@ -41,7 +41,7 @@ async function tts(text, outPath) {
     body: JSON.stringify({
       text,
       model_id: "eleven_v3",
-      voice_settings: { stability: 0.45, similarity_boost: 0.75, style: 0.2, use_speaker_boost: true },
+      voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.95, use_speaker_boost: false },
     }),
   });
   if (!res.ok) {
