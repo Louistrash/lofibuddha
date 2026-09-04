@@ -10,9 +10,17 @@ import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { apiFetch } from "@/src/lib/api";
 import { colors, radius, space, type } from "@/src/theme/tokens";
-import { useLayout } from "@/src/theme/useLayout";
 
-type Course = { id: string; title: string; description?: string; lessons?: unknown[] };
+type Course = {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  duration?: string;
+  level?: string;
+  moduleCount?: number;
+};
 type Tab = "saved" | "recent" | "courses" | "workshops";
 
 export default function LibraryScreen() {
@@ -27,7 +35,6 @@ export default function LibraryScreen() {
   }, [params.tab]);
   const [courses, setCourses] = useState<Course[]>([]);
   const router = useRouter();
-  const l = useLayout();
   const { playExperience } = usePlayer();
   const { favorites, recent, toggle, isFavorite } = useFavorites();
 
@@ -162,19 +169,33 @@ export default function LibraryScreen() {
             <SectionHeader title="Courses" caption="Multi-day journeys from LofiBuddha" />
             <View style={styles.courseGrid}>
               {courses.map((c) => (
-                <View key={c.id} style={[styles.course, !l.isCompact && { width: "48%" }]}>
+                <Pressable
+                  key={c.id}
+                  onPress={() => router.push(`/course/${c.slug}`)}
+                  style={({ hovered, pressed }: any) => [
+                    styles.course,
+                    hovered && { borderColor: colors.hairlineStrong },
+                    pressed && { opacity: 0.9 },
+                  ]}
+                >
                   <Text style={styles.courseTitle} numberOfLines={2}>
                     {c.title}
                   </Text>
+                  {c.subtitle ? (
+                    <Text style={styles.courseSub} numberOfLines={1}>
+                      {c.subtitle}
+                    </Text>
+                  ) : null}
                   {c.description ? (
                     <Text style={styles.courseDesc} numberOfLines={3}>
                       {c.description}
                     </Text>
                   ) : null}
-                  {c.lessons?.length ? (
-                    <Text style={styles.courseMeta}>{c.lessons.length} lessons</Text>
-                  ) : null}
-                </View>
+                  <Text style={styles.courseMeta}>
+                    {c.duration}
+                    {c.moduleCount ? ` · ${c.moduleCount} modules` : ""}
+                  </Text>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -233,8 +254,8 @@ const styles = StyleSheet.create({
   list: { gap: 2 },
   courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
   course: {
+    flexBasis: 240,
     flexGrow: 1,
-    minWidth: 240,
     backgroundColor: colors.card,
     borderRadius: radius.md,
     borderWidth: 1,
@@ -243,6 +264,7 @@ const styles = StyleSheet.create({
     gap: space.sm,
   },
   courseTitle: { ...type.headline, color: colors.text },
+  courseSub: { ...type.caption, color: colors.goldBright },
   courseDesc: { ...type.bodySmall, color: colors.textSecondary },
-  courseMeta: { ...type.caption, color: colors.textMuted },
+  courseMeta: { ...type.caption, color: colors.textMuted, marginTop: space.xs },
 });
