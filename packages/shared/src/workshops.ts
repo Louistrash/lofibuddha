@@ -890,6 +890,146 @@ export const WORKSHOPS: Workshop[] = [
       { text: "I will be quiet now, and leave you with the warmth in your chest, and the quiet knowing that you are, and always have been, a source of kindness in this world. May you be happy. May you be at peace.", pauseAfter: 0 }
     ],
   },
+
+  {
+    id: "deep-work-sprint-1",
+    title: "Deep Work Sprint — Session 1: Entering Deep Focus",
+    description:
+      "The first session. Learn to settle the mind and step into deep, undistracted focus.",
+    duration: "8 min",
+    theme: "Deep Work Sprint",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome. This is the first session of the Deep Work Sprint. Find a comfortable seat, and let your body settle. For the next few minutes, we are going to train the most valuable skill you have — the ability to focus deeply, on one thing, without distraction.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out fully. Feel the day loosen its grip on you. The tasks, the messages, the noise — they can all wait. For now, there is only this moment, and this breath.", pauseAfter: 13 },
+      { text: "Bring to mind the work you are about to do. One task, one project, one thing that matters. See it clearly, without judgment. This is what your attention will rest on for the next while.", pauseAfter: 13 },
+      { text: "Notice any resistance that arises — the urge to check something, the pull of distraction, the restlessness. You do not have to fight it. Simply notice it, and let it be there, while you gently return your attention to the breath.", pauseAfter: 14 },
+      { text: "Feel your body grounding into the chair, the feet on the floor, the hands resting. You are not scattered across a hundred things. You are here, gathered, present. This is the posture of deep focus.", pauseAfter: 14 },
+      { text: "Now, imagine your attention as a beam of light, and gently aim it at the one thing before you. Not a wide, flickering light, but a steady, focused beam. Everything else can fall into shadow, for now.", pauseAfter: 14 },
+      { text: "Take a slow breath in, and as you breathe out, let yourself arrive fully at the task. Not the whole task, just the next small step. One sentence. One action. One beginning. That is all that is ever asked of you.", pauseAfter: 14 },
+      { text: "Notice how the mind settles when it has a single point of focus. The chatter quiets, the body stills, and a quiet clarity emerges. This is the feeling of entering deep work.", pauseAfter: 14 },
+      { text: "If a thought of something else arises — a message to send, a worry to revisit — do not chase it. Set it gently aside, and return the beam of attention to the task. The thought can wait. It will still be there later.", pauseAfter: 14 },
+      { text: "Feel the quiet momentum building, the sense that you are moving into the work rather than forcing yourself toward it. Deep focus is not a strain. It is a settling, a gathering, a coming home to the task.", pauseAfter: 14 },
+      { text: "There is no hurry here. Deep work is not about speed. It is about depth — giving one thing your full, undivided presence. And that presence is something you can offer, right now.", pauseAfter: 14 },
+      { text: "Let this steady focus become your ground. From here, the work will unfold with a calm you did not have to manufacture. You simply arrived, and stayed.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry this gathered attention with you into the work. You are ready. The task is waiting, and you are here for it.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you at the edge of your work, focused and calm. Begin whenever you are ready. You have everything you need.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "deep-work-sprint-2",
+    title: "Deep Work Sprint — Session 2: The Single Task",
+    description:
+      "The second session. Commit fully to one task, and let everything else go.",
+    duration: "8 min",
+    theme: "Deep Work Sprint",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the second session of the Deep Work Sprint. Settle in, and let your breath find its ease. Today we practice the heart of deep work — the ability to commit fully to one thing, and to let everything else go.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out completely. Feel the many threads of the day — the open tabs of the mind — and gently begin to close them, one by one, until only one remains.", pauseAfter: 13 },
+      { text: "Choose your one task. Not the biggest, not the most urgent, but the one thing that, if done well, would make the day a success. Hold it in your attention, clear and singular.", pauseAfter: 13 },
+      { text: "Notice the pull to multitask — the feeling that doing one thing means neglecting others. It is an illusion. Attention divided is attention diminished. In this moment, you are choosing depth over spread, and that is a strength.", pauseAfter: 14 },
+      { text: "Say to yourself, quietly: this is the one thing. Not the only thing in my life, but the one thing in this moment. And it deserves my whole self, not the leftovers of a scattered mind.", pauseAfter: 14 },
+      { text: "Feel the relief of this commitment. You no longer have to hold everything at once. You have given yourself permission to do one thing, fully. The rest can wait, and it will.", pauseAfter: 14 },
+      { text: "Now turn your full attention to the task. See it, understand it, begin it. The first step is small — a single sentence, a single action, a single thought in the right direction. Take that step now, in your mind.", pauseAfter: 14 },
+      { text: "As you work, notice when the mind wanders to other things. Do not scold it. Simply notice, and return, again and again, to the single task. The returning is the practice. The returning is the strength.", pauseAfter: 14 },
+      { text: "Feel the task becoming clearer the more you give it your attention. What seemed fuzzy sharpens. What seemed hard softens. This is what full attention does — it makes the impossible, step by step, possible.", pauseAfter: 14 },
+      { text: "There is no need to rush. Depth is not speed. A single task, done with full presence, is worth more than ten tasks done in a blur. You are choosing quality over noise, and it shows.", pauseAfter: 14 },
+      { text: "Let yourself sink into the work, the way you would sink into a good conversation or a good book. Time will pass without you noticing, and that is the sign you are doing it right.", pauseAfter: 14 },
+      { text: "Notice the quiet satisfaction that comes from single-minded effort. This is the reward of deep work — not just the finished task, but the calm, capable person you become while doing it.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry this commitment with you. One thing, fully. That is enough. That is everything.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with your one task, and your full attention. You are ready. Begin.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "deep-work-sprint-3",
+    title: "Deep Work Sprint — Session 3: Guarding Attention",
+    description:
+      "The third session. Learn to notice distractions and gently return, without losing your center.",
+    duration: "8 min",
+    theme: "Deep Work Sprint",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the third session of the Deep Work Sprint. Settle in, and let your body find its stillness. Today we train the skill that separates deep workers from the rest — the ability to guard your attention, and to return when it wanders.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out gently. Your attention is your most precious resource, and today it belongs to you. Not to your phone, not to the noise, not to the endless pull of the world. To you.", pauseAfter: 13 },
+      { text: "Bring your attention to your breath, and use it as a home base. Feel the cool air entering, the warm air leaving. This simple rhythm is where you return, whenever the mind drifts.", pauseAfter: 13 },
+      { text: "Now, imagine your attention as a small flame, and the distractions of the day as a wind. Notices, messages, worries, ideas — each one a gust that tries to bend the flame. Your practice is to keep the flame steady.", pauseAfter: 14 },
+      { text: "When a distraction arises — and it will — do not fight it. Fighting gives it power. Instead, simply notice it, name it quietly if you like — thinking, planning, checking — and let it pass through, like a gust of wind.", pauseAfter: 14 },
+      { text: "The flame flickers, but it does not go out. You are not failing when the mind wanders. You are practicing when you notice the wandering and return. Each return is a small victory, a strengthening of the flame.", pauseAfter: 14 },
+      { text: "Feel the steadiness that grows with each return. The distractions lose their grip. The wind dies down. And what remains is a quiet, unwavering focus that no notification can break.", pauseAfter: 14 },
+      { text: "Notice the difference between guarding and forcing. You are not clenching your attention. You are gently shepherding it, the way you would guide a child back to the path, again and again, without anger.", pauseAfter: 14 },
+      { text: "Let the breath be your anchor through all of this. Distraction comes, you breathe, you return. Distraction comes, you breathe, you return. This is the rhythm, and it is all you need.", pauseAfter: 14 },
+      { text: "There is a quiet power in this. Most people are pulled through their days by every passing impulse. You are learning to choose, deliberately, where your attention rests. That choice is freedom.", pauseAfter: 14 },
+      { text: "If a strong distraction keeps returning, make a gentle note of it — write it down mentally, set it aside — and return to the flame. You have acknowledged it. You do not have to keep holding it.", pauseAfter: 14 },
+      { text: "Rest in the steadiness you have built. The flame burns clear and calm. You are no longer at the mercy of the wind. You are its still center.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry this guarded attention into your work. You know how to return now. And returning is everything.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with your steady flame, your anchored breath, and your attention, once again your own.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "deep-work-sprint-4",
+    title: "Deep Work Sprint — Session 4: The Flow State",
+    description:
+      "The fourth session. Sink into the effortless absorption of flow.",
+    duration: "8 min",
+    theme: "Deep Work Sprint",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the fourth session of the Deep Work Sprint. Settle in, and let your breath slow. Today we move toward flow — that state of effortless absorption, where the work does itself and time disappears.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out fully. Flow is not something you force. It is something you enter, the way you enter warm water — gradually, gently, until you are fully immersed.", pauseAfter: 13 },
+      { text: "Bring your attention to the task before you, and let yourself become genuinely interested in it. Not in finishing it, but in the doing of it. Curiosity is the doorway to flow. What is there to discover here?", pauseAfter: 13 },
+      { text: "Feel the boundary between you and the task beginning to soften. You are no longer doing the work from outside. You are inside it, and it is inside you. Subject and object begin to merge.", pauseAfter: 14 },
+      { text: "Let the challenge and your skill find their balance. If the work feels too hard, take a smaller step. If it feels too easy, take a deeper one. Flow lives at the edge of your ability, where you are stretched but not broken.", pauseAfter: 14 },
+      { text: "Notice how the mind grows quiet as it becomes absorbed. The self-conscious voice — the watcher, the critic — falls silent. There is only the work, and the flow of it, and you are part of that flow.", pauseAfter: 14 },
+      { text: "Let time do what it will. In flow, minutes can feel like seconds, or stretch like hours. It does not matter. You are not measuring time. You are inside it, moving with it, part of its current.", pauseAfter: 14 },
+      { text: "If you feel yourself emerging from flow — a thought, a twitch, a pull — do not grasp at it. Let it pass, and sink back in. The water is still warm. The current is still there. Return to it.", pauseAfter: 14 },
+      { text: "Feel the effortless effort of flow — the paradox at its heart. You are working hard, and yet it feels like rest. You are fully engaged, and yet deeply at peace. This is what you were built for.", pauseAfter: 14 },
+      { text: "Notice the joy that lives in flow, the quiet satisfaction of doing something well, of being used by something larger than the small self. This joy is not a reward at the end. It is woven into the work itself.", pauseAfter: 14 },
+      { text: "You do not need perfect conditions for flow. You need presence, curiosity, and a willingness to begin. You have all three. The rest is practice, and practice is here.", pauseAfter: 14 },
+      { text: "Rest here, in this absorption, for as long as it lasts. Do not cling when it fades. Flow comes and goes like a tide. What matters is that you know the way back.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry the memory of this state with you. It is always available — not by force, but by gently entering, again and again.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you in the warm current of your work. You are exactly where you need to be. Flow on.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "deep-work-sprint-5",
+    title: "Deep Work Sprint — Session 5: The Deep Work Habit",
+    description:
+      "The final session. Turn deep focus into a lasting habit, not an occasional effort.",
+    duration: "8 min",
+    theme: "Deep Work Sprint",
+    category: "focus",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back, for the last time. This is the fifth and final session of the Deep Work Sprint. Settle in, and take a moment to feel how far you have come — five sessions of training your most valuable skill: the ability to focus deeply.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out gently. You have learned to enter deep focus, to commit to a single task, to guard your attention, and to sink into flow. These were never separate skills. They are one thing, and it is now yours.", pauseAfter: 13 },
+      { text: "The question now is not whether you can focus deeply, but whether you will make it a habit. A skill, unused, fades. A habit, practiced daily, grows. Deep work is a muscle, and today we set the intention to keep it strong.", pauseAfter: 13 },
+      { text: "Think of your day, and find the space where deep work can live. Perhaps the first hour of the morning, before the world wakes. Perhaps a quiet block after lunch. There is a time that belongs to you, if you choose to claim it.", pauseAfter: 14 },
+      { text: "You do not need hours. Even twenty minutes of true, undistracted focus can be worth more than a whole day of scattered effort. It is not the length of the session that matters. It is the depth.", pauseAfter: 14 },
+      { text: "Set a small, clear intention for each session: one thing, one beginning, one step. The ritual of sitting down and choosing is half the battle. The other half is simply returning, again and again, when the mind wanders.", pauseAfter: 14 },
+      { text: "Protect this time as you would protect a meeting with someone you respect. Turn off the noise, close the tabs, set the boundary. The world will still be there when you surface. It always is.", pauseAfter: 14 },
+      { text: "There will be days when deep work feels impossible, when the mind is foggy and the pull of distraction is strong. That is not failure. That is the practice. Sit down anyway. Begin anyway. The habit is in the beginning, not the perfection.", pauseAfter: 14 },
+      { text: "Notice what deep work gives back to you — the calm, the clarity, the sense of a day well spent. This is not just about productivity. It is about the quality of your attention, and therefore the quality of your life.", pauseAfter: 14 },
+      { text: "Let the habit be gentle. You are not building a machine. You are cultivating a way of being — present, focused, unhurried — that will serve you in every corner of your life, not just your work.", pauseAfter: 14 },
+      { text: "Thank you for walking this sprint with yourself. You have done something real and valuable. The deep focus you have trained is now a part of you, and it will be there whenever you choose to call on it.", pauseAfter: 14 },
+      { text: "Now, take one slow breath, and let it seal this intention: I will protect my attention, and give it, daily, to what matters. That is the whole practice, and it is enough.", pauseAfter: 14 },
+      { text: "Carry the rhythm with you — breathe, return, begin. Whatever the day brings, you have a way back to your center, and to the work that matters.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you to your deep work, and to the life it makes possible. You are ready. Go, and focus.", pauseAfter: 0 }
+    ],
+  },
 ];
 
 /** Workshops as playable experiences — the existing player streams the guide
