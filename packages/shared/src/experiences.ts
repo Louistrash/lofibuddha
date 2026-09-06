@@ -401,6 +401,33 @@ export const EXPERIENCES: Experience[] = [
     accent: "#A855F7",
     premium: true,
   },
+
+  {
+    id: "affirm-deep-worth",
+    category: "relax",
+    title: "I Am Enough",
+    description: "A slow, deep return to the simple truth that you are enough — exactly as you are.",
+    duration: "8 min",
+    guide: "affirm-deep-worth",
+    soundscape: "off",
+    music: "moon-tide-drift",
+    scene: "ocean",
+    accent: "#A855F7",
+    premium: true,
+  },
+  {
+    id: "affirm-deep-peace",
+    category: "relax",
+    title: "I Am at Peace",
+    description: "A slow descent into the peace that already lives beneath the noise of the day.",
+    duration: "8 min",
+    guide: "affirm-deep-peace",
+    soundscape: "off",
+    music: "weightless-drift",
+    scene: "ocean",
+    accent: "#A855F7",
+    premium: true,
+  },
 ];
 
 export function getExperience(id: string): Experience | undefined {
