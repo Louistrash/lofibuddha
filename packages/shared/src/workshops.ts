@@ -700,7 +700,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 1: Opening the Heart",
     description:
       "The first session. Gently open the heart and set the intention for this journey of kindness.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -728,7 +728,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 2: Kindness to Yourself",
     description:
       "The second session. Turn the warmth of loving-kindness toward yourself, fully and without condition.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -756,7 +756,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 3: A Loved One",
     description:
       "The third session. Extend the warmth of loving-kindness to someone you love deeply.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -784,7 +784,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 4: A Neutral Person",
     description:
       "The fourth session. Extend kindness to someone you neither like nor dislike — a stranger.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -812,7 +812,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 5: A Difficult Person",
     description:
       "The fifth session. The bravest step — extend kindness to someone who has hurt you.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -840,7 +840,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 6: All Beings",
     description:
       "The sixth session. Let the warmth expand outward, in all directions, to every living being.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
@@ -868,7 +868,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Loving-Kindness — Session 7: A Way of Life",
     description:
       "The final session. Let loving-kindness become not a practice, but a way of walking through the world.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Loving-Kindness",
     category: "relax",
     background: "off",
