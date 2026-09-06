@@ -896,7 +896,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Work Sprint — Session 1: Entering Deep Focus",
     description:
       "The first session. Learn to settle the mind and step into deep, undistracted focus.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Deep Work Sprint",
     category: "focus",
     background: "off",
@@ -924,7 +924,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Work Sprint — Session 2: The Single Task",
     description:
       "The second session. Commit fully to one task, and let everything else go.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Deep Work Sprint",
     category: "focus",
     background: "off",
@@ -952,7 +952,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Work Sprint — Session 3: Guarding Attention",
     description:
       "The third session. Learn to notice distractions and gently return, without losing your center.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Deep Work Sprint",
     category: "focus",
     background: "off",
@@ -980,7 +980,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Work Sprint — Session 4: The Flow State",
     description:
       "The fourth session. Sink into the effortless absorption of flow.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Deep Work Sprint",
     category: "focus",
     background: "off",
@@ -1008,7 +1008,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "Deep Work Sprint — Session 5: The Deep Work Habit",
     description:
       "The final session. Turn deep focus into a lasting habit, not an occasional effort.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "Deep Work Sprint",
     category: "focus",
     background: "off",
@@ -1036,7 +1036,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Witness — Session 1: The Witness Within",
     description:
       "The first session. Discover the quiet observer within you, the one who has always been watching.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Witness",
     category: "relax",
     background: "off",
@@ -1064,7 +1064,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Witness — Session 2: Watching Thoughts",
     description:
       "The second session. Watch the thinking mind with detachment, as the witness, not as the thinker.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Witness",
     category: "relax",
     background: "off",
@@ -1092,7 +1092,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Witness — Session 3: Beyond the Body",
     description:
       "The third session. Realize you are not the body, but the awareness in which the body appears.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Witness",
     category: "relax",
     background: "off",
@@ -1120,7 +1120,7 @@ export const WORKSHOPS: Workshop[] = [
     title: "The Witness — Session 4: Pure Awareness",
     description:
       "The final session. Rest as pure awareness — the still, silent ground of all experience.",
-    duration: "8 min",
+    duration: "6 min",
     theme: "The Witness",
     category: "relax",
     background: "off",
