@@ -1030,6 +1030,118 @@ export const WORKSHOPS: Workshop[] = [
       { text: "I will be quiet now, and leave you to your deep work, and to the life it makes possible. You are ready. Go, and focus.", pauseAfter: 0 }
     ],
   },
+
+  {
+    id: "the-witness-1",
+    title: "The Witness — Session 1: The Witness Within",
+    description:
+      "The first session. Discover the quiet observer within you, the one who has always been watching.",
+    duration: "8 min",
+    theme: "The Witness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome. This is the first session of The Witness. Find a comfortable position, sitting upright but relaxed, and let your eyes gently close. For the next few minutes, we are going to explore the most fundamental question there is — who is it, exactly, that is aware of this experience?", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Notice the breath happening on its own, without your effort. And notice something subtler — that you are aware of the breath. There is the breathing, and there is the one who notices the breathing.", pauseAfter: 13 },
+      { text: "Stay with this for a moment. You are not the breath. You are the awareness in which the breath appears. The breath comes and goes, rises and falls, but the awareness of it remains, steady and still.", pauseAfter: 14 },
+      { text: "Now notice the thoughts that arise. They come and go, one after another, like clouds in a wide sky. And notice that you are not the thoughts. You are the one who watches them. The sky does not become the clouds.", pauseAfter: 14 },
+      { text: "This watcher — this witness — has been with you your whole life. It was there when you were a child, watching your childhood. It is here now, watching these words. It is the one thing that has never changed, while everything else has.", pauseAfter: 14 },
+      { text: "Your body has changed. Your thoughts have changed. Your feelings, your circumstances, your beliefs — all have come and gone. But the witness, the awareness behind it all, has remained. It is the quiet constant, the still center of your being.", pauseAfter: 14 },
+      { text: "You do not have to do anything to find this witness. You do not have to reach for it, or achieve it, or become it. You already are it. You have simply been so absorbed in the changing things that you forgot the one who watches them.", pauseAfter: 14 },
+      { text: "Rest in this recognition. You are not the storm of thoughts and feelings. You are the still, open space in which the storm appears. And that space is vast, and calm, and always at peace.", pauseAfter: 14 },
+      { text: "Notice the sense of freedom in this. If you are the witness, then nothing that arises — no thought, no feeling, no circumstance — can truly disturb you. It all comes and goes, while you remain.", pauseAfter: 14 },
+      { text: "Do not try to grasp this with the mind. The mind cannot understand it, because the mind is one of the things being watched. Simply feel it. You are here, aware, awake, and that awareness is who you truly are.", pauseAfter: 14 },
+      { text: "Let yourself sink into this witnessing presence, gently, without effort. There is nothing to solve, nothing to fix. You are not doing anything. You are simply being what you have always been.", pauseAfter: 14 },
+      { text: "Feel the peace that lives here, beneath all the noise. It is not a peace you create. It is the peace of your own true nature, the witness, untouched by everything it witnesses.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry this recognition with you. You are not your thoughts, not your feelings, not your story. You are the awareness in which they all arise and dissolve.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you in the stillness of the witness, awake and at peace. You have always been here. You were only dreaming.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "the-witness-2",
+    title: "The Witness — Session 2: Watching Thoughts",
+    description:
+      "The second session. Watch the thinking mind with detachment, as the witness, not as the thinker.",
+    duration: "8 min",
+    theme: "The Witness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the second session of The Witness. Settle in, and let your breath find its ease. Today we turn our witnessing attention directly toward the mind, and watch the thoughts as they arise, without being caught by them.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out gently. Let the body be still, and let the mind do what it does — which is to think. Your practice now is not to stop the thinking, but to watch it, from the stillness of the witness.", pauseAfter: 13 },
+      { text: "Imagine you are sitting on the bank of a river, and the thoughts are the water flowing past. You are not in the river. You are on the bank, watching. The thoughts come, and they go, and you remain, still and dry.", pauseAfter: 14 },
+      { text: "A thought arises — a memory, a plan, a worry. Watch it appear, linger for a moment, and dissolve. You do not have to follow it, or push it away, or figure it out. You simply watch it pass, like a leaf on the water.", pauseAfter: 14 },
+      { text: "Notice the gap between thoughts, the quiet space where the mind rests before the next one arrives. That space is not empty in a dead way. It is alive, awake, aware. That space is you.", pauseAfter: 14 },
+      { text: "When you notice you have been carried away by a thought — and you will — do not be discouraged. The moment you notice, you are back on the bank. The noticing is the witnessing. You were never truly lost.", pauseAfter: 14 },
+      { text: "The mind is a wonderful tool, but it is not who you are. You are the one who uses the tool, or simply watches it spin. Today, you are learning the difference between thinking and awareness, between the thought and the thinker.", pauseAfter: 14 },
+      { text: "Watch the thoughts without judgment, without liking or disliking them. They are just phenomena, rising and falling, like everything else in the field of awareness. You are the field. You are not the phenomena.", pauseAfter: 14 },
+      { text: "If a thought is strong or persistent, do not fight it. Give it room to be, and keep watching. Even the strongest thought eventually dissolves, the way the loudest wave eventually returns to the sea.", pauseAfter: 14 },
+      { text: "Feel the calm that comes from this detachment. You are not ignoring your thoughts, or suppressing them. You are seeing them clearly, for what they are — passing events, in the vast, still awareness that you are.", pauseAfter: 14 },
+      { text: "This is not a cold or distant practice. The witness is not aloof. It is deeply intimate, closer than your own breath. You are simply resting as the awareness that has always been aware, of every thought you have ever had.", pauseAfter: 14 },
+      { text: "Let the river of thought flow on, and let yourself rest on the bank, watching, breathing, being. There is nothing to control here. The mind thinks, and you witness. That is all.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and carry this witnessing with you. Throughout your day, you can step back from the river at any moment, and watch, from the stillness that is your true home.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you on the bank of the river, watching the thoughts flow by, untouched, awake, and free.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "the-witness-3",
+    title: "The Witness — Session 3: Beyond the Body",
+    description:
+      "The third session. Realize you are not the body, but the awareness in which the body appears.",
+    duration: "8 min",
+    theme: "The Witness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the third session of The Witness. Settle in, and let your body be still. Today we look at something we usually take for granted — the body — and ask a quiet question: are you the body, or are you the awareness in which the body appears?", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Feel the body clearly — its weight, its warmth, its many sensations. You have lived in this body your whole life. You know it intimately. But is it really you?", pauseAfter: 13 },
+      { text: "Notice that you can observe the body, the way you observe a thought or a sound. You can feel your hands, your feet, the beating of your heart. And if you can observe the body, then you cannot be the body. The observer is not the observed.", pauseAfter: 14 },
+      { text: "The body changes constantly — cells die and are replaced, the body of your childhood is long gone, and yet you are still here. The one who inhabited that child's body is the same one who inhabits this body now. That one is not the body. That one is awareness.", pauseAfter: 14 },
+      { text: "Feel the body as an appearance, arising in your awareness, like everything else. It is a wonderful instrument, a faithful companion, but it is not who you are. You are the awareness in which the body, and the world, and everything, appears.", pauseAfter: 14 },
+      { text: "Do not reject the body. Love it, care for it, honor it. But do not mistake it for yourself. You are not the garment. You are the one who wears it. And the wearer is awareness, vast and untouched.", pauseAfter: 14 },
+      { text: "Notice the sensations — the breath, the heartbeat, the warmth, the coolness. They come and go, rise and fall, within the field of your awareness. You are that field. The sensations are visitors. You are the host.", pauseAfter: 14 },
+      { text: "Feel the spaciousness of this. You are not confined to the body. The body is in you, not you in the body. The awareness that you are is not located in space. It is the space in which all things appear.", pauseAfter: 14 },
+      { text: "This can feel strange at first, even disorienting. That is all right. The mind, which identifies with the body, will resist. But stay with the recognition. You are not the body. You are the awareness of the body.", pauseAfter: 14 },
+      { text: "Notice the peace that comes when you stop carrying the body as a burden, when you stop fearing its changes as if they happened to you. The body will change. It will age. But the witness does not age. It is ageless, and it is you.", pauseAfter: 14 },
+      { text: "Rest here, as the awareness that sees the body from within, without being limited by it. The body breathes, and you witness. The heart beats, and you witness. You are not these things. You are the seeing of them.", pauseAfter: 14 },
+      { text: "There is a profound freedom in this — the freedom of knowing that nothing that happens to the body can touch the witness. You have always been safe, because the witness is beyond all harm.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and gently return your attention to the body, now seen clearly as a beloved instrument, not as yourself. You are the awareness. The body is its expression.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you in the vastness of awareness, in which the body, and the world, and everything, peacefully appear.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "the-witness-4",
+    title: "The Witness — Session 4: Pure Awareness",
+    description:
+      "The final session. Rest as pure awareness — the still, silent ground of all experience.",
+    duration: "8 min",
+    theme: "The Witness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back, for the last time. This is the fourth and final session of The Witness. Settle in, and let everything be exactly as it is. Today there is nowhere to go and nothing to become. We simply rest as pure awareness.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. You have seen that you are not the body, not the thoughts, not the feelings. You are the awareness in which all of these appear. Now, rest as that awareness, without effort, without searching.", pauseAfter: 13 },
+      { text: "Let go of the need to understand. Understanding is an activity of the mind, and the mind is one of the things appearing in awareness. You are not trying to grasp awareness. You are it, already, and always have been.", pauseAfter: 14 },
+      { text: "Notice that awareness is not something you have. It is something you are. You do not possess awareness the way you possess a thought or a sensation. Awareness is your very nature, the ground of your being.", pauseAfter: 14 },
+      { text: "Feel the stillness of this awareness. It is not the stillness of a quiet room, which is just the absence of noise. It is the stillness that is present even amid noise, the silence that underlies every sound.", pauseAfter: 14 },
+      { text: "Everything arises in this awareness — sounds, thoughts, sensations, the whole world — and everything dissolves back into it. You are not any of these things. You are the space in which they all come and go.", pauseAfter: 14 },
+      { text: "This awareness is not empty in a void-like way. It is full, alive, awake. It is the most intimate and obvious thing there is, and yet the easiest to overlook, because you are so used to looking at what appears, rather than at what is looking.", pauseAfter: 14 },
+      { text: "Rest here, without agenda. You are not meditating to achieve a state. You are simply being what you already are, and noticing it. This is not a practice that takes you somewhere new. It is the recognition of what was always here.", pauseAfter: 14 },
+      { text: "If the mind asks, is this it? — let that question too arise and dissolve in awareness. The question is a thought. The awareness in which the question appears is the answer. It is always, already, here.", pauseAfter: 14 },
+      { text: "Feel the peace of pure awareness. It is not a peace that depends on circumstances, because awareness itself is untouched by circumstances. This is the peace that passes understanding, and it is your birthright.", pauseAfter: 14 },
+      { text: "Do not hold onto this state. There is nothing to hold. Awareness is not a state you enter and leave. It is always present, whether you notice it or not. The noticing is the gift, and you can return to it anytime.", pauseAfter: 14 },
+      { text: "Thank you for walking this path with yourself. You have seen through the great illusion — that you are a small, separate self, tossed by the world. You are not. You are the vast, still awareness in which the world appears.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and let it be a gentle bow to the awareness you are. You have not become something new. You have simply woken up to what you always were, and always will be.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you as you are — pure awareness, awake, at peace, and free. There is nothing left to do. Just be.", pauseAfter: 0 }
+    ],
+  },
 ];
 
 /** Workshops as playable experiences — the existing player streams the guide
