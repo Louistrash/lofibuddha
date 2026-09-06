@@ -694,6 +694,202 @@ export const WORKSHOPS: Workshop[] = [
       { text: "I will be quiet now, and leave you to your day. Rise gently, and begin. You are ready.", pauseAfter: 0 }
     ],
   },
+
+  {
+    id: "loving-kindness-1",
+    title: "Loving-Kindness — Session 1: Opening the Heart",
+    description:
+      "The first session. Gently open the heart and set the intention for this journey of kindness.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome. This is the first session of Loving-Kindness. Find a comfortable position, sitting or lying down, and let your body settle. For the next few minutes, we are going to practice something ancient and gentle — the art of opening the heart.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out with a soft sigh. Let the shoulders drop, let the jaw soften, let the day fall away. There is nowhere else you need to be. This time belongs only to you, and to the quiet work of the heart.", pauseAfter: 13 },
+      { text: "Bring one hand to your chest, if that feels right, and feel the warmth of your palm against your heart. Notice the steady beat beneath your hand, the quiet rhythm that has carried you through everything. This is where we begin.", pauseAfter: 13 },
+      { text: "Now bring to mind the feeling of kindness — not an idea, but a feeling. Think of a time someone was truly kind to you, a moment of warmth or care that stayed with you. Let that feeling arise, softly, in your chest.", pauseAfter: 14 },
+      { text: "Notice how kindness feels in the body. A warmth in the chest, a softness around the eyes, a sense of being held. This feeling is always available to you, and today we practice giving it to ourselves and to others.", pauseAfter: 14 },
+      { text: "Take a slow breath in, and as you breathe out, silently offer yourself these words: may I be happy. May I be well. May I be safe. May I live with ease. There is no need to believe them fully. You are simply planting a seed.", pauseAfter: 14 },
+      { text: "Repeat them again, gently, like a quiet song beneath the breath. May I be happy. May I be well. May I be safe. May I live with ease. Let the words rest in the body, not just the mind.", pauseAfter: 14 },
+      { text: "If resistance arises — and it often does, when we wish ourselves well — do not fight it. Simply notice it, and return to the words. You are allowed to be kind to yourself. That is the whole practice.", pauseAfter: 14 },
+      { text: "Feel the heart softening, opening, like a flower turning toward the light. This softness is not weakness. It is the quiet strength that connects you to every living thing.", pauseAfter: 14 },
+      { text: "Notice how, as you offer yourself kindness, the edges of the self begin to soften. The harsh voice quiets. The grip loosens. There is more room here than you remembered.", pauseAfter: 14 },
+      { text: "This is the beginning of a journey, and it begins exactly where you are — with your own breath, your own body, your own heart, already worthy of kindness.", pauseAfter: 14 },
+      { text: "Rest here for a moment, in this gentle warmth, and let the intention settle in: I am learning to be kind, beginning with myself, and from there, to all beings.", pauseAfter: 14 },
+      { text: "As we close, take one slow breath, and let it carry this warmth with you into your day. You have opened the door to the heart. In the sessions ahead, we will walk through it together.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the warmth in your chest, and the quiet words: may you be happy. May you be well. May you be safe. May you live with ease.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-2",
+    title: "Loving-Kindness — Session 2: Kindness to Yourself",
+    description:
+      "The second session. Turn the warmth of loving-kindness toward yourself, fully and without condition.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the second session of Loving-Kindness. Settle in, and let the body find its ease. Today we turn the warmth we have been nurturing, fully and deliberately, toward the one person who is often last on the list — yourself.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out with a soft sigh. Let yourself arrive, here, now, without needing to be anywhere else or anyone else. You are enough, exactly as you are.", pauseAfter: 13 },
+      { text: "Bring your attention to your own body, and notice how it has been carrying you. The feet that have walked your path, the hands that have done your work, the heart that has kept beating through every joy and every sorrow.", pauseAfter: 14 },
+      { text: "Now, silently, offer yourself the words: may I be happy. May I be healthy. May I be safe. May I live with ease. Let each word land softly, like a hand on your own shoulder.", pauseAfter: 14 },
+      { text: "If a voice inside says you do not deserve this, notice it, and let it pass. Deserving has nothing to do with it. Kindness is not a reward. It is your birthright, and it begins here.", pauseAfter: 14 },
+      { text: "Picture yourself as a small child, perhaps, or simply as the person you are right now, doing the best you can. Offer that person the same tenderness you would offer a tired friend. May I be happy. May I be well.", pauseAfter: 14 },
+      { text: "Feel the warmth spreading through your chest, your belly, your whole body. You are not asking for anything from the world. You are simply giving yourself the kindness that has always been yours to give.", pauseAfter: 14 },
+      { text: "Notice where there is tension or pain, and breathe kindness into it. Not to fix it, but to be with it. May this body be at ease. May this heart be at peace. May I be gentle with myself, today and always.", pauseAfter: 14 },
+      { text: "If this feels difficult, know that it is common, and it is okay. Self-kindness can be the hardest kind. It is also the one that changes everything else. You are doing it, right now, simply by being here.", pauseAfter: 14 },
+      { text: "Let the words become a quiet rhythm, syncing with the breath. May I be happy. May I be healthy. May I be safe. May I live with ease. Each round, a little softer, a little more true.", pauseAfter: 14 },
+      { text: "You have spent so long being hard on yourself, measuring, judging, pushing. For these few minutes, lay that down. You are allowed to be your own friend. You are allowed to rest in your own kindness.", pauseAfter: 14 },
+      { text: "Feel what happens when you stop fighting yourself. The body softens. The mind quiets. A deep, gentle ease settles in, like coming home after a long journey.", pauseAfter: 14 },
+      { text: "As we close, carry this self-kindness with you. It is not selfish. It is the well from which all other kindness flows. You cannot pour from an empty cup, and today, you are filling yours.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the warmth, and the words: may I be happy. May I be healthy. May I be safe. May I live with ease.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-3",
+    title: "Loving-Kindness — Session 3: A Loved One",
+    description:
+      "The third session. Extend the warmth of loving-kindness to someone you love deeply.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the third session of Loving-Kindness. Settle in, and let the warmth of the last session still be with you. Today we turn that warmth outward, toward someone you love deeply.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out gently. Bring to mind a person you love without complication — a dear friend, a family member, a teacher, someone whose face lights you up just to think of.", pauseAfter: 13 },
+      { text: "See them in your mind's eye, if you can. Not perfectly, just their presence. The way they smile, the sound of their voice, the warmth they bring into a room. Let the image of them rest here, in front of you.", pauseAfter: 13 },
+      { text: "Notice how your heart responds to them — the natural warmth that arises, the affection that needs no effort. This is the feeling of loving-kindness, and it is already flowing toward them.", pauseAfter: 14 },
+      { text: "Now, silently, offer them the words: may you be happy. May you be healthy. May you be safe. May you live with ease. Let each word carry your genuine wish for their wellbeing.", pauseAfter: 14 },
+      { text: "Picture them receiving your kindness — their face softening, their shoulders relaxing, their burdens lightening, if only for a moment. Your kindness matters to them, even if they do not know it is being sent.", pauseAfter: 14 },
+      { text: "May you be happy. May you be healthy. May you be safe. May you live with ease. Let the phrases flow toward them like a quiet stream, steady and warm, asking nothing in return.", pauseAfter: 14 },
+      { text: "If other loved ones come to mind, let them join. One by one, let them gather around you, each held in the same warm light. Your heart is large enough to hold them all.", pauseAfter: 14 },
+      { text: "Notice how, as you wish them well, you feel it too. The kindness you send out passes through your own heart first. In giving, you are also receiving. This is the quiet magic of loving-kindness.", pauseAfter: 14 },
+      { text: "If a small worry about them arises, do not chase it. Simply wrap it in kindness too, and return to the phrases. May you be safe. May you be well. May all be well for you.", pauseAfter: 14 },
+      { text: "Let the image of your loved one soften and glow, bathed in the warmth you are sending. You are doing something real and good, right now, from the quiet of this moment.", pauseAfter: 14 },
+      { text: "Rest in this connection, this invisible thread of care between you and them. It has always been there. Today, you are simply making it conscious, and strengthening it.", pauseAfter: 14 },
+      { text: "As we close, send them one final, full wish: may you be happy, may you be healthy, may you be safe, may you live with ease. And let them return to their day, carried by your kindness.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the warmth of this connection, and the quiet knowing that love, once sent, keeps traveling.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-4",
+    title: "Loving-Kindness — Session 4: A Neutral Person",
+    description:
+      "The fourth session. Extend kindness to someone you neither like nor dislike — a stranger.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the fourth session of Loving-Kindness. Settle in, and let your breath find its ease. Today we extend kindness to a stranger — someone you neither like nor dislike, someone you may pass every day without a thought.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Bring to mind a neutral person — the person at the checkout, a neighbor you rarely see, someone on your commute. Not someone who stirs strong feeling, just an ordinary person, going about their ordinary life.", pauseAfter: 13 },
+      { text: "See them in your mind's eye, simply and without judgment. They are carrying their own day, their own worries, their own quiet hopes. Just like you, they are doing their best to make it through.", pauseAfter: 13 },
+      { text: "Notice how, at first, it may be harder to feel warmth toward them than toward a loved one. That is natural. The heart has no history with them yet. But their life is just as real, just as full, just as deserving of kindness as your own.", pauseAfter: 14 },
+      { text: "Now, silently, offer them the words: may you be happy. May you be healthy. May you be safe. May you live with ease. Let the words be genuine, even if they feel quiet at first.", pauseAfter: 14 },
+      { text: "Picture them going about their day — working, resting, laughing with someone, struggling with something — and wrap each moment in your gentle wish. May your day be gentle. May your burdens be light.", pauseAfter: 14 },
+      { text: "This person is someone's child, someone's friend, someone's whole world. You may never know their name, but today, for these few minutes, you are holding them in kindness. That is no small thing.", pauseAfter: 14 },
+      { text: "May you be happy. May you be healthy. May you be safe. May you live with ease. Let the phrases flow toward them, steady and warm, as if they were a dear friend.", pauseAfter: 14 },
+      { text: "Notice how the boundary between you and them begins to soften. The stranger is no longer quite a stranger. In wishing them well, you have woven a thread of connection between you.", pauseAfter: 14 },
+      { text: "If your mind wanders to people you know, or to yourself, that is all right. Gently bring it back to this one neutral person, and offer them the same kindness you would offer anyone you love.", pauseAfter: 14 },
+      { text: "This is the quiet power of loving-kindness — it does not need a reason. It does not require a relationship, a history, or a debt. It simply wishes wellbeing, freely, to whomever it meets.", pauseAfter: 14 },
+      { text: "Let the image of this person soften and glow, held in the same warm light as your loved ones. Every being is worthy of this light. Today, you are remembering that.", pauseAfter: 14 },
+      { text: "As we close, send them one final wish, and let them go, carrying your kindness invisibly into their day. You may never know the difference it makes, but it makes one.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the quiet expansion of the heart, and the words: may all beings be happy. May all beings be well.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-5",
+    title: "Loving-Kindness — Session 5: A Difficult Person",
+    description:
+      "The fifth session. The bravest step — extend kindness to someone who has hurt you.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the fifth session of Loving-Kindness. Settle in, and be gentle with yourself, because today we take the bravest step of all — we extend kindness to someone difficult, someone who has hurt or angered you.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out slowly. Before we begin, know this: you do not have to forgive, and you do not have to reconcile. This practice is not about the other person. It is about freeing your own heart.", pauseAfter: 13 },
+      { text: "When you are ready, bring to mind someone with whom there is friction — a conflict, an old wound, a resentment you have carried. Choose someone difficult, but not the most painful person in your life. Start where it is bearable.", pauseAfter: 13 },
+      { text: "Notice what arises — the tightening, the anger, the hurt. Do not push it away. Simply acknowledge it. This is real, and it matters. You are allowed to feel it.", pauseAfter: 14 },
+      { text: "Now, if you can, remember that this person, like you, is human. They have their own pain, their own story, their own blind spots. They have acted from them, just as you sometimes act from yours. This does not excuse them. It simply makes them human.", pauseAfter: 14 },
+      { text: "And so, gently, offer them the words — not because they deserve it, but because you deserve peace. May you be happy. May you be healthy. May you be safe. May you live with ease.", pauseAfter: 14 },
+      { text: "If the words stick in your throat, that is all right. This is the hardest practice there is. You can offer just one phrase, or simply the wish that they, too, find their way to peace. That is enough.", pauseAfter: 14 },
+      { text: "Notice that holding onto resentment is like holding a hot stone, hoping the other person feels it. The only one it burns is you. In letting go, even a little, you are releasing your own hand.", pauseAfter: 14 },
+      { text: "May you be free from suffering. May you find your way. May we both be released from this knot between us. Let the words be a quiet untying, thread by thread.", pauseAfter: 14 },
+      { text: "If it feels like too much, you can step back. Return to yourself, offer yourself kindness, and come back to this person another day. There is no failure here. The practice meets you exactly where you are.", pauseAfter: 14 },
+      { text: "Breathe into the space where the resentment lives, and let it soften, just a fraction. You are not condoning what happened. You are simply choosing not to carry it forever.", pauseAfter: 14 },
+      { text: "Feel the lightness that comes from this, even a sliver of it. The heart, unburdened of one small stone, has more room to breathe, more room for the people who truly love you.", pauseAfter: 14 },
+      { text: "As we close, offer them one final, simple wish — may you be well — and then gently turn your attention back to yourself, and to the warmth you have so carefully cultivated. You have done something brave today.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the quiet, hard-won peace of a heart that chose to let go, even just a little. May you be free. May you be at ease.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-6",
+    title: "Loving-Kindness — Session 6: All Beings",
+    description:
+      "The sixth session. Let the warmth expand outward, in all directions, to every living being.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back. This is the sixth session of Loving-Kindness. Settle in, and let your breath find its rhythm. Today we let the warmth we have nurtured expand outward, in every direction, to all beings everywhere.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out softly. Feel the heart, already warm from the sessions before, and imagine that warmth beginning to glow, like a small sun in your chest.", pauseAfter: 13 },
+      { text: "Now let that light expand, slowly, beyond the edges of your body, filling the room around you. May all beings in this place be happy. May all beings here be safe. May all beings here live with ease.", pauseAfter: 14 },
+      { text: "Let it expand further, through the walls, into the street, the neighborhood, the town. Every person rushing to work, every child at play, every creature going about its day. May you all be well. May you all be at peace.", pauseAfter: 14 },
+      { text: "Now further still — to the cities, the fields, the mountains and the seas. Every being that walks, crawls, swims, or flies. May all beings be happy. May all beings be healthy. May all beings be safe.", pauseAfter: 14 },
+      { text: "Notice that the heart can hold all of this without strain. Its capacity grows the more you use it. You are not exhausting yourself. You are expanding into something vast and true.", pauseAfter: 14 },
+      { text: "May all beings, near and far, be free from suffering. May the frightened be comforted, the lonely be met, the weary find rest. Let this wish flow outward, steady as light.", pauseAfter: 14 },
+      { text: "Include yourself in this vast field, not as separate, but as one small part of the whole. You are not above it or apart from it. You are one being among many, held in the same light.", pauseAfter: 14 },
+      { text: "May all beings in the ten directions — north, south, east, west, above, below — be happy, be healthy, be safe, and live with ease. Let the phrases ripple outward like waves, endlessly, gently.", pauseAfter: 14 },
+      { text: "Feel the connection to everything, the invisible web that binds you to every living thing. Your kindness is not lost. It joins the kindness of countless others, and the world is a little softer for it.", pauseAfter: 14 },
+      { text: "Rest in this vast, quiet love, and let it hold you as much as you hold it. You are not alone in this. You never were. Every act of kindness you offer is echoed somewhere, somehow.", pauseAfter: 14 },
+      { text: "Notice how this expansion changes you — the small worries of the day shrink against the vastness, the sense of separation dissolves, and what remains is a deep, quiet belonging.", pauseAfter: 14 },
+      { text: "As we close, send one final, boundless wish — may all beings, everywhere, without exception, be happy, be healthy, be safe, and live with ease. And let that wish carry you through your day.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you in the vast, warm field of loving-kindness, connected to all things. May you be at peace. May all beings be at peace.", pauseAfter: 0 }
+    ],
+  },
+
+  {
+    id: "loving-kindness-7",
+    title: "Loving-Kindness — Session 7: A Way of Life",
+    description:
+      "The final session. Let loving-kindness become not a practice, but a way of walking through the world.",
+    duration: "8 min",
+    theme: "Loving-Kindness",
+    category: "relax",
+    background: "off",
+    introPause: 20,
+    segments: [
+      { text: "Welcome back, for the last time. This is the seventh and final session of Loving-Kindness. Settle in, and take a moment to feel how far you have come — seven sessions of opening, softening, and expanding the heart.", pauseAfter: 12 },
+      { text: "Take a slow breath in, and let it out gently. You have offered kindness to yourself, to a loved one, to a stranger, to someone difficult, and to all beings. You have done the full, brave arc of this practice. And it has changed you, quietly.", pauseAfter: 13 },
+      { text: "Notice how the heart feels now, compared to the first session. A little more open, a little more warm, a little more at home in the world. This is not something you achieved. It is something you returned to.", pauseAfter: 14 },
+      { text: "The practice was never really about the phrases, or the images, or the techniques. It was about remembering something you always knew — that kindness is your true nature, and it is always available to you.", pauseAfter: 14 },
+      { text: "Loving-kindness is not something you do for a few minutes and then set down. It is a way of walking through the world — a softness in how you meet the checkout clerk, a patience in how you meet yourself, a warmth that needs no reason.", pauseAfter: 14 },
+      { text: "You can carry it into the smallest moments: a kind thought for the driver who cut you off, a gentle wish for the colleague who is struggling, a quiet forgiveness for your own mistakes. These are all loving-kindness.", pauseAfter: 14 },
+      { text: "When the world feels harsh, come back to the words. May I be happy. May you be happy. May all beings be happy. They are a shelter you can step into, anywhere, anytime, without anyone knowing.", pauseAfter: 14 },
+      { text: "And when it feels like your kindness is not enough, remember that it is not about fixing the world. It is about being a small, steady light in it. And the world is made brighter by every such light.", pauseAfter: 14 },
+      { text: "Be as kind to yourself as you have learned to be to others. You are included in the circle now. Your own suffering matters as much as anyone's, and your own peace is worth tending.", pauseAfter: 14 },
+      { text: "There will be days when the heart feels closed again, and that is all right. The practice is not to stay open always. It is to return, again and again, to the warmth that is always there, underneath.", pauseAfter: 14 },
+      { text: "Thank you for walking this path with yourself. You have done something real and gentle, and it ripples outward in ways you will never fully see. This is the quiet, unending work of loving-kindness.", pauseAfter: 14 },
+      { text: "Now, take one slow breath, and let it be a soft closing of this journey — and at the same time, a beginning. The door of the heart is open, and it will stay open, if you keep returning to it.", pauseAfter: 14 },
+      { text: "Carry the words with you, like a small prayer for the world: may all beings be happy, may all beings be healthy, may all beings be safe, may all beings live with ease.", pauseAfter: 14 },
+      { text: "I will be quiet now, and leave you with the warmth in your chest, and the quiet knowing that you are, and always have been, a source of kindness in this world. May you be happy. May you be at peace.", pauseAfter: 0 }
+    ],
+  },
 ];
 
 /** Workshops as playable experiences — the existing player streams the guide
