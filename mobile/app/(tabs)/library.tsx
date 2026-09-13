@@ -6,11 +6,12 @@ import { Screen } from "@/src/components/ui/Screen";
 import { SectionHeader, EmptyState } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
+import { CourseCard } from "@/src/components/content/CourseCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { apiFetch } from "@/src/lib/api";
-import { colors, radius, space, type } from "@/src/theme/tokens";
+import { colors, space, type } from "@/src/theme/tokens";
 
 type Course = {
   id: string;
@@ -172,40 +173,14 @@ export default function LibraryScreen() {
             <SectionHeader title="Courses" caption="Multi-day journeys from LofiBuddha" />
             <View style={styles.courseGrid}>
               {courses.map((c) => (
-                <Pressable
+                <CourseCard
                   key={c.id}
-                  onPress={() => router.push(c.premium && tier !== "enlightened" ? "/deepen" : `/course/${c.slug}`)}
-                  style={({ hovered, pressed }: any) => [
-                    styles.course,
-                    hovered && { borderColor: colors.hairlineStrong },
-                    pressed && { opacity: 0.9 },
-                  ]}
-                >
-                  <View style={styles.courseTitleRow}>
-                    <Text style={styles.courseTitle} numberOfLines={2}>
-                      {c.title}
-                    </Text>
-                    {c.premium ? (
-                      <View style={styles.proPill}>
-                        <Text style={styles.proPillText}>Enlightened</Text>
-                      </View>
-                    ) : null}
-                  </View>
-                  {c.subtitle ? (
-                    <Text style={styles.courseSub} numberOfLines={1}>
-                      {c.subtitle}
-                    </Text>
-                  ) : null}
-                  {c.description ? (
-                    <Text style={styles.courseDesc} numberOfLines={3}>
-                      {c.description}
-                    </Text>
-                  ) : null}
-                  <Text style={styles.courseMeta}>
-                    {c.duration}
-                    {c.moduleCount ? ` · ${c.moduleCount} modules` : ""}
-                  </Text>
-                </Pressable>
+                  course={c}
+                  locked={!!c.premium && tier !== "enlightened"}
+                  onPress={() =>
+                    router.push(c.premium && tier !== "enlightened" ? "/deepen" : `/course/${c.slug}`)
+                  }
+                />
               ))}
             </View>
           </View>
@@ -263,28 +238,4 @@ const styles = StyleSheet.create({
   seriesBlock: { marginBottom: space["2xl"] },
   list: { gap: 2 },
   courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
-  course: {
-    flexBasis: 240,
-    flexGrow: 1,
-    backgroundColor: colors.card,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.hairline,
-    padding: space.xl,
-    gap: space.sm,
-  },
-  courseTitle: { ...type.headline, color: colors.text, flex: 1 },
-  courseTitleRow: { flexDirection: "row", alignItems: "flex-start", gap: space.sm },
-  proPill: {
-    paddingHorizontal: space.sm,
-    paddingVertical: 2,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: "rgba(184,146,88,0.45)",
-    backgroundColor: "rgba(184,146,88,0.12)",
-  },
-  proPillText: { ...type.caption, color: colors.gold, fontSize: 9, letterSpacing: 1 },
-  courseSub: { ...type.caption, color: colors.goldBright },
-  courseDesc: { ...type.bodySmall, color: colors.textSecondary },
-  courseMeta: { ...type.caption, color: colors.textMuted, marginTop: space.xs },
 });

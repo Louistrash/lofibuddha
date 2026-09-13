@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { colors, radius, space, type } from "@/src/theme/tokens";
 
-const SOURCE = require("../../../assets/images/logo.png");
+const SOURCE = require("../../../assets/images/icon.png");
 
 /** The Buddha mark on its own. Used anywhere a title needs an anchor. */
 export function Logo({ size = 32, style }: { size?: number; style?: ViewStyle }) {

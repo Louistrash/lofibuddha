@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Screen } from "@/src/components/ui/Screen";
 import { Badge } from "@/src/components/ui/Primitives";
 import { Button } from "@/src/components/ui/Button";
@@ -114,6 +115,12 @@ export default function CourseScreen() {
 
           {modules.length > 0 ? (
             <View style={styles.progressCard}>
+              <LinearGradient
+                colors={[tint(colors.gold, 0.12), "rgba(17,16,25,0.97)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0.6, y: 1 }}
+                style={StyleSheet.absoluteFill}
+              />
               <View style={styles.progressHead}>
                 <Text style={styles.progressLabel}>
                   {doneCount} of {modules.length} lessons complete
@@ -144,6 +151,17 @@ export default function CourseScreen() {
                     key={`${m.day}-${m.title}`}
                     style={[styles.module, done && styles.moduleDone]}
                   >
+                    <LinearGradient
+                      colors={
+                        done
+                          ? [tint(colors.gold, 0.15), "rgba(17,16,25,0.97)"]
+                          : [tint(colors.gold, 0.06), "rgba(17,16,25,0.98)"]
+                      }
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 0.55, y: 1 }}
+                      style={StyleSheet.absoluteFill}
+                    />
+                    <View style={[styles.moduleAccent, done && styles.moduleAccentDone]} />
                     <View style={styles.moduleHead}>
                       <Pressable
                         onPress={() => toggle(m.day)}
@@ -212,6 +230,7 @@ const styles = StyleSheet.create({
     borderColor: colors.hairline,
     padding: space.lg,
     gap: space.sm,
+    overflow: "hidden",
   },
   progressHead: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   progressLabel: { ...type.label, color: colors.text },
@@ -228,8 +247,19 @@ const styles = StyleSheet.create({
     borderColor: colors.hairline,
     padding: space.lg,
     gap: space.sm,
+    overflow: "hidden",
   },
-  moduleDone: { borderColor: tint(colors.gold, 0.3), backgroundColor: tint(colors.gold, 0.05) },
+  moduleDone: { borderColor: tint(colors.gold, 0.3) },
+  moduleAccent: {
+    position: "absolute",
+    left: 0,
+    top: space.md,
+    bottom: space.md,
+    width: 3,
+    borderRadius: 2,
+    backgroundColor: tint(colors.gold, 0.35),
+  },
+  moduleAccentDone: { backgroundColor: colors.gold },
   moduleHead: { flexDirection: "row", alignItems: "center", gap: space.sm },
   check: {
     width: 24,
