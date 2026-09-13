@@ -35,6 +35,7 @@ const TIERS = [
     featured: true,
     perks: [
       "Every practice and soundscape",
+      "All 38 workshops",
       "Immersive worlds",
       "Guided drip journey",
       "Unlimited Buddha AI",
@@ -46,7 +47,7 @@ const TIERS = [
     priceTier: "enlightened" as const,
     period: "/month",
     accent: colors.lotus,
-    perks: ["Everything in Mindful", "Full course library", "Early access to new worlds", "Priority support"],
+    perks: ["Everything in Mindful", "Full course library (4 courses)", "Early access to new worlds", "Priority support"],
   },
 ] as const;
 

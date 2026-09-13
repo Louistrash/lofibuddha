@@ -40,7 +40,7 @@ export default function ExploreScreen() {
   const searching = query.trim().length > 0;
 
   return (
-    <Screen title="Explore" subtitle="Every session, sound and soundtrack">
+    <Screen title="Explore" subtitle="Every session, sound, and soundtrack">
       <View style={styles.search}>
         <Icon name="search" size={17} color={colors.textMuted} />
         <TextInput

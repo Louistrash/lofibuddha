@@ -27,6 +27,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         ...course,
         ...translation,
+        premium: true,
+        moduleCount: translation.modules?.length || 0,
         availableLanguages: Object.keys(course.translations),
       });
     }
@@ -44,6 +46,7 @@ export async function GET(request: NextRequest) {
         subtitle: t.subtitle,
         description: t.description,
         moduleCount: t.modules?.length || 0,
+        premium: true,
         availableLanguages: Object.keys(c.translations),
       };
     });

@@ -7,6 +7,7 @@ import { SectionHeader, EmptyState } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
+import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { apiFetch } from "@/src/lib/api";
 import { colors, radius, space, type } from "@/src/theme/tokens";
@@ -20,6 +21,7 @@ type Course = {
   duration?: string;
   level?: string;
   moduleCount?: number;
+  premium?: boolean;
 };
 type Tab = "saved" | "recent" | "courses" | "workshops";
 
@@ -36,6 +38,7 @@ export default function LibraryScreen() {
   const [courses, setCourses] = useState<Course[]>([]);
   const router = useRouter();
   const { playExperience } = usePlayer();
+  const { isPro, tier } = useEntitlement();
   const { favorites, recent, toggle, isFavorite } = useFavorites();
 
   useFocusEffect(
@@ -171,16 +174,23 @@ export default function LibraryScreen() {
               {courses.map((c) => (
                 <Pressable
                   key={c.id}
-                  onPress={() => router.push(`/course/${c.slug}`)}
+                  onPress={() => router.push(c.premium && tier !== "enlightened" ? "/deepen" : `/course/${c.slug}`)}
                   style={({ hovered, pressed }: any) => [
                     styles.course,
                     hovered && { borderColor: colors.hairlineStrong },
                     pressed && { opacity: 0.9 },
                   ]}
                 >
-                  <Text style={styles.courseTitle} numberOfLines={2}>
-                    {c.title}
-                  </Text>
+                  <View style={styles.courseTitleRow}>
+                    <Text style={styles.courseTitle} numberOfLines={2}>
+                      {c.title}
+                    </Text>
+                    {c.premium ? (
+                      <View style={styles.proPill}>
+                        <Text style={styles.proPillText}>Enlightened</Text>
+                      </View>
+                    ) : null}
+                  </View>
                   {c.subtitle ? (
                     <Text style={styles.courseSub} numberOfLines={1}>
                       {c.subtitle}
@@ -263,7 +273,17 @@ const styles = StyleSheet.create({
     padding: space.xl,
     gap: space.sm,
   },
-  courseTitle: { ...type.headline, color: colors.text },
+  courseTitle: { ...type.headline, color: colors.text, flex: 1 },
+  courseTitleRow: { flexDirection: "row", alignItems: "flex-start", gap: space.sm },
+  proPill: {
+    paddingHorizontal: space.sm,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: "rgba(184,146,88,0.45)",
+    backgroundColor: "rgba(184,146,88,0.12)",
+  },
+  proPillText: { ...type.caption, color: colors.gold, fontSize: 9, letterSpacing: 1 },
   courseSub: { ...type.caption, color: colors.goldBright },
   courseDesc: { ...type.bodySmall, color: colors.textSecondary },
   courseMeta: { ...type.caption, color: colors.textMuted, marginTop: space.xs },

@@ -9,7 +9,8 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
-import { MUSIC_TRACKS, SOUNDS, getExperience } from "@lofibuddha/shared";
+import { MUSIC_TRACKS, SOUNDS, getExperience, workshopExperiences } from "@lofibuddha/shared";
+import type { Experience } from "@lofibuddha/shared";
 import { SceneCanvas } from "@/src/components/content/SceneCanvas";
 import { Mandala } from "@/src/components/content/Mandala";
 import { Chip, EmptyState } from "@/src/components/ui/Primitives";
@@ -57,6 +58,18 @@ export default function PlayerScreen() {
   const playing = player.phase === "playing";
   const isBreath = experience.special === "box-breathing";
   const isTimer = experience.special === "pomodoro";
+
+  // Workshop series navigation: find this session's siblings within its series.
+  const series = experience.series;
+  const siblings = series ? workshopExperiences().filter((e) => e.series === series) : [];
+  const seriesIdx = siblings.findIndex((e) => e.id === experience.id);
+  const prevInSeries = seriesIdx > 0 ? siblings[seriesIdx - 1] : null;
+  const nextInSeries = seriesIdx >= 0 && seriesIdx < siblings.length - 1 ? siblings[seriesIdx + 1] : null;
+
+  const goTo = async (exp: Experience) => {
+    await player.playExperience(exp);
+    router.replace(`/player/${exp.id}`);
+  };
 
   return (
     <SceneCanvas theme={theme} intensity={isBreath ? player.breathe : 0.5}>
@@ -113,6 +126,43 @@ export default function PlayerScreen() {
           <View style={[styles.infoCol, l.isDesktop && { flex: 1 }]}>
             <Text style={styles.title}>{experience.title}</Text>
             <Text style={styles.description}>{experience.description}</Text>
+
+            {series && siblings.length > 1 ? (
+              <View style={styles.seriesNav}>
+                <Pressable
+                  onPress={() => prevInSeries && goTo(prevInSeries)}
+                  disabled={!prevInSeries}
+                  hitSlop={10}
+                  style={({ pressed }: any) => [
+                    styles.seriesBtn,
+                    !prevInSeries && { opacity: 0.25 },
+                    pressed && { opacity: 0.6 },
+                  ]}
+                  accessibilityLabel="Previous session"
+                >
+                  <Icon name="back" size={18} color={colors.text} />
+                </Pressable>
+                <View style={styles.seriesMeta}>
+                  <Text style={styles.seriesName}>{series}</Text>
+                  <Text style={styles.seriesCount}>
+                    {seriesIdx + 1} of {siblings.length}
+                  </Text>
+                </View>
+                <Pressable
+                  onPress={() => nextInSeries && goTo(nextInSeries)}
+                  disabled={!nextInSeries}
+                  hitSlop={10}
+                  style={({ pressed }: any) => [
+                    styles.seriesBtn,
+                    !nextInSeries && { opacity: 0.25 },
+                    pressed && { opacity: 0.6 },
+                  ]}
+                  accessibilityLabel="Next session"
+                >
+                  <Icon name="forward" size={18} color={colors.text} />
+                </Pressable>
+              </View>
+            ) : null}
 
             {!isBreath && !isTimer ? (
               <View style={styles.progressBlock}>
@@ -369,6 +419,28 @@ const styles = StyleSheet.create({
 
   title: { ...type.largeTitle, color: colors.text, textAlign: "center" },
   description: { ...type.body, color: colors.textSecondary, textAlign: "center", maxWidth: 420 },
+
+  seriesNav: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.lg,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.sm,
+    borderRadius: radius.pill,
+    backgroundColor: "rgba(255,255,255,0.04)",
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  seriesBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  seriesMeta: { alignItems: "center", gap: 2, minWidth: 96 },
+  seriesName: { ...type.label, color: colors.textSecondary },
+  seriesCount: { ...type.caption, color: colors.textMuted },
 
   progressBlock: { width: "100%", gap: space.sm, marginTop: space.md },
   track: { height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.1)", overflow: "hidden" },
