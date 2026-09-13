@@ -11,7 +11,7 @@ import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useCourseProgress } from "@/src/lib/useCourseProgress";
 import { getExperience } from "@lofibuddha/shared";
-import { colors, radius, space, tint, type } from "@/src/theme/tokens";
+import { accentByCategory, colors, radius, space, tint, type } from "@/src/theme/tokens";
 
 type Module = {
   day: number;
@@ -146,6 +146,8 @@ export default function CourseScreen() {
             <View style={styles.modules}>
               {modules.map((m) => {
                 const done = isComplete(m.day);
+                const linked = m.experience ? getExperience(m.experience) : null;
+                const accent = linked ? (accentByCategory[linked.category] ?? colors.gold) : colors.gold;
                 return (
                   <View
                     key={`${m.day}-${m.title}`}
@@ -154,35 +156,43 @@ export default function CourseScreen() {
                     <LinearGradient
                       colors={
                         done
-                          ? [tint(colors.gold, 0.15), "rgba(17,16,25,0.97)"]
-                          : [tint(colors.gold, 0.06), "rgba(17,16,25,0.98)"]
+                          ? [tint(accent, 0.2), "rgba(17,16,25,0.97)"]
+                          : [tint(accent, 0.09), "rgba(17,16,25,0.98)"]
                       }
                       start={{ x: 0, y: 0 }}
-                      end={{ x: 0.55, y: 1 }}
+                      end={{ x: 0.6, y: 1 }}
                       style={StyleSheet.absoluteFill}
                     />
-                    <View style={[styles.moduleAccent, done && styles.moduleAccentDone]} />
+                    <View style={[styles.moduleAccent, { backgroundColor: accent }]} />
                     <View style={styles.moduleHead}>
                       <Pressable
                         onPress={() => toggle(m.day)}
                         hitSlop={8}
-                        style={[styles.check, done && styles.checkDone]}
+                        style={[
+                          styles.check,
+                          { borderColor: tint(accent, 0.5) },
+                          done && { backgroundColor: accent, borderColor: accent },
+                        ]}
                         accessibilityLabel={done ? "Mark as not complete" : "Mark as complete"}
                       >
                         {done ? <Icon name="check" size={16} color={colors.ink} /> : null}
                       </Pressable>
-                      <View style={styles.dayBadge}>
-                        <Text style={styles.dayText}>Day {m.day}</Text>
+                      <View style={[styles.dayBadge, { borderColor: tint(accent, 0.5) }]}>
+                        <Text style={[styles.dayText, { color: accent }]}>Day {m.day}</Text>
                       </View>
                       <Text style={[styles.moduleTitle, done && styles.moduleTitleDone]}>
                         {m.title}
                       </Text>
                     </View>
-                    <Text style={styles.moduleType}>{m.type}</Text>
+                    <Text style={[styles.moduleType, { color: accent }]}>{m.type}</Text>
                     {m.content ? <Text style={styles.moduleContent}>{m.content}</Text> : null}
                     {m.experience ? (
                       <Pressable
-                        style={({ pressed }: any) => [styles.playBtn, pressed && { opacity: 0.85 }]}
+                        style={({ pressed }: any) => [
+                          styles.playBtn,
+                          { backgroundColor: accent },
+                          pressed && { opacity: 0.85 },
+                        ]}
                         onPress={() => playModule(m)}
                       >
                         <Icon name="play" size={14} color={colors.ink} />
@@ -239,8 +249,11 @@ const styles = StyleSheet.create({
   fill: { height: 4, borderRadius: 2 },
   nextUp: { ...type.caption, color: colors.textMuted, marginTop: space.xs },
 
-  modules: { marginTop: space.md, gap: space.md },
+  modules: { flexDirection: "row", flexWrap: "wrap", gap: space.md, marginTop: space.md },
   module: {
+    flexBasis: 280,
+    flexGrow: 1,
+    minWidth: 240,
     backgroundColor: colors.card,
     borderRadius: radius.md,
     borderWidth: 1,
@@ -257,31 +270,26 @@ const styles = StyleSheet.create({
     bottom: space.md,
     width: 3,
     borderRadius: 2,
-    backgroundColor: tint(colors.gold, 0.35),
   },
-  moduleAccentDone: { backgroundColor: colors.gold },
   moduleHead: { flexDirection: "row", alignItems: "center", gap: space.sm },
   check: {
     width: 24,
     height: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.hairline,
     alignItems: "center",
     justifyContent: "center",
   },
-  checkDone: { borderColor: colors.gold, backgroundColor: colors.gold },
   dayBadge: {
     paddingHorizontal: space.md,
     paddingVertical: 3,
     borderRadius: radius.pill,
     borderWidth: 1,
-    borderColor: colors.hairline,
   },
-  dayText: { ...type.caption, color: colors.textSecondary },
+  dayText: { ...type.caption },
   moduleTitle: { ...type.headline, color: colors.text, flex: 1 },
   moduleTitleDone: { color: colors.textMuted, textDecorationLine: "line-through" },
-  moduleType: { ...type.caption, color: colors.gold, textTransform: "uppercase", letterSpacing: 1 },
+  moduleType: { ...type.caption, textTransform: "uppercase", letterSpacing: 1 },
   moduleContent: { ...type.bodySmall, color: colors.textSecondary, lineHeight: 20 },
   playBtn: {
     flexDirection: "row",
@@ -292,7 +300,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     paddingVertical: space.sm,
     borderRadius: radius.pill,
-    backgroundColor: colors.gold,
   },
   playText: { ...type.label, color: colors.ink },
 
