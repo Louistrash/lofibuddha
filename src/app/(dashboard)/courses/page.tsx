@@ -7,6 +7,7 @@ import {
   ChevronDown, ChevronRight, Edit3, Trash2, Copy, X,
   GripVertical, Save, ArrowRight, Eye, Send, Globe,
 } from "lucide-react";
+import { Button, Card, PageHeader, Spinner } from "@/components/ui";
 
 // ── Types ──
 
@@ -105,12 +106,12 @@ export default function CoursesPage() {
 
   // ── Tool cards ──
   const tools = [
-    { id: "outline", label: "Course Outline", desc: "Module structure & learning objectives", icon: Layers, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-    { id: "lesson", label: "Lesson Generator", desc: "Full lesson content with examples", icon: FileText, color: "text-blue-400", bg: "bg-blue-500/10" },
-    { id: "worksheets", label: "Worksheets", desc: "Printable exercises & quizzes", icon: Download, color: "text-amber-400", bg: "bg-amber-500/10" },
-    { id: "scripts", label: "Video Scripts", desc: "Lesson narration scripts & social clips", icon: Play, color: "text-purple-400", bg: "bg-purple-500/10" },
-    { id: "landing", label: "Course Landing Page", desc: "Sales page copy & curriculum", icon: Globe, color: "text-pink-400", bg: "bg-pink-500/10" },
-    { id: "emails", label: "Email Sequence", desc: "Welcome & drip email campaigns", icon: Send, color: "text-teal-400", bg: "bg-teal-500/10" },
+    { id: "outline", label: "Course Outline", desc: "Module structure & learning objectives", icon: Layers, color: "text-journey-breathe", bg: "bg-journey-breathe/10" },
+    { id: "lesson", label: "Lesson Generator", desc: "Full lesson content with examples", icon: FileText, color: "text-journey-sleep", bg: "bg-journey-sleep/10" },
+    { id: "worksheets", label: "Worksheets", desc: "Printable exercises & quizzes", icon: Download, color: "text-journey-focus", bg: "bg-journey-focus/10" },
+    { id: "scripts", label: "Video Scripts", desc: "Lesson narration scripts & social clips", icon: Play, color: "text-journey-relax", bg: "bg-journey-relax/10" },
+    { id: "landing", label: "Course Landing Page", desc: "Sales page copy & curriculum", icon: Globe, color: "text-accent-light", bg: "bg-accent/10" },
+    { id: "emails", label: "Email Sequence", desc: "Welcome & drip email campaigns", icon: Send, color: "text-journey-breathe", bg: "bg-journey-breathe/10" },
   ];
 
   // ── Expandable module ──
@@ -124,31 +125,27 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">Course Creator</h1>
-          <p className="text-text-muted mt-1">Build online courses with AI-generated outlines, lessons, and worksheets.</p>
-        </div>
-        <div className="flex gap-2">
-          {courses.length > 0 && (
-            <select
-              value={selectedCourseId || ""}
-              onChange={(e) => setSelectedCourseId(e.target.value)}
-              className="bg-bg-card border border-border rounded-xl px-3 py-2 text-sm text-text-primary outline-none focus:border-accent/50"
-            >
-              {courses.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
-            </select>
-          )}
-          <button onClick={() => setShowWizard(true)} className="btn-zen flex items-center gap-2 text-sm py-2.5 px-5">
-            <Plus size={16} /> New Course
-          </button>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Course Creator"
+        description="Build online courses with AI-generated outlines, lessons, and worksheets."
+        actions={
+          <>
+            {courses.length > 0 && (
+              <select
+                value={selectedCourseId || ""}
+                onChange={(e) => setSelectedCourseId(e.target.value)}
+                className="bg-bg-card border border-border rounded-[var(--radius)] px-3 py-2 text-sm text-text-primary outline-none focus:border-accent/50"
+              >
+                {courses.map((c) => <option key={c.id} value={c.id}>{c.title}</option>)}
+              </select>
+            )}
+            <Button onClick={() => setShowWizard(true)} icon={<Plus size={16} />}>New Course</Button>
+          </>
+        }
+      />
 
-      {/* AI Generator card */}
-      <div className="glass p-6 flex flex-col sm:flex-row items-center gap-4 justify-between bg-gradient-to-r from-accent/5 to-transparent">
+      <Card lit className="p-6 flex flex-col sm:flex-row items-center gap-4 justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center flex-shrink-0">
             <Wand2 size={24} className="text-accent-light" />
@@ -158,19 +155,22 @@ export default function CoursesPage() {
             <p className="text-xs text-text-muted mt-1">Describe your topic, get a full course outline with lessons, exercises, and resources.</p>
           </div>
         </div>
-        <button onClick={() => setShowWizard(true)} className="btn-zen flex items-center gap-2 flex-shrink-0">
-          <Sparkles size={16} /> Generate Course
-        </button>
-      </div>
+        <Button onClick={() => setShowWizard(true)} icon={<Sparkles size={16} />} className="flex-shrink-0">
+          Generate Course
+        </Button>
+      </Card>
 
       {/* Tool cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {tools.map((t) => {
           const Icon = t.icon;
           return (
-            <button key={t.id} onClick={() => handleGenerate(t.id)}
-              disabled={!selectedCourse || genLoading}
-              className={`glass p-4 space-y-3 text-left hover:border-accent/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${activeTool === t.id ? "border-accent/50 ring-1 ring-accent/20" : ""}`}>
+            <Card
+              key={t.id}
+              interactive
+              onClick={() => handleGenerate(t.id)}
+              className={`p-4 space-y-3 text-left disabled:opacity-50 ${activeTool === t.id ? "border-accent/50 ring-1 ring-accent/20" : ""} ${!selectedCourse || genLoading ? "opacity-50 pointer-events-none" : ""}`}
+            >
               <div className={`w-9 h-9 rounded-xl ${t.bg} flex items-center justify-center`}>
                 <Icon size={18} className={t.color} />
               </div>
@@ -178,14 +178,13 @@ export default function CoursesPage() {
                 <h3 className="text-sm font-semibold text-text-primary">{t.label}</h3>
                 <p className="text-xs text-text-muted mt-0.5">{t.desc}</p>
               </div>
-            </button>
+            </Card>
           );
         })}
       </div>
 
-      {/* Generated content panel */}
       {activeTool && (
-        <div className="glass p-5 space-y-4">
+        <Card className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider flex items-center gap-2">
               <Sparkles size={14} className="text-accent-light" />
@@ -203,7 +202,7 @@ export default function CoursesPage() {
           </div>
           {genLoading ? (
             <div className="flex items-center justify-center py-12 gap-3">
-              <Loader2 size={24} className="animate-spin text-accent-light" />
+              <Spinner size={24} />
               <span className="text-sm text-text-muted">Generating...</span>
             </div>
           ) : (
@@ -213,12 +212,11 @@ export default function CoursesPage() {
               </pre>
             </div>
           )}
-        </div>
+        </Card>
       )}
 
-      {/* Course outline — expandable modules */}
       {selectedCourse && (
-        <div className="glass p-5 space-y-4">
+        <Card className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <BookOpen size={18} className="text-accent-light" />
@@ -273,28 +271,26 @@ export default function CoursesPage() {
               );
             })}
           </div>
-        </div>
+        </Card>
       )}
 
-      {/* Empty state */}
       {!loading && courses.length === 0 && (
         <div className="text-center py-16 space-y-4">
           <BookOpen size={48} className="mx-auto text-text-muted opacity-30" />
           <div>
             <p className="text-text-primary font-medium">No courses yet</p>
-            <p className="text-sm text-text-muted mt-1">Click "New Course" to generate your first AI-powered course.</p>
+            <p className="text-sm text-text-muted mt-1">Click &quot;New Course&quot; to generate your first AI-powered course.</p>
           </div>
-          <button onClick={() => setShowWizard(true)} className="btn-zen inline-flex items-center gap-2 px-6 py-3 mt-2">
-            <Sparkles size={16} /> Create Your First Course
-          </button>
+          <Button onClick={() => setShowWizard(true)} icon={<Sparkles size={16} />} className="mt-2">
+            Create Your First Course
+          </Button>
         </div>
       )}
 
-      {/* ── New Course Wizard Modal ── */}
       {showWizard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowWizard(false)} />
-          <div className="relative bg-bg-surface border border-border rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl">
+          <Card className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-text-primary flex items-center gap-2">
                 <Wand2 size={20} className="text-accent-light" /> New Course
@@ -380,18 +376,18 @@ export default function CoursesPage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-3 pt-2">
-              <button onClick={handleCreate} disabled={generating || !wizard.topic.trim()}
-                className="btn-zen flex-1 flex items-center justify-center gap-2 py-2.5 disabled:opacity-50">
-                {generating ? <><Loader2 size={16} className="animate-spin" /> Generating...</> : <><Sparkles size={16} /> Generate Course</>}
-              </button>
-              <button onClick={() => setShowWizard(false)}
-                className="px-5 py-2.5 rounded-xl bg-bg-hover text-sm text-text-secondary hover:text-text-primary transition-all">
-                Cancel
-              </button>
+              <Button
+                onClick={handleCreate}
+                disabled={generating || !wizard.topic.trim()}
+                fullWidth
+                icon={generating ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+              >
+                {generating ? "Generating..." : "Generate Course"}
+              </Button>
+              <Button variant="ghost" onClick={() => setShowWizard(false)}>Cancel</Button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
     </div>

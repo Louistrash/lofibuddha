@@ -193,7 +193,7 @@ function FeaturedCard({
       />
       <View style={[styles.featuredOrb, { backgroundColor: accent }]} />
       <View style={styles.featuredMandala} pointerEvents="none">
-        <Mandala size={320} opacity={0.7} speed={0.6} colors={COPPER_MANDALA} />
+        <Mandala size={420} opacity={0.85} speed={1.2} intensity={0.7} colors={COPPER_MANDALA} />
       </View>
 
       <Badge label="Today's practice" accent={accent} />
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     right: -80,
     opacity: 0.22,
   },
-  featuredMandala: { position: "absolute", top: -104, right: -104 },
+  featuredMandala: { position: "absolute", top: -80, right: -80, left: -80, bottom: -80, alignItems: "center", justifyContent: "center" },
   featuredBody: { gap: space.sm },
   featuredTitle: { ...type.largeTitle, fontSize: 30, color: colors.text },
   featuredDesc: { ...type.body, color: colors.textSecondary, maxWidth: 460 },

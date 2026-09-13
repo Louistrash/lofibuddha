@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -71,27 +71,56 @@ export default function CategoryScreen() {
         </View>
       </View>
 
-      {l.isCompact ? (
-        <View style={styles.grid}>
-          {items.map((exp) => (
-            <View key={exp.id} style={styles.gridCell}>
-              <ExperienceCard
-                experience={exp}
-                variant="tile"
-                onPress={() => open(exp.id)}
-                isFavorite={isFavorite(exp.id)}
-                onToggleFavorite={() => toggle(exp.id)}
-              />
-            </View>
-          ))}
-        </View>
-      ) : (
-        <CardRail minCardWidth={240}>
-          {items.map((exp) => (
-            <ExperienceCard key={exp.id} experience={exp} onPress={() => open(exp.id)} />
-          ))}
-        </CardRail>
-      )}
+      {(() => {
+        const MAX_GRID_ROWS = 4;
+        const COLS = 2;
+        const maxGrid = MAX_GRID_ROWS * COLS;
+        const gridItems = items.slice(0, l.isCompact ? maxGrid : items.length);
+        const overflowItems = l.isCompact ? items.slice(maxGrid) : [];
+
+        return (
+          <>
+            {l.isCompact ? (
+              <View style={styles.grid}>
+                {gridItems.map((exp) => (
+                  <View key={exp.id} style={styles.gridCell}>
+                    <ExperienceCard
+                      experience={exp}
+                      variant="tile"
+                      onPress={() => open(exp.id)}
+                      isFavorite={isFavorite(exp.id)}
+                      onToggleFavorite={() => toggle(exp.id)}
+                    />
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <CardRail minCardWidth={240}>
+                {gridItems.map((exp) => (
+                  <ExperienceCard key={exp.id} experience={exp} onPress={() => open(exp.id)} />
+                ))}
+              </CardRail>
+            )}
+
+            {overflowItems.length > 0 ? (
+              <View style={styles.moreBlock}>
+                <Text style={styles.moreLabel}>More {category.name.toLowerCase()}</Text>
+                <CardRail minCardWidth={200}>
+                  {overflowItems.map((exp) => (
+                    <ExperienceCard
+                      key={exp.id}
+                      experience={exp}
+                      onPress={() => open(exp.id)}
+                      isFavorite={isFavorite(exp.id)}
+                      onToggleFavorite={() => toggle(exp.id)}
+                    />
+                  ))}
+                </CardRail>
+              </View>
+            ) : null}
+          </>
+        );
+      })()}
     </Screen>
   );
 }
@@ -126,4 +155,6 @@ const styles = StyleSheet.create({
   heroMetaText: { ...type.caption, color: colors.textMuted },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
   gridCell: { flexGrow: 1, flexBasis: 160, minWidth: 150, maxWidth: "100%" },
+  moreBlock: { marginTop: space["2xl"] },
+  moreLabel: { ...type.section, color: colors.textSecondary, marginBottom: space.md },
 });

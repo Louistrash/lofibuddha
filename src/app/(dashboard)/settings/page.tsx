@@ -5,6 +5,7 @@ import {
   Key, Palette, Bell, Shield, Globe, Save, Music2,
   Sun, Moon, Monitor, CheckCircle2, Loader2,
 } from "lucide-react";
+import { Button, Card, PageHeader, Spinner } from "@/components/ui";
 
 // ── Accent color definitions ──
 
@@ -129,7 +130,7 @@ export default function SettingsPage() {
   if (!initialized) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 size={28} className="animate-spin text-accent-light" />
+        <Spinner size={28} />
       </div>
     );
   }
@@ -146,13 +147,12 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-8 max-w-3xl">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Settings</h1>
-        <p className="text-text-muted mt-1">Customize your Bodhi Hermes OS experience.</p>
-      </div>
+      <PageHeader
+        title="Settings"
+        description="Customize your Bodhi Hermes OS experience."
+      />
 
-      {/* ── Appearance ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-bg-hover flex items-center justify-center">
             <Palette size={20} className="text-text-secondary" />
@@ -213,10 +213,9 @@ export default function SettingsPage() {
           </div>
           <code className="text-[10px] text-accent-light ml-auto">{accent}</code>
         </div>
-      </div>
+      </Card>
 
-      {/* ── API Keys ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-bg-hover flex items-center justify-center">
             <Key size={20} className="text-text-secondary" />
@@ -247,13 +246,12 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
-      </div>
+      </Card>
 
-      {/* ── TikTok API ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-bg-hover flex items-center justify-center">
-            <Music2 size={20} className="text-pink-400" />
+          <div className="w-10 h-10 rounded-xl bg-journey-relax/10 flex items-center justify-center">
+            <Music2 size={20} className="text-journey-relax" />
           </div>
           <div>
             <h3 className="font-semibold text-text-primary text-sm">TikTok Integration</h3>
@@ -285,10 +283,9 @@ export default function SettingsPage() {
         <p className="text-[10px] text-text-muted bg-bg-hover rounded-lg p-3 leading-relaxed">
           🔐 Set these in <code className="text-accent-light">.env.local</code> or the container environment variables. Then restart the server. These keys enable automatic TikTok posting.
         </p>
-      </div>
+      </Card>
 
-      {/* ── Notifications ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-bg-hover flex items-center justify-center">
             <Bell size={20} className="text-text-secondary" />
@@ -312,15 +309,12 @@ export default function SettingsPage() {
             </label>
           ))}
         </div>
-      </div>
+      </Card>
 
-      {/* ── Save ── */}
       <div className="flex items-center gap-4">
-        <button onClick={handleSave} disabled={saving}
-          className="btn-zen flex items-center gap-2 px-6 py-2.5 disabled:opacity-50">
-          {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+        <Button onClick={handleSave} disabled={saving} icon={saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}>
           {saving ? "Saving..." : "Save Settings"}
-        </button>
+        </Button>
         {saved && (
           <span className="flex items-center gap-1.5 text-sm text-success animate-in fade-in">
             <CheckCircle2 size={16} /> Settings saved!

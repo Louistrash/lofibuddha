@@ -4,13 +4,13 @@ import {
   FileText, Share2, Video, Image, Podcast,
   BookOpen, TrendingUp, Zap, Clock, Plus,
 } from "lucide-react";
-import Link from "next/link";
+import { Button, Card, PageHeader } from "@/components/ui";
 
 const stats = [
-  { label: "Content Pieces", value: "24", change: "+3 today", icon: FileText, color: "text-blue-400", bg: "bg-blue-400/10" },
-  { label: "Scheduled Posts", value: "8", change: "Next: 2h", icon: Share2, color: "text-emerald-400", bg: "bg-emerald-400/10" },
-  { label: "Videos Rendered", value: "13", change: "7 pending", icon: Video, color: "text-purple-400", bg: "bg-purple-400/10" },
-  { label: "Total Views", value: "4.2K", change: "↑ 18%", icon: TrendingUp, color: "text-amber-400", bg: "bg-amber-400/10" },
+  { label: "Content Pieces", value: "24", change: "+3 today", icon: FileText, color: "text-journey-sleep", bg: "bg-journey-sleep/10" },
+  { label: "Scheduled Posts", value: "8", change: "Next: 2h", icon: Share2, color: "text-journey-breathe", bg: "bg-journey-breathe/10" },
+  { label: "Videos Rendered", value: "13", change: "7 pending", icon: Video, color: "text-journey-relax", bg: "bg-journey-relax/10" },
+  { label: "Total Views", value: "4.2K", change: "↑ 18%", icon: TrendingUp, color: "text-journey-focus", bg: "bg-journey-focus/10" },
 ];
 
 const quickActions = [
@@ -32,25 +32,26 @@ const recentActivity = [
 export default function OverviewPage() {
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">
-          Welcome back, Bodhi
-        </h1>
-        <p className="text-text-muted mt-1">
-          Your creative command center.
-        </p>
-        <div className="flex items-center gap-3 mt-3">
-          <a href="https://aibuddha.net" target="_blank" rel="noopener" className="text-xs text-accent-light hover:text-accent transition-colors">
+      <PageHeader
+        title="Welcome back, Bodhi"
+        description="Your creative command center."
+        actions={
+          <a
+            href="https://aibuddha.net"
+            target="_blank"
+            rel="noopener"
+            className="text-xs text-accent-light hover:text-accent transition-colors"
+          >
             ← View AI Buddha site
           </a>
-        </div>
-      </div>
+        }
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="glass p-5 space-y-3">
+            <Card key={stat.label} lit className="p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-text-muted text-sm">{stat.label}</span>
                 <div className={`w-9 h-9 rounded-xl ${stat.bg} flex items-center justify-center`}>
@@ -61,30 +62,34 @@ export default function OverviewPage() {
                 <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
                 <div className="text-xs text-text-muted mt-0.5">{stat.change}</div>
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="glass p-5 lg:col-span-2 space-y-4">
+        <Card className="p-5 lg:col-span-2 space-y-4">
           <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-2">
             {quickActions.map((action) => {
               const Icon = action.icon;
               return (
-                <Link key={action.label} href={action.href}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-bg-hover/50 hover:bg-bg-hover border border-transparent hover:border-border transition-all group">
+                <Button
+                  key={action.label}
+                  href={action.href}
+                  variant="ghost"
+                  className="!flex-col !h-auto !rounded-xl !py-4 gap-2 group"
+                >
                   <Icon size={22} className="text-text-secondary group-hover:text-accent-light transition-colors" />
                   <span className="text-xs font-medium text-text-secondary group-hover:text-text-primary">{action.label}</span>
-                  <span className="text-[10px] text-text-muted">{action.desc}</span>
-                </Link>
+                  <span className="text-[10px] text-text-muted font-normal">{action.desc}</span>
+                </Button>
               );
             })}
           </div>
-        </div>
+        </Card>
 
-        <div className="glass p-5 lg:col-span-3 space-y-4">
+        <Card className="p-5 lg:col-span-3 space-y-4">
           <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Recent Activity</h2>
           <div className="space-y-0 divide-y divide-border">
             {recentActivity.map((item, i) => {
@@ -104,18 +109,18 @@ export default function OverviewPage() {
               );
             })}
           </div>
-        </div>
+        </Card>
       </div>
 
-      <div className="glass p-6 flex flex-col sm:flex-row items-center gap-4 justify-between bg-gradient-to-r from-accent/5 to-transparent">
+      <Card lit className="p-6 flex flex-col sm:flex-row items-center gap-4 justify-between">
         <div>
           <h3 className="text-lg font-semibold text-text-primary">Ready to create?</h3>
           <p className="text-sm text-text-muted mt-1">Generate a full content batch in one go.</p>
         </div>
-        <Link href="/content" className="btn-zen flex items-center gap-2 flex-shrink-0">
-          <Plus size={18} /> Create Content
-        </Link>
-      </div>
+        <Button href="/content" icon={<Plus size={18} />} className="flex-shrink-0">
+          Create Content
+        </Button>
+      </Card>
     </div>
   );
 }

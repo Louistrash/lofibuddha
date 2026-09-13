@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import YouTubeBulkPublish from "@/components/YouTubeBulkPublish";
+import { Button, Card, PageHeader, Spinner } from "@/components/ui";
 
 // ── Types ──
 
@@ -127,42 +128,39 @@ export default function ContentPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">Content Hub</h1>
-          <p className="text-text-muted mt-1">All your generated videos, scheduled posts, and AI content in one place.</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/video" className="btn-zen flex items-center gap-2 text-xs py-2 px-4"><Film size={14} /> New Video</Link>
-          <Link href="/content/generate" className="btn-zen flex items-center gap-2 text-xs py-2 px-4 bg-accent/20 hover:bg-accent/30"><Sparkles size={14} /> AI Writer</Link>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Content Hub"
+        description="All your generated videos, scheduled posts, and AI content in one place."
+        actions={
+          <>
+            <Button href="/video" size="sm" icon={<Film size={14} />}>New Video</Button>
+            <Button href="/content/generate" size="sm" variant="soft" icon={<Sparkles size={14} />}>AI Writer</Button>
+          </>
+        }
+      />
 
-      {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Videos", value: videos.length, icon: Film, color: "text-accent-light" },
-          { label: "Scheduled", value: posts.filter(p => p.status === "scheduled").length, icon: Calendar, color: "text-accent-light" },
+          { label: "Scheduled", value: posts.filter(p => p.status === "scheduled").length, icon: Calendar, color: "text-journey-breathe" },
           { label: "Drafts", value: posts.filter(p => p.status === "draft").length, icon: Edit3, color: "text-text-muted" },
           { label: "Released", value: posts.filter(p => p.status === "released").length, icon: Check, color: "text-success" },
         ].map((stat, i) => {
           const Icon = stat.icon;
           return (
-            <div key={i} className="glass p-4 flex items-center gap-3">
+            <Card key={i} className="p-4 flex items-center gap-3">
               <Icon size={20} className={stat.color} />
               <div>
                 <p className="text-2xl font-bold text-text-primary">{stat.value}</p>
                 <p className="text-[11px] text-text-muted">{stat.label}</p>
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>
 
-      {/* ── Media Gallery + Publish to YouTube ── */}
-      <div className="glass p-5 space-y-5">
+      <Card className="p-5 space-y-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Film size={18} className="text-accent-light" />
@@ -171,10 +169,9 @@ export default function ContentPage() {
           <Link href="/video" className="text-xs text-accent-light hover:text-accent transition-all flex items-center gap-1"><Plus size={12} /> Generate More</Link>
         </div>
         <YouTubeBulkPublish />
-      </div>
+      </Card>
 
-      {/* ── Content Calendar ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calendar size={18} className="text-accent-light" />
@@ -184,7 +181,7 @@ export default function ContentPage() {
           <Link href="/social" className="text-xs text-accent-light hover:text-accent transition-all">Manage on Social →</Link>
         </div>
         {loadingPosts ? (
-          <div className="flex items-center justify-center py-8"><Loader2 size={24} className="animate-spin text-accent-light" /></div>
+          <div className="flex items-center justify-center py-8"><Spinner size={24} /></div>
         ) : (
           <div className="space-y-3 max-h-[500px] overflow-y-auto">
             {sortedDates.map((date) => (
@@ -197,7 +194,7 @@ export default function ContentPage() {
                 <div className="space-y-2 pl-4 border-l border-border ml-1">
                   {grouped[date].map((post) => (
                     <div key={post.id} className="flex items-start gap-3 p-3 rounded-xl border border-border bg-bg-hover/50">
-                      <Clapperboard size={18} className="text-red-400 mt-0.5" />
+                      <Clapperboard size={18} className="text-journey-relax mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="text-sm font-medium text-text-primary truncate">{post.title}</p>
@@ -212,7 +209,7 @@ export default function ContentPage() {
                             <button 
                               onClick={(e) => { e.stopPropagation(); generateVideo(post.id); }}
                               disabled={generatingPost === post.id}
-                              className="text-[10px] text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-all disabled:opacity-50">
+                              className="text-[10px] text-journey-sleep hover:opacity-80 flex items-center gap-1 transition-all disabled:opacity-50">
                               {generatingPost === post.id ? <Loader2 size={10} className="animate-spin" /> : <Wand2 size={10} />}
                               {generatingPost === post.id ? "generating..." : "generate video"}
                             </button>
@@ -227,7 +224,7 @@ export default function ContentPage() {
             ))}
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

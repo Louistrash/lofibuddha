@@ -4,42 +4,112 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FileText,
-  Share2,
-  Video,
-  Image,
-  Podcast,
-  BookOpen,
-  BarChart3,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Bot,
-  Mail,
-  Users,
-  Music,
-} from "lucide-react";
-
+import { Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import NextImage from "next/image";
-
-const navItems = [
-  { href: "/content", label: "Content", icon: FileText, badge: "AI" },
-  { href: "/social", label: "Social", icon: Share2 },
-  { href: "/video", label: "Video", icon: Video },
-  { href: "/images", label: "Images", icon: Image },
-  { href: "/sounds", label: "Sounds", icon: Music },
-  { href: "/studio", label: "Studio", icon: Podcast },
-  { href: "/courses", label: "Courses", icon: BookOpen },
-  { href: "/newsletter", label: "Newsletter", icon: Mail },
-  { href: "/subscribers", label: "Subscribers", icon: Users },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/hermes", label: "Hermes OS", icon: Bot, badge: "Full" },
-];
+import { CMS_NAV, isNavActive } from "@/lib/cms-nav";
+import CmsNavLink from "./cms/CmsNavLink";
 
 interface SidebarProps {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
+}
+
+const panelClass =
+  "flex flex-col h-screen bg-bg-glass backdrop-blur-2xl border-r border-border";
+
+function Brand({ collapsed }: { collapsed?: boolean }) {
+  return (
+    <Link href="/studio" className="flex items-center gap-3 min-w-0 group">
+      <NextImage
+        src="/lofibuddha.png"
+        alt="LofiBuddha"
+        width={39}
+        height={39}
+        className="rounded-xl flex-shrink-0 ring-1 ring-border/60 group-hover:ring-accent/30 transition-all"
+      />
+      {!collapsed && (
+        <div className="min-w-0">
+          <p className="font-semibold text-text-primary text-sm tracking-wide truncate">LofiBuddha</p>
+          <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">CMS</p>
+        </div>
+      )}
+    </Link>
+  );
+}
+
+function NavSection({
+  collapsed,
+  pathname,
+  onNavigate,
+}: {
+  collapsed?: boolean;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  return (
+    <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+      {!collapsed && (
+        <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-text-muted">
+          Workspace
+        </p>
+      )}
+      {CMS_NAV.map((item) => (
+        <CmsNavLink
+          key={item.href}
+          item={item}
+          pathname={pathname}
+          collapsed={collapsed}
+          onNavigate={onNavigate}
+        />
+      ))}
+    </nav>
+  );
+}
+
+function SidebarFooter({
+  collapsed,
+  onCollapse,
+  onNavigate,
+}: {
+  collapsed: boolean;
+  onCollapse: () => void;
+  onNavigate?: () => void;
+}) {
+  const pathname = usePathname();
+  const settingsActive = isNavActive(pathname, "/settings");
+
+  return (
+    <div className="p-3 border-t border-border space-y-1">
+      <Link
+        href="/settings"
+        onClick={onNavigate}
+        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
+          settingsActive
+            ? "bg-accent/10 text-accent-light"
+            : "text-text-secondary hover:text-text-primary hover:bg-bg-hover"
+        }`}
+      >
+        <span
+          className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+            settingsActive ? "bg-accent/15" : "bg-bg-hover group-hover:bg-bg-card"
+          }`}
+        >
+          <Settings size={16} />
+        </span>
+        {!collapsed && <span className="text-sm font-medium">Settings</span>}
+      </Link>
+      <button
+        type="button"
+        onClick={onCollapse}
+        className="hidden lg:flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-text-muted hover:text-text-secondary hover:bg-bg-hover transition-all duration-200"
+      >
+        <span className="w-8 h-8 rounded-lg bg-bg-hover flex items-center justify-center flex-shrink-0">
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </span>
+        {!collapsed && <span className="text-sm">Collapse</span>}
+      </button>
+    </div>
+  );
 }
 
 export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
@@ -48,168 +118,46 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
             />
-            {/* Mobile panel */}
             <motion.aside
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed left-0 top-0 h-screen z-50 w-[260px] bg-bg-glass backdrop-blur-2xl border-r border-border flex flex-col lg:hidden"
+              className={`fixed left-0 top-0 z-50 w-[260px] ${panelClass} lg:hidden`}
             >
-              {/* Logo */}
-              <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
-                <NextImage
-                  src="/lofibuddha.png"
-                  alt="Bodhi"
-                  width={39}
-                  height={39}
-                  className="rounded-xl flex-shrink-0"
-                />
-                <span className="font-semibold text-text-primary text-sm tracking-wide">
-                  AI Buddha CMS
-                </span>
+              <div className="h-16 flex items-center px-5 border-b border-border">
+                <Brand />
               </div>
-
-              {/* Navigation */}
-              <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-                {navItems.map((item) => {
-                  const isActive =
-                    pathname === item.href ||
-                    (item.href !== "/" && pathname.startsWith(item.href));
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
-                        isActive
-                          ? "bg-accent/10 text-accent-light"
-                          : "text-text-secondary hover:text-text-primary hover:bg-bg-hover"
-                      }`}
-                    >
-                <span className="w-8 h-8 rounded-lg bg-bg-hover flex items-center justify-center flex-shrink-0"><Icon size={16} /></span>
-                      <span className="text-sm font-medium">{item.label}</span>
-                      {item.badge && (
-                        <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-md bg-accent/20 text-accent-light font-semibold">
-                          {item.badge}
-                        </span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              {/* Settings */}
-              <div className="p-3 border-t border-border">
-                <Link
-                  href="/settings"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-all duration-200"
-                >
-                  <Settings size={20} />
-                  <span className="text-sm font-medium">Settings</span>
-                </Link>
-              </div>
+              <NavSection pathname={pathname} onNavigate={() => setMobileOpen(false)} />
+              <SidebarFooter
+                collapsed={false}
+                onCollapse={() => setCollapsed((c) => !c)}
+                onNavigate={() => setMobileOpen(false)}
+              />
             </motion.aside>
           </>
         )}
       </AnimatePresence>
 
-      {/* Desktop sidebar — sticky rail (neemt ruimte in de flow, overlapt dus nooit content) */}
       <motion.aside
         animate={{ width: collapsed ? 72 : 260 }}
-        className={`hidden lg:flex sticky top-0 shrink-0 h-screen z-40 bg-bg-glass backdrop-blur-2xl border-r border-border flex-col transition-none`}
+        className={`hidden lg:flex sticky top-0 shrink-0 z-30 ${panelClass}`}
       >
-        {/* Logo */}
-        <div className="h-16 flex items-center gap-3 px-5 border-b border-border">
-          <NextImage
-            src="/lofibuddha.png"
-            alt="Bodhi"
-            width={39}
-            height={39}
-            className="rounded-xl flex-shrink-0"
-          />
-          {!collapsed && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="font-semibold text-text-primary text-sm tracking-wide"
-            >
-              AI Buddha CMS
-            </motion.span>
-          )}
+        <div className="h-16 flex items-center px-5 border-b border-border">
+          <Brand collapsed={collapsed} />
         </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${
-                  isActive
-                    ? "bg-accent/10 text-accent-light"
-                    : "text-text-secondary hover:text-text-primary hover:bg-bg-hover"
-                }`}
-              >
-                <span className="w-8 h-8 rounded-lg bg-bg-hover flex items-center justify-center flex-shrink-0"><Icon size={16} /></span>
-                {!collapsed && (
-                  <>
-                    <span className="text-sm font-medium">{item.label}</span>
-                    {item.badge && (
-                      <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-md bg-accent/20 text-accent-light font-semibold">
-                        {item.badge}
-                      </span>
-                    )}
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeNav"
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 bg-accent rounded-full"
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      />
-                    )}
-                  </>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Settings + Collapse */}
-        <div className="p-3 border-t border-border space-y-1">
-          <Link
-            href="/settings"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-all duration-200"
-          >
-            <Settings size={20} />
-            {!collapsed && <span className="text-sm font-medium">Settings</span>}
-          </Link>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-text-muted hover:text-text-secondary hover:bg-bg-hover transition-all duration-200"
-          >
-            {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-            {!collapsed && <span className="text-sm">Collapse</span>}
-          </button>
-        </div>
+        <NavSection collapsed={collapsed} pathname={pathname} />
+        <SidebarFooter collapsed={collapsed} onCollapse={() => setCollapsed((c) => !c)} />
       </motion.aside>
     </>
   );

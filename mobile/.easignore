@@ -1,0 +1,22 @@
+# Dependencies (EAS installs these in the cloud)
+node_modules/
+
+# Expo cache
+.expo/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Dev/docs files not needed for build
+README.md
+AGENTS.md
+CLAUDE.md
+LICENSE

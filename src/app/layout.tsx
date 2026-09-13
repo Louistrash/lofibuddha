@@ -45,7 +45,7 @@ const rozha = Rozha_One({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f0f0f",
+  themeColor: "#08070C",
 };
 
 export const metadata: Metadata = {

@@ -19,6 +19,17 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "patricknieborg@me.com",
+        "appleTeamId": "QR69NLYHRX",
+        "ascAppId": "6809886537"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./google-service-account.json",
+        "track": "internal"
+      }
+    }
   }
 }
+

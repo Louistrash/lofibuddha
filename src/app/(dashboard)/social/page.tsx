@@ -6,6 +6,7 @@ import {
   Download, Film, Loader2, Tv, Smartphone, Square, Play,
   Send, Edit3, Trash2, Plus, X, Check, Clock, PlaySquare,
 } from "lucide-react";
+import { Button, Card, PageHeader, Spinner } from "@/components/ui";
 
 // ── Types ──
 
@@ -50,18 +51,18 @@ const platformUrls: Record<string, string> = {
 };
 
 const platforms = [
-  { label: "YouTube", icon: Clapperboard, color: "text-red-400" },
-  { label: "TikTok", icon: Music2, color: "text-pink-400" },
-  { label: "Instagram", icon: Camera, color: "text-purple-400" },
-  { label: "Facebook", icon: Globe, color: "text-blue-400" },
-  { label: "Pinterest", icon: MapPin, color: "text-red-300" },
+  { label: "YouTube", icon: Clapperboard, color: "text-journey-relax" },
+  { label: "TikTok", icon: Music2, color: "text-journey-relax" },
+  { label: "Instagram", icon: Camera, color: "text-journey-sleep" },
+  { label: "Facebook", icon: Globe, color: "text-journey-focus" },
+  { label: "Pinterest", icon: MapPin, color: "text-journey-breathe" },
 ];
 
 const platformIcons: Record<string, typeof Tv> = {
   youtube: Clapperboard, shorts: Smartphone, square: Square,
 };
 const platformColors: Record<string, string> = {
-  youtube: "text-red-400", shorts: "text-pink-400", square: "text-purple-400",
+  youtube: "text-journey-relax", shorts: "text-journey-relax", square: "text-journey-sleep",
 };
 
 // ── Pre-filled calendar data ──
@@ -473,15 +474,11 @@ export default function SocialPage() {
 
   return (
     <div className="space-y-8">
-      {/* ── Header ── */}
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Social Automation</h1>
-        <p className="text-text-muted mt-1">
-          Connect accounts, schedule posts, and publish across platforms.
-        </p>
-      </div>
+      <PageHeader
+        title="Social Automation"
+        description="Connect accounts, schedule posts, and publish across platforms."
+      />
 
-      {/* ── Connected Platforms ── */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {platforms.map((p) => {
           const Icon = p.icon;
@@ -490,10 +487,10 @@ export default function SocialPage() {
           const isConnected = isTikTok ? tiktokProfile?.connected : true;
 
           const card = (
-            <div
+            <Card
               key={p.label}
-              className={`glass p-4 flex flex-col items-center gap-3 transition-all ${
-                isConnected ? "border-accent/30 cursor-default" : "opacity-60 cursor-pointer hover:border-accent/30 hover:opacity-80"
+              className={`p-4 flex flex-col items-center gap-3 transition-all ${
+                isConnected ? "border-accent/30" : "opacity-60 hover:border-accent/30 hover:opacity-80"
               }`}
             >
               <Icon size={24} className={p.color} />
@@ -533,7 +530,7 @@ export default function SocialPage() {
                   Connected
                 </span>
               )}
-            </div>
+            </Card>
           );
           return isTikTok ? (
             card
@@ -546,7 +543,7 @@ export default function SocialPage() {
       </div>
 
       {/* ── Content Calendar ── */}
-      <div className="glass p-5 space-y-4">
+      <Card className="p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calendar size={18} className="text-accent-light" />
@@ -557,13 +554,9 @@ export default function SocialPage() {
               {posts.length} post{posts.length !== 1 ? "s" : ""}
             </span>
           </div>
-          <button
-            onClick={() => setShowAdd(true)}
-            className="btn-zen flex items-center gap-2 text-xs py-2 px-4"
-          >
-            <Plus size={14} />
+          <Button size="sm" onClick={() => setShowAdd(true)} icon={<Plus size={14} />}>
             Add Post
-          </button>
+          </Button>
         </div>
 
         {/* Add new post form */}
@@ -613,16 +606,14 @@ export default function SocialPage() {
                 </select>
               </div>
             </div>
-            <button onClick={handleAddPost} className="btn-zen text-xs py-1.5 px-4">
-              Create
-            </button>
+            <Button size="sm" onClick={handleAddPost}>Create</Button>
           </div>
         )}
 
         {/* Calendar days */}
         {loadingPosts ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 size={24} className="animate-spin text-accent-light" />
+            <Spinner size={24} />
           </div>
         ) : (
           <div className="space-y-3">
@@ -690,9 +681,7 @@ export default function SocialPage() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button onClick={handleSaveEdit} className="btn-zen text-xs py-1.5 px-4 flex items-center gap-1">
-                              <Check size={14} /> Save
-                            </button>
+                            <Button size="sm" onClick={handleSaveEdit} icon={<Check size={14} />}>Save</Button>
                             <button onClick={handleCancelEdit} className="text-xs text-text-muted hover:text-text-primary px-3 py-1.5">
                               Cancel
                             </button>
@@ -702,7 +691,7 @@ export default function SocialPage() {
                         /* ── View Mode ── */
                         <div className={`flex items-start gap-3 p-3 rounded-xl border border-border bg-bg-hover/50 hover:border-accent/20 transition-all group ${post.status === "released" ? "opacity-60" : ""}`}>
                           <div className="flex-shrink-0 mt-1">
-                            <Clapperboard size={18} className="text-red-400" />
+                            <Clapperboard size={18} className="text-journey-relax" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
@@ -739,7 +728,7 @@ export default function SocialPage() {
                               <button
                                 onClick={() => handleRenderVideo(post)}
                                 disabled={renderingPosts.has(post.id)}
-                                className="p-1.5 rounded-lg hover:bg-purple-500/10 text-purple-400 hover:text-purple-300 transition-all disabled:opacity-50"
+                                className="p-1.5 rounded-lg hover:bg-journey-sleep/10 text-journey-sleep hover:opacity-80 transition-all disabled:opacity-50"
                                 title="Render video"
                               >
                                 {renderingPosts.has(post.id) ? <Loader2 size={14} className="animate-spin" /> : <Film size={14} />}
@@ -769,10 +758,9 @@ export default function SocialPage() {
             ))}
           </div>
         )}
-      </div>
+      </Card>
 
-      {/* ── Media Gallery ── */}
-      <div className="glass p-5 space-y-5">
+      <Card className="p-5 space-y-5">
         <div className="flex items-center gap-2">
           <Film size={18} className="text-accent-light" />
           <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">
@@ -787,7 +775,7 @@ export default function SocialPage() {
 
         {loadingVideos ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 size={24} className="animate-spin text-accent-light" />
+            <Spinner size={24} />
           </div>
         ) : videos.length === 0 ? (
           <div className="text-center py-12 space-y-3">
@@ -841,7 +829,7 @@ export default function SocialPage() {
                       </button>
                       <button
                         onClick={() => handleOpenReview(video)}
-                        className="flex items-center gap-2 text-xs text-red-300 hover:text-red-200 transition-all py-1.5 px-3 rounded-lg bg-red-500/10 hover:bg-red-500/20 w-fit border border-red-400/20"
+                        className="flex items-center gap-2 text-xs text-journey-relax hover:opacity-90 transition-all py-1.5 px-3 rounded-lg bg-journey-relax/10 hover:bg-journey-relax/15 w-fit border border-journey-relax/20"
                       >
                         <PlaySquare size={12} /> Review → YouTube draft
                       </button>
@@ -852,12 +840,11 @@ export default function SocialPage() {
             })}
           </div>
         )}
-      </div>
+      </Card>
 
-      {/* ── Direct TikTok Publish Modal ── */}
       {activePublishVideo && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="glass max-w-md w-full p-6 space-y-4 relative border border-accent/20">
+          <Card className="max-w-md w-full p-6 space-y-4 relative border-accent/20">
             <button
               onClick={() => setActivePublishVideo(null)}
               className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors"
@@ -940,33 +927,23 @@ export default function SocialPage() {
                   >
                     Cancel
                   </button>
-                  <button
+                  <Button
+                    size="sm"
                     onClick={handlePublishToTikTok}
                     disabled={publishing}
-                    className="btn-zen text-xs py-2 px-5 flex items-center gap-2"
+                    icon={publishing ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
                   >
-                    {publishing ? (
-                      <>
-                        <Loader2 size={14} className="animate-spin" />
-                        Publishing...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={14} />
-                        Publish Direct
-                      </>
-                    )}
-                  </button>
+                    {publishing ? "Publishing..." : "Publish Direct"}
+                  </Button>
                 </div>
               </div>
             )}
-          </div>
+          </Card>
         </div>
       )}
-      {/* ── YouTube Review & Draft Upload Modal ── */}
       {reviewVideo && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="glass max-w-2xl w-full p-6 space-y-4 relative border border-red-400/20 max-h-[92vh] overflow-y-auto">
+          <Card className="max-w-2xl w-full p-6 space-y-4 relative border-journey-relax/20 max-h-[92vh] overflow-y-auto">
             <button
               onClick={() => setReviewVideo(null)}
               className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors"
@@ -976,7 +953,7 @@ export default function SocialPage() {
 
             <div className="space-y-1">
               <h3 className="text-base font-semibold text-text-primary flex items-center gap-2">
-                <PlaySquare size={16} className="text-red-400" /> Review → Upload as Draft
+                <PlaySquare size={16} className="text-journey-relax" /> Review → Upload as Draft
               </h3>
               <p className="text-xs text-text-muted">
                 Bekijk en beluister de video, pas titel/beschrijving aan, en upload als <b>draft</b> naar YouTube Studio. Niets wordt gepubliceerd zonder jouw goedkeuring.
@@ -1073,27 +1050,18 @@ export default function SocialPage() {
                   >
                     Close
                   </button>
-                  <button
+                  <Button
+                    size="sm"
                     onClick={handleUploadToYouTube}
                     disabled={ytUploading}
-                    className="btn-zen text-xs py-2 px-5 flex items-center gap-2"
+                    icon={ytUploading ? <Loader2 size={14} className="animate-spin" /> : <PlaySquare size={14} />}
                   >
-                    {ytUploading ? (
-                      <>
-                        <Loader2 size={14} className="animate-spin" />
-                        Uploading...
-                      </>
-                    ) : (
-                      <>
-                        <PlaySquare size={14} />
-                        Upload as Draft
-                      </>
-                    )}
-                  </button>
+                    {ytUploading ? "Uploading..." : "Upload as Draft"}
+                  </Button>
                 </div>
               </div>
             )}
-          </div>
+          </Card>
         </div>
       )}
     </div>

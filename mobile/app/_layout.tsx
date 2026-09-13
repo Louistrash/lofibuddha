@@ -70,6 +70,7 @@ export default function RootLayout() {
               />
               <Stack.Screen name="worlds/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="course/[slug]" options={{ headerShown: false }} />
               <Stack.Screen
                 name="deepen"
                 options={{ headerShown: false, presentation: "modal" }}

@@ -17,6 +17,8 @@ type PlayerContextValue = {
   soundscape: string;
   musicTrack: string;
   musicOn: boolean;
+  musicElapsed: number;
+  musicDuration: number;
   progress: number;
   elapsed: number;
   duration: number;

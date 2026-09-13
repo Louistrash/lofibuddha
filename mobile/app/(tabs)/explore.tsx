@@ -87,37 +87,69 @@ export default function ExploreScreen() {
             title={searching ? `${results.length} results` : "All practices"}
             caption={searching ? `for "${query}"` : undefined}
           />
-          {l.isCompact ? (
-            <View style={styles.grid}>
-              {results.map((exp) => (
-                <View key={exp.id} style={styles.gridCell}>
-                  <ExperienceCard
-                    experience={exp}
-                    variant="tile"
-                    onPress={async () => {
-                      await playExperience(exp);
-                      router.push(`/player/${exp.id}`);
-                    }}
-                    isFavorite={isFavorite(exp.id)}
-                    onToggleFavorite={() => toggle(exp.id)}
-                  />
-                </View>
-              ))}
-            </View>
-          ) : (
-            <CardRail minCardWidth={240}>
-              {results.map((exp) => (
-                <ExperienceCard
-                  key={exp.id}
-                  experience={exp}
-                  onPress={async () => {
-                    await playExperience(exp);
-                    router.push(`/player/${exp.id}`);
-                  }}
-                />
-              ))}
-            </CardRail>
-          )}
+          {(() => {
+            const MAX_GRID_ROWS = 4;
+            const COLS = 2;
+            const maxGrid = MAX_GRID_ROWS * COLS;
+            const gridItems = l.isCompact ? results.slice(0, maxGrid) : results;
+            const overflowItems = l.isCompact ? results.slice(maxGrid) : [];
+
+            return (
+              <>
+                {l.isCompact ? (
+                  <View style={styles.grid}>
+                    {gridItems.map((exp) => (
+                      <View key={exp.id} style={styles.gridCell}>
+                        <ExperienceCard
+                          experience={exp}
+                          variant="tile"
+                          onPress={async () => {
+                            await playExperience(exp);
+                            router.push(`/player/${exp.id}`);
+                          }}
+                          isFavorite={isFavorite(exp.id)}
+                          onToggleFavorite={() => toggle(exp.id)}
+                        />
+                      </View>
+                    ))}
+                  </View>
+                ) : (
+                  <CardRail minCardWidth={240}>
+                    {gridItems.map((exp) => (
+                      <ExperienceCard
+                        key={exp.id}
+                        experience={exp}
+                        onPress={async () => {
+                          await playExperience(exp);
+                          router.push(`/player/${exp.id}`);
+                        }}
+                      />
+                    ))}
+                  </CardRail>
+                )}
+
+                {overflowItems.length > 0 ? (
+                  <View style={styles.moreBlock}>
+                    <Text style={styles.moreLabel}>Keep exploring</Text>
+                    <CardRail minCardWidth={200}>
+                      {overflowItems.map((exp) => (
+                        <ExperienceCard
+                          key={exp.id}
+                          experience={exp}
+                          onPress={async () => {
+                            await playExperience(exp);
+                            router.push(`/player/${exp.id}`);
+                          }}
+                          isFavorite={isFavorite(exp.id)}
+                          onToggleFavorite={() => toggle(exp.id)}
+                        />
+                      ))}
+                    </CardRail>
+                  </View>
+                ) : null}
+              </>
+            );
+          })()}
         </View>
       )}
 
@@ -191,4 +223,6 @@ const styles = StyleSheet.create({
   block: { marginBottom: space["3xl"] },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
   gridCell: { flexGrow: 1, flexBasis: 160, minWidth: 150, maxWidth: "100%" },
+  moreBlock: { marginTop: space["2xl"] },
+  moreLabel: { ...type.section, color: colors.textSecondary, marginBottom: space.md },
 });

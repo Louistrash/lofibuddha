@@ -81,6 +81,10 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-journey-focus: var(--journey-focus);
+  --color-journey-breathe: var(--journey-breathe);
+  --color-journey-sleep: var(--journey-sleep);
+  --color-journey-relax: var(--journey-relax);
   --radius-custom: var(--radius);
   --radius-lg: var(--radius-lg);
 }
@@ -113,21 +117,21 @@ body {
     0 0 20px var(--accent-glow);
 }
 
-/* ── Zen Button ── */
+/* ── Zen Button (legacy alias — prefer <Button> from @/components/ui) ── */
 .btn-zen {
-  background: var(--accent);
-  color: #0f0f0f;
+  background: linear-gradient(135deg, #f3d8a4, #e4b872);
+  color: #08070c;
   border: none;
-  border-radius: 10px;
+  border-radius: 9999px;
   padding: 10px 22px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-out);
   letter-spacing: 0.02em;
 }
 .btn-zen:hover {
-  background: var(--accent-light);
+  opacity: 0.9;
   box-shadow: 0 4px 16px var(--accent-glow);
   transform: translateY(-1px);
 }
@@ -3421,7 +3425,7 @@ body {
 
 /* ============================================================
    CATEGORY PAGES — REDESIGN (doortrekken van de hub design-taal)
-   Appended last so source-order wins over the .breathe-*/.exp-* rules.
+   Appended last so source-order wins over older breathe/exp rules.
    ============================================================ */
 
 .breathe-page {

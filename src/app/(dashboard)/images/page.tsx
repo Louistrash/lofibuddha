@@ -7,6 +7,7 @@ import {
   RefreshCw, Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { Button, Card, PageHeader, Spinner } from "@/components/ui";
 
 interface ImageEntry {
   name: string;
@@ -138,33 +139,27 @@ export default function ImagesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">Image Library</h1>
-          <p className="text-text-muted mt-1">
-            Upload, browse, and manage images for your content.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
+      <PageHeader
+        title="Image Library"
+        description="Upload, browse, and manage images for your content."
+        actions={
+          <Button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="btn-zen flex items-center gap-2 text-sm py-2.5 px-5 disabled:opacity-50"
+            icon={uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
           >
-            {uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
             {uploading ? "Uploading..." : "Upload Images"}
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => e.target.files && handleUpload(e.target.files)}
-          />
-        </div>
-      </div>
+          </Button>
+        }
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => e.target.files && handleUpload(e.target.files)}
+      />
 
       {/* Search + View toggle */}
       <div className="flex items-center gap-3 flex-wrap">
@@ -203,7 +198,7 @@ export default function ImagesPage() {
       {/* Image Gallery */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 size={32} className="animate-spin text-accent-light" />
+          <Spinner size={32} />
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 space-y-3">
@@ -272,7 +267,7 @@ export default function ImagesPage() {
 
       {/* Selected image preview */}
       {selected && (
-        <div className="glass p-5 space-y-4">
+        <Card className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Preview</h3>
             <button onClick={() => setSelected(null)} className="p-1 rounded-lg text-text-muted hover:text-text-primary">
@@ -302,8 +297,8 @@ export default function ImagesPage() {
                 <Link href="/video" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/10 text-xs text-accent-light hover:bg-accent/20 transition-all">
                   <Film size={14} /> Use in Video
                 </Link>
-                <button onClick={openRegenerate}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-500/10 text-xs text-purple-400 hover:bg-purple-500/20 transition-all">
+                <button type="button" onClick={openRegenerate}
+                  className="flex items-center gap-2 px-4 py-2 rounded-[var(--radius)] bg-journey-sleep/10 text-xs text-journey-sleep hover:bg-journey-sleep/15 transition-all">
                   <Sparkles size={14} /> Regenerate
                 </button>
                 <button onClick={() => handleDelete(selected)}
@@ -313,18 +308,17 @@ export default function ImagesPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       )}
 
-      {/* Regenerate Modal */}
       {regenerateModal && selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
           onClick={() => setRegenerateModal(false)}>
-          <div className="bg-bg-card border border-border rounded-2xl p-6 w-full max-w-lg mx-4 space-y-4 shadow-2xl"
+          <Card className="w-full max-w-lg mx-4 p-6 space-y-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles size={18} className="text-purple-400" />
+                <Sparkles size={18} className="text-journey-sleep" />
                 <h3 className="font-semibold text-text-primary">Regenerate with Imagen 4.0</h3>
               </div>
               <button onClick={() => setRegenerateModal(false)} className="p-1 text-text-muted hover:text-text-primary">
@@ -345,25 +339,22 @@ export default function ImagesPage() {
               </p>
             </div>
             <div className="flex gap-2 justify-end">
-              <button onClick={() => setRegenerateModal(false)}
-                className="px-4 py-2 rounded-xl bg-bg-hover text-xs text-text-muted hover:text-text-primary transition-all">
-                Cancel
-              </button>
-              <button onClick={handleRegenerate} disabled={regenerating || !regeneratePrompt.trim()}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-500 text-white text-xs hover:bg-purple-600 disabled:opacity-50 transition-all">
-                {regenerating ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              <Button variant="ghost" size="sm" onClick={() => setRegenerateModal(false)}>Cancel</Button>
+              <Button
+                size="sm"
+                onClick={handleRegenerate}
+                disabled={regenerating || !regeneratePrompt.trim()}
+                icon={regenerating ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              >
                 {regenerating ? "Generating..." : "Regenerate"}
-              </button>
+              </Button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
 
-      {/* Quick links */}
       <div className="flex items-center gap-3 flex-wrap pt-4 border-t border-border">
-        <Link href="/video" className="btn-zen text-xs py-2 px-4 flex items-center gap-2">
-          <Film size={14} /> New Video
-        </Link>
+        <Button href="/video" size="sm" icon={<Film size={14} />}>New Video</Button>
         <Link href="/content" className="text-xs text-text-muted hover:text-text-primary transition-colors">
           Content Hub →
         </Link>

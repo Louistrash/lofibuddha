@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Music, Upload, Loader2, Trash2, Copy, Check, Play } from "lucide-react";
+import { Card, Chip, PageHeader, Spinner } from "@/components/ui";
 
 interface Track {
   id: string;
@@ -47,8 +48,8 @@ export default function SoundsPage() {
         fd.append("file", file);
         fd.append("mood", mood);
         await fetch("/api/music/upload", { method: "POST", body: fd });
-      } catch (e: any) {
-        setError(e?.message || "Upload failed");
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Upload failed");
       }
     }
     setUploading(false);
@@ -77,40 +78,30 @@ export default function SoundsPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Sounds Library</h1>
-        <p className="text-text-muted mt-1">
-          Upload ambient soundscapes — sea, rain, forest, ocean — for focus and sleep sessions.
-        </p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Sounds Library"
+        description="Upload ambient soundscapes — sea, rain, forest, ocean — for focus and sleep sessions."
+      />
 
-      {/* Mood selector */}
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs text-text-muted mr-1">Mood:</span>
-        {MOODS.map(m => (
-          <button
-            key={m}
-            onClick={() => setMood(m)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              mood === m
-                ? "bg-accent/20 text-accent-light border border-accent/40"
-                : "text-text-secondary border border-border hover:text-text-primary"
-            }`}
-          >
+        {MOODS.map((m) => (
+          <Chip key={m} active={mood === m} onClick={() => setMood(m)}>
             {m}
-          </button>
+          </Chip>
         ))}
       </div>
 
-      {/* Dropzone */}
-      <div
+      <Card
+        dashed
+        interactive
+        onClick={() => fileInputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        onClick={() => fileInputRef.current?.click()}
-        className={`glass p-10 flex flex-col items-center gap-4 border-2 border-dashed cursor-pointer transition-all ${
-          dragOver ? "border-accent/60 bg-accent/5" : "border-border hover:border-accent/40"
+        className={`p-10 flex flex-col items-center gap-4 cursor-pointer ${
+          dragOver ? "border-accent/60 bg-accent/5" : "hover:border-accent/40"
         }`}
       >
         <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
@@ -133,11 +124,10 @@ export default function SoundsPage() {
           className="hidden"
           onChange={(e) => { if (e.target.files) uploadFiles(e.target.files); e.target.value = ""; }}
         />
-      </div>
+      </Card>
 
       {error && <p className="text-sm text-error">{error}</p>}
 
-      {/* Sound list */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-text-primary">Uploaded sounds</h2>
@@ -145,32 +135,33 @@ export default function SoundsPage() {
         </div>
 
         {loading ? (
-          <div className="flex items-center gap-2 text-text-muted py-8 justify-center">
-            <Loader2 size={18} className="animate-spin" /> Loading…
+          <div className="flex items-center justify-center py-8">
+            <Spinner size={24} />
           </div>
         ) : tracks.length === 0 ? (
-          <div className="text-center py-10 text-text-muted">
+          <Card className="text-center py-10 text-text-muted">
             <Music size={28} className="mx-auto mb-2 opacity-40" />
             <p className="text-sm">No sounds yet — drop your first sea or rain loop above.</p>
-          </div>
+          </Card>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            {tracks.map(t => (
-              <div key={t.id} className="glass p-4 flex items-center gap-3 rounded-xl">
+            {tracks.map((t) => (
+              <Card key={t.id} className="p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                   <Play size={16} className="text-accent-light" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-text-primary text-sm truncate capitalize">{t.title}</p>
                   <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent-light capitalize">{t.mood}</span>
-                    {t.tags?.slice(0, 2).map(tag => (
-                      <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-bg-hover text-text-muted">{tag}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/15 text-accent-light capitalize">{t.mood}</span>
+                    {t.tags?.slice(0, 2).map((tag) => (
+                      <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded-full bg-bg-hover text-text-muted">{tag}</span>
                     ))}
                   </div>
                   <audio controls src={t.fileUrl} className="mt-2 w-full h-7" preload="none" />
                 </div>
                 <button
+                  type="button"
                   onClick={() => copyUrl(t.fileUrl)}
                   className="p-2 rounded-lg text-text-muted hover:text-accent-light hover:bg-bg-hover transition-all flex-shrink-0"
                   title="Copy URL"
@@ -178,13 +169,14 @@ export default function SoundsPage() {
                   {copied === t.fileUrl ? <Check size={16} className="text-success" /> : <Copy size={16} />}
                 </button>
                 <button
+                  type="button"
                   onClick={() => deleteTrack(t.id)}
                   className="p-2 rounded-lg text-text-muted hover:text-error hover:bg-bg-hover transition-all flex-shrink-0"
                   title="Delete sound"
                 >
                   <Trash2 size={16} />
                 </button>
-              </div>
+              </Card>
             ))}
           </div>
         )}
