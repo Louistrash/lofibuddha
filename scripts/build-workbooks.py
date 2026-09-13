@@ -25,6 +25,7 @@ INK = HexColor("#F6F2EA")
 MUTED = HexColor("#9A94A6")
 GOLD = HexColor("#E4B872")
 GOLD_DEEP = HexColor("#B89258")
+GOLD_BRIGHT = HexColor("#F3D8A4")
 LINE = HexColor("#2A2633")
 LED = {"focus": "#E8A33D", "breathe": "#2DD4BF", "sleep": "#B89258", "relax": "#A855F7"}
 
@@ -42,23 +43,67 @@ MARGIN = 50
 CONTENT_W = W - 2 * MARGIN
 
 
-def mandala(c, cx, cy, r, color=GOLD):
-    c.setStrokeColor(color)
-    c.setLineWidth(0.6)
-    for radius in [r, r * 0.78, r * 0.56, r * 0.34, r * 0.15]:
+def mandala(c, cx, cy, r, colors=(GOLD, GOLD_DEEP, GOLD_BRIGHT)):
+    """Rijke, gelaagde mandala in de app-stijl: teardrop-petals in 3 ringen."""
+    outer, mid, inner = colors
+
+    def ring(count, inner_r, outer_r, width, color):
+        c.setStrokeColor(color)
+        c.setLineWidth(0.5)
+        for i in range(count):
+            a = i * (2 * math.pi / count)
+            c.saveState()
+            c.translate(cx, cy)
+            c.rotate(a * 180 / math.pi)
+            base = inner_r
+            top = outer_r
+            belly = inner_r + (outer_r - inner_r) * 0.55
+            p = c.beginPath()
+            p.moveTo(0, base)
+            p.curveTo(-width, belly, -width, top + 1, 0, top)
+            p.curveTo(width, top + 1, width, belly, 0, base)
+            p.close()
+            c.drawPath(p, stroke=1, fill=0)
+            c.restoreState()
+
+    # fijne buitenste cirkels
+    for radius, col in [(r * 0.98, mid), (r * 0.82, mid)]:
+        c.setStrokeColor(col)
+        c.setLineWidth(0.4)
         c.circle(cx, cy, radius, stroke=1, fill=0)
-    for i in range(16):
-        a = i * math.pi / 8
-        c.line(cx + math.cos(a) * r * 0.15, cy + math.sin(a) * r * 0.15,
-               cx + math.cos(a) * r, cy + math.sin(a) * r)
-    c.setFillColor(color)
-    c.circle(cx, cy, 2.5, fill=1, stroke=0)
+
+    # 3 petal-ringen (buiten → binnen), zoals de app's Mandala
+    ring(32, r * 0.82, r * 0.98, r * 0.028, outer)   # fijnste ring
+    ring(16, r * 0.46, r * 0.80, r * 0.09, mid)      # middelste ring
+    ring(8, r * 0.18, r * 0.48, r * 0.11, outer)     # binnenste ring
+    ring(8, r * 0.10, r * 0.26, r * 0.06, inner)     # fijnste binnenring
+
+    # centrale stip
+    c.setStrokeColor(inner)
+    c.setLineWidth(0.4)
+    c.circle(cx, cy, r * 0.10, stroke=1, fill=0)
+    c.setFillColor(inner)
+    c.circle(cx, cy, r * 0.03, fill=1, stroke=0)
+
+
+def glow(c, cx, cy, r, color, base_alpha=0.10):
+    """Zachte radial glow via afnemende alpha-cirkels (golden dust)."""
+    steps = 16
+    for i in range(steps):
+        frac = 1 - i / steps
+        c.setFillColor(color)
+        c.setFillAlpha(base_alpha * frac)
+        c.circle(cx, cy, r * (0.4 + frac * 0.9), fill=1, stroke=0)
+    c.setFillAlpha(1)
 
 
 def cover(c, title, subtitle, accent):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
-    mandala(c, W / 2, H * 0.60, 64, accent)
+    # golden glow + golden dust achter de mandala
+    glow(c, W / 2, H * 0.60, 210, accent, base_alpha=0.08)
+    glow(c, W / 2, H * 0.60, 90, accent, base_alpha=0.12)
+    mandala(c, W / 2, H * 0.60, 66)
     c.setFillColor(INK)
     c.setFont("Manrope-Bold", 33)
     c.drawCentredString(W / 2, H * 0.40, title)
@@ -84,7 +129,8 @@ class Page:
     def new_page(self):
         self.c.setFillColor(BG)
         self.c.rect(0, 0, W, H, fill=1, stroke=0)
-        # footer
+        # subtiele golden glow rechtsboven (content-watermerk)
+        glow(self.c, W - 70, H - 70, 130, GOLD, base_alpha=0.05)
         self.c.setFillColor(MUTED)
         self.c.setFont("Manrope", 8)
         self.c.drawCentredString(W / 2, 28, "LofiBuddha · Mindfulness OS")
