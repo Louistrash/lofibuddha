@@ -307,18 +307,40 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       voiceRef.current = sound;
       setPhase("playing");
 
+      let handedOff = false;
       sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
         if (!status.isLoaded) return;
+
+        // Once the guide has handed the timer to the wall clock, ignore any
+        // further guide status updates — the finished stream keeps emitting
+        // position at its end, which would otherwise fight the clock.
+        if (handedOff) return;
+
         const position = status.positionMillis || 0;
-        setElapsed(position / 1000);
-        if (status.durationMillis) {
-          setDuration(status.durationMillis / 1000);
-          setProgress(Math.min(1, position / status.durationMillis));
-        }
-        if (status.didJustFinish) {
+        const guideDur = status.durationMillis || 0;
+
+        // The guide voice is short; the looping soundtrack/soundscape carries
+        // the session for its full labelled duration. When the guide ends —
+        // didJustFinish is unreliable on web, so also treat reaching the end of
+        // the stream as finished — hand the timer to the wall clock so it keeps
+        // counting instead of freezing at the guide's length.
+        const ended = status.didJustFinish || (guideDur > 0 && position >= guideDur - 250);
+        if (ended) {
+          handedOff = true;
+          if (exp.music !== "off" || exp.soundscape !== "off") {
+            runClock(parseDurationSeconds(exp.duration), guideDur / 1000);
+            return;
+          }
           setPhase("idle");
           setProgress(0);
           setElapsed(0);
+          return;
+        }
+
+        setElapsed(position / 1000);
+        if (guideDur) {
+          setDuration(guideDur / 1000);
+          setProgress(Math.min(1, position / guideDur));
         }
       });
     } catch {
@@ -327,7 +349,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       startAmbientClock(exp);
     }
     },
-    [startAmbientClock]
+    [startAmbientClock, runClock]
   );
 
   const playExperience = useCallback(
