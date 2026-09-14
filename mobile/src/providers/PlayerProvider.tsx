@@ -94,6 +94,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const musicRef = useRef<Audio.Sound | null>(null);
   const bgRef = useRef<Audio.Sound | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const watchdogRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  /** Mirrors `phase` for the watchdog, so pause/stop is visible inside intervals. */
+  const phaseRef = useRef<Phase>("idle");
   const clockRef = useRef<{ base: number; startedAt: number; target: number } | null>(null);
   const pomodoroEndRef = useRef(0);
   /** Bumped on every stop so ambient layers loading in the background can tell they are stale. */
@@ -107,16 +110,26 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     }).catch(() => {});
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (watchdogRef.current) clearInterval(watchdogRef.current);
       unload(voiceRef);
       unload(musicRef);
       unload(bgRef);
     };
   }, []);
 
+  // Keep the phase ref in sync so the watchdog interval sees pause/stop live.
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
+
   const clearTimer = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+    }
+    if (watchdogRef.current) {
+      clearInterval(watchdogRef.current);
+      watchdogRef.current = null;
     }
   };
 
@@ -124,6 +137,8 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     clearTimer();
     clockRef.current = null;
     sessionRef.current += 1;
+    // Invalidate any live guide so a stale watchdog can't resume an old session.
+    if (guideWatchRef.current) guideWatchRef.current.handedOff = true;
     await unload(voiceRef);
     await unload(musicRef);
     await unload(bgRef);
@@ -281,6 +296,41 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     [runClock]
   );
 
+  const guideWatchRef = useRef<{
+    handedOff: boolean;
+    lastPos: number;
+    lastMoveAt: number;
+    hasAmbient: boolean;
+    labelSecs: number;
+  } | null>(null);
+
+  /** Starts (or restarts) the guide-end watchdog if a guide is live and not handed off. */
+  const startGuideWatchdog = useCallback(() => {
+    if (watchdogRef.current) return;
+    watchdogRef.current = setInterval(() => {
+      const g = guideWatchRef.current;
+      if (!g || g.handedOff) return;
+      if (phaseRef.current !== "playing") return;
+      if (g.lastPos > 0 && Date.now() - g.lastMoveAt > 1000) {
+        g.handedOff = true;
+        if (watchdogRef.current) {
+          clearInterval(watchdogRef.current);
+          watchdogRef.current = null;
+        }
+        if (g.hasAmbient) {
+          // Continue from where the guide stopped, up to the labelled duration
+          // (never shorter than the guide itself — a 10-min workshop guide must
+          // not be cut off at a shorter "8 min" label).
+          runClock(Math.max(g.labelSecs, g.lastPos / 1000), g.lastPos / 1000);
+        } else {
+          setPhase("idle");
+          setProgress(0);
+          setElapsed(0);
+        }
+      }
+    }, 500);
+  }, [runClock]);
+
   const startVoice = useCallback(
     async (exp: Experience) => {
       if (!exp.guide) {
@@ -307,49 +357,62 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       voiceRef.current = sound;
       setPhase("playing");
 
-      let handedOff = false;
-      sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
-        if (!status.isLoaded) return;
+      // The guide voice drives the timer while it plays (most accurate). When
+      // it ends, the looping ambient layer carries the session for its full
+      // labelled duration, so we switch to the wall clock. Detecting the end is
+      // the hard part: on web `didJustFinish` is unreliable and `durationMillis`
+      // often 0, so we also watch for the position stalling (the stream has
+      // ended but stopped reporting) via a watchdog interval.
+      guideWatchRef.current = {
+        handedOff: false,
+        lastPos: -1,
+        lastMoveAt: Date.now(),
+        hasAmbient: exp.music !== "off" || exp.soundscape !== "off",
+        labelSecs: parseDurationSeconds(exp.duration),
+      };
 
-        // Once the guide has handed the timer to the wall clock, ignore any
-        // further guide status updates — the finished stream keeps emitting
-        // position at its end, which would otherwise fight the clock.
-        if (handedOff) return;
-
-        const position = status.positionMillis || 0;
-        const guideDur = status.durationMillis || 0;
-
-        // The guide voice is short; the looping soundtrack/soundscape carries
-        // the session for its full labelled duration. When the guide ends —
-        // didJustFinish is unreliable on web, so also treat reaching the end of
-        // the stream as finished — hand the timer to the wall clock so it keeps
-        // counting instead of freezing at the guide's length.
-        const ended = status.didJustFinish || (guideDur > 0 && position >= guideDur - 250);
-        if (ended) {
-          handedOff = true;
-          if (exp.music !== "off" || exp.soundscape !== "off") {
-            runClock(parseDurationSeconds(exp.duration), guideDur / 1000);
-            return;
-          }
+      const finish = (guideSecs: number) => {
+        const g = guideWatchRef.current;
+        if (!g || g.handedOff) return;
+        g.handedOff = true;
+        if (watchdogRef.current) {
+          clearInterval(watchdogRef.current);
+          watchdogRef.current = null;
+        }
+        if (g.hasAmbient) {
+          runClock(Math.max(g.labelSecs, guideSecs), guideSecs);
+        } else {
           setPhase("idle");
           setProgress(0);
           setElapsed(0);
-          return;
         }
+      };
 
-        setElapsed(position / 1000);
-        if (guideDur) {
-          setDuration(guideDur / 1000);
-          setProgress(Math.min(1, position / guideDur));
+      sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
+        if (!status.isLoaded) return;
+        const g = guideWatchRef.current;
+        if (!g || g.handedOff) return;
+        const position = status.positionMillis || 0;
+        if (position !== g.lastPos) {
+          g.lastPos = position;
+          g.lastMoveAt = Date.now();
         }
+        setElapsed(position / 1000);
+        if (status.durationMillis) {
+          setDuration(status.durationMillis / 1000);
+          setProgress(Math.min(1, position / status.durationMillis));
+        }
+        if (status.didJustFinish) finish(position / 1000);
       });
+
+      startGuideWatchdog();
     } catch {
       // Guide unavailable: fall back to the wall clock so the session still
       // reports progress while the ambient layers keep playing.
       startAmbientClock(exp);
     }
     },
-    [startAmbientClock, runClock]
+    [startAmbientClock, runClock, startGuideWatchdog]
   );
 
   const playExperience = useCallback(
@@ -402,6 +465,14 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     if (layers.length) {
       setPhase("playing");
       resumeClock();
+      // If a guide is still live (not yet handed to the wall clock), restart
+      // its end-watchdog and reset the stall timer so it doesn't fire on the
+      // stale pre-pause position.
+      const g = guideWatchRef.current;
+      if (g && !g.handedOff) {
+        g.lastMoveAt = Date.now();
+        startGuideWatchdog();
+      }
       await Promise.all(
         layers.map(async (r) => {
           try {
