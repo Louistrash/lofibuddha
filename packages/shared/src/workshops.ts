@@ -14,6 +14,8 @@ export type Workshop = {
   theme: string;
   category: "focus" | "breathe" | "sleep" | "relax";
   background: string;
+  /** Achtergrond-muziek track id (music.ts) — default "temple-rain". */
+  music?: string;
   /** Seconds of silence after the chime, before the voice begins — lets the
    *  user put the device down and settle in. */
   introPause?: number;
@@ -1142,6 +1144,36 @@ export const WORKSHOPS: Workshop[] = [
       { text: "I will be quiet now, and leave you as you are — pure awareness, awake, at peace, and free. There is nothing left to do. Just be.", pauseAfter: 0 }
     ],
   },
+  {
+    id: "deep-sleep-journey",
+    title: "Deep Sleep Journey",
+    description:
+      "A long, gentle descent into deep rest — let go of the day and let sleep carry you.",
+    duration: "20 min",
+    theme: "Sleep Journeys",
+    category: "sleep",
+    background: "off",
+    music: "yogi-temple-night",
+    introPause: 30,
+    segments: [
+      { text: "Whenever you are ready, let yourself come to rest, and feel your body sink, softly, into the bed beneath you. You have done enough today, and now there is nothing left to do, except to let go.", pauseAfter: 40 },
+      { text: "Close your eyes, gently, and for a few quiet moments, allow the whole day to simply fall away, like soft rain settling into the earth, one drop at a time.", pauseAfter: 45 },
+      { text: "Feel your breath, moving slowly in, and slowly out, with no effort at all. The body knows how to breathe, and it does not need you to steer it, not anymore.", pauseAfter: 50 },
+      { text: "Bring your attention, softly, to your feet. Feel them growing warm, and heavy, and still. Let every small tension in them melt away, like snow in gentle light.", pauseAfter: 50 },
+      { text: "Let that softness travel upward, through your legs, into your knees and your thighs, as if your whole lower body is slowly sinking into the warmth of the bed.", pauseAfter: 55 },
+      { text: "Now let your belly soften, and your chest rise and fall with each breath, slow and deep. There is nowhere to rush, and no one waiting for you.", pauseAfter: 55 },
+      { text: "Feel your shoulders drop away from your ears, your arms growing heavy, your hands uncurling, soft and open, resting as if they have found their home.", pauseAfter: 50 },
+      { text: "Let your jaw release, and your forehead smooth, and the space between your eyebrows soften. Your whole face is quiet now, at peace, like still water.", pauseAfter: 50 },
+      { text: "And if thoughts come, let them come, and let them go, like clouds drifting across a dark and quiet sky. You do not need to hold onto any of them.", pauseAfter: 60 },
+      { text: "There is nothing to solve tonight, and nothing to fix. The world can wait until tomorrow, and tomorrow will carry itself, without your help.", pauseAfter: 60 },
+      { text: "Feel the heaviness now, like a warm blanket settling over you, pulling you gently down, down into a soft and welcoming stillness.", pauseAfter: 60 },
+      { text: "With every out-breath, let yourself sink a little deeper, as if you are floating downward through warm, dark water, weightless and safe.", pauseAfter: 60 },
+      { text: "Sleep is not something you have to reach for. It is already here, waiting for you, like a friend who has kept a light on, and made your bed warm.", pauseAfter: 60 },
+      { text: "Let go of the last thread of the day, the last thought, the last small worry, and give yourself fully to this quiet, this rest, this deep and patient peace.", pauseAfter: 60 },
+      { text: "You are safe now, and you are held. Nothing is required of you, and there is nothing you need to become. Just rest, and let sleep carry you, gently, into the night.", pauseAfter: 70 },
+      { text: "I will leave you here, in this softness. Drift now, and let the music keep you company, as you sink, slowly, into a long and restful sleep.", pauseAfter: 90 },
+    ],
+  },
 ];
 
 /** Workshops as playable experiences — the existing player streams the guide
@@ -1155,7 +1187,7 @@ export function workshopExperiences(): Experience[] {
     duration: w.duration,
     guide: w.id,
     soundscape: "off",
-    music: "temple-rain",
+    music: w.music || "temple-rain",
     scene: "night",
     premium: true,
     series: w.theme,
