@@ -74,7 +74,7 @@ if (!med || med.segments.length === 0) {
   process.exit(1);
 }
 
-// --- TTS: floating stem (stability 0.1 / style 0.95) ---
+// --- TTS: warme yogi-stem (stability 0.1 / style 0.20 — galm-vrij) ---
 // opts.previousText / opts.nextText geven ElevenLabs de context van de
 // omliggende zinnen mee, zodat per-zin TTS dezelfde toon/flow houdt als één
 // doorlopende take (voorkomt het "ander persoon" effect bij --pauses).
@@ -83,7 +83,7 @@ async function tts(text, outPath, opts = {}) {
   const payload = {
     text,
     model_id: opts.model || "eleven_v3",
-    voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.95, use_speaker_boost: false },
+    voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.2, use_speaker_boost: false },
   };
   if (opts.previousText) payload.previous_text = opts.previousText;
   if (opts.nextText) payload.next_text = opts.nextText;

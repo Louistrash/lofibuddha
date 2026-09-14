@@ -41,7 +41,7 @@ async function tts(text, outPath) {
     body: JSON.stringify({
       text,
       model_id: "eleven_v3",
-      voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.95, use_speaker_boost: false },
+      voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.2, use_speaker_boost: false },
     }),
   });
   if (!res.ok) {
