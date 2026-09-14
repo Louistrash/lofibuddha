@@ -74,7 +74,7 @@ if (!med || med.segments.length === 0) {
   process.exit(1);
 }
 
-// --- TTS: warme yogi-stem (stability 0.1 / style 0.20 — galm-vrij) ---
+// --- TTS: warme yogi-stem (stability 0.25 / style 0.20 — galm-vrij, vloeiend) ---
 // opts.previousText / opts.nextText geven ElevenLabs de context van de
 // omliggende zinnen mee, zodat per-zin TTS dezelfde toon/flow houdt als één
 // doorlopende take (voorkomt het "ander persoon" effect bij --pauses).
@@ -83,7 +83,7 @@ async function tts(text, outPath, opts = {}) {
   const payload = {
     text,
     model_id: opts.model || "eleven_v3",
-    voice_settings: { stability: 0.1, similarity_boost: 0.7, style: 0.2, use_speaker_boost: false },
+    voice_settings: { stability: 0.25, similarity_boost: 0.7, style: 0.2, use_speaker_boost: false },
   };
   if (opts.previousText) payload.previous_text = opts.previousText;
   if (opts.nextText) payload.next_text = opts.nextText;
@@ -139,11 +139,7 @@ if (usePauses) {
     const seg = med.segments[i];
     const raw = join(TMP, `${id}-raw-${i}.mp3`);
     const norm = join(TMP, `${id}-norm-${i}.mp3`);
-    await tts(seg.text, raw, {
-      model: "eleven_multilingual_v2",
-      previousText: i > 0 ? med.segments[i - 1].text : undefined,
-      nextText: i < med.segments.length - 1 ? med.segments[i + 1].text : undefined,
-    });
+    await tts(seg.text, raw);
     const gain = normalize(raw, norm);
     parts.push(`file '${norm}'`);
     cleanup.push(raw, norm);

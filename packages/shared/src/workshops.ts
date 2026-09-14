@@ -1154,7 +1154,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
-    introPause: 30,
+    introPause: 25,
     segments: [
       { text: "Whenever you are ready, let yourself come to rest, and feel your body sink, softly, into the bed beneath you. You have done enough today, and now there is nothing left to do, except to let go.", pauseAfter: 40 },
       { text: "Close your eyes, gently, and for a few quiet moments, allow the whole day to simply fall away, like soft rain settling into the earth, one drop at a time.", pauseAfter: 45 },

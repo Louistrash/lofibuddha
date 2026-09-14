@@ -1,12 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Platform, Pressable, ScrollView, Share, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { MUSIC_TRACKS } from "@lofibuddha/shared";
+import { EXPERIENCES, MUSIC_TRACKS, SOUNDS, type Experience } from "@lofibuddha/shared";
 import { SceneCanvas } from "@/src/components/content/SceneCanvas";
 import { IconButton } from "@/src/components/ui/Button";
+import { SectionHeader } from "@/src/components/ui/Primitives";
+import { SoundCard } from "@/src/components/content/SoundCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { coverUrl } from "@/src/lib/api";
 import { useDismiss } from "@/src/lib/useDismiss";
@@ -26,11 +28,16 @@ export default function MusicDetailScreen() {
   const dismiss = useDismiss();
   const insets = useSafeAreaInsets();
   const l = useLayout();
-  const { chooseMusic, toggleMusic, musicOn, musicTrack } = usePlayer();
+  const { chooseMusic, toggleMusic, musicOn, musicTrack, playExperience, chooseSoundscape, soundscape } =
+    usePlayer();
 
   const track = MUSIC_TRACKS.find((t) => t.id === id) ?? MUSIC_TRACKS[0];
   const playing = musicOn && musicTrack === track.id;
   const art = track.cover ? coverUrl(track.cover) : null;
+
+  // Guides = elke experience met een voice-begeleiding; soundscapes = de ambient layers.
+  const guides = useMemo(() => EXPERIENCES.filter((e) => e.guide), []);
+  const scapes = useMemo(() => SOUNDS.filter((s) => s.category !== "Noise"), []);
 
   const handlePlay = useCallback(async () => {
     if (playing) {
@@ -40,6 +47,21 @@ export default function MusicDetailScreen() {
     if (musicTrack !== track.id) await chooseMusic(track.id);
     else await toggleMusic();
   }, [playing, musicTrack, track.id, chooseMusic, toggleMusic]);
+
+  // Speel een guide (meditatie-stem) OVER deze soundtrack.
+  const handleAddGuide = useCallback(
+    async (g: Experience) => {
+      await playExperience({ ...g, music: track.id });
+    },
+    [playExperience, track.id]
+  );
+
+  const handleToggleScape = useCallback(
+    (slug: string) => {
+      void chooseSoundscape(soundscape === slug ? "off" : slug);
+    },
+    [chooseSoundscape, soundscape]
+  );
 
   const handleShare = useCallback(async () => {
     const url = art ?? `https://lofibuddha.com/music/${track.id}`;
@@ -137,12 +159,58 @@ export default function MusicDetailScreen() {
               <Icon name={playing ? "pause" : "play"} size={28} color={colors.ink} />
             </Pressable>
 
-            {playing ? (
-              <Text style={styles.playingNote}>Now playing — mix it with any practice</Text>
-            ) : (
-              <Text style={styles.playingNote}>Tap to play this soundtrack</Text>
-            )}
+            <Text style={styles.playingNote}>
+              {playing ? "Now playing — layer a guide or soundscape below" : "Tap to play this soundtrack"}
+            </Text>
           </View>
+        </View>
+
+        {/* Layering: add a guided voice over the music */}
+        <View style={styles.layerSection}>
+          <SectionHeader title="Add a guide" caption="Layer a guided voice over this soundtrack" />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.rail}
+          >
+            {guides.map((g) => (
+              <Pressable
+                key={g.id}
+                onPress={() => handleAddGuide(g)}
+                style={({ pressed }: any) => [styles.guideChip, pressed && { opacity: 0.85 }]}
+              >
+                <Icon name="headphones" size={14} color={colors.gold} />
+                <Text style={styles.guideTitle} numberOfLines={2}>
+                  {g.title}
+                </Text>
+                <Text style={styles.guideDur}>{g.duration}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Layering: add an ambient soundscape under the music */}
+        <View style={styles.layerSection}>
+          <SectionHeader title="Add a soundscape" caption="Ambient texture under the music" />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.rail}
+          >
+            {scapes.map((s) => {
+              const active = soundscape === s.slug;
+              return (
+                <SoundCard
+                  key={s.slug}
+                  label={s.name}
+                  caption={s.category}
+                  category={s.category}
+                  active={active}
+                  onPress={() => handleToggleScape(s.slug)}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
       </ScrollView>
     </SceneCanvas>
@@ -209,4 +277,25 @@ const styles = StyleSheet.create({
   } as any,
 
   playingNote: { ...type.caption, color: colors.textMuted },
+
+  layerSection: {
+    width: "100%",
+    maxWidth: 900,
+    marginTop: space["3xl"],
+    gap: space.md,
+  },
+  rail: { gap: space.sm, paddingVertical: space.xs },
+  guideChip: {
+    width: 168,
+    paddingHorizontal: space.md,
+    paddingVertical: space.md,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    backgroundColor: colors.card,
+    gap: 6,
+    alignItems: "flex-start",
+  },
+  guideTitle: { ...type.headline, fontSize: 13, color: colors.text },
+  guideDur: { ...type.caption, color: colors.textMuted },
 });
