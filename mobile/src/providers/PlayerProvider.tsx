@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Audio, AVPlaybackStatus } from "expo-av";
 import type { Experience } from "@lofibuddha/shared";
-import { audioUrl } from "@/src/lib/api";
+import { audioUrl, duckUrl } from "@/src/lib/api";
 import { getStoredSceneTheme, pushRecent, storeSceneTheme } from "@/src/lib/favorites";
 import { DEFAULT_SCENE_THEME, getSceneTheme, type SceneTheme } from "@/src/theme/sceneThemes";
 
@@ -139,6 +139,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     sessionRef.current += 1;
     // Invalidate any live guide so a stale watchdog can't resume an old session.
     if (guideWatchRef.current) guideWatchRef.current.handedOff = true;
+    duckRef.current = null;
     await unload(voiceRef);
     await unload(musicRef);
     await unload(bgRef);
@@ -304,6 +305,14 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     labelSecs: number;
   } | null>(null);
 
+  /** Duck-timeline: pauzes waar de achtergrondmuziek terugkomt (niet geduckt). */
+  const duckRef = useRef<{
+    pauses: [number, number][];
+    active: boolean;
+    baseVolume: number;
+    duckedVolume: number;
+  } | null>(null);
+
   /** Starts (or restarts) the guide-end watchdog if a guide is live and not handed off. */
   const startGuideWatchdog = useCallback(() => {
     if (watchdogRef.current) return;
@@ -357,6 +366,16 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       voiceRef.current = sound;
       setPhase("playing");
 
+      // Laad de duck-timeline: pauzes waar de achtergrondmuziek terugkomt.
+      duckRef.current = { pauses: [], active: true, baseVolume: 0.3, duckedVolume: 0.1 };
+      try {
+        const dres = await fetch(duckUrl(exp.guide));
+        if (dres.ok) {
+          const ddata = await dres.json();
+          duckRef.current.pauses = ddata.pauses || [];
+        }
+      } catch {}
+
       // The guide voice drives the timer while it plays (most accurate). When
       // it ends, the looping ambient layer carries the session for its full
       // labelled duration, so we switch to the wall clock. Detecting the end is
@@ -375,6 +394,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         const g = guideWatchRef.current;
         if (!g || g.handedOff) return;
         g.handedOff = true;
+        if (duckRef.current) {
+          musicRef.current?.setVolumeAsync(duckRef.current.baseVolume).catch(() => {});
+          duckRef.current = null;
+        }
         if (watchdogRef.current) {
           clearInterval(watchdogRef.current);
           watchdogRef.current = null;
@@ -390,9 +413,17 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
       sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
         if (!status.isLoaded) return;
+        const position = status.positionMillis || 0;
+        const duck = duckRef.current;
+        if (duck && duck.pauses.length > 0) {
+          const inPause = duck.pauses.some(([s, e]) => position >= s * 1000 && position < e * 1000);
+          if (inPause !== duck.active) {
+            duck.active = inPause;
+            musicRef.current?.setVolumeAsync(inPause ? duck.baseVolume : duck.duckedVolume).catch(() => {});
+          }
+        }
         const g = guideWatchRef.current;
         if (!g || g.handedOff) return;
-        const position = status.positionMillis || 0;
         if (position !== g.lastPos) {
           g.lastPos = position;
           g.lastMoveAt = Date.now();

@@ -10,6 +10,11 @@ export function audioUrl(kind: "sounds" | "music-tracks" | "meditations" | "focu
   return `${base}/api/breathe/audio/${id}.mp3`;
 }
 
+/** Duck-timeline URL for a guided meditation (pauses where music returns). */
+export function duckUrl(guide: string) {
+  return `${api.baseUrl.replace(/\/$/, "")}/api/meditations/duck/${guide}`;
+}
+
 /** Cover-art URL for a music track (large, shareable version). */
 export function coverUrl(cover: string) {
   return `${api.baseUrl.replace(/\/$/, "")}/images/music-covers/${cover}.webp`;
