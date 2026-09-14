@@ -174,3 +174,12 @@ for (const f of cleanup) { try { execFileSync("rm", ["-f", f]); } catch {} }
 try { execFileSync("rm", ["-f", concatList]); } catch {}
 
 console.log(`✅ ${out}`);
+
+// Duck-timeline genereren (pauzes waar de achtergrondmuziek terugkomt).
+// De player gebruikt dit om de muziek te dempen tijdens de spraak.
+try {
+  execFileSync("python3", [join(__dirname, "build-duck-timeline.py"), out], { stdio: "ignore" });
+  console.log(`   🦆 duck-timeline: ${id}.duck.json`);
+} catch (e) {
+  console.log(`   ⚠️ duck-timeline mislukt (geen ducking): ${e.message}`);
+}
