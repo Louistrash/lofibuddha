@@ -62,6 +62,7 @@ const GLYPHS = {
   layers: "layers-outline",
   catalog: "bookshelf",
   school: "school-outline",
+  share: "share-variant-outline",
 
   // account
   mail: "email-outline",

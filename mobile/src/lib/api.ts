@@ -10,6 +10,16 @@ export function audioUrl(kind: "sounds" | "music-tracks" | "meditations" | "focu
   return `${base}/api/breathe/audio/${id}.mp3`;
 }
 
+/** Cover-art URL for a music track (large, shareable version). */
+export function coverUrl(cover: string) {
+  return `${api.baseUrl.replace(/\/$/, "")}/images/music-covers/${cover}.webp`;
+}
+
+/** Small cover-art URL for playlist thumbnails. */
+export function thumbUrl(cover: string) {
+  return `${api.baseUrl.replace(/\/$/, "")}/images/music-covers/thumbs/${cover}.webp`;
+}
+
 export async function apiFetch(path: string, init: RequestInit = {}, fbUid?: string | null) {
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");

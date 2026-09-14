@@ -17,6 +17,8 @@ export async function GET() {
       mood: t.mood,
       hasAudio,
       audioUrl: hasAudio ? `/api/music-tracks/audio/${t.id}.mp3` : null,
+      coverUrl: t.cover ? `/images/music-covers/${t.cover}.webp` : null,
+      thumbUrl: t.cover ? `/images/music-covers/thumbs/${t.cover}.webp` : null,
     };
   });
   return NextResponse.json({ tracks });

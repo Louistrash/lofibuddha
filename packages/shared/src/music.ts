@@ -7,6 +7,8 @@ export interface MusicTrack {
   duration: number; // seconds
   mood: string;
   prompt: string;
+  /** Cover-art slug (e.g. "temple-dawn"). Served at /images/music-covers/<cover>.webp. */
+  cover?: string;
 }
 
 export const MUSIC_TRACKS: MusicTrack[] = [
@@ -203,5 +205,77 @@ export const MUSIC_TRACKS: MusicTrack[] = [
     duration: 600,
     mood: "Dreamy",
     prompt: "Abandoned ancient temple, breathy bamboo flute (second variation), distant bowls, slow drone.",
+  },
+  {
+    id: "temple-dawn",
+    title: "Temple Dawn",
+    description: "An abandoned temple at first light — golden rays through broken columns, breathy flute, forgotten and serene.",
+    duration: 232,
+    mood: "Dreamy",
+    cover: "temple-dawn",
+    prompt: "Abandoned ancient temple at dawn, first golden light through broken columns, breathy bamboo flute, distant bowls, slow warm drone.",
+  },
+  {
+    id: "temple-dawn-2",
+    title: "Temple Dawn II",
+    description: "A second take on the temple at dawn — a softer, warmer variation.",
+    duration: 228,
+    mood: "Dreamy",
+    cover: "temple-dawn-2",
+    prompt: "Abandoned ancient temple at dawn (second variation), golden sunrise rays, moss on weathered stone.",
+  },
+  {
+    id: "temple-night",
+    title: "Temple Night",
+    description: "An abandoned temple in the deep of night — moonless sky, echoing stone, a distant lantern glow.",
+    duration: 208,
+    mood: "Dreamy",
+    cover: "temple-night",
+    prompt: "Abandoned ancient temple in the deep of night, moonless sky, cold blue-black stone chamber, distant warm lantern.",
+  },
+  {
+    id: "temple-night-2",
+    title: "Temple Night II",
+    description: "A second take on the night temple — faint starlight, long shadows, a single glowing bowl.",
+    duration: 243,
+    mood: "Dreamy",
+    cover: "temple-night-2",
+    prompt: "Moonless night over an abandoned temple courtyard, faint starlight, deep shadows, a single warm glowing bowl.",
+  },
+  {
+    id: "temple-mist",
+    title: "Temple Mist",
+    description: "An abandoned mountain temple in the mist — breathy flute, soft wind, damp stone, forgotten and still.",
+    duration: 229,
+    mood: "Dreamy",
+    cover: "temple-mist",
+    prompt: "Abandoned mountain temple in mist, breathy bamboo flute, soft wind through broken doors, damp stone.",
+  },
+  {
+    id: "temple-mist-2",
+    title: "Temple Mist II",
+    description: "A second take on the misty temple — a glowing bowl at dusk, clouds between ruined pillars.",
+    duration: 239,
+    mood: "Dreamy",
+    cover: "temple-mist-2",
+    prompt: "Misty mountain temple at dusk, clouds between ruined pillars, a lone singing bowl glowing softly.",
+  },
+  {
+    id: "temple-rain-hall",
+    title: "Temple Rain Hall",
+    description: "Rain on the temple roof — water dripping into dark pools, a warm lantern, intimate and sheltering.",
+    duration: 214,
+    mood: "Dreamy",
+    cover: "temple-rain-hall",
+    prompt: "Abandoned ancient temple with gentle rain on the stone roof, water dripping into dark pools, warm lantern.",
+  },
+  {
+    id: "temple-rain-hall-2",
+    title: "Temple Rain Hall II",
+    description: "A second take on the rain hall — puddles reflecting golden light, the shelter of old stone.",
+    duration: 229,
+    mood: "Dreamy",
+    cover: "temple-rain-hall-2",
+    prompt: "Rain inside an abandoned temple hall, puddles reflecting warm golden light, dripping stone, sheltering.",
   },
 ];

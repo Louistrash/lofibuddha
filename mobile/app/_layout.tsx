@@ -69,6 +69,7 @@ export default function RootLayout() {
                 options={{ headerShown: false, presentation: "modal", animation: "slide_from_bottom" }}
               />
               <Stack.Screen name="worlds/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="music/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="course/[slug]" options={{ headerShown: false }} />
               <Stack.Screen

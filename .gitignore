@@ -53,3 +53,12 @@ mobile/dist/
 mobile/web-build/
 .expo/
 secrets/
+
+# Gegenereerde cover-art (regeneerbaar via scripts/generate-covers.py)
+data/music/covers/
+
+# Python cache / lokale venv
+.venv-pdf/
+scripts/__pycache__/
+__pycache__/
+*.pyc

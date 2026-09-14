@@ -7,6 +7,7 @@ import { Chip, SectionHeader, EmptyState } from "@/src/components/ui/Primitives"
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
 import { SoundCard } from "@/src/components/content/SoundCard";
+import { MusicTrackCard } from "@/src/components/content/MusicTrackCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { accentByCategory, colors, radius, space, type } from "@/src/theme/tokens";
@@ -176,18 +177,15 @@ export default function ExploreScreen() {
 
       <View style={styles.block}>
         <SectionHeader title="Soundtracks" caption="Long-form temple lo-fi" />
-        <View style={styles.grid}>
+        <View style={styles.musicGrid}>
           {MUSIC_TRACKS.map((t) => {
             const active = musicOn && musicTrack === t.id;
             return (
-              <SoundCard
+              <MusicTrackCard
                 key={t.id}
-                label={t.title.replace(" · ", " ")}
-                caption={t.mood}
-                category="Music"
-                icon="music"
+                track={t}
                 active={active}
-                onPress={() => chooseMusic(active ? "off" : t.id)}
+                onPress={() => router.push(`/music/${t.id}`)}
               />
             );
           })}
@@ -222,6 +220,7 @@ const styles = StyleSheet.create({
   filters: { gap: space.sm, paddingBottom: space["2xl"] },
   block: { marginBottom: space["3xl"] },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
+  musicGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.md },
   gridCell: { flexGrow: 1, flexBasis: 160, minWidth: 150, maxWidth: "100%" },
   moreBlock: { marginTop: space["2xl"] },
   moreLabel: { ...type.section, color: colors.textSecondary, marginBottom: space.md },
