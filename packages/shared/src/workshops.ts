@@ -1152,7 +1152,7 @@ export const WORKSHOPS: Workshop[] = [
     description:
       "A long, gentle descent into deep rest — let go of the day and let sleep carry you.",
     duration: "20 min",
-    theme: "Sleep Journeys",
+    theme: "Deep Journeys",
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
@@ -1183,7 +1183,7 @@ export const WORKSHOPS: Workshop[] = [
     description:
       "Release the weight of the day and let go of what you have been carrying.",
     duration: "15 min",
-    theme: "Release Journeys",
+    theme: "Deep Journeys",
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
@@ -1212,7 +1212,7 @@ export const WORKSHOPS: Workshop[] = [
     description:
       "Travel slowly through the body, releasing tension from head to toe.",
     duration: "18 min",
-    theme: "Relax Journeys",
+    theme: "Deep Journeys",
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
@@ -1242,7 +1242,7 @@ export const WORKSHOPS: Workshop[] = [
     description:
       "Turn the same kindness you give others, back toward yourself.",
     duration: "15 min",
-    theme: "Compassion Journeys",
+    theme: "Deep Journeys",
     category: "relax",
     background: "off",
     music: "yogi-temple-night",
@@ -1270,7 +1270,7 @@ export const WORKSHOPS: Workshop[] = [
     description:
       "Rest in the silence between thoughts — your true, still center.",
     duration: "15 min",
-    theme: "Stillness Journeys",
+    theme: "Deep Journeys",
     category: "relax",
     background: "off",
     music: "yogi-temple-night",

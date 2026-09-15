@@ -1,17 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { EXPERIENCES, getExperience, workshopExperiences } from "@lofibuddha/shared";
+import { StyleSheet, View } from "react-native";
+import { useFocusEffect, useRouter } from "expo-router";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import {
+  getExperience,
+  workshopExperiences,
+  MUSIC_TRACKS,
+  SOUNDS,
+} from "@lofibuddha/shared";
 import { Screen } from "@/src/components/ui/Screen";
-import { SectionHeader, EmptyState } from "@/src/components/ui/Primitives";
+import { SectionHeader } from "@/src/components/ui/Primitives";
 import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
+import { MusicTrackCard } from "@/src/components/content/MusicTrackCard";
+import { SoundCard } from "@/src/components/content/SoundCard";
 import { CourseCard } from "@/src/components/content/CourseCard";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { apiFetch } from "@/src/lib/api";
-import { colors, space, type } from "@/src/theme/tokens";
+import { colors, space } from "@/src/theme/tokens";
 
 type Course = {
   id: string;
@@ -24,23 +32,18 @@ type Course = {
   moduleCount?: number;
   premium?: boolean;
 };
-type Tab = "saved" | "recent" | "courses" | "workshops";
 
+/**
+ * Library — every shelf in one place. Instead of tabs that hide most of the
+ * catalogue (which read as "empty"), all content lives in stacked shelves:
+ * Saved, Recent, Courses, Workshops (grouped by series), Soundtracks, Soundscapes.
+ */
 export default function LibraryScreen() {
-  const params = useLocalSearchParams<{ tab?: string }>();
-  const validTabs: Tab[] = ["saved", "recent", "courses", "workshops"];
-  const [tab, setTab] = useState<Tab>(() =>
-    validTabs.includes(params.tab as Tab) ? (params.tab as Tab) : "saved"
-  );
-
-  useEffect(() => {
-    if (validTabs.includes(params.tab as Tab)) setTab(params.tab as Tab);
-  }, [params.tab]);
-  const [courses, setCourses] = useState<Course[]>([]);
   const router = useRouter();
-  const { playExperience } = usePlayer();
-  const { isPro, tier } = useEntitlement();
+  const { playExperience, chooseSoundscape, soundscape } = usePlayer();
+  const { tier } = useEntitlement();
   const { favorites, recent, toggle, isFavorite } = useFavorites();
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -61,12 +64,7 @@ export default function LibraryScreen() {
   const savedItems = favorites.map(getExperience).filter(Boolean);
   const recentItems = recent.map(getExperience).filter(Boolean);
   const workshops = workshopExperiences();
-  const tabs: { id: Tab; label: string }[] = [
-    { id: "saved", label: `Saved · ${favorites.length}` },
-    { id: "recent", label: `Recent · ${recent.length}` },
-    { id: "courses", label: `Courses · ${courses.length}` },
-    { id: "workshops", label: `Workshops · ${workshops.length}` },
-  ];
+
   const workshopSeries = workshops.reduce<{ name: string; items: typeof workshops }[]>(
     (groups, exp) => {
       const name = exp.series ?? "Workshops";
@@ -92,150 +90,125 @@ export default function LibraryScreen() {
     router.push(`/player/${exp.id}`);
   };
 
+  const scapes = SOUNDS.filter((s) => s.category !== "Noise");
+
   return (
-    <Screen title="Library" subtitle="Your saved practices and progress">
-      <View style={styles.underlineTabs}>
-        {tabs.map((t) => {
-          const active = tab === t.id;
-          return (
-            <Pressable
-              key={t.id}
-              onPress={() => setTab(t.id)}
-              style={({ pressed }: any) => [styles.underlineTab, pressed && { opacity: 0.8 }]}
-            >
-              <Text
-                style={[styles.underlineTabText, active && styles.underlineTabTextActive]}
-                numberOfLines={1}
-              >
-                {t.label}
-              </Text>
-              {active ? <View style={styles.underlineIndicator} /> : null}
-            </Pressable>
-          );
-        })}
-      </View>
-
-      {tab === "saved" ? (
-        savedItems.length ? (
-          <View style={styles.block}>
-            <SectionHeader title="Saved" caption="Tap the heart while listening to add more" />
-            <CardRail minCardWidth={240}>
-              {savedItems.map((exp) =>
-                exp ? (
-                  <ExperienceCard
-                    key={exp.id}
-                    experience={exp}
-                    onPress={() => open(exp.id)}
-                    isFavorite={isFavorite(exp.id)}
-                    onToggleFavorite={() => toggle(exp.id)}
-                  />
-                ) : null
-              )}
-            </CardRail>
-          </View>
-        ) : (
-          <EmptyState
-            icon="heartOutline"
-            title="Nothing saved yet"
-            message={`Tap the heart on any of the ${EXPERIENCES.length} practices and it lands here.`}
-          />
-        )
-      ) : null}
-
-      {tab === "recent" ? (
-        recentItems.length ? (
-          <View style={styles.block}>
-            <SectionHeader title="Recently played" />
-            <CardRail minCardWidth={240}>
-              {recentItems.map((exp) =>
-                exp ? (
-                  <ExperienceCard
-                    key={exp.id}
-                    experience={exp}
-                    onPress={() => open(exp.id)}
-                  />
-                ) : null
-              )}
-            </CardRail>
-          </View>
-        ) : (
-          <EmptyState
-            icon="clock"
-            title="No sessions yet"
-            message="Start any practice and your history builds itself."
-          />
-        )
-      ) : null}
-
-      {tab === "courses" ? (
-        courses.length ? (
-          <View style={styles.block}>
-            <SectionHeader title="Courses" caption="Multi-day journeys from LofiBuddha" />
-            <View style={styles.courseGrid}>
-              {courses.map((c) => (
-                <CourseCard
-                  key={c.id}
-                  course={c}
-                  locked={!!c.premium && tier !== "enlightened"}
-                  onPress={() =>
-                    router.push(c.premium && tier !== "enlightened" ? "/deepen" : `/course/${c.slug}`)
-                  }
+    <Screen title="Library" subtitle="Your whole practice, in one place">
+      {/* Saved */}
+      {savedItems.length > 0 ? (
+        <Animated.View entering={FadeInDown.duration(420)} style={styles.shelf}>
+          <SectionHeader title="Saved" caption="Tap the heart while listening to add more" />
+          <CardRail minCardWidth={240}>
+            {savedItems.map((exp) =>
+              exp ? (
+                <ExperienceCard
+                  key={exp.id}
+                  experience={exp}
+                  onPress={() => open(exp.id)}
+                  isFavorite={isFavorite(exp.id)}
+                  onToggleFavorite={() => toggle(exp.id)}
                 />
-              ))}
-            </View>
-          </View>
-        ) : (
-          <EmptyState
-            icon="school"
-            title="Courses are on the way"
-            message="They sync automatically from LofiBuddha once published."
-          />
-        )
+              ) : null
+            )}
+          </CardRail>
+        </Animated.View>
       ) : null}
 
-      {tab === "workshops" ? (
-        <View style={styles.block}>
-          <SectionHeader title="Workshops" caption="Multi-night guided series for deeper practice" />
-          {workshopSeries.map((series) => (
-            <View key={series.name} style={styles.seriesBlock}>
-              <SectionHeader title={series.name} caption={`${series.items.length} sessions`} />
-              <CardRail minCardWidth={240}>
-                {series.items.map((exp) => (
-                  <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
-                ))}
-              </CardRail>
-            </View>
-          ))}
-        </View>
+      {/* Recently played */}
+      {recentItems.length > 0 ? (
+        <Animated.View entering={FadeInDown.duration(420).delay(60)} style={styles.shelf}>
+          <SectionHeader title="Recently played" caption="Pick up where you left off" />
+          <CardRail minCardWidth={240}>
+            {recentItems.map((exp) =>
+              exp ? <ExperienceCard key={exp.id} experience={exp} onPress={() => open(exp.id)} /> : null
+            )}
+          </CardRail>
+        </Animated.View>
       ) : null}
+
+      {/* Courses */}
+      {courses.length > 0 ? (
+        <Animated.View entering={FadeInDown.duration(420).delay(120)} style={styles.shelf}>
+          <SectionHeader title="Courses" caption="Multi-day journeys from LofiBuddha" />
+          <CardRail minCardWidth={260}>
+            {courses.map((c) => (
+              <CourseCard
+                key={c.id}
+                course={c}
+                locked={!!c.premium && tier !== "enlightened"}
+                onPress={() =>
+                  router.push(c.premium && tier !== "enlightened" ? "/deepen" : `/course/${c.slug}`)
+                }
+              />
+            ))}
+          </CardRail>
+        </Animated.View>
+      ) : null}
+
+      {/* Workshops — grouped by series */}
+      {workshopSeries.map((series, i) => (
+        <Animated.View
+          key={series.name}
+          entering={FadeInDown.duration(420).delay(160 + i * 40)}
+          style={styles.shelf}
+        >
+          <SectionHeader title={series.name} caption={`${series.items.length} sessions`} />
+          <CardRail minCardWidth={240}>
+            {series.items.map((exp) => (
+              <ExperienceCard key={exp.id} experience={exp} onPress={() => openWorkshop(exp.id)} />
+            ))}
+          </CardRail>
+        </Animated.View>
+      ))}
+
+      {/* Soundtracks — the Suno temple-lofi catalogue */}
+      <Animated.View entering={FadeInDown.duration(420).delay(200)} style={styles.shelf}>
+        <SectionHeader
+          title="Soundtracks"
+          caption={`${MUSIC_TRACKS.length} temple lofi tracks to layer or play alone`}
+        />
+        <CardRail minCardWidth={180}>
+          {MUSIC_TRACKS.map((t) => (
+            <MusicTrackCard
+              key={t.id}
+              track={t}
+              onPress={() => router.push(`/music/${t.id}`)}
+            />
+          ))}
+        </CardRail>
+      </Animated.View>
+
+      {/* Soundscapes */}
+      <Animated.View entering={FadeInDown.duration(420).delay(240)} style={styles.shelf}>
+        <SectionHeader title="Soundscapes" caption="Ambient texture to layer under anything" />
+        <View style={styles.scapeGrid}>
+          {scapes.map((s) => {
+            const active = soundscape === s.slug;
+            return (
+              <SoundCard
+                key={s.slug}
+                label={s.name}
+                caption={s.category}
+                category={s.category}
+                active={active}
+                onPress={() => chooseSoundscape(active ? "off" : s.slug)}
+              />
+            );
+          })}
+        </View>
+      </Animated.View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  underlineTabs: {
+  shelf: { marginBottom: space["3xl"] },
+  scapeGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
-    gap: space.xl,
-    marginBottom: space["2xl"],
-    borderBottomWidth: 1,
-    borderBottomColor: colors.hairline,
+    gap: space.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.hairline,
+    paddingTop: space.lg,
   },
-  underlineTab: {
-    paddingVertical: space.sm,
-    paddingHorizontal: 2,
-  },
-  underlineTabText: { ...type.label, color: colors.textMuted },
-  underlineTabTextActive: { color: colors.text },
-  underlineIndicator: {
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: colors.gold,
-    marginTop: space.sm,
-  },
-  block: { marginBottom: space["3xl"] },
-  seriesBlock: { marginBottom: space["2xl"] },
-  list: { gap: 2 },
-  courseGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.lg },
 });
