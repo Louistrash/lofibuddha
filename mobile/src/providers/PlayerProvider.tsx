@@ -349,10 +349,12 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
     const session = sessionRef.current;
     const kind = exp.category === "focus" ? "focus" : "meditations";
+    // Bij "Add a guide" (voiceOnly) speel de gestripte versie zonder chime + introPause.
+    const guideId = exp.voiceOnly ? `${exp.guide}-voice` : exp.guide;
 
     try {
       const { sound } = await Audio.Sound.createAsync(
-        { uri: audioUrl(kind, exp.guide) },
+        { uri: audioUrl(kind, guideId) },
         { shouldPlay: true, volume: 1, progressUpdateIntervalMillis: 250 },
         undefined,
         false
@@ -369,7 +371,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       // Laad de duck-timeline: pauzes waar de achtergrondmuziek terugkomt.
       duckRef.current = { pauses: [], active: true, baseVolume: 0.3, duckedVolume: 0.1 };
       try {
-        const dres = await fetch(duckUrl(exp.guide));
+        const dres = await fetch(duckUrl(guideId));
         if (dres.ok) {
           const ddata = await dres.json();
           duckRef.current.pauses = ddata.pauses || [];

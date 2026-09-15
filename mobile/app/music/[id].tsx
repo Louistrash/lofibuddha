@@ -51,7 +51,7 @@ export default function MusicDetailScreen() {
   // Speel een guide (meditatie-stem) OVER deze soundtrack.
   const handleAddGuide = useCallback(
     async (g: Experience) => {
-      await playExperience({ ...g, music: track.id });
+      await playExperience({ ...g, music: track.id, voiceOnly: true });
     },
     [playExperience, track.id]
   );

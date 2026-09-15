@@ -38,6 +38,9 @@ export interface Experience {
   series?: string;
   /** Cover-art slug — served at /images/meditation-covers/<cover>.webp */
   cover?: string;
+  /** Voice-only weergave (layering over muziek): speel de gestripte <guide>-voice.mp3
+   *  i.p.v. de volledige guide met chime + introPause. */
+  voiceOnly?: boolean;
 }
 
 // Categorie-info voor de hub
