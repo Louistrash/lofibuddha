@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Disallow app-interne / niet-indexeerbare routes
+Disallow: /auth/
+Disallow: /login
+Disallow: /signup
+Disallow: /account
+Disallow: /app
+Disallow: /studio
+Disallow: /social
+Disallow: /settings
+Disallow: /subscribers
+Disallow: /analytics
+Disallow: /newsletter
+Disallow: /hermes
+Disallow: /video
+Disallow: /sounds
+Disallow: /images
+Disallow: /content
+Disallow: /player/
+Disallow: /cancel
+Disallow: /success
+
+Sitemap: https://lofibuddha.com/sitemap.xml
