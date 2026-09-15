@@ -79,14 +79,14 @@ export const metadata: Metadata = {
     description:
       "Curated lofi music, guided meditation, yoga flows, and breathwork for focus, relaxation, and deep calm.",
     url: "https://lofibuddha.com",
-    images: [{ url: "/images/bg/bg-youtube.png", width: 1280, height: 720, alt: "LofiBuddha — Your daily dose of calm" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "LofiBuddha — Lofi music, meditation & mindfulness" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "LofiBuddha — Lofi Music, Meditation & Mindfulness",
     description:
       "Curated lofi music, guided meditation, yoga flows, and breathwork for focus, relaxation, and deep calm.",
-    images: ["/images/bg/bg-youtube.png"],
+    images: ["/og-image.png"],
   },
 };
 

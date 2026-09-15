@@ -5,7 +5,7 @@ const TITLE = "LofiBuddha — Lofi Music, Meditation & Mindfulness";
 const DESCRIPTION =
   "Lofi music, guided meditation and breathwork for focus, calm and deep sleep.";
 const SITE = "https://lofibuddha.com";
-const SOCIAL_IMAGE = `${SITE}/bodhi-icon-512.png`;
+const SOCIAL_IMAGE = `${SITE}/og-image.png`;
 
 /**
  * Web-only document shell. Runs in Node during static rendering, so it has no
