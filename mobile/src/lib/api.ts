@@ -25,6 +25,11 @@ export function thumbUrl(cover: string) {
   return `${api.baseUrl.replace(/\/$/, "")}/images/music-covers/thumbs/${cover}.webp`;
 }
 
+/** Cover-art URL for a guided meditation/workshop. */
+export function meditationCoverUrl(cover: string) {
+  return `${api.baseUrl.replace(/\/$/, "")}/images/meditation-covers/${cover}.webp`;
+}
+
 export async function apiFetch(path: string, init: RequestInit = {}, fbUid?: string | null) {
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");

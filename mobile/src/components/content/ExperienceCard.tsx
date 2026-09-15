@@ -1,9 +1,11 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import type { Experience } from "@lofibuddha/shared";
 import { accentByCategory, colors, radius, shadow, space, tint, type } from "@/src/theme/tokens";
+import { meditationCoverUrl } from "@/src/lib/api";
 import { Icon, type IconName } from "@/src/components/ui/Icon";
 import { useEntitlement } from "@/src/providers/EntitlementProvider";
 import { Mandala } from "./Mandala";
@@ -137,12 +139,28 @@ export function ExperienceCard({
         pressed && { opacity: 0.9 },
       ]}
     >
-      <LinearGradient
-        colors={[tint(accent, 0.28), "rgba(17,16,25,0.95)"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0.6, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
+      {experience.cover ? (
+        <>
+          <Image
+            source={{ uri: meditationCoverUrl(experience.cover) }}
+            style={StyleSheet.absoluteFill}
+            contentFit="cover"
+            transition={250}
+            cachePolicy="memory-disk"
+          />
+          <LinearGradient
+            colors={["rgba(8,7,12,0.15)", "rgba(8,7,12,0.82)"]}
+            style={StyleSheet.absoluteFill}
+          />
+        </>
+      ) : (
+        <LinearGradient
+          colors={[tint(accent, 0.28), "rgba(17,16,25,0.95)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0.6, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+      )}
       <View style={[styles.glow, { backgroundColor: accent }]} />
       <View style={styles.mandala} pointerEvents="none">
         <Mandala

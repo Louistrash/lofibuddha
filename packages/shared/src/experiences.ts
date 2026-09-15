@@ -36,6 +36,8 @@ export interface Experience {
   premium?: boolean;
   /** Serie-naam (voor workshops — bv. "Deep Sleep Reset") */
   series?: string;
+  /** Cover-art slug — served at /images/meditation-covers/<cover>.webp */
+  cover?: string;
 }
 
 // Categorie-info voor de hub

@@ -16,6 +16,8 @@ export type Workshop = {
   background: string;
   /** Achtergrond-muziek track id (music.ts) — default "temple-rain". */
   music?: string;
+  /** Cover-art slug (meditation covers). */
+  cover?: string;
   /** Seconds of silence after the chime, before the voice begins — lets the
    *  user put the device down and settle in. */
   introPause?: number;
@@ -1154,6 +1156,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
+    cover: "deep-sleep-journey",
     introPause: 6,
     segments: [
       { text: "Whenever you are ready, let yourself come to rest, and feel your body sink, softly, into the bed beneath you. You have done enough today, and now there is nothing left to do, except to let go.", pauseAfter: 40 },
@@ -1184,6 +1187,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
+    cover: "letting-go-deep",
     introPause: 6,
     segments: [
       { text: "Whenever you are ready, let yourself come to rest, and feel the support of the earth rise up to meet you, holding you softly, without effort.", pauseAfter: 40 },
@@ -1212,6 +1216,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "sleep",
     background: "off",
     music: "yogi-temple-night",
+    cover: "body-scan-deep",
     introPause: 6,
     segments: [
       { text: "Whenever you are ready, let yourself lie down, or sit comfortably, and allow the weight of your body to settle, softly, into the support beneath you.", pauseAfter: 40 },
@@ -1241,6 +1246,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "relax",
     background: "off",
     music: "yogi-temple-night",
+    cover: "self-compassion-deep",
     introPause: 6,
     segments: [
       { text: "Whenever you are ready, find a comfortable seat, and let your spine rise softly, while your shoulders settle, easy and open.", pauseAfter: 40 },
@@ -1268,6 +1274,7 @@ export const WORKSHOPS: Workshop[] = [
     category: "relax",
     background: "off",
     music: "yogi-temple-night",
+    cover: "inner-stillness",
     introPause: 6,
     segments: [
       { text: "Whenever you are ready, come to a comfortable seat, and let your body settle, like water finding its level, still, and calm.", pauseAfter: 40 },
@@ -1299,6 +1306,7 @@ export function workshopExperiences(): Experience[] {
     guide: w.id,
     soundscape: "off",
     music: w.music || "temple-rain",
+    cover: w.cover,
     scene: "night",
     premium: true,
     series: w.theme,
