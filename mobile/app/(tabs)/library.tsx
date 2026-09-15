@@ -40,7 +40,8 @@ type Course = {
  */
 export default function LibraryScreen() {
   const router = useRouter();
-  const { playExperience, chooseSoundscape, soundscape } = usePlayer();
+  const { playExperience, chooseSoundscape, soundscape, chooseMusic, toggleMusic, musicOn, musicTrack } =
+    usePlayer();
   const { tier } = useEntitlement();
   const { favorites, recent, toggle, isFavorite } = useFavorites();
   const [courses, setCourses] = useState<Course[]>([]);
@@ -91,6 +92,16 @@ export default function LibraryScreen() {
   };
 
   const scapes = SOUNDS.filter((s) => s.category !== "Noise");
+
+  const toggleTrack = (id: string) => {
+    if (musicOn && musicTrack === id) {
+      void toggleMusic();
+    } else if (musicTrack !== id) {
+      void chooseMusic(id);
+    } else {
+      void toggleMusic();
+    }
+  };
 
   return (
     <Screen title="Library" subtitle="Your whole practice, in one place">
@@ -172,7 +183,9 @@ export default function LibraryScreen() {
             <MusicTrackCard
               key={t.id}
               track={t}
+              active={musicOn && musicTrack === t.id}
               onPress={() => router.push(`/music/${t.id}`)}
+              onTogglePlay={() => toggleTrack(t.id)}
             />
           ))}
         </CardRail>

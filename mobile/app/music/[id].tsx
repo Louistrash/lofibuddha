@@ -179,11 +179,17 @@ export default function MusicDetailScreen() {
                 onPress={() => handleAddGuide(g)}
                 style={({ pressed }: any) => [styles.guideChip, pressed && { opacity: 0.85 }]}
               >
-                <Icon name="headphones" size={14} color={colors.gold} />
-                <Text style={styles.guideTitle} numberOfLines={2}>
+                <LinearGradient
+                  colors={[colors.goldBright, colors.goldDeep]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
+                <Icon name="headphones" size={14} color={colors.ink} />
+                <Text style={[styles.guideTitle, { color: colors.ink }]} numberOfLines={2}>
                   {g.title}
                 </Text>
-                <Text style={styles.guideDur}>{g.duration}</Text>
+                <Text style={[styles.guideDur, { color: "rgba(8,7,12,0.64)" }]}>{g.duration}</Text>
               </Pressable>
             ))}
           </ScrollView>
@@ -291,10 +297,11 @@ const styles = StyleSheet.create({
     paddingVertical: space.md,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.hairline,
+    borderColor: "rgba(166,124,61,0.45)",
     backgroundColor: colors.card,
     gap: 6,
     alignItems: "flex-start",
+    overflow: "hidden",
   },
   guideTitle: { ...type.headline, fontSize: 13, color: colors.text },
   guideDur: { ...type.caption, color: colors.textMuted },

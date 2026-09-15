@@ -21,7 +21,7 @@ export default function ExploreScreen() {
   const [filter, setFilter] = useState<Filter>("all");
   const router = useRouter();
   const l = useLayout();
-  const { playExperience, chooseSoundscape, chooseMusic, soundscape, musicTrack, musicOn } =
+  const { playExperience, chooseSoundscape, chooseMusic, toggleMusic, soundscape, musicTrack, musicOn } =
     usePlayer();
   const { toggle, isFavorite } = useFavorites();
 
@@ -186,6 +186,11 @@ export default function ExploreScreen() {
                 track={t}
                 active={active}
                 onPress={() => router.push(`/music/${t.id}`)}
+                onTogglePlay={() => {
+                  if (musicOn && musicTrack === t.id) void toggleMusic();
+                  else if (musicTrack !== t.id) void chooseMusic(t.id);
+                  else void toggleMusic();
+                }}
               />
             );
           })}
