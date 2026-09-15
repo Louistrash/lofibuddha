@@ -13,7 +13,7 @@ Output: mobile/public/sitemap.xml + mobile/public/robots.txt
 
 Her-draaien na content-wijziging: python3 scripts/generate-sitemap.py
 """
-import re, os, sys, subprocess, json, datetime, urllib.request
+import re, os, sys, subprocess, json, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://lofibuddha.com"
@@ -23,15 +23,14 @@ OUT_DIR = os.path.join(ROOT, "mobile", "public")
 music_ts = open(os.path.join(ROOT, "packages", "shared", "src", "music.ts"), encoding="utf-8").read()
 MUSIC_IDS = re.findall(r'id:\s*"([^"]+)"', music_ts)
 
-# --- 2. courses uit de live API (slugs) ---
+# --- 2. courses uit het lokale databestand (git-tracked, geen live API) ---
 def fetch_courses():
+    courses_path = os.path.join(ROOT, "public", "data", "courses.json")
     try:
-        with urllib.request.urlopen(f"{SITE}/api/courses/public", timeout=10) as r:
-            data = json.load(r)
-        courses = data.get("courses", data) if isinstance(data, dict) else data
-        return [c["slug"] for c in courses if c.get("slug")]
+        data = json.load(open(courses_path, encoding="utf-8"))
+        return [c["slug"] for c in data["courses"] if c.get("slug")]
     except Exception as e:
-        print(f"  ⚠️ courses API niet bereikbaar ({e}) — fallback op vaste slugs")
+        print(f"  ⚠️ courses.json niet leesbaar ({e}) — fallback op vaste slugs")
         return ["beginners-mindfulness", "yoga-foundations", "breathwork-essentials", "lofi-deep-focus"]
 
 COURSES = fetch_courses()
