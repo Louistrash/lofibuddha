@@ -36,7 +36,7 @@ export default function CmsTopNav() {
       <div className="mx-auto flex max-w-[1180px] items-center gap-3 px-5 py-3 sm:px-6 lg:px-8">
         <Link href="/content" className="flex min-w-0 shrink-0 items-center gap-3 group">
           <NextImage
-            src="/lofibuddha.png"
+            src="/icon-transparent.png"
             alt="LofiBuddha"
             width={36}
             height={36}

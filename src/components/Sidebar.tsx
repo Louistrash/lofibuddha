@@ -21,7 +21,7 @@ function Brand({ collapsed }: { collapsed?: boolean }) {
   return (
     <Link href="/studio" className="flex items-center gap-3 min-w-0 group">
       <NextImage
-        src="/lofibuddha.png"
+        src="/icon-transparent.png"
         alt="LofiBuddha"
         width={39}
         height={39}

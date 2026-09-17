@@ -354,7 +354,7 @@ function SuccessContent() {
               className="flex items-center gap-2.5"
             >
               <img
-                src="/lofibuddha.png"
+                src="/icon-transparent.png"
                 alt="LofiBuddha"
                 className="h-[35px] w-auto"
               />

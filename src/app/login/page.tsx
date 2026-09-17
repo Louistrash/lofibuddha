@@ -90,7 +90,7 @@ function LoginContent() {
       <div className="relative z-10 w-full max-w-[420px]">
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-[14px] bg-accent/15 mb-4">
-            <Image src="/lofibuddha.png" alt="LofiBuddha" width={32} height={32} className="rounded-lg" />
+            <Image src="/icon-transparent.png" alt="LofiBuddha" width={32} height={32} className="rounded-lg" />
           </div>
           <h2 className="text-[26px] font-semibold text-text-primary tracking-tight mb-1.5">
             Welcome back
