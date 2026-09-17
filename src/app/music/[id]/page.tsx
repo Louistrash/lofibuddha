@@ -59,9 +59,20 @@ export default async function MusicPage({ params }: Props) {
     byArtist: { "@type": "MusicGroup", name: "LofiBuddha" },
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://lofibuddha.com/" },
+      { "@type": "ListItem", position: 2, name: "Music", item: "https://lofibuddha.com/explore" },
+      { "@type": "ListItem", position: 3, name: track.title, item: `https://lofibuddha.com/music/${track.id}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <main className="mx-auto max-w-4xl px-6 py-10">
         <Link

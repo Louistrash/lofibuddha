@@ -80,9 +80,20 @@ export default async function CoursePage({ params }: Props) {
     educationalLevel: course.level,
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://lofibuddha.com/" },
+      { "@type": "ListItem", position: 2, name: "Courses", item: "https://lofibuddha.com/learn" },
+      { "@type": "ListItem", position: 3, name: t.title, item: `https://lofibuddha.com/course/${course.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <main className="mx-auto max-w-3xl px-6 py-10">
         <Link

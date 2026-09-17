@@ -40,10 +40,8 @@ CATEGORIES = ["focus", "breathe", "sleep", "relax"]
 # (path, changefreq, priority)
 urls = [
     ("/", "daily", "1.0"),
-    ("/today", "daily", "0.9"),
     ("/explore", "daily", "0.9"),
     ("/library", "daily", "0.9"),
-    ("/ai", "weekly", "0.8"),
     ("/mindfulness", "weekly", "0.8"),
     ("/browse", "weekly", "0.7"),
     ("/learn", "weekly", "0.7"),

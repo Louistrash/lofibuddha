@@ -91,11 +91,39 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "LofiBuddha",
+    url: "https://lofibuddha.com",
+    logo: "https://lofibuddha.com/bodhi-icon-512.png",
+    description:
+      "Curated lofi music, guided meditation, yoga flows, and breathwork for focus, relaxation, and deep calm.",
+    sameAs: ["https://www.youtube.com/@lofibuddha"],
+  };
+
+  const websiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "LofiBuddha",
+    url: "https://lofibuddha.com",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://lofibuddha.com/explore?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }} />
       </head>
       <body className={jakarta.variable + " " + playfair.variable + " " + dmSerif.variable + " " + fraunces.variable + " " + rozha.variable + " antialiased bg-bg-primary text-text-primary"}>
         <AuthProvider>{children}</AuthProvider>

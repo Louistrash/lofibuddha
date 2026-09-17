@@ -1,248 +1,197 @@
-"use client";
-
-import { useState, useEffect, useRef } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Music, Moon, Wind, Flower2, Headphones,
-  Play, Send, Waves, Sunrise, ArrowRight,
-} from "lucide-react";
+import fs from "fs";
+import path from "path";
+import { Play, Clock, ArrowRight, Sparkles } from "lucide-react";
+import { MUSIC_TRACKS } from "@/lib/music";
+import { CATEGORIES } from "@/lib/experiences";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
-// ─── Language ─────────────────────────────────
-type Lang = "en" | "nl" | "es" | "de" | "fr" | "hi";
-const LANGS: Lang[] = ["en", "nl", "es", "de", "fr", "hi"];
-
-const detectLang = (): Lang => {
-  if (typeof window === "undefined") return "en";
-  const stored = localStorage.getItem("lofibuddha-lang") as Lang;
-  if (stored && LANGS.includes(stored)) return stored;
-  const browser = navigator.language.toLowerCase().split("-")[0] as Lang;
-  return LANGS.includes(browser) ? browser : "en";
+export const metadata: Metadata = {
+  title: "LofiBuddha — Lofi Music, Guided Meditation & Mindfulness",
+  description:
+    "Beatless lofi soundscapes, guided meditations, breathwork and sleep stories for focus, calm and deep rest. Discover your daily dose of peace.",
+  alternates: { canonical: "https://lofibuddha.com" },
 };
 
-const T = {
-  headline: {
-    en: "Find your calm.\nDiscover your rhythm.",
-    nl: "Vind je rust.\nOntdek je ritme.",
-    es: "Encuentra tu calma.\nDescubre tu ritmo.",
-    de: "Finde deine Ruhe.\nEntdecke deinen Rhythmus.",
-    fr: "Trouve ton calme.\nDécouvre ton rythme.",
-    hi: "अपनी शांति खोजें।\nअपनी लय जानें।",
-  },
-  subtitle: {
-    en: "Immersive lofi soundscapes, guided meditations, and cinematic relaxation films — crafted for deep focus and inner peace.",
-    nl: "Meeslepende lofi soundscapes, geleide meditaties en filmische relaxatiefilms — gemaakt voor diepe focus en innerlijke rust.",
-    es: "Paisajes sonoros lofi inmersivos, meditaciones guiadas y películas de relajación cinematográficas — creados para el enfoque profundo.",
-    de: "Immersive Lofi-Klanglandschaften, geführte Meditationen und filmische Entspannungsfilme — für tiefe Konzentration und inneren Frieden.",
-    fr: "Paysages sonores lofi immersifs, méditations guidées et films de relaxation cinématographiques — conçus pour la concentration profonde.",
-    hi: "गहन ध्यान और आंतरिक शांति के लिए बनाए गए इमर्सिव लोफाई साउंडस्केप्स, गाइडेड मेडिटेशन और सिनेमाई विश्राम फिल्में।",
-  },
-  ctaBrowse: {
-    en: "Explore Free Content",
-    nl: "Ontdek gratis content",
-    es: "Explorar contenido",
-    de: "Inhalte entdecken",
-    fr: "Explorer le contenu",
-    hi: "सामग्री खोजें",
-  },
-  ctaApp: {
-    en: "Open Bodhi Pro",
-    nl: "Open Bodhi Pro",
-    es: "Abrir Bodhi Pro",
-    de: "Bodhi Pro öffnen",
-    fr: "Ouvrir Bodhi Pro",
-    hi: "बोधि प्रो खोलें",
-  },
-  features: {
-    en: [
-      { icon: Headphones, title: "Lofi Soundscapes", desc: "Curated beats for deep focus, study, and unwinding after a long day." },
-      { icon: Flower2, title: "Guided Meditation", desc: "Breathwork, body scans, and mindfulness journeys — from 5 to 60 minutes." },
-      { icon: Waves, title: "Cinematic Films", desc: "AI-rendered relaxation visuals in stunning quality. Made for immersion." },
-    ],
-  },
-  newsletterLabel: {
-    en: "Early access. No spam. Just peace.",
-    nl: "Vroege toegang. Geen spam. Alleen rust.",
-    es: "Acceso anticipado. Sin spam. Solo paz.",
-    de: "Früher Zugang. Kein Spam. Nur Ruhe.",
-    fr: "Accès anticipé. Pas de spam. Juste la paix.",
-    hi: "जल्दी पहुंच। कोई स्पैम नहीं। सिर्फ शांति।",
-  },
-  emailPlaceholder: {
-    en: "your@email.com",
-    nl: "jouw@email.com",
-    es: "tu@email.com",
-    de: "deine@email.de",
-    fr: "ton@email.fr",
-    hi: "आपका@ईमेल.com",
-  },
-  subscribe: {
-    en: "Notify me",
-    nl: "Houd me op de hoogte",
-    es: "Avísame",
-    de: "Benachrichtigen",
-    fr: "Préviens-moi",
-    hi: "सूचित करें",
-  },
-  subscribed: {
-    en: "You're in. Peace is coming.",
-    nl: "Je bent binnen. Rust komt eraan.",
-    es: "Estás dentro.",
-    de: "Du bist dabei.",
-    fr: "Tu es inscrit.",
-    hi: "आप शामिल हैं।",
-  },
-  footer: {
-    en: "A space for calm in a busy world.",
-    nl: "Een plek van rust in een drukke wereld.",
-    es: "Un espacio de calma en un mundo ocupado.",
-    de: "Ein Ort der Ruhe.",
-    fr: "Un espace de calme.",
-    hi: "शांति का स्थान।",
-  },
-};
-
-// ─── Flowing Line SVG ─────────────
-function FlowingLine({ delay = 0, width = "60%", top = "50%" }: { delay?: number; width?: string; top?: string }) {
-  const id = `lg-${delay}-${top.replace("%","")}`;
-  return (
-    <div style={{ position: "absolute", top, left: "50%", transform: "translateX(-50%)", width, height: "1px", overflow: "hidden", opacity: 0.3, pointerEvents: "none" }}>
-      <svg width="100%" height="1" viewBox="0 0 800 1" preserveAspectRatio="none" style={{ display: "block" }}>
-        <defs>
-          <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="50%" stopColor="#e0b185" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
-        </defs>
-        <rect width="800" height="1" fill={`url(#${id})`}>
-          <animate attributeName="x" from="-800" to="800" dur={`${4+delay*1.5}s`} repeatCount="indefinite" />
-        </rect>
-      </svg>
-    </div>
-  );
+interface Course {
+  id: string;
+  slug: string;
+  level: string;
+  duration: string;
+  image: string;
+  translations: Record<string, { title: string; subtitle: string; description: string }>;
 }
 
-// ─── Feature Card ──────────────────
-function FeatureCard({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) {
-  return (
-    <div className="fcard" style={{
-      background: "rgba(26,26,24,0.7)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-      border: "1px solid rgba(255,255,255,0.05)", borderRadius: "20px",
-      padding: "clamp(1.5rem, 4vw, 2rem)", textAlign: "left",
-      transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)", position: "relative", overflow: "hidden",
-    }}>
-      <div style={{ width: "40px", height: "40px", borderRadius: "12px",
-        background: "linear-gradient(135deg, rgba(196,148,100,0.12), rgba(180,130,80,0.06))",
-        display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-        <Icon size={20} color="#e0b185" strokeWidth={1.5} />
-      </div>
-      <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", fontSize: "16px", fontWeight: 600, color: "#f5f5f7", marginBottom: "8px", letterSpacing: "-0.01em" }}>{title}</h3>
-      <p style={{ fontSize: "13px", color: "#a1a1a6", lineHeight: 1.6, margin: 0, fontWeight: 400 }}>{desc}</p>
-    </div>
-  );
+function getCourses(): Course[] {
+  const p = path.join(process.cwd(), "public", "data", "courses.json");
+  return JSON.parse(fs.readFileSync(p, "utf-8")).courses;
 }
 
-// ─── Page ───────────────────────────────────
-export default function LandingPage() {
-  const [lang, setLang] = useState<Lang>("en");
-  const [mounted, setMounted] = useState(false);
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+function courseTitle(c: Course): string {
+  const t = c.translations;
+  const tr = t.en || t.nl || Object.values(t)[0];
+  return tr?.title || c.slug;
+}
 
-  useEffect(() => { setLang(detectLang()); setMounted(true); setTimeout(() => setVisible(true), 200); }, []);
-  useEffect(() => { if (videoRef.current) videoRef.current.playbackRate = 0.75; }, [videoLoaded]);
+function formatDuration(sec: number): string {
+  const m = Math.floor(sec / 60);
+  if (m === 0) return `${sec}s`;
+  return `${m} min`;
+}
 
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || subscribed) return;
-    try { await fetch("/api/subscribers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, language: lang }) }); } catch {}
-    setSubscribed(true);
-  };
+// Featured music — curated, diverse moods
+const FEATURED_IDS = ["temple-rain", "midnight-temple", "moon-tide-drift", "lo-fi-focus", "ocean-depth", "rainy-kyoto"];
+const featured = FEATURED_IDS.map((id) => MUSIC_TRACKS.find((t) => t.id === id)).filter(Boolean);
 
-  if (!mounted) return null;
-  const t = (key: string) => (T as any)[key]?.[lang] || (T as any)[key]?.en || "";
-  const features = (T.features as any)[lang] || T.features.en;
+export default function HomePage() {
+  const courses = getCourses();
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a0c", color: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", position: "relative", overflow: "hidden" }}>
-      {/* Ambient orbs — mobiel-vriendelijk (niet breder dan viewport) */}
-      <div style={{ position: "absolute", top: "-20%", right: "-25%", width: "clamp(280px, 90vw, 1000px)", height: "clamp(280px, 90vw, 1000px)", borderRadius: "50%", filter: "blur(120px)", opacity: 0.06, background: "radial-gradient(circle, rgba(212,180,138,0.5) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
-      <div style={{ position: "absolute", bottom: "-30%", left: "-25%", width: "clamp(240px, 80vw, 700px)", height: "clamp(240px, 80vw, 700px)", borderRadius: "50%", filter: "blur(100px)", opacity: 0.04, background: "radial-gradient(circle, rgba(180,140,100,0.4) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
-      <FlowingLine delay={0} top="28%" width="40%" />
-      <FlowingLine delay={2} top="72%" width="50%" />
-
-      {/* Hero video */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, opacity: videoLoaded ? 0.4 : 0, transition: "opacity 2.5s ease" }}>
-        <video ref={videoRef} autoPlay muted loop playsInline onCanPlay={() => setVideoLoaded(true)}
-          style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.55) saturate(0.6)" }}
-          poster="/images/bg/bg-youtube.png">
-          <source src="/videos/shorts/temple-loop.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", background: "linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.45) 55%, #0a0a0c 100%)" }} />
-
-      {/* Content */}
-      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "clamp(4.5rem,8vw,4rem) clamp(1.5rem,5vw,4rem) clamp(2.5rem,6vw,4rem)", textAlign: "center" }}>
-        {/* Lang switcher */}
-        <div style={{ position: "absolute", top: "clamp(1rem,3vw,2rem)", left: "50%", transform: `translateX(-50%) ${visible ? "translateY(0)" : "translateY(-8px)"}`, display: "flex", gap: "3px", opacity: visible ? 1 : 0, transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s", background: "rgba(10,10,10,0.5)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "100px", padding: "4px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", zIndex: 5 }}>
-          {LANGS.map((l) => (
-            <button key={l} onClick={() => { setLang(l); localStorage.setItem("lofibuddha-lang", l); }}
-              style={{ background: lang===l ? "rgba(212,180,138,0.18)" : "transparent", color: lang===l ? "#e0b185" : "#a1a1a6", border: lang===l ? "1px solid rgba(212,180,138,0.25)" : "1px solid transparent", borderRadius: "100px", padding: "5px 9px", fontSize: "10.5px", fontWeight: 600, letterSpacing: "0.04em", cursor: "pointer", transition: "all 0.25s ease", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
-              {l.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
+    <div className="min-h-screen bg-bg-primary text-text-primary">
+      <main className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero */}
-        <div style={{ maxWidth: "680px", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "all 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "clamp(2rem,5vw,3rem)" }}>
-            <span style={{ width: "24px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(212,180,138,0.5))" }} />
-            <span style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "#6e6e73" }}>Your daily dose of peace</span>
-            <span style={{ width: "24px", height: "1px", background: "linear-gradient(90deg, rgba(212,180,138,0.5), transparent)" }} />
-          </div>
-          <h1 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", fontWeight: 400, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#f5f5f7", marginBottom: "clamp(1.2rem,3vw,2rem)", whiteSpace: "pre-line" }}>{t("headline")}</h1>
-          <p style={{ fontSize: "clamp(1rem,2vw,1.15rem)", lineHeight: 1.75, color: "#a1a1a6", maxWidth: "520px", margin: "0 auto clamp(2.5rem,6vw,3.5rem)", fontWeight: 350, letterSpacing: "0.01em" }}>{t("subtitle")}</p>
-
-          {/* CTAs — NO Sparkles */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "center", marginBottom: "clamp(4rem,10vw,6rem)" }}>
-            <Link href="/mindfulness" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(135deg, #e0b185 0%, #e0b185 100%)", color: "#0a0a0c", border: "none", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease", boxShadow: "0 4px 24px rgba(196,148,100,0.15)" }}>
-              <Play size={15} /> {t("ctaBrowse")}
+        <section className="py-12 text-center sm:py-20">
+          <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-text-muted">
+            <span className="h-px w-6 bg-gradient-to-r from-transparent to-accent" />
+            Your daily dose of peace
+            <span className="h-px w-6 bg-gradient-to-l from-transparent to-accent" />
+          </span>
+          <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+            Lofi music, guided meditation &amp; <span className="text-accent">mindfulness</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg">
+            Beatless, dreamy soundscapes and guided practices for sleep, focus and stillness — crafted to feel like a retreat.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors"
+              style={{ background: "#E4B872", color: "#1a1308" }}
+            >
+              <Play size={15} /> Explore music
             </Link>
-            <Link href="/signup" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.04)", color: "#e0b185", border: "1px solid rgba(212,180,138,0.15)", borderRadius: "14px", padding: "15px 30px", fontSize: "14px", fontWeight: 500, cursor: "pointer", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", textDecoration: "none", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
-              <ArrowRight size={15} /> {t("ctaApp")}
+            <Link
+              href="/category/focus"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent"
+            >
+              Start meditating <ArrowRight size={15} />
             </Link>
           </div>
-        </div>
+        </section>
 
-        {/* Feature Cards — swipebaar op mobiel, grid op desktop */}
-        <div className="feature-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", maxWidth: "780px", width: "100%", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.7s", marginBottom: "clamp(3rem,8vw,5rem)" }}>
-          {features.map((f: any, i: number) => <FeatureCard key={i} icon={f.icon} title={f.title} desc={f.desc} />)}
-        </div>
+        {/* Categories */}
+        <section className="py-10">
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="text-sm uppercase tracking-[0.2em] text-text-muted">Journeys</h2>
+              <p className="mt-2 text-2xl font-semibold">Four paths to calm</p>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {CATEGORIES.map((c) => (
+              <Link
+                key={c.id}
+                href={`/category/${c.id}`}
+                className="group rounded-2xl border border-white/10 bg-bg-card p-6 transition-colors hover:border-white/25"
+              >
+                <span className="font-serif text-2xl" style={{ color: c.accent }} aria-hidden>
+                  {c.script}
+                </span>
+                <h3 className="mt-3 text-lg font-semibold">{c.name}</h3>
+                <p className="mt-1 text-sm text-text-secondary">{c.tagline}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                  Explore <ArrowRight size={14} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Featured music */}
+        <section className="py-10">
+          <h2 className="text-sm uppercase tracking-[0.2em] text-text-muted">Featured soundscapes</h2>
+          <p className="mt-2 text-2xl font-semibold">Listen &amp; drift</p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((t) => (
+              <Link
+                key={t!.id}
+                href={`/music/${t!.id}`}
+                className="group flex gap-4 rounded-2xl border border-white/10 bg-bg-card p-4 transition-colors hover:border-white/25"
+              >
+                {t!.cover ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`/images/music-covers/${t!.cover}.webp`}
+                    alt={t!.title}
+                    className="h-16 w-16 shrink-0 rounded-xl object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-bg-hover">
+                    <Play size={20} className="text-accent" />
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <h3 className="truncate text-base font-medium">{t!.title}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{t!.description}</p>
+                  <p className="mt-2 flex items-center gap-1.5 text-xs text-text-muted">
+                    <Clock size={12} className="text-accent" /> {formatDuration(t!.duration)} · {t!.mood}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <Link href="/explore" className="mt-6 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-light">
+            View all {MUSIC_TRACKS.length} soundscapes <ArrowRight size={14} />
+          </Link>
+        </section>
+
+        {/* Courses */}
+        <section className="py-10">
+          <h2 className="text-sm uppercase tracking-[0.2em] text-text-muted">Guided courses</h2>
+          <p className="mt-2 text-2xl font-semibold">Multi-day journeys</p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {courses.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/course/${c.slug}`}
+                className="group rounded-2xl border border-white/10 bg-bg-card p-6 transition-colors hover:border-white/25"
+              >
+                <span className="inline-block rounded-full border border-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.15em] text-accent">
+                  {c.level} · {c.duration}
+                </span>
+                <h3 className="mt-3 text-xl font-semibold">{courseTitle(c)}</h3>
+                <p className="mt-2 text-sm text-text-secondary">{c.translations.en?.subtitle || c.translations.nl?.subtitle}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                  Start course <ArrowRight size={14} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Newsletter */}
-        <div style={{ maxWidth: "420px", width: "100%", opacity: visible ? 1 : 0, transition: "all 1s ease 1s" }}>
-          <p style={{ fontSize: "13px", color: "#a1a1a6", marginBottom: "14px", fontWeight: 500, letterSpacing: "0.02em" }}>{t("newsletterLabel")}</p>
-          <form onSubmit={handleSubscribe} className="nl-form" style={{ display: "flex", gap: "6px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "4px" }}>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("emailPlaceholder")} required
-              style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: "#f5f5f7", fontSize: "14px", padding: "14px 18px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }} />
-            <button type="submit" disabled={subscribed} style={{ background: subscribed ? "linear-gradient(135deg, #7a9a6a, #6a8a5a)" : "linear-gradient(135deg, #e0b185, #e0b185)", color: "#0a0a0c", border: "none", borderRadius: "12px", padding: "14px 22px", fontSize: "13px", fontWeight: 600, cursor: subscribed ? "default" : "pointer", display: "flex", alignItems: "center", gap: "6px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif", whiteSpace: "nowrap", letterSpacing: "-0.01em", transition: "all 0.3s ease" }}>
-              {subscribed ? "✓" : <Send size={13} />} {subscribed ? t("subscribed") : t("subscribe")}
-            </button>
-          </form>
-        </div>
+        <section className="mt-10 rounded-2xl border border-white/10 bg-bg-card p-8 text-center sm:p-12">
+          <Sparkles size={20} className="mx-auto text-accent" />
+          <h2 className="mt-3 text-2xl font-semibold">A little more peace, in your inbox</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-text-secondary">
+            Early access to new soundscapes and meditations. No spam, just calm.
+          </p>
+          <div className="mt-2 flex justify-center">
+            <NewsletterSignup />
+          </div>
+        </section>
+      </main>
 
-        {/* Footer — normaal element (niet absoluut), stroomt onder de content */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#6e6e73", fontWeight: 400, letterSpacing: "0.03em", opacity: visible ? 1 : 0, transition: "all 1s ease 1.3s", marginTop: "clamp(2.5rem,6vw,3.5rem)", paddingBottom: "1rem" }}>
-          <span>{t("footer")}</span>
-          <span style={{ opacity: 0.2 }}>·</span>
-          <Link href="/legal/privacy" style={{ color: "#6e6e73", textDecoration: "none" }}>Privacy</Link>
-          <Link href="/legal/terms" style={{ color: "#6e6e73", textDecoration: "none" }}>Terms</Link>
+      <footer className="border-t border-white/5 py-8 text-center text-xs text-text-muted">
+        <p>LofiBuddha — a space for calm in a busy world.</p>
+        <div className="mt-3 flex flex-wrap justify-center gap-4">
+          <Link href="/legal/privacy" className="hover:text-accent">Privacy</Link>
+          <Link href="/legal/terms" className="hover:text-accent">Terms</Link>
+          <Link href="/legal/disclaimer" className="hover:text-accent">Disclaimer</Link>
         </div>
-      </div>
-      <style jsx>{`.fcard:hover { border-color: rgba(212,180,138,0.2) !important; transform: translateY(-2px); }`}</style>
+      </footer>
     </div>
   );
 }

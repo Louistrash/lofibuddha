@@ -36,8 +36,19 @@ export default async function CategoryPage({ params }: Props) {
   const experiences = getCategoryExperiences(cat.id);
   const accent = cat.accent;
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://lofibuddha.com/" },
+      { "@type": "ListItem", position: 2, name: cat.name, item: `https://lofibuddha.com/category/${cat.id}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+
       <main className="mx-auto max-w-4xl px-6 py-10">
         <Link
           href="/explore"
