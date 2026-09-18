@@ -62,6 +62,7 @@ export default function PaywallScreen() {
 
   const [busy, setBusy] = useState<string | null>(null);
   const [packages, setPackages] = useState<any[]>([]);
+  const [justPurchased, setJustPurchased] = useState(false);
   /**
    * Alert.alert is a no-op on react-native-web, so every failure path was
    * silent in the browser — the Subscribe buttons looked dead. Feedback is
@@ -72,6 +73,12 @@ export default function PaywallScreen() {
   useEffect(() => {
     getOfferings().then((o) => setPackages(o?.current?.availablePackages ?? []));
   }, []);
+
+  // Na een geslaagde aankoop: zodra de entitlement herkend is (isPro), sluit de
+  // paywall automatisch i.p.v. dat de gebruiker op de "unlock wall" blijft hangen.
+  useEffect(() => {
+    if (justPurchased && isPro) dismiss();
+  }, [justPurchased, isPro, dismiss]);
 
   function fail(text: string) {
     setNotice({ kind: "error", text });
@@ -130,6 +137,7 @@ export default function PaywallScreen() {
           user.uid
         );
       }
+      setJustPurchased(true);
       await refresh();
     } catch (e: any) {
       if (!e?.userCancelled) fail(e?.message || "Something went wrong. Please try again.");
