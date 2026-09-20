@@ -58,8 +58,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   <div class="caption-wrap">
     <div class="caption">${captionHTML}</div>
     <div class="subtitle">${safeSub}</div>
-  </div>
-  <div class="brand">lofibuddha.com</div>`;
+  </div>`;
 
   return `<!DOCTYPE html>
 <html>
@@ -104,13 +103,6 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     letter-spacing: 0.18em; text-transform: uppercase;
     opacity: 0; animation: fadeSlideIn 2s 0.9s ease-out forwards;
     text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 2px 12px rgba(0,0,0,0.7);
-  }
-  .brand {
-    position: absolute; bottom: 2.6%; left: 50%; transform: translateX(-50%);
-    z-index: 11; color: #9a9488; font-size: ${Math.round(width * 0.02)}px;
-    font-weight: 500; letter-spacing: 0.18em;
-    opacity: 0; animation: fadeSlideIn 2s 1.8s ease-out forwards;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.6);
   }
 
   @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
