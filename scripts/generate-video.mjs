@@ -557,9 +557,32 @@ const SCENES = {
   }),
 
   "mandala-breathe": ({ width }) => {
-    const petals = Array.from({ length: 12 }, (_, i) =>
-      `<g transform="rotate(${i * 30} 200 200)"><path d="M200,36 C217,74 217,140 200,170 C183,140 183,74 200,36 Z" fill="rgba(243,216,164,0.13)" stroke="rgba(243,216,164,0.55)" stroke-width="1.2"/></g>`
-    ).join("");
+    // Exacte replicatie van de Mandala component (mobile/src/components/content/Mandala.tsx):
+    // teardrop-blaadjes, 3 ringen (32/16/8), goud/bronzen palette, dunne lijnen.
+    const C = 50;
+    const petalPath = (inner, outer, w) => {
+      const top = C - outer, base = C - inner, belly = C - (inner + (outer - inner) * 0.55);
+      return `M ${C} ${base} C ${C - w} ${belly}, ${C - w} ${top + 2}, ${C} ${top} C ${C + w} ${top + 2}, ${C + w} ${belly}, ${C} ${base} Z`;
+    };
+    const ring = (count, inner, outer, w, color, fill, sw, op) => {
+      const d = petalPath(inner, outer, w);
+      const pts = Array.from({ length: count }, (_, i) =>
+        `<path d="${d}" transform="rotate(${(360 / count) * i} ${C} ${C})" stroke="${color}" stroke-width="${sw}" fill="${fill}" stroke-linejoin="round"/>`
+      ).join("");
+      return `<g opacity="${op}">${pts}</g>`;
+    };
+    const GOLD = "#E4B872", GOLD_DEEP = "#A67C3D", GOLD_BRIGHT = "#F3D8A4";
+    const svg = `
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <circle cx="50" cy="50" r="48" stroke="${GOLD_DEEP}" stroke-width="0.3" fill="none" opacity="0.5"/>
+        ${ring(32, 40, 49, 1.4, GOLD, "none", 0.3, 0.45)}
+        <circle cx="50" cy="50" r="34" stroke="${GOLD_DEEP}" stroke-width="0.35" fill="none" opacity="0.6"/>
+        ${ring(16, 22, 38, 4.5, GOLD_DEEP, "rgba(166,124,61,0.08)", 0.45, 0.75)}
+        ${ring(8, 9, 24, 5.5, GOLD, "rgba(228,184,114,0.08)", 0.5, 0.85)}
+        ${ring(8, 5, 13, 3, GOLD_BRIGHT, "rgba(243,216,164,0.10)", 0.4, 0.7)}
+        <circle cx="50" cy="50" r="5" stroke="${GOLD_BRIGHT}" stroke-width="0.4" fill="rgba(243,216,164,0.12)"/>
+        <circle cx="50" cy="50" r="1.6" fill="${GOLD_BRIGHT}" opacity="0.6"/>
+      </svg>`;
     return {
       css: `
       .purple-glow { position: absolute; inset: 0; z-index: 0;
@@ -571,21 +594,14 @@ const SCENES = {
       @keyframes glowPulse { 0%,100% { opacity: 0.72; } 50% { opacity: 1; } }
       .mandala { position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%);
         width: ${Math.round(width * 0.58)}px; height: ${Math.round(width * 0.58)}px;
-        z-index: 1; animation: breathe 7s cubic-bezier(0.45,0,0.55,1) infinite;
-        filter: drop-shadow(0 0 42px rgba(243,216,164,0.28)); }
-      @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); }
-        50% { transform: translate(-50%,-50%) scale(1.08); } }
+        z-index: 1; animation: breathe 7s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(243,216,164,0.22)); }
+      @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.82; }
+        50% { transform: translate(-50%,-50%) scale(1.06); opacity: 1; } }
     `,
       html: `
       <div class="purple-glow"></div>
-      <svg class="mandala" viewBox="0 0 400 400">
-        <circle cx="200" cy="200" r="194" fill="none" stroke="rgba(243,216,164,0.5)" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="178" fill="none" stroke="rgba(228,184,114,0.22)" stroke-width="1"/>
-        ${petals}
-        <circle cx="200" cy="200" r="60" fill="none" stroke="rgba(243,216,164,0.5)" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="46" fill="none" stroke="rgba(228,184,114,0.22)" stroke-width="1"/>
-        <circle cx="200" cy="200" r="18" fill="rgba(243,216,164,0.55)"/>
-      </svg>
+      <div class="mandala">${svg}</div>
     `,
     };
   },
