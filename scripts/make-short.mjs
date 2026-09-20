@@ -64,7 +64,8 @@ async function tts(text, outPath) {
   const API_KEY = process.env.ELEVENLABS_API_KEY;
   if (!VOICE_ID || !API_KEY) throw new Error("ELEVENLABS_API_KEY / VOICE_ID ontbreken in .env");
 
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+  // with-timestamps → audio + per-karakter alignment (voor woord-sync).
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/with-timestamps`, {
     method: "POST",
     headers: { "xi-api-key": API_KEY, "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -77,9 +78,31 @@ async function tts(text, outPath) {
     const body = await res.text();
     throw new Error(`TTS failed (${res.status}): ${body.slice(0, 300)}`);
   }
-  const buf = Buffer.from(await res.arrayBuffer());
-  writeFileSync(outPath, buf);
-  if (buf.length < 1000) throw new Error("TTS output te klein");
+  const data = await res.json();
+  const audio = Buffer.from(data.audio_base64, "base64");
+  writeFileSync(outPath, audio);
+  if (audio.length < 1000) throw new Error("TTS output te klein");
+  return data.alignment || data.normalized_alignment || null;
+}
+
+// Groepeer karakter-alignment tot woorden: [{ w, t }] met t = starttijd (sec, relatief aan stem).
+function wordsFromAlignment(alignment) {
+  if (!alignment || !Array.isArray(alignment.characters)) return null;
+  const chars = alignment.characters;
+  const starts = alignment.character_start_times_seconds || [];
+  const words = [];
+  let cur = "", start = null;
+  for (let i = 0; i < chars.length; i++) {
+    const c = chars[i];
+    if (c === " " || c === "\n") {
+      if (cur) { words.push({ w: cur, t: start ?? 0 }); cur = ""; start = null; }
+    } else {
+      if (cur === "") start = starts[i] ?? 0;
+      cur += c;
+    }
+  }
+  if (cur) words.push({ w: cur, t: start ?? 0 });
+  return words;
 }
 
 function durationOf(p) {
@@ -116,8 +139,15 @@ async function main() {
   const mixPath = join(SOUNDS_DIR, `short-${slug}.mp3`);
 
   console.log(`\n🎙️  TTS: "${text}"`);
-  await tts(text, voicePath);
+  const alignment = await tts(text, voicePath);
   const voiceDur = durationOf(voicePath);
+  let timingsPath = "";
+  const voiceWords = wordsFromAlignment(alignment);
+  if (voiceWords && voiceWords.length) {
+    timingsPath = join(TMP, `${slug}-timings.json`);
+    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t).toFixed(2) }))));
+    console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (offset ${voiceDelay}s)`);
+  }
   const videoDur = targetDur > 0 ? targetDur : Math.round((voiceDelay + voiceDur + 2.0) * 10) / 10;
   console.log(`   voice ${voiceDur.toFixed(2)}s | chime ${chimeSec}s | delay ${voiceDelay}s → video ${videoDur}s`);
 
@@ -145,10 +175,12 @@ async function main() {
 
   console.log(`🎬 Render ${template} (9:16) → public/videos/`);
   const outName = `short-${slug}.mp4`;
+  const timingsFlag = timingsPath ? ` --word-timings "${timingsPath}"` : "";
   sh(
     `node scripts/generate-video.mjs --template ${template} --size 9:16 ` +
     `--duration ${videoDur} --caption "${text.replace(/"/g, '\\"')}" ` +
-    `--subtitle "lofibuddha.com" --audio short-${slug} --audiovol 1.0 --output ${outName}`
+    `--subtitle "lofibuddha.com" --audio short-${slug} --audiovol 1.0 ` +
+    `${timingsFlag} --output ${outName}`
   );
 
   const finalPath = join(ROOT, "public", "videos", outName);

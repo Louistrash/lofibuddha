@@ -15,7 +15,7 @@
  */
 
 import { execSync } from "child_process";
-import { writeFileSync, mkdirSync, rmSync, existsSync, copyFileSync } from "fs";
+import { writeFileSync, readFileSync, mkdirSync, rmSync, existsSync, copyFileSync } from "fs";
 import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -27,11 +27,11 @@ const SOUNDS_DIR = join(ROOT, "data", "sounds", "audio");
 // ── Scene templates ──────────────────────────────────────────────────────────
 
 /** Live animated scene (CSS/canvas) — shared look with the site's experience scenes */
-function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage, template, clean }) {
+function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage, template, clean, wordDelays }) {
   const rawCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n");
   const safeSub = (subtitle || "lofibuddha.com").replace(/"/g, "&quot;");
 
-  // Woord-voor-woord reveal — tekst verschijnt gespreid (volgt de stem).
+  // Woord-voor-woord reveal — gesynced op de stem (wordDelays) of gespreid als fallback.
   const wordStart = duration * 0.12;
   const wordCount = rawCaption.split(/\s+/).filter(Boolean).length;
   const wordStep = (duration * 0.72) / Math.max(1, wordCount);
@@ -40,9 +40,11 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     .split("\n")
     .map((line) =>
       line.trim().split(/\s+/).filter(Boolean).map((w) => {
-        const delay = (wordStart + wordIdx * wordStep).toFixed(2);
+        const delay = wordDelays && wordDelays[wordIdx] != null
+          ? wordDelays[wordIdx]
+          : wordStart + wordIdx * wordStep;
         wordIdx++;
-        return `<span class="w" style="animation-delay:${delay}s">${w}</span>`;
+        return `<span class="w" style="animation-delay:${(+delay).toFixed(2)}s">${w}</span>`;
       }).join(" ")
     )
     .join("<br>");
@@ -727,6 +729,16 @@ async function generate(args) {
   const audioVol = parseFloat(args.audiovol) || 0.85;
   const clean = args.clean === "true" || args.clean === "1";
 
+  // Woord-timings (optioneel): JSON-bestand met per-woord starttijden (stem-sync).
+  let wordDelays = null;
+  const timingsArg = args["word-timings"];
+  if (timingsArg && existsSync(timingsArg)) {
+    try {
+      const arr = JSON.parse(readFileSync(timingsArg, "utf-8"));
+      if (Array.isArray(arr)) wordDelays = arr.map((x) => (typeof x === "number" ? x : x.t));
+    } catch {}
+  }
+
   let resolvedBg = bgImage;
   if (bgImage && bgImage.startsWith("/images/")) {
     resolvedBg = join(ROOT, "public", bgImage.replace(/^\//, ""));
@@ -749,7 +761,7 @@ async function generate(args) {
   // Template: quote-card of scene template
   const html = template === "quote-card"
     ? quoteCardHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath })
-    : sceneHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath, template, clean });
+    : sceneHTML({ width, height, duration, caption, subtitle, backgroundImage: bgPath, template, clean, wordDelays });
   writeFileSync(join(tmpProject, "index.html"), html);
 
   console.log(`[Bodhi] Rendering: ${width}x${height} | ${duration}s | template:${template} → ${outputName}`);
