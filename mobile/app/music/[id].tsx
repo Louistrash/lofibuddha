@@ -64,12 +64,15 @@ export default function MusicDetailScreen() {
   );
 
   const handleShare = useCallback(async () => {
-    const url = art ?? `https://lofibuddha.com/music/${track.id}`;
+    // Deel de track-LINK (niet de cover-image). Ontvangers krijgen de sound link
+    // mét een rijke preview (OG-image = cover) via de muziekpagina.
+    const url = `https://lofibuddha.com/music/${track.id}`;
     const title = `${track.title} — LofiBuddha`;
+    const text = `${track.title} — mindful lofi soundtrack on LofiBuddha`;
     if (Platform.OS === "web") {
       try {
         if (navigator.share) {
-          await navigator.share({ title, url });
+          await navigator.share({ title, text, url });
           return;
         }
       } catch {}
@@ -80,9 +83,9 @@ export default function MusicDetailScreen() {
       return;
     }
     try {
-      await Share.share({ message: `${title} — ${url}` });
+      await Share.share({ message: `${text}\n${url}`, url });
     } catch {}
-  }, [art, track]);
+  }, [track]);
 
   return (
     <SceneCanvas>
