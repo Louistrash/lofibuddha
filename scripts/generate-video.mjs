@@ -555,6 +555,40 @@ const SCENES = {
     extraHtml: `
       <div class="nebula"></div>`,
   }),
+
+  "mandala-breathe": ({ width }) => {
+    const petals = Array.from({ length: 12 }, (_, i) =>
+      `<g transform="rotate(${i * 30} 200 200)"><path d="M200,36 C217,74 217,140 200,170 C183,140 183,74 200,36 Z" fill="rgba(243,216,164,0.13)" stroke="rgba(243,216,164,0.55)" stroke-width="1.2"/></g>`
+    ).join("");
+    return {
+      css: `
+      .purple-glow { position: absolute; inset: 0; z-index: 0;
+        background:
+          radial-gradient(58% 46% at 50% 40%, rgba(168,85,247,0.30), transparent 72%),
+          radial-gradient(44% 40% at 50% 50%, rgba(168,85,247,0.16), transparent 70%),
+          linear-gradient(160deg, #0a0a0e 0%, #150b22 42%, #0c0a14 100%);
+        animation: glowPulse 8s ease-in-out infinite; }
+      @keyframes glowPulse { 0%,100% { opacity: 0.72; } 50% { opacity: 1; } }
+      .mandala { position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%);
+        width: ${Math.round(width * 0.58)}px; height: ${Math.round(width * 0.58)}px;
+        z-index: 1; animation: breathe 7s cubic-bezier(0.45,0,0.55,1) infinite;
+        filter: drop-shadow(0 0 42px rgba(243,216,164,0.28)); }
+      @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); }
+        50% { transform: translate(-50%,-50%) scale(1.08); } }
+    `,
+      html: `
+      <div class="purple-glow"></div>
+      <svg class="mandala" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="194" fill="none" stroke="rgba(243,216,164,0.5)" stroke-width="1.5"/>
+        <circle cx="200" cy="200" r="178" fill="none" stroke="rgba(228,184,114,0.22)" stroke-width="1"/>
+        ${petals}
+        <circle cx="200" cy="200" r="60" fill="none" stroke="rgba(243,216,164,0.5)" stroke-width="1.5"/>
+        <circle cx="200" cy="200" r="46" fill="none" stroke="rgba(228,184,114,0.22)" stroke-width="1"/>
+        <circle cx="200" cy="200" r="18" fill="rgba(243,216,164,0.55)"/>
+      </svg>
+    `,
+    };
+  },
 };
 
 // ── Quote Card Template (unchanged, still available) ─────────────────────────
