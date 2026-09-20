@@ -119,6 +119,7 @@ async function main() {
   const musicVol = parseFloat(a.musicvol) || 0.28;
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
+  const wordOffset = parseFloat(a["word-offset"]) || 0.3; // extra vertraging tekst t.o.v. stem (s)
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + 2s)
   const upload = a.upload === "true" || a.upload === "1";
 
@@ -145,8 +146,8 @@ async function main() {
   const voiceWords = wordsFromAlignment(alignment);
   if (voiceWords && voiceWords.length) {
     timingsPath = join(TMP, `${slug}-timings.json`);
-    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t).toFixed(2) }))));
-    console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (offset ${voiceDelay}s)`);
+    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t + wordOffset).toFixed(2) }))));
+    console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (delay ${voiceDelay}s + offset ${wordOffset}s)`);
   }
   const videoDur = targetDur > 0 ? targetDur : Math.round((voiceDelay + voiceDur + 2.0) * 10) / 10;
   console.log(`   voice ${voiceDur.toFixed(2)}s | chime ${chimeSec}s | delay ${voiceDelay}s → video ${videoDur}s`);
