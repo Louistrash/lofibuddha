@@ -28,8 +28,24 @@ const SOUNDS_DIR = join(ROOT, "data", "sounds", "audio");
 
 /** Live animated scene (CSS/canvas) — shared look with the site's experience scenes */
 function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage, template, clean }) {
-  const safeCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
+  const rawCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n");
   const safeSub = (subtitle || "lofibuddha.com").replace(/"/g, "&quot;");
+
+  // Woord-voor-woord reveal — tekst verschijnt gespreid (volgt de stem).
+  const wordStart = duration * 0.12;
+  const wordCount = rawCaption.split(/\s+/).filter(Boolean).length;
+  const wordStep = (duration * 0.72) / Math.max(1, wordCount);
+  let wordIdx = 0;
+  const captionHTML = rawCaption
+    .split("\n")
+    .map((line) =>
+      line.trim().split(/\s+/).filter(Boolean).map((w) => {
+        const delay = (wordStart + wordIdx * wordStep).toFixed(2);
+        wordIdx++;
+        return `<span class="w" style="animation-delay:${delay}s">${w}</span>`;
+      }).join(" ")
+    )
+    .join("<br>");
 
   // Per-template scene layer
   const sceneFn = SCENES[template] || SCENES["zen-lofi"];
@@ -38,7 +54,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const overlay = clean ? "" : `
   <!-- Caption -->
   <div class="caption-wrap">
-    <div class="caption">${safeCaption}</div>
+    <div class="caption">${captionHTML}</div>
     <div class="subtitle">${safeSub}</div>
   </div>
   <div class="brand">lofibuddha.com</div>`;
@@ -73,11 +89,13 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   }
   .caption {
     color: #f0ebe0; font-size: ${Math.round(width * 0.048)}px;
-    font-weight: 600; letter-spacing: 0.05em; line-height: 1.5;
+    font-weight: 600; letter-spacing: 0.05em; line-height: 1.6;
     text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 4px 20px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5);
-    animation: fadeSlideIn 2s ease-out;
-    max-width: 90%; margin: 0 auto; white-space: pre-line;
+    max-width: 90%; margin: 0 auto;
   }
+  .caption .w { opacity: 0; display: inline-block;
+    animation: wordIn 0.55s cubic-bezier(0.2,0.6,0.3,1) forwards; }
+  @keyframes wordIn { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
   .subtitle {
     color: #c49464; font-size: ${Math.round(width * 0.024)}px;
     font-weight: 500; margin-top: ${Math.round(height * 0.014)}px;
