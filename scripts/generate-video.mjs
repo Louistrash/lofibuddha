@@ -54,6 +54,11 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const scene = sceneFn({ width, height, duration });
 
   const overlay = clean ? "" : `
+  <!-- Logo -->
+  <div class="logo-lockup">
+    <img class="logo-mark" src="logo.png" alt="LofiBuddha" />
+    <span class="logo-word">LofiBuddha</span>
+  </div>
   <!-- Caption -->
   <div class="caption-wrap">
     <div class="caption">${captionHTML}</div>
@@ -81,6 +86,17 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     position: absolute; inset: 0; z-index: 5;
     background: radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.72) 100%);
   }
+
+  /* Logo */
+  .logo-lockup {
+    position: absolute; top: 5.5%; left: 50%; transform: translateX(-50%);
+    z-index: 12; display: flex; align-items: center; gap: 10px;
+    opacity: 0; animation: fadeSlideIn 2s 0.4s ease-out forwards;
+  }
+  .logo-mark { width: ${Math.round(width * 0.05)}px; height: ${Math.round(width * 0.05)}px;
+    filter: drop-shadow(0 0 14px rgba(228,184,114,0.4)); }
+  .logo-word { color: #FFC861; font-size: ${Math.round(width * 0.024)}px; font-weight: 700;
+    letter-spacing: 0.04em; text-shadow: 0 0 16px rgba(255,200,97,0.5), 0 1px 3px rgba(0,0,0,0.9); }
 
   /* Caption */
   .caption-wrap {
@@ -749,6 +765,10 @@ async function generate(args) {
     copyFileSync(resolvedBg, join(tmpProject, destName));
     bgPath = destName;
   }
+
+  // LofiBuddha logo (Buddha-badge) — beschikbaar voor scene-templates.
+  const logoSource = join(ROOT, "public", "icon-transparent.png");
+  if (existsSync(logoSource)) copyFileSync(logoSource, join(tmpProject, "logo.png"));
 
   // Template: quote-card of scene template
   const html = template === "quote-card"
