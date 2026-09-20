@@ -59,10 +59,13 @@ function shOut(cmd) {
 }
 
 // ── ElevenLabs TTS ───────────────────────────────────────────────────────────
-async function tts(text, outPath) {
+async function tts(text, outPath, opts = {}) {
   const VOICE_ID = process.env.ELEVENLABS_VOICE_ID;
   const API_KEY = process.env.ELEVENLABS_API_KEY;
   if (!VOICE_ID || !API_KEY) throw new Error("ELEVENLABS_API_KEY / VOICE_ID ontbreken in .env");
+
+  const stability = opts.stability ?? 0.6; // hoger = rustiger / minder intonatie
+  const style = opts.style ?? 0.05; // lager = minder nadruk / klemtoon
 
   // with-timestamps → audio + per-karakter alignment (voor woord-sync).
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/with-timestamps`, {
@@ -71,7 +74,7 @@ async function tts(text, outPath) {
     body: JSON.stringify({
       text,
       model_id: "eleven_v3",
-      voice_settings: { stability: 0.45, similarity_boost: 0.75, style: 0.2, use_speaker_boost: true },
+      voice_settings: { stability, similarity_boost: 0.75, style, use_speaker_boost: true },
     }),
   });
   if (!res.ok) {
@@ -120,6 +123,8 @@ async function main() {
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.3; // extra vertraging tekst t.o.v. stem (s)
+  const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
+  const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + 2s)
   const upload = a.upload === "true" || a.upload === "1";
 
@@ -140,7 +145,7 @@ async function main() {
   const mixPath = join(SOUNDS_DIR, `short-${slug}.mp3`);
 
   console.log(`\n🎙️  TTS: "${text}"`);
-  const alignment = await tts(text, voicePath);
+  const alignment = await tts(text, voicePath, { stability, style });
   const voiceDur = durationOf(voicePath);
   let timingsPath = "";
   const voiceWords = wordsFromAlignment(alignment);
