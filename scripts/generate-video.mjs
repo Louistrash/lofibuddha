@@ -557,8 +557,7 @@ const SCENES = {
   }),
 
   "mandala-breathe": ({ width }) => {
-    // Exacte replicatie van de Mandala component (mobile/src/components/content/Mandala.tsx):
-    // teardrop-blaadjes, 3 ringen (32/16/8), goud/bronzen palette, dunne lijnen.
+    // Verrijkte mandala: 5 draaiende lagen (48/32/16/8/8) + center, goud/bronzen.
     const C = 50;
     const petalPath = (inner, outer, w) => {
       const top = C - outer, base = C - inner, belly = C - (inner + (outer - inner) * 0.55);
@@ -572,14 +571,26 @@ const SCENES = {
       return `<g opacity="${op}">${pts}</g>`;
     };
     const GOLD = "#E4B872", GOLD_DEEP = "#A67C3D", GOLD_BRIGHT = "#F3D8A4";
-    const svg = `
-      <svg viewBox="0 0 100 100" width="100%" height="100%">
+    const layers = `
+      <svg class="ring ring-a" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="49.5" stroke="rgba(243,216,164,0.35)" stroke-width="0.22" fill="none" stroke-dasharray="0.7 1.4"/>
+        ${ring(48, 45, 50, 1.0, GOLD, "none", 0.24, 0.32)}
+      </svg>
+      <svg class="ring ring-b" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="48" stroke="${GOLD_DEEP}" stroke-width="0.3" fill="none" opacity="0.5"/>
         ${ring(32, 40, 49, 1.4, GOLD, "none", 0.3, 0.45)}
+      </svg>
+      <svg class="ring ring-c" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="34" stroke="${GOLD_DEEP}" stroke-width="0.35" fill="none" opacity="0.6"/>
         ${ring(16, 22, 38, 4.5, GOLD_DEEP, "rgba(166,124,61,0.08)", 0.45, 0.75)}
+      </svg>
+      <svg class="ring ring-d" viewBox="0 0 100 100">
         ${ring(8, 9, 24, 5.5, GOLD, "rgba(228,184,114,0.08)", 0.5, 0.85)}
+      </svg>
+      <svg class="ring ring-e" viewBox="0 0 100 100">
         ${ring(8, 5, 13, 3, GOLD_BRIGHT, "rgba(243,216,164,0.10)", 0.4, 0.7)}
+      </svg>
+      <svg class="ring ring-center" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="5" stroke="${GOLD_BRIGHT}" stroke-width="0.4" fill="rgba(243,216,164,0.12)"/>
         <circle cx="50" cy="50" r="1.6" fill="${GOLD_BRIGHT}" opacity="0.6"/>
       </svg>`;
@@ -587,21 +598,28 @@ const SCENES = {
       css: `
       .purple-glow { position: absolute; inset: 0; z-index: 0;
         background:
-          radial-gradient(58% 46% at 50% 40%, rgba(168,85,247,0.30), transparent 72%),
-          radial-gradient(44% 40% at 50% 50%, rgba(168,85,247,0.16), transparent 70%),
+          radial-gradient(58% 46% at 50% 40%, rgba(168,85,247,0.32), transparent 72%),
+          radial-gradient(44% 40% at 50% 50%, rgba(168,85,247,0.18), transparent 70%),
           linear-gradient(160deg, #0a0a0e 0%, #150b22 42%, #0c0a14 100%);
-        animation: glowPulse 8s ease-in-out infinite; }
-      @keyframes glowPulse { 0%,100% { opacity: 0.72; } 50% { opacity: 1; } }
+        animation: glowPulse 7s ease-in-out infinite; }
+      @keyframes glowPulse { 0%,100% { opacity: 0.72; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
       .mandala { position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%);
-        width: ${Math.round(width * 0.58)}px; height: ${Math.round(width * 0.58)}px;
+        width: ${Math.round(width * 0.62)}px; height: ${Math.round(width * 0.62)}px;
         z-index: 1; animation: breathe 7s ease-in-out infinite;
-        filter: drop-shadow(0 0 30px rgba(243,216,164,0.22)); }
-      @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.82; }
+        filter: drop-shadow(0 0 34px rgba(243,216,164,0.24)); }
+      @keyframes breathe { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.84; }
         50% { transform: translate(-50%,-50%) scale(1.06); opacity: 1; } }
+      .mandala .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .ring-a { animation: spin 46s linear infinite; }
+      .ring-b { animation: spin 32s linear infinite reverse; }
+      .ring-c { animation: spin 24s linear infinite; }
+      .ring-d { animation: spin 16s linear infinite reverse; }
+      .ring-e { animation: spin 11s linear infinite; }
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     `,
       html: `
       <div class="purple-glow"></div>
-      <div class="mandala">${svg}</div>
+      <div class="mandala">${layers}</div>
     `,
     };
   },
