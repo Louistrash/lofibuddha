@@ -129,11 +129,11 @@ async function main() {
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.1; // extra vertraging tekst t.o.v. stem (s)
-  const voiceSpeed = parseFloat(a["voice-speed"]) || 1.0; // <1 = langzamer (atempo), bv. 0.9
+  const voiceSpeed = parseFloat(a["voice-speed"]) || 0.85; // <1 = langzamer (atempo), natuurlijk/rustig
   const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
   const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + tail)
-  const tail = parseFloat(a.tail) || 3.5; // muziek-tail na de stem (s)
+  const tail = parseFloat(a.tail) || 7; // muziek-tail na de stem (s) → ~25s totaal
   const upload = a.upload === "true" || a.upload === "1";
 
   const musicPath = join(MUSIC_DIR, `${musicSlug}.mp3`);
