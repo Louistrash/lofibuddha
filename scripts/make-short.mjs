@@ -119,7 +119,8 @@ async function main() {
   const title = a.title || "Daily Calm";
   const musicSlug = a.music || "temple-rain";
   const template = a.template || "mandala-breathe";
-  const musicVol = parseFloat(a.musicvol) || 0.28;
+  const musicVol = parseFloat(a.musicvol) || 0.45;
+  const musicSeek = parseFloat(a["music-seek"]) || 0; // skip stille intro (s), bv. temple-rain → 45
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.3; // extra vertraging tekst t.o.v. stem (s)
@@ -162,13 +163,13 @@ async function main() {
   const voiceDelayMs = Math.round(voiceDelay * 1000);
   const filterParts = [
     `[0:a]adelay=${voiceDelayMs}|${voiceDelayMs}[v]`,
-    `[1:a]volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[m]`,
+    `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[m]`,
   ];
   let chimeArg = "";
   let mixInputs = "[v][m]";
   let nInputs = 2;
   if (chimeSec > 0) {
-    filterParts.push(`[2:a]volume=0.5,atrim=0:${chimeSec},afade=t=out:st=${Math.max(0, chimeSec - 1.4)}:d=1.4[c]`);
+    filterParts.push(`[2:a]volume=0.7,atrim=0:${chimeSec},afade=t=out:st=${Math.max(0, chimeSec - 1.4)}:d=1.4[c]`);
     mixInputs = "[v][m][c]";
     nInputs = 3;
     chimeArg = `-i "${chimePath}"`;
