@@ -120,8 +120,12 @@ async function main() {
   const musicSlug = a.music || "temple-rain";
   const template = a.template || "mandala-breathe";
   const background = a.background || a.bg || ""; // achtergrondafbeelding (bv. /images/buddha-bg.jpg)
-  const musicVol = parseFloat(a.musicvol) || 0.45;
+  const musicVol = parseFloat(a.musicvol) || 0.7;
   const musicSeek = parseFloat(a["music-seek"]) || 0; // skip stille intro (s), bv. temple-rain → 45
+  const duckThreshold = parseFloat(a["duck-threshold"]) || 0.03; // stem-niveau waarop de muziek zakt
+  const duckRatio = parseFloat(a["duck-ratio"]) || 8; // hoe diep de muziek zakt
+  const duckAttack = parseFloat(a["duck-attack"]) || 15; // ms
+  const duckRelease = parseFloat(a["duck-release"]) || 350; // ms
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.1; // extra vertraging tekst t.o.v. stem (s)
@@ -160,25 +164,26 @@ async function main() {
   const videoDur = targetDur > 0 ? targetDur : Math.round((voiceDelay + voiceDur + 2.0) * 10) / 10;
   console.log(`   voice ${voiceDur.toFixed(2)}s | chime ${chimeSec}s | delay ${voiceDelay}s → video ${videoDur}s`);
 
-  // Mix: chime (begin) + voice (na delay) + music (geducked, geloopt) → combined
-  console.log(`🎵 Mix chime + voice + ${musicSlug} (music vol ${musicVol})`);
+  // Mix: chime (begin) + voice (na delay) + music (geducked via sidechain, geloopt) → combined
+  console.log(`🎵 Mix chime + voice + ${musicSlug} (music vol ${musicVol}, ducking ${duckRatio}:1)`);
   const voiceDelayMs = Math.round(voiceDelay * 1000);
   const filterParts = [
-    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs}[v]`,
-    `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[m]`,
+    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs},asplit=2[voice_side][voice_mix]`,
+    `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[music_pre]`,
+    `[music_pre][voice_side]sidechaincompress=threshold=${duckThreshold}:ratio=${duckRatio}:attack=${duckAttack}:release=${duckRelease}:makeup=1[music_ducked]`,
   ];
   let chimeArg = "";
-  let mixInputs = "[v][m]";
+  let mixInputs = "[voice_mix][music_ducked]";
   let nInputs = 2;
   if (chimeSec > 0) {
     filterParts.push(`[2:a]volume=0.7,atrim=0:${chimeSec},afade=t=out:st=${Math.max(0, chimeSec - 1.4)}:d=1.4[c]`);
-    mixInputs = "[v][m][c]";
+    mixInputs = "[voice_mix][music_ducked][c]";
     nInputs = 3;
     chimeArg = `-i "${chimePath}"`;
   }
   sh(
     `ffmpeg -y -v error -i "${voicePath}" -i "${musicPath}" ${chimeArg} ` +
-    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,alimiter=limit=0.95[a]" ` +
+    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,alimiter=limit=0.95:level=0[a]" ` +
     `-map "[a]" -ar 44100 -c:a libmp3lame -b:a 192k "${mixPath}"`
   );
 
