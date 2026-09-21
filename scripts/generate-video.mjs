@@ -54,11 +54,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const scene = sceneFn({ width, height, duration });
 
   const overlay = clean ? "" : `
-  <!-- Logo -->
-  <div class="logo-lockup">
-    <img class="logo-mark" src="logo.png" alt="LofiBuddha" />
-    <span class="logo-word">LofiBuddha</span>
-  </div>
+  <!-- Logo (rond, linksboven, fade-in op einde) -->
   <img class="end-logo" src="logo.png" alt="LofiBuddha" />
   <!-- Caption -->
   <div class="caption-wrap">
@@ -88,16 +84,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     background: radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.72) 100%);
   }
 
-  /* Logo */
-  .logo-lockup {
-    position: absolute; top: 5.5%; left: 50%; transform: translateX(-50%);
-    z-index: 12; display: flex; align-items: center; gap: 10px;
-    opacity: 0; animation: fadeSlideIn 2s 0.4s ease-out forwards;
-  }
-  .logo-mark { width: ${Math.round(width * 0.05)}px; height: ${Math.round(width * 0.05)}px;
-    filter: drop-shadow(0 0 14px rgba(228,184,114,0.4)); }
-  .logo-word { color: #FFC861; font-size: ${Math.round(width * 0.024)}px; font-weight: 700;
-    letter-spacing: 0.04em; text-shadow: 0 0 16px rgba(255,200,97,0.5), 0 1px 3px rgba(0,0,0,0.9); }
+  /* Logo (rond, linksboven, fade-in op einde) */
   .end-logo { position: absolute; top: 5%; left: 5%;
     z-index: 12; width: ${Math.round(width * 0.10)}px; height: ${Math.round(width * 0.10)}px;
     opacity: 0; animation: endFade 1.2s ${Math.max(0, duration - 3)}s ease-out forwards;
