@@ -83,7 +83,9 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     font-family: 'Inter', sans-serif;
   }
   .bg { position: absolute; inset: 0; z-index: 0; overflow: hidden;
-    background: linear-gradient(160deg, #0a0f0e 0%, #111a16 30%, #0d1217 70%, #0a0f0e 100%); }
+    ${backgroundImage
+      ? `background: url('${backgroundImage}') center/cover no-repeat;`
+      : `background: linear-gradient(160deg, #0a0f0e 0%, #111a16 30%, #0d1217 70%, #0a0f0e 100%);`} }
   ${scene.css}
 
   /* Dark vignette */
@@ -651,6 +653,23 @@ const SCENES = {
       html: `
       <div class="purple-glow"></div>
       <div class="mandala">${layers}</div>
+    `,
+    };
+  },
+
+  "buddha-lotus": () => {
+    // Achtergrond = Boeddha-lotus afbeelding (via --background), met zachte ademende gloed.
+    return {
+      css: `
+      .buddha-glow { position: absolute; inset: 0; z-index: 0;
+        background:
+          radial-gradient(55% 42% at 60% 38%, rgba(255,200,97,0.08), transparent 70%),
+          radial-gradient(50% 44% at 66% 46%, rgba(96,165,250,0.10), transparent 72%);
+        animation: buddhaGlow 9s ease-in-out infinite; }
+      @keyframes buddhaGlow { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+    `,
+      html: `
+      <div class="buddha-glow"></div>
     `,
     };
   },

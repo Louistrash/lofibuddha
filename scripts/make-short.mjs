@@ -119,6 +119,7 @@ async function main() {
   const title = a.title || "Daily Calm";
   const musicSlug = a.music || "temple-rain";
   const template = a.template || "mandala-breathe";
+  const background = a.background || a.bg || ""; // achtergrondafbeelding (bv. /images/buddha-bg.jpg)
   const musicVol = parseFloat(a.musicvol) || 0.45;
   const musicSeek = parseFloat(a["music-seek"]) || 0; // skip stille intro (s), bv. temple-rain → 45
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
@@ -184,11 +185,12 @@ async function main() {
   console.log(`🎬 Render ${template} (9:16) → public/videos/`);
   const outName = `short-${slug}.mp4`;
   const timingsFlag = timingsPath ? ` --word-timings "${timingsPath}"` : "";
+  const bgFlag = background ? ` --background "${background}"` : "";
   sh(
     `node scripts/generate-video.mjs --template ${template} --size 9:16 ` +
     `--duration ${videoDur} --caption "${text.replace(/"/g, '\\"')}" ` +
     `--subtitle "lofibuddha.com" --audio short-${slug} --audiovol 1.0 ` +
-    `${timingsFlag} --output ${outName}`
+    `${timingsFlag}${bgFlag} --output ${outName}`
   );
 
   const finalPath = join(ROOT, "public", "videos", outName);
