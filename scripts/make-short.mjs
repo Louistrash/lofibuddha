@@ -141,7 +141,10 @@ async function main() {
     console.error(`✗ Music track niet gevonden: ${musicPath}`);
     process.exit(1);
   }
-  const chimePath = join(ROOT, "data", "breathe", "audio", "chime.mp3");
+  const chimePathArg = a["chime-path"] || "";
+  const chimePath = chimePathArg
+    ? (chimePathArg.startsWith("/") ? chimePathArg : join(ROOT, chimePathArg))
+    : join(ROOT, "data", "breathe", "audio", "chime.mp3");
   if (chimeSec > 0 && !existsSync(chimePath)) {
     console.error(`✗ Chime niet gevonden: ${chimePath}`);
     process.exit(1);
@@ -185,7 +188,7 @@ async function main() {
   }
   sh(
     `ffmpeg -y -v error -i "${voicePath}" -i "${musicPath}" ${chimeArg} ` +
-    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,alimiter=limit=0.95:level=0[a]" ` +
+    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,volume=1.4,alimiter=limit=0.95:level=0[a]" ` +
     `-map "[a]" -ar 44100 -c:a libmp3lame -b:a 192k "${mixPath}"`
   );
 
