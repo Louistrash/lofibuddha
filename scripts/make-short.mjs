@@ -132,7 +132,8 @@ async function main() {
   const voiceSpeed = parseFloat(a["voice-speed"]) || 1.0; // <1 = langzamer (atempo), bv. 0.9
   const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
   const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
-  const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + 2s)
+  const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + tail)
+  const tail = parseFloat(a.tail) || 3.5; // muziek-tail na de stem (s)
   const upload = a.upload === "true" || a.upload === "1";
 
   const musicPath = join(MUSIC_DIR, `${musicSlug}.mp3`);
@@ -161,14 +162,15 @@ async function main() {
     writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t / voiceSpeed + wordOffset).toFixed(2) }))));
     console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (delay ${voiceDelay}s + offset ${wordOffset}s)`);
   }
-  const videoDur = targetDur > 0 ? targetDur : Math.round((voiceDelay + voiceDur + 2.0) * 10) / 10;
-  console.log(`   voice ${voiceDur.toFixed(2)}s | chime ${chimeSec}s | delay ${voiceDelay}s → video ${videoDur}s`);
+  const voiceEnd = voiceDelay + voiceDur / voiceSpeed;
+  const videoDur = targetDur > 0 ? targetDur : Math.ceil(voiceEnd + tail);
+  console.log(`   voice ${voiceDur.toFixed(2)}s (${voiceSpeed}x → ${(voiceDur / voiceSpeed).toFixed(2)}s) | chime ${chimeSec}s | delay ${voiceDelay}s | tail ${tail}s → video ${videoDur}s`);
 
   // Mix: chime (begin) + voice (na delay) + music (geducked via sidechain, geloopt) → combined
   console.log(`🎵 Mix chime + voice + ${musicSlug} (music vol ${musicVol}, ducking ${duckRatio}:1)`);
   const voiceDelayMs = Math.round(voiceDelay * 1000);
   const filterParts = [
-    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs},asplit=2[voice_side][voice_mix]`,
+    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs},apad=whole_dur=${videoDur},asplit=2[voice_side][voice_mix]`,
     `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[music_pre]`,
     `[music_pre][voice_side]sidechaincompress=threshold=${duckThreshold}:ratio=${duckRatio}:attack=${duckAttack}:release=${duckRelease}:makeup=1[music_ducked]`,
   ];
