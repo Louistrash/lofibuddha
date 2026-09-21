@@ -124,6 +124,7 @@ async function main() {
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.1; // extra vertraging tekst t.o.v. stem (s)
+  const voiceSpeed = parseFloat(a["voice-speed"]) || 1.0; // <1 = langzamer (atempo), bv. 0.9
   const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
   const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + 2s)
@@ -152,7 +153,7 @@ async function main() {
   const voiceWords = wordsFromAlignment(alignment);
   if (voiceWords && voiceWords.length) {
     timingsPath = join(TMP, `${slug}-timings.json`);
-    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t + wordOffset).toFixed(2) }))));
+    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t / voiceSpeed + wordOffset).toFixed(2) }))));
     console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (delay ${voiceDelay}s + offset ${wordOffset}s)`);
   }
   const videoDur = targetDur > 0 ? targetDur : Math.round((voiceDelay + voiceDur + 2.0) * 10) / 10;
@@ -162,7 +163,7 @@ async function main() {
   console.log(`🎵 Mix chime + voice + ${musicSlug} (music vol ${musicVol})`);
   const voiceDelayMs = Math.round(voiceDelay * 1000);
   const filterParts = [
-    `[0:a]adelay=${voiceDelayMs}|${voiceDelayMs}[v]`,
+    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs}[v]`,
     `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[m]`,
   ];
   let chimeArg = "";

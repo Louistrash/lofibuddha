@@ -31,7 +31,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const rawCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n");
   const safeSub = (subtitle || "lofibuddha.com").replace(/"/g, "&quot;");
 
-  // Zin-voor-zin reveal — volledige zin tegelijk, gesynced op de stem (eerste woord van de zin).
+  // Zin-voor-zin — één volledige zin tegelijk (links uitgelijnd), vorige zin verdwijnt.
   const wordStart = duration * 0.12;
   const wordCount = rawCaption.split(/\s+/).filter(Boolean).length;
   const wordStep = (duration * 0.72) / Math.max(1, wordCount);
@@ -41,14 +41,19 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     .flatMap((line) => line.split(/(?<=[.!?])\s+/))
     .map((s) => s.trim())
     .filter(Boolean);
+  const sentTimes = sentences.map((sentence) => {
+    const nWords = sentence.split(/\s+/).filter(Boolean).length;
+    const t = wordDelays && wordDelays[wordIdx] != null
+      ? wordDelays[wordIdx]
+      : wordStart + wordIdx * wordStep;
+    wordIdx += nWords;
+    return t;
+  });
   const captionHTML = sentences
-    .map((sentence) => {
-      const nWords = sentence.split(/\s+/).filter(Boolean).length;
-      const delay = wordDelays && wordDelays[wordIdx] != null
-        ? wordDelays[wordIdx]
-        : wordStart + wordIdx * wordStep;
-      wordIdx += nWords;
-      return `<div class="s" style="animation-delay:${(+delay).toFixed(2)}s">${sentence}</div>`;
+    .map((sentence, i) => {
+      const inStart = sentTimes[i];
+      const outStart = i + 1 < sentTimes.length ? sentTimes[i + 1] : duration;
+      return `<div class="s" style="animation-delay:${(+inStart).toFixed(2)}s,${(+outStart).toFixed(2)}s">${sentence}</div>`;
     })
     .join("");
 
@@ -104,11 +109,13 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     color: #f0ebe0; font-size: ${Math.round(width * 0.048)}px;
     font-weight: 600; letter-spacing: 0.05em; line-height: 1.6;
     text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 4px 20px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5);
-    max-width: 90%; margin: 0 auto;
+    max-width: 92%; margin: 0; text-align: left;
+    position: relative; min-height: ${Math.round(width * 0.16)}px;
   }
-  .caption .s { opacity: 0; display: block; margin-bottom: ${Math.round(height * 0.012)}px;
-    animation: sentIn 0.5s cubic-bezier(0.2,0.6,0.3,1) forwards; }
+  .caption .s { opacity: 0; position: absolute; top: 0; left: 0; width: 100%;
+    animation: sentIn 0.45s cubic-bezier(0.2,0.6,0.3,1) both, sentOut 0.35s ease-in forwards; }
   @keyframes sentIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes sentOut { from { opacity: 1; } to { opacity: 0; } }
   .subtitle {
     color: #c49464; font-size: ${Math.round(width * 0.024)}px;
     font-weight: 500; margin-top: ${Math.round(height * 0.014)}px;
