@@ -123,7 +123,7 @@ async function main() {
   const musicSeek = parseFloat(a["music-seek"]) || 0; // skip stille intro (s), bv. temple-rain → 45
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
   const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
-  const wordOffset = parseFloat(a["word-offset"]) || 0.3; // extra vertraging tekst t.o.v. stem (s)
+  const wordOffset = parseFloat(a["word-offset"]) || 0.1; // extra vertraging tekst t.o.v. stem (s)
   const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
   const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + 2s)

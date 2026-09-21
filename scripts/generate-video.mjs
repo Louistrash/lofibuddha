@@ -31,23 +31,26 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const rawCaption = (caption || "Relax and unwind.").replace(/\\n/g, "\n");
   const safeSub = (subtitle || "lofibuddha.com").replace(/"/g, "&quot;");
 
-  // Woord-voor-woord reveal — gesynced op de stem (wordDelays) of gespreid als fallback.
+  // Zin-voor-zin reveal — volledige zin tegelijk, gesynced op de stem (eerste woord van de zin).
   const wordStart = duration * 0.12;
   const wordCount = rawCaption.split(/\s+/).filter(Boolean).length;
   const wordStep = (duration * 0.72) / Math.max(1, wordCount);
   let wordIdx = 0;
-  const captionHTML = rawCaption
-    .split("\n")
-    .map((line) =>
-      line.trim().split(/\s+/).filter(Boolean).map((w) => {
-        const delay = wordDelays && wordDelays[wordIdx] != null
-          ? wordDelays[wordIdx]
-          : wordStart + wordIdx * wordStep;
-        wordIdx++;
-        return `<span class="w" style="animation-delay:${(+delay).toFixed(2)}s">${w}</span>`;
-      }).join(" ")
-    )
-    .join("<br>");
+  const sentences = rawCaption
+    .split(/\s*\n\s*/)
+    .flatMap((line) => line.split(/(?<=[.!?])\s+/))
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const captionHTML = sentences
+    .map((sentence) => {
+      const nWords = sentence.split(/\s+/).filter(Boolean).length;
+      const delay = wordDelays && wordDelays[wordIdx] != null
+        ? wordDelays[wordIdx]
+        : wordStart + wordIdx * wordStep;
+      wordIdx += nWords;
+      return `<div class="s" style="animation-delay:${(+delay).toFixed(2)}s">${sentence}</div>`;
+    })
+    .join("");
 
   // Per-template scene layer
   const sceneFn = SCENES[template] || SCENES["zen-lofi"];
@@ -103,9 +106,9 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 4px 20px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5);
     max-width: 90%; margin: 0 auto;
   }
-  .caption .w { opacity: 0; display: inline-block;
-    animation: wordIn 0.55s cubic-bezier(0.2,0.6,0.3,1) forwards; }
-  @keyframes wordIn { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+  .caption .s { opacity: 0; display: block; margin-bottom: ${Math.round(height * 0.012)}px;
+    animation: sentIn 0.5s cubic-bezier(0.2,0.6,0.3,1) forwards; }
+  @keyframes sentIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .subtitle {
     color: #c49464; font-size: ${Math.round(width * 0.024)}px;
     font-weight: 500; margin-top: ${Math.round(height * 0.014)}px;
