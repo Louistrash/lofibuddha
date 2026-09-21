@@ -49,10 +49,16 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     wordIdx += nWords;
     return t;
   });
+  const lastWordT = wordDelays && wordDelays.length
+    ? wordDelays[wordDelays.length - 1]
+    : duration - 4;
+  const logoTime = Math.min(duration - 1.2, lastWordT + 1.6); // logo verschijnt ná de laatste tekst
   const captionHTML = sentences
     .map((sentence, i) => {
       const inStart = sentTimes[i];
-      const outStart = i + 1 < sentTimes.length ? sentTimes[i + 1] : duration;
+      const outStart = i + 1 < sentTimes.length
+        ? sentTimes[i + 1]
+        : Math.min(duration - 0.4, lastWordT + 0.9); // laatste zin fadet uit ná de stem
       return `<div class="s" style="animation-delay:${(+inStart).toFixed(2)}s,${(+outStart).toFixed(2)}s">${sentence}</div>`;
     })
     .join("");
@@ -62,7 +68,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const scene = sceneFn({ width, height, duration });
 
   const overlay = clean ? "" : `
-  <!-- Logo (rond, linksboven, fade-in op einde) -->
+  <!-- Logo (rond, linksonder, fade-in nadat de laatste tekst weg is) -->
   <img class="end-logo" src="logo.png" alt="LofiBuddha" />
   <!-- Caption -->
   <div class="caption-wrap">
@@ -94,10 +100,10 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     background: radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.72) 100%);
   }
 
-  /* Logo (rond, linksboven, fade-in op einde) */
-  .end-logo { position: absolute; top: 5%; left: 5%;
-    z-index: 12; width: ${Math.round(width * 0.10)}px; height: ${Math.round(width * 0.10)}px;
-    opacity: 0; animation: endFade 1.2s ${Math.max(0, duration - 3)}s ease-out forwards;
+  /* Logo (rond, linksonder, fade-in nadat de laatste tekst weg is) */
+  .end-logo { position: absolute; bottom: 7%; left: 6%;
+    z-index: 12; width: ${Math.round(width * 0.11)}px; height: ${Math.round(width * 0.11)}px;
+    opacity: 0; animation: endFade 1.2s ${(+logoTime).toFixed(2)}s ease-out forwards;
     filter: drop-shadow(0 0 16px rgba(228,184,114,0.5)); }
   @keyframes endFade { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: scale(1); } }
 
@@ -142,6 +148,57 @@ ${overlay}
 </script>
 </body>
 </html>`;
+}
+
+// ── Gedeelde mandala-geometrie (5 draaiende gouden lagen) ────────────────────
+function mandalaLayers() {
+  const C = 50;
+  const petalPath = (inner, outer, w) => {
+    const top = C - outer, base = C - inner, belly = C - (inner + (outer - inner) * 0.55);
+    return `M ${C} ${base} C ${C - w} ${belly}, ${C - w} ${top + 2}, ${C} ${top} C ${C + w} ${top + 2}, ${C + w} ${belly}, ${C} ${base} Z`;
+  };
+  const ring = (count, inner, outer, w, color, fill, sw, op) => {
+    const d = petalPath(inner, outer, w);
+    const pts = Array.from({ length: count }, (_, i) =>
+      `<path d="${d}" transform="rotate(${(360 / count) * i} ${C} ${C})" stroke="${color}" stroke-width="${sw}" fill="${fill}" stroke-linejoin="round"/>`
+    ).join("");
+    return `<g opacity="${op}">${pts}</g>`;
+  };
+  const GOLD = "#E4B872", GOLD_DEEP = "#A67C3D", GOLD_BRIGHT = "#F3D8A4";
+  return `
+    <svg class="ring ring-a" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="49.5" stroke="rgba(243,216,164,0.35)" stroke-width="0.22" fill="none" stroke-dasharray="0.7 1.4"/>
+      ${ring(48, 45, 50, 1.0, GOLD, "none", 0.24, 0.32)}
+    </svg>
+    <svg class="ring ring-b" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" stroke="${GOLD_DEEP}" stroke-width="0.3" fill="none" opacity="0.5"/>
+      ${ring(32, 40, 49, 1.4, GOLD, "none", 0.3, 0.45)}
+    </svg>
+    <svg class="ring ring-c" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="34" stroke="${GOLD_DEEP}" stroke-width="0.35" fill="none" opacity="0.6"/>
+      ${ring(16, 22, 38, 4.5, GOLD_DEEP, "rgba(166,124,61,0.08)", 0.45, 0.75)}
+    </svg>
+    <svg class="ring ring-d" viewBox="0 0 100 100">
+      ${ring(8, 9, 24, 5.5, GOLD, "rgba(228,184,114,0.08)", 0.5, 0.85)}
+    </svg>
+    <svg class="ring ring-e" viewBox="0 0 100 100">
+      ${ring(8, 5, 13, 3, GOLD_BRIGHT, "rgba(243,216,164,0.10)", 0.4, 0.7)}
+    </svg>
+    <svg class="ring ring-center" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="5" stroke="${GOLD_BRIGHT}" stroke-width="0.4" fill="rgba(243,216,164,0.12)"/>
+      <circle cx="50" cy="50" r="1.6" fill="${GOLD_BRIGHT}" opacity="0.6"/>
+    </svg>`;
+}
+
+// ── Gedeelde ring-rotatie CSS (gouden mandala-lagen) ─────────────────────────
+function mandalaSpinCSS() {
+  return `
+    .ring-a { animation: spin 46s linear infinite; }
+    .ring-b { animation: spin 32s linear infinite reverse; }
+    .ring-c { animation: spin 24s linear infinite; }
+    .ring-d { animation: spin 16s linear infinite reverse; }
+    .ring-e { animation: spin 11s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
 }
 
 // ── Scene definitions (HTML + CSS + JS per scene) ────────────────────────────
@@ -657,8 +714,8 @@ const SCENES = {
     };
   },
 
-  "buddha-lotus": () => {
-    // Achtergrond = Boeddha-lotus afbeelding (via --background), met zachte ademende gloed.
+  "buddha-lotus": ({ width }) => {
+    // Achtergrond = Boeddha-lotus afbeelding + draaiende gouden mandala (rechtsboven).
     return {
       css: `
       .buddha-glow { position: absolute; inset: 0; z-index: 0;
@@ -667,9 +724,18 @@ const SCENES = {
           radial-gradient(50% 44% at 66% 46%, rgba(96,165,250,0.10), transparent 72%);
         animation: buddhaGlow 9s ease-in-out infinite; }
       @keyframes buddhaGlow { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+      .corner-mandala { position: absolute; top: 6%; right: 5%; z-index: 2;
+        width: ${Math.round(width * 0.24)}px; height: ${Math.round(width * 0.24)}px;
+        opacity: 0.6;
+        filter: drop-shadow(0 0 18px rgba(243,216,164,0.35));
+        animation: cornerBreathe 8s ease-in-out infinite; }
+      .corner-mandala .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+      @keyframes cornerBreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+      ${mandalaSpinCSS()}
     `,
       html: `
       <div class="buddha-glow"></div>
+      <div class="corner-mandala">${mandalaLayers()}</div>
     `,
     };
   },
