@@ -59,6 +59,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     <img class="logo-mark" src="logo.png" alt="LofiBuddha" />
     <span class="logo-word">LofiBuddha</span>
   </div>
+  <img class="end-logo" src="logo.png" alt="LofiBuddha" />
   <!-- Caption -->
   <div class="caption-wrap">
     <div class="caption">${captionHTML}</div>
@@ -97,6 +98,11 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     filter: drop-shadow(0 0 14px rgba(228,184,114,0.4)); }
   .logo-word { color: #FFC861; font-size: ${Math.round(width * 0.024)}px; font-weight: 700;
     letter-spacing: 0.04em; text-shadow: 0 0 16px rgba(255,200,97,0.5), 0 1px 3px rgba(0,0,0,0.9); }
+  .end-logo { position: absolute; top: 5%; left: 5%;
+    z-index: 12; width: ${Math.round(width * 0.10)}px; height: ${Math.round(width * 0.10)}px;
+    opacity: 0; animation: endFade 1.2s ${Math.max(0, duration - 3)}s ease-out forwards;
+    filter: drop-shadow(0 0 16px rgba(228,184,114,0.5)); }
+  @keyframes endFade { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: scale(1); } }
 
   /* Caption */
   .caption-wrap {
