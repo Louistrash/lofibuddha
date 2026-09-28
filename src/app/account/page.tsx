@@ -211,7 +211,7 @@ export default function AccountPage() {
                 <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#b08050", marginBottom: "0.75rem" }}>Today's Practice</p>
                 <p style={{ fontFamily: '"Playfair Display", serif', fontSize: "1.2rem", color: "#1c1917", fontWeight: 400, marginBottom: "0.5rem" }}>Your daily meditation</p>
                 <p style={{ color: "#78716c", fontSize: "0.85rem", fontWeight: 300, marginBottom: "1rem" }}>Ask AI Buddha to guide you through a meditation tailored to how you feel today.</p>
-                <a href="https://lofibuddha.com/chat"
+                <a href="https://lofibuddha.com/ai"
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.7rem 1.5rem", borderRadius: "100px", background: "#b08050", color: "white", textDecoration: "none", fontSize: "0.8rem", fontFamily: '"Inter", sans-serif' }}
                 >Begin meditation</a>
               </div>
@@ -219,7 +219,7 @@ export default function AccountPage() {
 
             {/* Quick links */}
             <div className="flex flex-wrap justify-center gap-3 pt-4">
-              <Link href="https://lofibuddha.com/chat"
+              <Link href="https://lofibuddha.com/ai"
                 style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.7rem 1.5rem", borderRadius: "100px", background: "#1c1917", color: "white", textDecoration: "none", fontSize: "0.8rem", fontFamily: '"Inter", sans-serif' }}
               ><Moon size={14} /> Chat with AI Buddha</Link>
               <Link href="/mindfulness/breathe"

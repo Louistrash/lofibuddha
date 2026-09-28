@@ -68,3 +68,15 @@ export const DEFAULT_SCENE_THEME = SCENE_THEMES[0];
 export function getSceneTheme(id: string | null | undefined): SceneTheme {
   return SCENE_THEMES.find((t) => t.id === id) ?? DEFAULT_SCENE_THEME;
 }
+
+// Categorie-themes: open een kaart in DEZELFDE kleur als zijn categorie-LED-accent.
+export const CATEGORY_THEMES: Record<string, SceneTheme> = {
+  focus: { id: "focus", name: "Focus", gradient: ["#E8A33D", "#7A4A12"], accent: "#E8A33D", wash: "#7A4A12", mandala: ["#E8A33D", "#B5761F", "#F7CE85"], onGradient: "#1A1004" },
+  breathe: { id: "breathe", name: "Breathe", gradient: ["#2DD4BF", "#0B5A55"], accent: "#2DD4BF", wash: "#0B5A55", mandala: ["#2DD4BF", "#12867A", "#8FE9DD"], onGradient: "#041614" },
+  sleep: { id: "sleep", name: "Sleep", gradient: ["#b89258", "#4A3416"], accent: "#b89258", wash: "#4A3416", mandala: ["#b89258", "#8A6A36", "#E3CDA2"], onGradient: "#1A1206" },
+  relax: { id: "relax", name: "Relax", gradient: ["#A855F7", "#3B1663"], accent: "#A855F7", wash: "#3B1663", mandala: ["#A855F7", "#7C3AED", "#D8B4FE"], onGradient: "#14071F" },
+};
+
+export function getCategoryTheme(category: string | null | undefined): SceneTheme | null {
+  return category ? CATEGORY_THEMES[category] ?? null : null;
+}

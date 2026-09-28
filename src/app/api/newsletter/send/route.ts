@@ -15,12 +15,12 @@ const LANG_NAMES: Record<string, string> = {
 };
 
 const LANG_LABELS: Record<string, Record<string, string>> = {
-  en: { greeting: "Welcome back, friend", tip: "Mindfulness Tip", track: "Lofi Track of the Week", courses: "Explore Our Courses", cta: "Visit lofibuddha.com", unsubscribe: "Unsubscribe", footer: "You received this email because you subscribed at lofibuddha.com" },
-  nl: { greeting: "Welkom terug", tip: "Mindfulness Tip", track: "Lofi Track van de Week", courses: "Ontdek Onze Cursussen", cta: "Bezoek lofibuddha.com", unsubscribe: "Uitschrijven", footer: "Je ontvangt deze mail omdat je je hebt ingeschreven op lofibuddha.com" },
-  es: { greeting: "Bienvenido de nuevo", tip: "Consejo de Mindfulness", track: "Canción Lofi de la Semana", courses: "Explora Nuestros Cursos", cta: "Visita lofibuddha.com", unsubscribe: "Darse de baja", footer: "Recibes este correo porque te suscribiste en lofibuddha.com" },
-  de: { greeting: "Willkommen zurück", tip: "Achtsamkeitstipp", track: "Lofi-Track der Woche", courses: "Unsere Kurse entdecken", cta: "Besuche lofibuddha.com", unsubscribe: "Abmelden", footer: "Du erhältst diese E-Mail, weil du dich bei lofibuddha.com angemeldet hast" },
-  fr: { greeting: "Bon retour parmi nous", tip: "Conseil de Pleine Conscience", track: "Morceau Lofi de la Semaine", courses: "Découvrez nos Cours", cta: "Visitez lofibuddha.com", unsubscribe: "Se désabonner", footer: "Vous recevez cet email car vous vous êtes inscrit sur lofibuddha.com" },
-  hi: { greeting: "आपका पुनः स्वागत है", tip: "माइंडफुलनेस टिप", track: "सप्ताह का लोफाई ट्रैक", courses: "हमारे पाठ्यक्रम देखें", cta: "lofibuddha.com पर जाएं", unsubscribe: "सदस्यता समाप्त", footer: "आपको यह ईमेल इसलिए मिला क्योंकि आपने lofibuddha.com पर सदस्यता ली थी" },
+  en: { greeting: "Welcome back, friend", tip: "Mindfulness Tip", tipBody: "Take three deep breaths right now. Inhale for 4 counts, hold for 4, exhale for 8. Feel the tension release.", track: "Lofi Track of the Week", courses: "Explore Our Courses", cta: "Visit lofibuddha.com", unsubscribe: "Unsubscribe", footer: "You received this email because you subscribed at lofibuddha.com" },
+  nl: { greeting: "Welkom terug", tip: "Mindfulness Tip", tipBody: "Neem nu drie keer diep adem. Adem 4 tellen in, houd 4 tellen vast, adem 8 tellen uit. Voel de spanning loslaten.", track: "Lofi Track van de Week", courses: "Ontdek Onze Cursussen", cta: "Bezoek lofibuddha.com", unsubscribe: "Uitschrijven", footer: "Je ontvangt deze mail omdat je je hebt ingeschreven op lofibuddha.com" },
+  es: { greeting: "Bienvenido de nuevo", tip: "Consejo de Mindfulness", tipBody: "Respira profundamente tres veces ahora mismo. Inhala durante 4 tiempos, mantén durante 4, exhala durante 8. Siente cómo se libera la tensión.", track: "Canción Lofi de la Semana", courses: "Explora Nuestros Cursos", cta: "Visita lofibuddha.com", unsubscribe: "Darse de baja", footer: "Recibes este correo porque te suscribiste en lofibuddha.com" },
+  de: { greeting: "Willkommen zurück", tip: "Achtsamkeitstipp", tipBody: "Atme jetzt dreimal tief durch. Atme 4 Zählzeiten ein, halte 4, atme 8 aus. Spüre, wie die Anspannung nachlässt.", track: "Lofi-Track der Woche", courses: "Unsere Kurse entdecken", cta: "Besuche lofibuddha.com", unsubscribe: "Abmelden", footer: "Du erhältst diese E-Mail, weil du dich bei lofibuddha.com angemeldet hast" },
+  fr: { greeting: "Bon retour parmi nous", tip: "Conseil de Pleine Conscience", tipBody: "Prenez trois respirations profondes maintenant. Inspirez pendant 4 temps, retenez pendant 4, expirez pendant 8. Sentez la tension se relâcher.", track: "Morceau Lofi de la Semaine", courses: "Découvrez nos Cours", cta: "Visitez lofibuddha.com", unsubscribe: "Se désabonner", footer: "Vous recevez cet email car vous vous êtes inscrit sur lofibuddha.com" },
+  hi: { greeting: "आपका पुनः स्वागत है", tip: "माइंडफुलनेस टिप", tipBody: "अभी तीन गहरी साँसें लें। 4 गिनती तक साँस लें, 4 तक रोकें, 8 तक छोड़ें। तनाव को छूटता हुआ महसूस करें।", track: "सप्ताह का लोफाई ट्रैक", courses: "हमारे पाठ्यक्रम देखें", cta: "lofibuddha.com पर जाएं", unsubscribe: "सदस्यता समाप्त", footer: "आपको यह ईमेल इसलिए मिला क्योंकि आपने lofibuddha.com पर सदस्यता ली थी" },
 };
 
 function emailHTML(params: {
@@ -34,16 +34,18 @@ function emailHTML(params: {
 
   // Course highlights (1-2 featured)
   const courseCards = (params.courses || []).slice(0, 2).map((c: any) => {
-    const title = c.title?.[params.language] || c.title?.en || "";
-    const desc = c.description?.[params.language] || c.description?.en || "";
+    const tr = c.translations?.[params.language] || c.translations?.en || {};
+    const title = tr.title || "";
+    const desc = tr.description || "";
     const slug = c.slug || "";
-    const img = c.image || "https://lofibuddha.com/images/generated/temple-01-jungle-1780083927467.png";
+    const rawImg = c.image || "https://lofibuddha.com/images/generated/temple-01-jungle-1780083927467.png";
+    const img = rawImg.startsWith("http") ? rawImg : `${params.baseUrl}${rawImg}`;
     return `
     <div style="background:#1a1715;border-radius:12px;padding:16px;margin:8px 0;border:1px solid #3d362f">
       <img src="${img}" alt="${title}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px" />
       <h3 style="margin:0 0 4px;color:#d4b48a;font-size:15px">${title}</h3>
       <p style="margin:0;color:#9a9488;font-size:12px">${desc.slice(0, 100)}...</p>
-      <a href="${params.baseUrl}/learn/${slug}?lang=${params.language}" style="display:inline-block;margin-top:8px;color:#c49464;font-size:12px;text-decoration:none;font-weight:600">${l.cta} →</a>
+      <a href="${params.baseUrl}/course/${slug}?lang=${params.language}" style="display:inline-block;margin-top:8px;color:#c49464;font-size:12px;text-decoration:none;font-weight:600">${l.cta} →</a>
     </div>`;
   }).join("");
 
@@ -83,7 +85,7 @@ function emailHTML(params: {
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#25201c;border-radius:12px;border:1px solid #3d362f">
           <tr><td style="padding:20px 24px">
             <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:2px;text-transform:uppercase">🌿 ${l.tip}</p>
-            <p style="margin:8px 0 0;color:#d4c8b8;font-size:14px;line-height:1.6">Take three deep breaths right now. Inhale for 4 counts, hold for 4, exhale for 8. Feel the tension release.</p>
+            <p style="margin:8px 0 0;color:#d4c8b8;font-size:14px;line-height:1.6">${l.tipBody}</p>
           </td></tr>
         </table>
       </td></tr>

@@ -3,7 +3,7 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import type { Experience } from "@lofibuddha/shared";
 import { audioUrl, duckUrl } from "@/src/lib/api";
 import { getStoredSceneTheme, pushRecent, storeSceneTheme } from "@/src/lib/favorites";
-import { DEFAULT_SCENE_THEME, getSceneTheme, type SceneTheme } from "@/src/theme/sceneThemes";
+import { DEFAULT_SCENE_THEME, getCategoryTheme, getSceneTheme, type SceneTheme } from "@/src/theme/sceneThemes";
 
 type Phase = "idle" | "playing";
 type BoxPhase = "inhale" | "hold" | "exhale" | "rest";
@@ -203,24 +203,30 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   );
 
   const startBox = useCallback(() => {
+    clearTimer();
     setPhase("playing");
-    let phaseIdx = 0;
-    let count = BOX_DUR[BOX_PHASES[0]];
-    setBoxPhase(BOX_PHASES[0]);
-    setBoxCount(count);
+    const start = Date.now();
+    const phaseDur = BOX_DUR.inhale; // alle fases 4s
+    const cycle = phaseDur * BOX_PHASES.length; // 16s
+
     timerRef.current = setInterval(() => {
-      count--;
-      setBoxCount(Math.max(0, count));
+      const t = ((Date.now() - start) / 1000) % cycle;
+      const phaseIdx = Math.min(BOX_PHASES.length - 1, Math.floor(t / phaseDur));
       const p = BOX_PHASES[phaseIdx];
-      setBreathe(phaseIdx % 2 === 0 ? count / BOX_DUR[p] : 1 - count / BOX_DUR[p]);
-      if (count <= 0) {
-        phaseIdx = (phaseIdx + 1) % BOX_PHASES.length;
-        const next = BOX_PHASES[phaseIdx];
-        count = BOX_DUR[next];
-        setBoxPhase(next);
-        setBoxCount(count);
-      }
-    }, 1000);
+      const phaseT = t - phaseIdx * phaseDur;
+      const prog = Math.min(1, phaseT / BOX_DUR[p]);
+
+      // Ademcurve: inademen 0→1, vasthouden 1, uitademen 1→0, rust 0.
+      const breathe =
+        p === "inhale" ? prog :
+        p === "hold" ? 1 :
+        p === "exhale" ? 1 - prog :
+        0;
+
+      setBoxPhase(p);
+      setBoxCount(Math.max(0, Math.ceil(BOX_DUR[p] - phaseT)));
+      setBreathe(breathe);
+    }, 50);
   }, []);
 
   const startPomodoro = useCallback((seconds: number) => {
@@ -450,6 +456,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
   const playExperience = useCallback(
     async (exp: Experience) => {
+      // Open in dezelfde kleur als de kaart (categorie-accent), niet de standaard-mood.
+      const catTheme = getCategoryTheme(exp.category);
+      if (catTheme) setThemeState(catTheme);
       await stopAll();
       setExperience(exp);
       setSoundscape(exp.soundscape);

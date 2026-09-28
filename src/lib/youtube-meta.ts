@@ -95,7 +95,7 @@ export function buildYouTubeMeta(raw: string): YouTubeMeta {
     "",
     "🎧 Find more calm:",
     "→ " + theme.deeplink,
-    "→ Chat with Buddha: https://lofibuddha.com/chat",
+    "→ Chat with Buddha: https://lofibuddha.com/ai",
     "",
     "May you find a moment of peace today. 🙏",
     "",

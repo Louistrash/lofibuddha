@@ -41,7 +41,7 @@ function loadContent(): Record<string, DripContent> {
 // ── Schedule (day → item keys from content) ────
 const DRIP_SCHEDULE: Record<string, Record<string, { type: string; action?: string }>> = {
   mindful: {
-    "1": { type: "welcome", action: "https://lofibuddha.com/chat" },
+    "1": { type: "welcome", action: "https://lofibuddha.com/ai" },
     "2": { type: "playlist", action: "/mindfulness" },
     "3": { type: "course", action: "/account" },
     "5": { type: "guide", action: "/mindfulness" },
@@ -57,7 +57,7 @@ const DRIP_SCHEDULE: Record<string, Record<string, { type: string; action?: stri
     "1": { type: "welcome", action: "/account?tab=intake" },
     "3": { type: "roadmap", action: "/account?tab=roadmap" },
     "7": { type: "video", action: "/mindfulness" },
-    "14": { type: "session", action: "https://lofibuddha.com/chat" },
+    "14": { type: "session", action: "https://lofibuddha.com/ai" },
     "21": { type: "playlist", action: "/mindfulness" },
     "28": { type: "reflection", action: "/account?tab=reflection" },
   },
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
         title: "AI Buddha Chat",
         subtitle: "10 queries per day",
         body: "Ask AI Buddha anything — spiritual guidance, meditation tips, or simply a calming perspective on your day. Free tier includes 10 daily queries.",
-        action: { label: "Chat now", url: "https://lofibuddha.com/chat" },
+        action: { label: "Chat now", url: "https://lofibuddha.com/ai" },
       },
       {
         day: 0,

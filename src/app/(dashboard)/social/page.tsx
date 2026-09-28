@@ -340,7 +340,7 @@ export default function SocialPage() {
       `🌿 ${name} — calm sounds for ${platform === "shorts" ? "your moment of peace" : "meditation and focus"}.\n\n` +
       `Breathe in. Let go. Find your calm at lofibuddha.com.\n\n` +
       `🎧 More soundscapes & guided meditations: https://lofibuddha.com/mindfulness\n` +
-      `💬 Chat with Buddha: https://lofibuddha.com/chat`;
+      `💬 Chat with Buddha: https://lofibuddha.com/ai`;
     return { title, description, tags: ["lofi", "meditation", "mindfulness", "calm", "lofibuddha"] };
   };
 

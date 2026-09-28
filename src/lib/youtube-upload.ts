@@ -86,7 +86,7 @@ export async function uploadToYouTube(input: UploadInput): Promise<UploadResult>
           "🌿 " + buildDeeplink(finalTitle + " " + (finalTags || []).join(" ")),
           "",
           "🎧 More calm: https://lofibuddha.com/mindfulness",
-          "💬 Chat with Buddha: https://lofibuddha.com/chat",
+          "💬 Chat with Buddha: https://lofibuddha.com/ai",
         ].join("\n");
 
     const boundary = "BODHI-" + Date.now();

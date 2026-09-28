@@ -70,11 +70,12 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
   const overlay = clean ? "" : `
   <!-- Logo (rond, linksonder, fade-in nadat de laatste tekst weg is) -->
   <img class="end-logo" src="logo.png" alt="LofiBuddha" />
-  <!-- Caption -->
+  <!-- Caption (gecentreerd) -->
   <div class="caption-wrap">
     <div class="caption">${captionHTML}</div>
-    <div class="subtitle">${safeSub}</div>
-  </div>`;
+  </div>
+  <!-- Subtitle (branding, laag onder) -->
+  <div class="subtitle">${safeSub}</div>`;
 
   return `<!DOCTYPE html>
 <html>
@@ -107,26 +108,27 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
     filter: drop-shadow(0 0 16px rgba(228,184,114,0.5)); }
   @keyframes endFade { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: scale(1); } }
 
-  /* Caption */
+  /* Caption — gecentreerd (YouTube UI zit onderaan/rechts) */
   .caption-wrap {
-    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; text-align: center;
-    padding: ${Math.round(height * 0.2)}px ${Math.round(width * 0.08)}px ${Math.round(height * 0.07)}px;
-    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 42%, transparent 100%);
+    position: absolute; top: 59%; left: 0; right: 0; z-index: 10; text-align: center;
+    transform: translateY(-50%);
+    padding: 0 ${Math.round(width * 0.08)}px;
   }
   .caption {
-    color: #f0ebe0; font-size: ${Math.round(width * 0.048)}px;
-    font-weight: 600; letter-spacing: 0.05em; line-height: 1.6;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 4px 20px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5);
-    max-width: 92%; margin: 0; text-align: left;
+    color: #f0ebe0; font-size: ${Math.round(width * 0.05)}px;
+    font-weight: 600; letter-spacing: 0.03em; line-height: 1.5;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 4px 20px rgba(0,0,0,0.85), 0 8px 40px rgba(0,0,0,0.6);
+    max-width: 92%; margin: 0 auto; text-align: center;
     position: relative; min-height: ${Math.round(width * 0.16)}px;
   }
-  .caption .s { opacity: 0; position: absolute; top: 0; left: 0; width: 100%;
+  .caption .s { opacity: 0; position: absolute; top: 0; left: 0; width: 100%; text-align: center;
     animation: sentIn 0.45s cubic-bezier(0.2,0.6,0.3,1) both, sentOut 0.35s ease-in forwards; }
   @keyframes sentIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes sentOut { from { opacity: 1; } to { opacity: 0; } }
   .subtitle {
+    position: absolute; bottom: 5%; left: 0; right: 0; z-index: 11; text-align: center;
     color: #c49464; font-size: ${Math.round(width * 0.024)}px;
-    font-weight: 500; margin-top: ${Math.round(height * 0.014)}px;
+    font-weight: 500;
     letter-spacing: 0.18em; text-transform: uppercase;
     opacity: 0; animation: fadeSlideIn 2s 0.9s ease-out forwards;
     text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 2px 12px rgba(0,0,0,0.7);
@@ -140,6 +142,7 @@ function sceneHTML({ width, height, duration, caption, subtitle, backgroundImage
      style="width:${width}px;height:${height}px;position:relative;overflow:hidden;">
   <div class="bg">${scene.html}</div>
   <div class="vignette"></div>
+${scene.overlay || ""}
 ${overlay}
 </div>
 <script>
@@ -165,6 +168,7 @@ function mandalaLayers() {
     return `<g opacity="${op}">${pts}</g>`;
   };
   const GOLD = "#E4B872", GOLD_DEEP = "#A67C3D", GOLD_BRIGHT = "#F3D8A4";
+  const GREEN = "#4ade80", GREEN_DEEP = "#15803d", GREEN_BRIGHT = "#86efac";
   return `
     <svg class="ring ring-a" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="49.5" stroke="rgba(243,216,164,0.35)" stroke-width="0.22" fill="none" stroke-dasharray="0.7 1.4"/>
@@ -175,29 +179,72 @@ function mandalaLayers() {
       ${ring(32, 40, 49, 1.4, GOLD, "none", 0.3, 0.45)}
     </svg>
     <svg class="ring ring-c" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="34" stroke="${GOLD_DEEP}" stroke-width="0.35" fill="none" opacity="0.6"/>
-      ${ring(16, 22, 38, 4.5, GOLD_DEEP, "rgba(166,124,61,0.08)", 0.45, 0.75)}
+      <circle cx="50" cy="50" r="34" stroke="${GREEN_DEEP}" stroke-width="0.35" fill="none" opacity="0.6"/>
+      ${ring(16, 22, 38, 4.5, GREEN, "rgba(21,128,61,0.12)", 0.45, 0.8)}
     </svg>
     <svg class="ring ring-d" viewBox="0 0 100 100">
-      ${ring(8, 9, 24, 5.5, GOLD, "rgba(228,184,114,0.08)", 0.5, 0.85)}
+      ${ring(8, 9, 24, 5.5, GREEN, "rgba(74,222,128,0.12)", 0.5, 0.85)}
     </svg>
     <svg class="ring ring-e" viewBox="0 0 100 100">
       ${ring(8, 5, 13, 3, GOLD_BRIGHT, "rgba(243,216,164,0.10)", 0.4, 0.7)}
     </svg>
     <svg class="ring ring-center" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="5" stroke="${GOLD_BRIGHT}" stroke-width="0.4" fill="rgba(243,216,164,0.12)"/>
+      <circle cx="50" cy="50" r="3.2" stroke="${GREEN_BRIGHT}" stroke-width="0.5" fill="none" opacity="0.7"/>
       <circle cx="50" cy="50" r="1.6" fill="${GOLD_BRIGHT}" opacity="0.6"/>
+    </svg>`;
+}
+
+// ── Cyaan/neon mandala (cyberpunk-palette: cyaan + magenta) ──────────────────
+function mandalaLayersCyan() {
+  const C = 50;
+  const petalPath = (inner, outer, w) => {
+    const top = C - outer, base = C - inner, belly = C - (inner + (outer - inner) * 0.55);
+    return `M ${C} ${base} C ${C - w} ${belly}, ${C - w} ${top + 2}, ${C} ${top} C ${C + w} ${top + 2}, ${C + w} ${belly}, ${C} ${base} Z`;
+  };
+  const ring = (count, inner, outer, w, color, fill, sw, op) => {
+    const d = petalPath(inner, outer, w);
+    const pts = Array.from({ length: count }, (_, i) =>
+      `<path d="${d}" transform="rotate(${(360 / count) * i} ${C} ${C})" stroke="${color}" stroke-width="${sw}" fill="${fill}" stroke-linejoin="round"/>`
+    ).join("");
+    return `<g opacity="${op}">${pts}</g>`;
+  };
+  const CY = "#22d3ee", CY_DEEP = "#0891b2", CY_BRIGHT = "#a5f3fc";
+  const MG = "#f472b6";
+  return `
+    <svg class="ring ring-a" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="49.5" stroke="rgba(103,232,249,0.35)" stroke-width="0.22" fill="none" stroke-dasharray="0.7 1.4"/>
+      ${ring(48, 45, 50, 1.0, CY, "none", 0.24, 0.32)}
+    </svg>
+    <svg class="ring ring-b" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" stroke="${CY_DEEP}" stroke-width="0.3" fill="none" opacity="0.5"/>
+      ${ring(32, 40, 49, 1.4, CY, "none", 0.3, 0.45)}
+    </svg>
+    <svg class="ring ring-c" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="34" stroke="${MG}" stroke-width="0.35" fill="none" opacity="0.6"/>
+      ${ring(16, 22, 38, 4.5, MG, "rgba(244,114,182,0.12)", 0.45, 0.8)}
+    </svg>
+    <svg class="ring ring-d" viewBox="0 0 100 100">
+      ${ring(8, 9, 24, 5.5, CY, "rgba(34,211,238,0.12)", 0.5, 0.85)}
+    </svg>
+    <svg class="ring ring-e" viewBox="0 0 100 100">
+      ${ring(8, 5, 13, 3, CY_BRIGHT, "rgba(165,243,252,0.10)", 0.4, 0.7)}
+    </svg>
+    <svg class="ring ring-center" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="5" stroke="${CY_BRIGHT}" stroke-width="0.4" fill="rgba(165,243,252,0.12)"/>
+      <circle cx="50" cy="50" r="3.2" stroke="${MG}" stroke-width="0.5" fill="none" opacity="0.7"/>
+      <circle cx="50" cy="50" r="1.6" fill="${CY_BRIGHT}" opacity="0.6"/>
     </svg>`;
 }
 
 // ── Gedeelde ring-rotatie CSS (gouden mandala-lagen) ─────────────────────────
 function mandalaSpinCSS() {
   return `
-    .ring-a { animation: spin 46s linear infinite; }
-    .ring-b { animation: spin 32s linear infinite reverse; }
-    .ring-c { animation: spin 24s linear infinite; }
-    .ring-d { animation: spin 16s linear infinite reverse; }
-    .ring-e { animation: spin 11s linear infinite; }
+    .ring-a { animation: spin 26s linear infinite; }
+    .ring-b { animation: spin 18s linear infinite reverse; }
+    .ring-c { animation: spin 14s linear infinite; }
+    .ring-d { animation: spin 10s linear infinite reverse; }
+    .ring-e { animation: spin 7s linear infinite; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
 }
 
@@ -725,9 +772,9 @@ const SCENES = {
         animation: buddhaGlow 9s ease-in-out infinite; }
       @keyframes buddhaGlow { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
       .corner-mandala { position: absolute; top: 6%; right: 5%; z-index: 2;
-        width: ${Math.round(width * 0.24)}px; height: ${Math.round(width * 0.24)}px;
-        opacity: 0.6;
-        filter: drop-shadow(0 0 18px rgba(243,216,164,0.35));
+        width: ${Math.round(width * 0.30)}px; height: ${Math.round(width * 0.30)}px;
+        opacity: 0.85;
+        filter: drop-shadow(0 0 22px rgba(243,216,164,0.45));
         animation: cornerBreathe 8s ease-in-out infinite; }
       .corner-mandala .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
       @keyframes cornerBreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
@@ -737,6 +784,99 @@ const SCENES = {
       <div class="buddha-glow"></div>
       <div class="corner-mandala">${mandalaLayers()}</div>
     `,
+    };
+  },
+
+  "cosmic-zoom": ({ width, height, duration }) => {
+    // Achtergrond met trage full-screen zoom (Ken Burns) + draaiende mandala + zwevende gouden stofjes.
+    const dots = [];
+    for (let i = 0; i < 34; i++) {
+      const left = (Math.random() * 100).toFixed(1);
+      const size = (4 + Math.random() * 7).toFixed(1);
+      const dur = (7 + Math.random() * 8).toFixed(1);
+      const delay = (Math.random() * 12).toFixed(1);
+      const dx = ((Math.random() - 0.5) * 70).toFixed(0);
+      dots.push(`<div class="dot" style="left:${left}%;width:${size}px;height:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;--dx:${dx}px"></div>`);
+    }
+    return {
+      css: `
+      .bg { animation: cosmicZoom 12s ease-in-out infinite alternate; transform-origin: 50% 45%; }
+      @keyframes cosmicZoom { from { transform: scale(1.0); } to { transform: scale(1.22); } }
+
+      .corner-mandala { position: absolute; top: 6%; right: 5%; z-index: 6;
+        width: ${Math.round(width * 0.24)}px; height: ${Math.round(width * 0.24)}px;
+        opacity: 0.7; filter: drop-shadow(0 0 18px rgba(103,232,249,0.45));
+        animation: cornerBreathe 8s ease-in-out infinite; }
+      .corner-mandala .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+      @keyframes cornerBreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+      ${mandalaSpinCSS()}
+
+      .dot { position: absolute; bottom: -4%; z-index: 6; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,224,160,1) 0%, rgba(255,210,140,0.6) 45%, transparent 75%);
+        box-shadow: 0 0 10px rgba(255,200,120,0.9);
+        animation: floatUp linear infinite; }
+      @keyframes floatUp {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        8% { opacity: 1; }
+        90% { opacity: 0.5; }
+        100% { transform: translateY(-${Math.round(height * 1.12)}px) translateX(var(--dx, 0px)); opacity: 0; }
+      }
+    `,
+      html: ``,
+      overlay: `<div class="corner-mandala">${mandalaLayersCyan()}</div>${dots.join("")}`,
+    };
+  },
+
+  "buddha-water": ({ width, height, duration }) => {
+    // Stil staande Boeddha + stromend water + lelies. Achtergrond blijft STIL;
+    // puur CSS: glijdende lichtstrepen (stroming) + uitdijende rimpels rond de lelies.
+    const W = width, H = height;
+    const ripples = [
+      { left: 22, bottom: 40, dur: 5.0, delay: 0.0 },
+      { left: 62, bottom: 24, dur: 7.5, delay: 1.2 },
+      { left: 40, bottom: 10, dur: 5.0, delay: 2.4 },
+      { left: 78, bottom: 36, dur: 7.5, delay: 3.6 },
+      { left: 52, bottom: 18, dur: 5.0, delay: 4.6 },
+      { left: 16, bottom: 28, dur: 7.5, delay: 1.8 },
+    ];
+    const rippleHTML = ripples.map((r) =>
+      `<span class="ripple" style="left:${r.left}%;bottom:${r.bottom}%;animation-duration:${r.dur}s;animation-delay:${r.delay}s"></span>`
+    ).join("");
+    return {
+      css: `
+      .water-glow { position: absolute; inset: 0; z-index: 1;
+        background: radial-gradient(70% 60% at 50% 42%, rgba(255,214,150,0.10), transparent 72%);
+        animation: waterGlow 9s ease-in-out infinite; }
+      @keyframes waterGlow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+      /* Stromend water: diagonaal glijdende lichtstrepen */
+      .water-flow { position: absolute; bottom: 0; left: -20%; right: -20%; height: 48%;
+        z-index: 3; pointer-events: none;
+        background: repeating-linear-gradient(104deg,
+          transparent 0px, transparent 44px,
+          rgba(255,240,210,0.17) 49px, transparent 54px,
+          transparent 98px,
+          rgba(255,240,210,0.10) 103px, transparent 108px);
+        animation: flowShift 7.5s linear infinite;
+        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.95) 22%, transparent 97%);
+        mask-image: linear-gradient(to top, rgba(0,0,0,0.95) 22%, transparent 97%); }
+      @keyframes flowShift { from { transform: translateX(0); } to { transform: translateX(160px); } }
+
+      /* Uitdijende rimpels rond de lelies */
+      .ripple { position: absolute; width: ${Math.round(W * 0.08)}px; height: ${Math.round(W * 0.026)}px;
+        border-radius: 50%; z-index: 4; pointer-events: none; transform: scale(0.22);
+        border: 2px solid rgba(225,240,248,0.32);
+        box-shadow: 0 0 16px rgba(225,240,248,0.20), inset 0 0 14px rgba(225,240,248,0.12);
+        animation: rippleExpand 5s ease-out infinite; }
+      @keyframes rippleExpand { 0% { transform: scale(0.22); opacity: 0.9; }
+        100% { transform: scale(3.4); opacity: 0; } }
+    `,
+      html: `
+      <div class="water-glow"></div>
+      <div class="water-flow"></div>
+      ${rippleHTML}
+    `,
+      js: ``,
     };
   },
 };

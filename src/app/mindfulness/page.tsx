@@ -227,7 +227,7 @@ export default function MindfulnessPage() {
               </div>
 
               <div className="mindful-member-actions">
-                <Link href="/chat" className="mindful-btn mindful-btn-primary">Chat with Buddha</Link>
+                <Link href="/ai" className="mindful-btn mindful-btn-primary">Chat with Buddha</Link>
                 <Link href="/mindfulness/breathe" className="mindful-btn mindful-btn-ghost">Breathe</Link>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePlayer } from "@/src/providers/PlayerProvider";
+import { MUSIC_TRACKS, SOUNDS } from "@lofibuddha/shared";
 import { accentByCategory, colors, layout, radius, space, tint, type } from "@/src/theme/tokens";
 import { useLayout } from "@/src/theme/useLayout";
 import { Icon } from "@/src/components/ui/Icon";
@@ -19,6 +20,17 @@ export function MiniPlayer() {
 
   const accent = accentByCategory[experience.category] ?? colors.gold;
   const playing = phase === "playing";
+
+  // Toon duidelijk wat er klinkt: soundscape + muziek-track (niet alleen de titel).
+  const activeMusic = experience.music && experience.music !== "off"
+    ? MUSIC_TRACKS.find((t) => t.id === experience.music)?.title.split(" · ")[0]
+    : null;
+  const activeScape = experience.soundscape && experience.soundscape !== "off"
+    ? SOUNDS.find((s) => s.slug === experience.soundscape)?.name
+    : null;
+  const source =
+    [activeScape, activeMusic].filter(Boolean).join(" + ") ||
+    (experience.guide ? "Guided meditation" : "Ambient");
 
   return (
     <View
@@ -67,7 +79,7 @@ export function MiniPlayer() {
             {experience.title}
           </Text>
           <Text style={styles.sub} numberOfLines={1}>
-            {playing ? "Now playing" : "Paused"} · {experience.duration}
+            {playing ? "Now playing" : "Paused"} · {source}
           </Text>
         </View>
 
@@ -82,18 +94,16 @@ export function MiniPlayer() {
           >
             <Icon name={playing ? "pause" : "play"} size={17} color={colors.ink} />
           </Pressable>
-          {l.isMedium ? (
-            <Pressable
-              onPress={(e) => {
-                e.stopPropagation?.();
-                clear();
-              }}
-              hitSlop={10}
-              style={({ pressed }) => [styles.closeBtn, pressed && { opacity: 0.6 }]}
-            >
-              <Icon name="close" size={16} color={colors.textSecondary} />
-            </Pressable>
-          ) : null}
+          <Pressable
+            onPress={(e) => {
+              e.stopPropagation?.();
+              clear();
+            }}
+            hitSlop={10}
+            style={({ pressed }) => [styles.closeBtn, pressed && { opacity: 0.6 }]}
+          >
+            <Icon name="close" size={16} color={colors.textSecondary} />
+          </Pressable>
         </View>
       </Pressable>
     </View>

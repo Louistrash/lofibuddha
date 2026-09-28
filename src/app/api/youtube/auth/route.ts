@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
   const host = env.NEXT_PUBLIC_BODHI_URL || "https://lofibuddha.com";
   const redirectUri = host + "/api/youtube/auth?action=callback";
-  const scope = "https://www.googleapis.com/auth/youtube.upload";
+  const scope = "https://www.googleapis.com/auth/youtube.force-ssl";
 
   // Status check (gebruikt door de social pagina)
   if (action === "status") {

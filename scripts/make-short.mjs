@@ -65,7 +65,8 @@ async function tts(text, outPath, opts = {}) {
   if (!VOICE_ID || !API_KEY) throw new Error("ELEVENLABS_API_KEY / VOICE_ID ontbreken in .env");
 
   const stability = opts.stability ?? 0.6; // hoger = rustiger / minder intonatie
-  const style = opts.style ?? 0.05; // lager = minder nadruk / klemtoon
+  const style = opts.style ?? 0.15; // lager = minder nadruk / klemtoon
+  const speed = opts.speed ?? 0.8; // ElevenLabs native snelheid (0.7–1.2) — natuurlijker dan atempo
 
   // with-timestamps → audio + per-karakter alignment (voor woord-sync).
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/with-timestamps`, {
@@ -74,7 +75,7 @@ async function tts(text, outPath, opts = {}) {
     body: JSON.stringify({
       text,
       model_id: "eleven_v3",
-      voice_settings: { stability, similarity_boost: 0.75, style, use_speaker_boost: true },
+      voice_settings: { stability, similarity_boost: 0.75, style, use_speaker_boost: true, speed },
     }),
   });
   if (!res.ok) {
@@ -120,18 +121,18 @@ async function main() {
   const musicSlug = a.music || "temple-rain";
   const template = a.template || "mandala-breathe";
   const background = a.background || a.bg || ""; // achtergrondafbeelding (bv. /images/buddha-bg.jpg)
-  const musicVol = parseFloat(a.musicvol) || 0.7;
+  const musicVol = parseFloat(a.musicvol) || 0.4;
   const musicSeek = parseFloat(a["music-seek"]) || 0; // skip stille intro (s), bv. temple-rain → 45
   const duckThreshold = parseFloat(a["duck-threshold"]) || 0.03; // stem-niveau waarop de muziek zakt
   const duckRatio = parseFloat(a["duck-ratio"]) || 8; // hoe diep de muziek zakt
   const duckAttack = parseFloat(a["duck-attack"]) || 15; // ms
   const duckRelease = parseFloat(a["duck-release"]) || 350; // ms
   const chimeSec = parseFloat(a.chime) || 0; // chime-seconden aan begin (0 = uit)
-  const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 2.0 : 0);
+  const voiceDelay = parseFloat(a.voicedelay) || (chimeSec > 0 ? 3.7 : 0);
   const wordOffset = parseFloat(a["word-offset"]) || 0.1; // extra vertraging tekst t.o.v. stem (s)
-  const voiceSpeed = parseFloat(a["voice-speed"]) || 0.85; // <1 = langzamer (atempo), natuurlijk/rustig
+  const voiceSpeed = parseFloat(a["voice-speed"]) || 0.8; // ElevenLabs native snelheid (0.7–1.2), natuurlijk
   const stability = parseFloat(a.stability) || 0.6; // hoger = rustiger / minder intonatie
-  const style = parseFloat(a.style) || 0.05; // lager = minder nadruk / klemtoon
+  const style = parseFloat(a.style) || 0.15; // lager = minder nadruk / klemtoon
   const targetDur = parseFloat(a.duration) || 0; // 0 = auto (voice + delay + tail)
   const tail = parseFloat(a.tail) || 7; // muziek-tail na de stem (s) → ~25s totaal
   const upload = a.upload === "true" || a.upload === "1";
@@ -156,24 +157,24 @@ async function main() {
   const mixPath = join(SOUNDS_DIR, `short-${slug}.mp3`);
 
   console.log(`\n🎙️  TTS: "${text}"`);
-  const alignment = await tts(text, voicePath, { stability, style });
+  const alignment = await tts(text, voicePath, { stability, style, speed: voiceSpeed });
   const voiceDur = durationOf(voicePath);
   let timingsPath = "";
   const voiceWords = wordsFromAlignment(alignment);
   if (voiceWords && voiceWords.length) {
     timingsPath = join(TMP, `${slug}-timings.json`);
-    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t / voiceSpeed + wordOffset).toFixed(2) }))));
+    writeFileSync(timingsPath, JSON.stringify(voiceWords.map((x) => ({ w: x.w, t: +(voiceDelay + x.t + wordOffset).toFixed(2) }))));
     console.log(`   🔊 woord-sync: ${voiceWords.length} woorden getimed (delay ${voiceDelay}s + offset ${wordOffset}s)`);
   }
-  const voiceEnd = voiceDelay + voiceDur / voiceSpeed;
+  const voiceEnd = voiceDelay + voiceDur;
   const videoDur = targetDur > 0 ? targetDur : Math.ceil(voiceEnd + tail);
-  console.log(`   voice ${voiceDur.toFixed(2)}s (${voiceSpeed}x → ${(voiceDur / voiceSpeed).toFixed(2)}s) | chime ${chimeSec}s | delay ${voiceDelay}s | tail ${tail}s → video ${videoDur}s`);
+  console.log(`   voice ${voiceDur.toFixed(2)}s (native ${voiceSpeed}x) | chime ${chimeSec}s | delay ${voiceDelay}s | tail ${tail}s → video ${videoDur}s`);
 
   // Mix: chime (begin) + voice (na delay) + music (geducked via sidechain, geloopt) → combined
   console.log(`🎵 Mix chime + voice + ${musicSlug} (music vol ${musicVol}, ducking ${duckRatio}:1)`);
   const voiceDelayMs = Math.round(voiceDelay * 1000);
   const filterParts = [
-    `[0:a]atempo=${voiceSpeed},adelay=${voiceDelayMs}|${voiceDelayMs},apad=whole_dur=${videoDur},asplit=2[voice_side][voice_mix]`,
+    `[0:a]adelay=${voiceDelayMs}|${voiceDelayMs},apad=whole_dur=${videoDur},asplit=2[voice_side][voice_mix]`,
     `[1:a]atrim=start=${musicSeek},asetpts=PTS-STARTPTS,volume=${musicVol},aloop=loop=-1:size=2e9,atrim=0:${videoDur},afade=t=out:st=${Math.max(0, videoDur - 1.4)}:d=1.4[music_pre]`,
     `[music_pre][voice_side]sidechaincompress=threshold=${duckThreshold}:ratio=${duckRatio}:attack=${duckAttack}:release=${duckRelease}:makeup=1[music_ducked]`,
   ];
@@ -188,7 +189,7 @@ async function main() {
   }
   sh(
     `ffmpeg -y -v error -i "${voicePath}" -i "${musicPath}" ${chimeArg} ` +
-    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,volume=1.4,alimiter=limit=0.95:level=0[a]" ` +
+    `-filter_complex "${filterParts.join(";")};${mixInputs}amix=inputs=${nInputs}:duration=longest:normalize=0:dropout_transition=3,alimiter=limit=0.95:level=0[a]" ` +
     `-map "[a]" -ar 44100 -c:a libmp3lame -b:a 192k "${mixPath}"`
   );
 
