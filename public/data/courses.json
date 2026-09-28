@@ -355,62 +355,72 @@
             {
               "day": 1,
               "title": "Mountain Pose (Tadasana)",
-              "type": "text",
-              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+              "type": "audio",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Downward Dog (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+              "type": "audio",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Warrior I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+              "type": "audio",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Tree Pose (Vrksasana)",
-              "type": "text",
-              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+              "type": "audio",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Cat-Cow Flow",
-              "type": "text",
-              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+              "type": "audio",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Child's Pose (Balasana)",
-              "type": "text",
-              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+              "type": "audio",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Bridge Pose (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+              "type": "audio",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Seated Forward Fold",
-              "type": "text",
-              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+              "type": "audio",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Reclined Twist",
-              "type": "text",
-              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+              "type": "audio",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Your 10-Pose Flow",
-              "type": "text",
-              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+              "type": "audio",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         },
@@ -422,62 +432,72 @@
             {
               "day": 1,
               "title": "Berghouding (Tadasana)",
-              "type": "text",
-              "content": "De basis van alle staande houdingen. Leer de juiste uitlijning van voeten tot kruin."
+              "type": "audio",
+              "content": "De basis van alle staande houdingen. Leer de juiste uitlijning van voeten tot kruin.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Neerwaartse Hond (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "DE yoga houding bij uitstek. Bouw kracht in armen en benen terwijl je de wervelkolom verlengt."
+              "type": "audio",
+              "content": "DE yoga houding bij uitstek. Bouw kracht in armen en benen terwijl je de wervelkolom verlengt.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Krijger I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultiveer kracht en stabiliteit met deze krachtige staande houdingen."
+              "type": "audio",
+              "content": "Cultiveer kracht en stabiliteit met deze krachtige staande houdingen.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Boomhouding (Vrksasana)",
-              "type": "text",
-              "content": "Een balanshouding voor focus en aarding. Vind je centrum, zelfs als het leven wankel voelt."
+              "type": "audio",
+              "content": "Een balanshouding voor focus en aarding. Vind je centrum, zelfs als het leven wankel voelt.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Kat-Koe Flow",
-              "type": "text",
-              "content": "De zachtste manier om de wervelkolom op te warmen. Synchroniseer adem met beweging."
+              "type": "audio",
+              "content": "De zachtste manier om de wervelkolom op te warmen. Synchroniseer adem met beweging.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Kindhouding (Balasana)",
-              "type": "text",
-              "content": "De ultieme rusthouding. Gebruik het als toevluchtsoord in je practice."
+              "type": "audio",
+              "content": "De ultieme rusthouding. Gebruik het als toevluchtsoord in je practice.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Brughouding (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open de borst en versterk de rug. Ideaal voor bureaumedewerkers."
+              "type": "audio",
+              "content": "Open de borst en versterk de rug. Ideaal voor bureaumedewerkers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Zittende Vooroverbuiging",
-              "type": "text",
-              "content": "Kalmeer de geest terwijl je de hele achterkant van het lichaam stretcht."
+              "type": "audio",
+              "content": "Kalmeer de geest terwijl je de hele achterkant van het lichaam stretcht.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Liggende Twist",
-              "type": "text",
-              "content": "Laat spanning in de wervelkolom los met deze herstellende twist."
+              "type": "audio",
+              "content": "Laat spanning in de wervelkolom los met deze herstellende twist.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Jouw 10-Houdingen Flow",
-              "type": "text",
-              "content": "Alles samen: een complete sequence van 20 minuten die je elke ochtend kunt doen."
+              "type": "audio",
+              "content": "Alles samen: een complete sequence van 20 minuten die je elke ochtend kunt doen.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         },
@@ -489,62 +509,72 @@
             {
               "day": 1,
               "title": "Mountain Pose (Tadasana)",
-              "type": "text",
-              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+              "type": "audio",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Downward Dog (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+              "type": "audio",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Warrior I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+              "type": "audio",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Tree Pose (Vrksasana)",
-              "type": "text",
-              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+              "type": "audio",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Cat-Cow Flow",
-              "type": "text",
-              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+              "type": "audio",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Child's Pose (Balasana)",
-              "type": "text",
-              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+              "type": "audio",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Bridge Pose (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+              "type": "audio",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Seated Forward Fold",
-              "type": "text",
-              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+              "type": "audio",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Reclined Twist",
-              "type": "text",
-              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+              "type": "audio",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Your 10-Pose Flow",
-              "type": "text",
-              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+              "type": "audio",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         },
@@ -556,62 +586,72 @@
             {
               "day": 1,
               "title": "Mountain Pose (Tadasana)",
-              "type": "text",
-              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+              "type": "audio",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Downward Dog (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+              "type": "audio",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Warrior I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+              "type": "audio",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Tree Pose (Vrksasana)",
-              "type": "text",
-              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+              "type": "audio",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Cat-Cow Flow",
-              "type": "text",
-              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+              "type": "audio",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Child's Pose (Balasana)",
-              "type": "text",
-              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+              "type": "audio",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Bridge Pose (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+              "type": "audio",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Seated Forward Fold",
-              "type": "text",
-              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+              "type": "audio",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Reclined Twist",
-              "type": "text",
-              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+              "type": "audio",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Your 10-Pose Flow",
-              "type": "text",
-              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+              "type": "audio",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         },
@@ -623,62 +663,72 @@
             {
               "day": 1,
               "title": "Mountain Pose (Tadasana)",
-              "type": "text",
-              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+              "type": "audio",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Downward Dog (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+              "type": "audio",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Warrior I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+              "type": "audio",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Tree Pose (Vrksasana)",
-              "type": "text",
-              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+              "type": "audio",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Cat-Cow Flow",
-              "type": "text",
-              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+              "type": "audio",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Child's Pose (Balasana)",
-              "type": "text",
-              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+              "type": "audio",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Bridge Pose (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+              "type": "audio",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Seated Forward Fold",
-              "type": "text",
-              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+              "type": "audio",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Reclined Twist",
-              "type": "text",
-              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+              "type": "audio",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Your 10-Pose Flow",
-              "type": "text",
-              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+              "type": "audio",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         },
@@ -690,62 +740,72 @@
             {
               "day": 1,
               "title": "Mountain Pose (Tadasana)",
-              "type": "text",
-              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation."
+              "type": "audio",
+              "content": "The foundation of all standing poses. Learn proper alignment from feet to crown. Discover how simply standing can become a meditation.",
+              "experience": "yoga-mountain-pose"
             },
             {
               "day": 2,
               "title": "Downward Dog (Adho Mukha Svanasana)",
-              "type": "text",
-              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings."
+              "type": "audio",
+              "content": "The quintessential yoga pose. Build strength in arms and legs while lengthening the spine. Modifications for tight hamstrings.",
+              "experience": "yoga-downward-dog"
             },
             {
               "day": 3,
               "title": "Warrior I & II (Virabhadrasana)",
-              "type": "text",
-              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II."
+              "type": "audio",
+              "content": "Cultivate strength and stability. These powerful standing poses build leg strength and open the hips. Learn the difference between Warrior I and II.",
+              "experience": "yoga-warrior"
             },
             {
               "day": 4,
               "title": "Tree Pose (Vrksasana)",
-              "type": "text",
-              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up."
+              "type": "audio",
+              "content": "A balancing pose for focus and grounding. Find your center, even when life feels wobbly. Tips for building balance from the ground up.",
+              "experience": "yoga-tree-pose"
             },
             {
               "day": 5,
               "title": "Cat-Cow Flow",
-              "type": "text",
-              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension."
+              "type": "audio",
+              "content": "The gentlest way to warm up the spine. Synchronize breath with movement and discover how this simple flow relieves back tension.",
+              "experience": "yoga-cat-cow"
             },
             {
               "day": 6,
               "title": "Child's Pose (Balasana)",
-              "type": "text",
-              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom."
+              "type": "audio",
+              "content": "The ultimate rest pose. Learn when and how to use Child's Pose as a sanctuary in your practice — not a sign of weakness, but of wisdom.",
+              "experience": "yoga-childs-pose"
             },
             {
               "day": 7,
               "title": "Bridge Pose (Setu Bandhasana)",
-              "type": "text",
-              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers."
+              "type": "audio",
+              "content": "Open the chest and strengthen the back. A gentle backbend accessible to all levels. Great counterpose for desk workers.",
+              "experience": "yoga-bridge-pose"
             },
             {
               "day": 8,
               "title": "Seated Forward Fold",
-              "type": "text",
-              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch."
+              "type": "audio",
+              "content": "Calm the mind while stretching the entire back body. Learn to fold from the hips, not the waist, for a safer and deeper stretch.",
+              "experience": "yoga-seated-fold"
             },
             {
               "day": 9,
               "title": "Reclined Twist",
-              "type": "text",
-              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting."
+              "type": "audio",
+              "content": "Release spinal tension with this restorative twist. Perfect for winding down before bed or after a long day of sitting.",
+              "experience": "yoga-reclined-twist"
             },
             {
               "day": 10,
               "title": "Your 10-Pose Flow",
-              "type": "text",
-              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning."
+              "type": "audio",
+              "content": "Put it all together. A complete 20-minute sequence combining all 10 poses into a flowing practice you can do every morning.",
+              "experience": "yoga-ten-pose-flow"
             }
           ]
         }
