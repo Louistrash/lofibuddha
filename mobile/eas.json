@@ -29,7 +29,7 @@
         "ascApiKeyId": "6RU3BF3VAK"
       },
       "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
+        "serviceAccountKeyPath": "../secrets/google-play-service-account.json",
         "track": "production",
         "releaseStatus": "draft"
       }

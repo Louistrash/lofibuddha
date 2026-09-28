@@ -60,9 +60,8 @@ npx eas-cli submit --platform android --profile production
 
 - [ ] **iOS key**: verifieer/regeneer `asc-key.p8` in App Store Connect
       (*Users & Access → Integrations → App Store Connect API*). De oude key gaf 401.
-- [ ] **Android SA pad**: `eas.json` verwijst naar `./google-service-account.json`
-      (relatief t.o.v. `mobile/`), maar het bestand staat in `secrets/google-play-service-account.json`.
-      Kopieer het naar `mobile/` of pas het pad in `eas.json` aan.
+- [x] **Android SA pad**: gefixt — `eas.json` wijst nu naar
+      `../secrets/google-play-service-account.json` (zelfde patroon als de iOS-key).
 - [ ] **Login**: `eas login` op de build-machine (EAS owner `lofibuddha`).
 
 ## App-identifiers & submit-metadata (al geconfigureerd)
