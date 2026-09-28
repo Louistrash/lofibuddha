@@ -38,13 +38,13 @@ function emailHTML(params: {
     const title = tr.title || "";
     const desc = tr.description || "";
     const slug = c.slug || "";
-    const rawImg = c.image || "https://lofibuddha.com/images/generated/temple-01-jungle-1780083927467.png";
+    const rawImg = c.emailImage || c.image || "https://lofibuddha.com/images/generated/temple-01-jungle-1780083927467.png";
     const img = rawImg.startsWith("http") ? rawImg : `${params.baseUrl}${rawImg}`;
     const href = `${params.baseUrl}/course/${slug}?lang=${params.language}`;
     return `
     <div style="background:#211c18;border-radius:12px;margin:0 0 14px;border:1px solid #3d362f;overflow:hidden">
       <a href="${href}" style="display:block;text-decoration:none">
-        <img src="${img}" alt="${title}" width="600" style="width:100%;height:180px;object-fit:cover;object-position:center;border:none;display:block" />
+        <img src="${img}" alt="${title}" width="600" style="width:100%;height:auto;border:none;display:block" />
       </a>
       <div style="padding:16px 16px 18px">
         <a href="${href}" style="text-decoration:none"><h3 style="margin:0 0 6px;color:#e8d9b8;font-size:16px;font-weight:700">${title}</h3></a>
@@ -77,7 +77,6 @@ function emailHTML(params: {
       
       <!-- Content -->
       <tr><td style="padding:28px 24px;color:#d8d0c4;font-size:16px;line-height:1.65">
-        <p style="margin:0 0 10px;color:#a89f92;font-size:14px">${l.greeting} 🧘</p>
         ${params.content.split("\n").map((p: string) => `<p style="margin:0 0 14px">${p}</p>`).join("")}
       </td></tr>
       

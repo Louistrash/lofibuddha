@@ -343,7 +343,8 @@
             }
           ]
         }
-      }
+      },
+      "emailImage": "/images/generated/email-beginners-mindfulness.png"
     },
     {
       "id": "yoga-foundations",
@@ -814,7 +815,8 @@
             }
           ]
         }
-      }
+      },
+      "emailImage": "/images/generated/email-yoga-foundations.png"
     },
     {
       "id": "breathwork-essentials",
