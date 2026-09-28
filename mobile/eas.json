@@ -23,11 +23,15 @@
       "ios": {
         "appleId": "patricknieborg@me.com",
         "appleTeamId": "QR69NLYHRX",
-        "ascAppId": "6809886537"
+        "ascAppId": "6809886537",
+        "ascApiKeyPath": "../secrets/asc-key.p8",
+        "ascApiKeyIssuerId": "69a6de89-bb66-47e3-e053-5b8c7c11a4d1",
+        "ascApiKeyId": "6RU3BF3VAK"
       },
       "android": {
         "serviceAccountKeyPath": "./google-service-account.json",
-        "track": "internal"
+        "track": "production",
+        "releaseStatus": "draft"
       }
     }
   }

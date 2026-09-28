@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lofibuddha.com" },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
-      { url: "/bodhi-icon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/bodhi-icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/bodhi-icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
     ],
     apple: "/bodhi-icon-180.png",
     other: [

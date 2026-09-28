@@ -74,11 +74,21 @@ export default function PaywallScreen() {
     getOfferings().then((o) => setPackages(o?.current?.availablePackages ?? []));
   }, []);
 
-  // Na een geslaagde aankoop: zodra de entitlement herkend is (isPro), sluit de
-  // paywall automatisch i.p.v. dat de gebruiker op de "unlock wall" blijft hangen.
+  // Already a member: don't leave them on the paywall with Subscribe buttons.
+  // Send them into the app (Today). justPurchased covers the post-checkout path;
+  // this covers opening /deepen while already entitled.
   useEffect(() => {
-    if (justPurchased && isPro) dismiss();
-  }, [justPurchased, isPro, dismiss]);
+    if (!isPro) return;
+    setNotice(null);
+    if (justPurchased) {
+      dismiss();
+      return;
+    }
+    const t = setTimeout(() => {
+      router.replace("/");
+    }, 600);
+    return () => clearTimeout(t);
+  }, [isPro, justPurchased, dismiss, router]);
 
   function fail(text: string) {
     setNotice({ kind: "error", text });
@@ -121,7 +131,10 @@ export default function PaywallScreen() {
       }
 
       const pkg =
-        packages.find((p) => String(p.identifier).toLowerCase().includes(tier)) ?? packages[0];
+        packages.find((p) => {
+          const hay = `${p.identifier ?? ""} ${p.product?.identifier ?? ""}`.toLowerCase();
+          return hay.includes(tier);
+        }) ?? null;
       if (!pkg) {
         fail("The store is not configured yet. Please try again later.");
         return;
@@ -196,11 +209,11 @@ export default function PaywallScreen() {
         {isPro ? (
           <View style={styles.active}>
             <Icon name="checkCircle" size={18} color={colors.jade} />
-            <Text style={styles.activeText}>Your membership is active</Text>
+            <Text style={styles.activeText}>Your membership is active — taking you in…</Text>
           </View>
         ) : null}
 
-        {notice ? (
+        {notice && !isPro ? (
           <View
             style={[
               styles.notice,
@@ -219,6 +232,23 @@ export default function PaywallScreen() {
           </View>
         ) : null}
 
+        {isPro ? (
+          <View style={styles.memberCtas}>
+            <Button
+              label="Continue to Today"
+              variant="primary"
+              accent={colors.gold}
+              fullWidth
+              onPress={() => router.replace("/")}
+            />
+            <Button
+              label="Open Library"
+              variant="secondary"
+              fullWidth
+              onPress={() => router.replace("/library")}
+            />
+          </View>
+        ) : (
         <View style={[styles.tiers, l.isMedium && styles.tiersRow]}>
           {TIERS.map((t) => (
             <View
@@ -273,8 +303,9 @@ export default function PaywallScreen() {
             </View>
           ))}
         </View>
+        )}
 
-        {Platform.OS !== "web" ? (
+        {!isPro && Platform.OS !== "web" ? (
           <Pressable
             style={styles.restore}
             onPress={async () => {
@@ -286,10 +317,13 @@ export default function PaywallScreen() {
           </Pressable>
         ) : null}
 
+        {!isPro ? (
         <Text style={styles.legal}>
           Payment is charged to your account at confirmation. Subscriptions renew automatically
-          unless cancelled at least 24 hours before the period ends.
+          unless cancelled at least 24 hours before the period ends. See Terms of Use and Privacy
+          Policy below.
         </Text>
+        ) : null}
 
         <LegalFooter />
       </ScrollView>
@@ -325,6 +359,12 @@ const styles = StyleSheet.create({
     backgroundColor: tint(colors.jade, 0.12),
   },
   activeText: { ...type.label, color: colors.jade },
+  memberCtas: {
+    width: "100%",
+    maxWidth: 420,
+    gap: space.md,
+    marginTop: space["3xl"],
+  },
 
   notice: {
     flexDirection: "row",

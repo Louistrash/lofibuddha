@@ -208,8 +208,9 @@ const targets = [
   ["public/bodhi-icon-192.png", () => renderStatue(192)],
   ["public/bodhi-icon-512.png", () => renderStatue(512)],
   ["public/bodhi-icon.png", () => renderStatue(512)],
-  // apple-touch-icon is composited on a solid tile: iOS shows no transparency.
-  ["public/apple-touch-icon.png", () => renderStatueOnInk(180)],
+  // apple-touch-icon: keep the circular statue with transparent corners so Safari
+  // tabs / share sheets show a round mark, not a square ink tile.
+  ["public/apple-touch-icon.png", () => renderStatue(180)],
   // Transparent logo for use on top of existing surfaces
   ["public/lb-logo-512.png", () => render(512, { scale: 0.94 })],
   ["public/lb-logo-1024.png", () => render(1024, { scale: 0.94 })],

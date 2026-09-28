@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { Check, ArrowRight, Music, Heart, Headphones, Settings, ArrowLeft, Loader2, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-// ── Tier-specific content ─────────────────────
 interface TierContent {
   headline: string;
   subheadline: string;
@@ -23,7 +21,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
   mindful: {
     headline: "Your Mindful Path begins",
     subheadline:
-      "You now have unlimited access to AI Buddha spiritual guidance, weekly curated Lofi playlist syncs, and ad-free ambient audio downloads. A calm space awaits.",
+      "Unlimited AI Buddha guidance, curated Lofi playlists, and ad-free ambient audio — a calm space awaits.",
     quote: "The present moment is filled with joy and happiness. If you are attentive, you will see it.",
     quoteAttribution: "Thich Nhat Hanh",
     tierLabel: "Mindful Path · €1,99/month",
@@ -34,9 +32,9 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Complete ad-free experience" },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes and Lofi mixes", href: "/mindfulness" },
-      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation with your personal AI guide", href: "https://lofibuddha.com/chat" },
-      { icon: "music", label: "This week's playlist", desc: "Your first weekly curated Lofi playlist is ready", href: "/mindfulness" },
+      { icon: "headphones", label: "Explore the library", desc: "Browse ambient soundscapes and Lofi mixes", href: "/mindfulness" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Start a spiritual conversation", href: "https://lofibuddha.com/chat" },
+      { icon: "music", label: "This week's playlist", desc: "Your first curated playlist is ready", href: "/mindfulness" },
     ],
     ctaLabel: "Begin your practice",
     ctaHref: "/mindfulness",
@@ -44,7 +42,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
   enlightened: {
     headline: "The Enlightened Path awaits",
     subheadline:
-      "You've unlocked everything — personalized daily meditations, custom spiritual roadmaps, and priority access. This is deep transformation.",
+      "Personalized meditations, custom spiritual roadmaps, and priority access — deep transformation starts now.",
     quote: "The way is not in the sky. The way is in the heart.",
     quoteAttribution: "Buddha",
     tierLabel: "Enlightened Path · €4,99/month",
@@ -55,9 +53,9 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Priority support & early access" },
     ],
     nextSteps: [
-      { icon: "heart", label: "Your spiritual roadmap", desc: "Answer a few questions and receive your personalized path", href: "https://lofibuddha.com/chat" },
-      { icon: "headphones", label: "First guided meditation", desc: "A personalized meditation generated for your current state", href: "https://lofibuddha.com/chat" },
-      { icon: "music", label: "Premium library", desc: "Full access to all ambient albums and exclusive tracks", href: "/mindfulness" },
+      { icon: "heart", label: "Your spiritual roadmap", desc: "Receive a path tailored to you", href: "https://lofibuddha.com/chat" },
+      { icon: "headphones", label: "First guided meditation", desc: "A meditation for how you feel today", href: "https://lofibuddha.com/chat" },
+      { icon: "music", label: "Premium library", desc: "All ambient albums and exclusive tracks", href: "/mindfulness" },
     ],
     ctaLabel: "Begin your journey",
     ctaHref: "/mindfulness",
@@ -65,7 +63,7 @@ const TIER_CONTENT: Record<string, TierContent> = {
   zen: {
     headline: "Welcome to the community",
     subheadline:
-      "You've joined Zen Beginner — free access to Lofi soundscapes, 10 daily AI Buddha chats, and the box breathing visualizer. Your practice starts now.",
+      "Zen Beginner gives you Lofi soundscapes, 10 daily AI Buddha chats, and the box breathing visualizer.",
     quote: "Peace comes from within. Do not seek it without.",
     quoteAttribution: "Buddha",
     tierLabel: "Zen Beginner · Free",
@@ -78,9 +76,9 @@ const TIER_CONTENT: Record<string, TierContent> = {
       { label: "Personalized guided meditations", locked: true },
     ],
     nextSteps: [
-      { icon: "headphones", label: "Start listening", desc: "Tune into our live-syncing Lofi radio stream — no sign-in needed", href: "/mindfulness" },
-      { icon: "heart", label: "Chat with AI Buddha", desc: "Begin a spiritual conversation with your AI guide", href: "https://lofibuddha.com/chat" },
-      { icon: "music", label: "Explore premium", desc: "See what's unlocked on the Mindful and Enlightened paths", href: "/signup" },
+      { icon: "headphones", label: "Start listening", desc: "Tune into the live Lofi stream", href: "/mindfulness" },
+      { icon: "heart", label: "Chat with AI Buddha", desc: "Begin a spiritual conversation", href: "https://lofibuddha.com/chat" },
+      { icon: "music", label: "Explore premium", desc: "See Mindful and Enlightened paths", href: "/signup" },
     ],
     ctaLabel: "Begin your practice",
     ctaHref: "/mindfulness",
@@ -89,14 +87,13 @@ const TIER_CONTENT: Record<string, TierContent> = {
 
 const UNKNOWN_CONTENT: TierContent = {
   headline: "Welcome to the community",
-  subheadline:
-    "Your subscription is active. A calm space awaits — explore your new practice.",
+  subheadline: "Your subscription is active. A calm space awaits — explore your new practice.",
   quote: "The journey of a thousand miles begins with a single step.",
   quoteAttribution: "Lao Tzu",
   tierLabel: "",
   features: [],
   nextSteps: [
-    { icon: "headphones", label: "Explore the library", desc: "Browse our full collection of ambient soundscapes", href: "/mindfulness" },
+    { icon: "headphones", label: "Explore the library", desc: "Browse ambient soundscapes", href: "/mindfulness" },
     { icon: "heart", label: "Start a practice", desc: "Begin with a simple breathing exercise", href: "/mindfulness" },
   ],
   ctaLabel: "Begin your practice",
@@ -109,66 +106,28 @@ const iconMap: Record<string, React.ElementType> = {
   headphones: Headphones,
 };
 
-// ── Floating gold particle ────────────────────
-function FloatingParticles() {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {Array.from({ length: 20 }).map((_, i) => {
-        const size = 2 + Math.random() * 4;
-        const left = Math.random() * 100;
-        const delay = Math.random() * 8;
-        const duration = 8 + Math.random() * 12;
-        const opacity = 0.08 + Math.random() * 0.12;
-        return (
-          <div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              left: `${left}%`,
-              bottom: "-10px",
-              background: `radial-gradient(circle, rgba(176,128,80,${opacity + 0.3}) 0%, rgba(176,128,80,0) 70%)`,
-              animation: `particleFloat ${duration}s ${delay}s ease-in infinite`,
-              opacity,
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
 function SuccessContent() {
   const params = useSearchParams();
   const sessionId = params?.get("session_id") || "";
   const searchTier = params?.get("tier") || "";
 
-  const [tier, setTier] = useState<string>("");
-  const [tierName, setTierName] = useState<string>("");
-  const [tierPrice, setTierPrice] = useState<string>("");
-  const [customerId, setCustomerId] = useState<string>("");
+  const [tier, setTier] = useState("");
+  const [tierName, setTierName] = useState("");
+  const [tierPrice, setTierPrice] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [loading, setLoading] = useState(true);
   const [portalLoading, setPortalLoading] = useState(false);
-  const [portalError, setPortalError] = useState<string>("");
-  const [scrollY, setScrollY] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(true);
-  const confettiTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [portalError, setPortalError] = useState("");
+  const [showMark, setShowMark] = useState(false);
+  const markTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── Scroll tracking for nav glassmorphism ──
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    markTimeout.current = setTimeout(() => setShowMark(true), 80);
+    return () => {
+      if (markTimeout.current) clearTimeout(markTimeout.current);
+    };
   }, []);
 
-  // ── Confetti auto-dismiss ──
-  useEffect(() => {
-    confettiTimeout.current = setTimeout(() => setShowConfetti(false), 4000);
-    return () => { if (confettiTimeout.current) clearTimeout(confettiTimeout.current); };
-  }, []);
-
-  // ── Fetch tier info from session ──
   useEffect(() => {
     if (!sessionId && !searchTier) {
       setLoading(false);
@@ -195,7 +154,6 @@ function SuccessContent() {
       .catch(() => setLoading(false));
   }, [sessionId, searchTier]);
 
-  // ── Customer Portal redirect ──
   const handlePortal = useCallback(async () => {
     if (!customerId) return;
     setPortalLoading(true);
@@ -220,340 +178,239 @@ function SuccessContent() {
   }, [customerId]);
 
   const content = TIER_CONTENT[tier] || UNKNOWN_CONTENT;
-  const isPaid = tier === "mindful" || tier === "enlightened";
   const hasCustomerPortal = !!customerId;
+  const badge =
+    tierName || content.tierLabel
+      ? `${tierName || content.tierLabel.split(" · ")[0]}${
+          tierPrice && tierPrice !== "Free"
+            ? ` · ${tierPrice}`
+            : content.tierLabel.includes(" · ")
+              ? ` · ${content.tierLabel.split(" · ").slice(1).join(" · ")}`
+              : ""
+        }`
+      : "";
 
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap");
 
         body {
-          background: #faf8f5 !important;
-          color: #1c1917 !important;
+          background: #08070c !important;
+          color: #f6f2ea !important;
           scroll-behavior: smooth;
         }
 
-        .success-page h1, .success-page h2, .success-page h3 {
-          font-family: "Playfair Display", Georgia, serif;
-        }
         .success-page {
-          font-family: "Inter", system-ui, sans-serif;
+          font-family: "Instrument Sans", system-ui, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes ensoSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes checkDraw {
-          from { stroke-dashoffset: 60; }
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes scaleIn {
-          from { opacity: 0; transform: scale(0.7); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes checkPop {
-          0% { transform: scale(0); opacity: 0; }
-          50% { transform: scale(1.2); opacity: 1; }
-          70% { transform: scale(0.9); }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes particleFloat {
-          0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.6; }
-          100% { transform: translateY(-100vh) translateX(40px) scale(0.3); opacity: 0; }
-        }
-        @keyframes confetti1 {
-          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translate(60px, -120px) rotate(240deg) scale(0); opacity: 0; }
-        }
-        @keyframes confetti2 {
-          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translate(-50px, -140px) rotate(-200deg) scale(0); opacity: 0; }
-        }
-        @keyframes confetti3 {
-          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translate(70px, -100px) rotate(180deg) scale(0); opacity: 0; }
-        }
-        @keyframes confetti4 {
-          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translate(-60px, -130px) rotate(-160deg) scale(0); opacity: 0; }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
+        .success-page h1,
+        .success-page h2 {
+          font-family: "DM Serif Display", Georgia, serif;
         }
 
-        .anim-fade-1 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
-        .anim-fade-2 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; opacity: 0; }
-        .anim-fade-3 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards; opacity: 0; }
-        .anim-fade-4 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards; opacity: 0; }
-        .anim-fade-5 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.7s forwards; opacity: 0; }
-        .anim-fade-6 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.9s forwards; opacity: 0; }
-        .anim-fade-7 { animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.1s forwards; opacity: 0; }
-
-        .anim-scale { animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; }
-        .anim-check-pop { animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards; opacity: 0; }
-        .anim-enso { animation: ensoSpin 30s linear infinite; }
-
-        .anim-check circle {
-          stroke-dasharray: 60;
-          stroke-dashoffset: 60;
-          animation: checkDraw 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes markIn {
+          0% {
+            opacity: 0;
+            transform: scale(0.82);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
         }
 
-        .success-page ::selection {
-          background: rgba(176, 128, 80, 0.15);
-          color: #1c1917;
+        .s-fade-1 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+        }
+        .s-fade-2 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+        }
+        .s-fade-3 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+        }
+        .s-fade-4 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both;
+        }
+        .s-fade-5 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.54s both;
+        }
+        .s-fade-6 {
+          animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.66s both;
+        }
+        .s-mark {
+          animation: markIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        .shimmer-text {
-          background: linear-gradient(90deg, #1c1917 0%, #b08050 50%, #1c1917 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmer 4s ease-in-out infinite;
+        @media (prefers-reduced-motion: reduce) {
+          .s-fade-1,
+          .s-fade-2,
+          .s-fade-3,
+          .s-fade-4,
+          .s-fade-5,
+          .s-fade-6,
+          .s-mark {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
         }
       `}</style>
 
-      {/* ── Floating particles ── */}
-      <FloatingParticles />
-
-      <div className="success-page min-h-screen relative" style={{ zIndex: 1 }}>
-
-        {/* ── Navigation ── */}
-        <nav
-          className="fixed top-0 left-0 right-0 z-50 border-b border-stone-200/60"
-          style={{
-            background:
-              scrollY > 50
-                ? "rgba(250,248,245,0.92)"
-                : "rgba(250,248,245,0.75)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-          }}
-        >
-          <div className="max-w-6xl mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
-            <Link
-              href="/landing"
-              className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-800 transition-colors"
+      <div
+        className="success-page relative min-h-screen overflow-x-hidden"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(228,184,114,0.12), transparent 55%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(108,116,255,0.08), transparent 50%), #08070c",
+          paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))",
+        }}
+      >
+        <header className="relative z-10 mx-auto flex max-w-3xl items-center justify-between px-5 pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-8">
+          <Link
+            href="/landing"
+            className="inline-flex items-center gap-2 text-[13px] text-[#9e9aab] transition-colors hover:text-[#f6f2ea]"
+          >
+            <ArrowLeft size={15} />
+            Back
+          </Link>
+          <Link href="/landing" className="flex items-center gap-2.5">
+            <img
+              src="/icon-transparent.png"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8"
+            />
+            <span
+              className="text-lg tracking-wide text-[#f6f2ea]"
+              style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
             >
-              <ArrowLeft size={16} />
-              Back to LofiBuddha
-            </Link>
-            <Link
-              href="/landing"
-              className="flex items-center gap-2.5"
-            >
-              <img
-                src="/icon-transparent.png"
-                alt="LofiBuddha"
-                className="h-[35px] w-auto"
-              />
-              <span className="font-serif text-lg tracking-wide text-stone-800">
-                LofiBuddha
-              </span>
-            </Link>
-            <div className="w-[100px]" />
-          </div>
-        </nav>
+              LofiBuddha
+            </span>
+          </Link>
+          <div className="w-14" aria-hidden />
+        </header>
 
-        {/* ── Loading state ── */}
         {loading && (
-          <div className="flex items-center justify-center min-h-screen">
-            <div className="w-8 h-8 border-2 border-stone-300 border-t-amber-500 rounded-full animate-spin" />
+          <div className="flex min-h-[70vh] items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#63606f] border-t-[#e4b872]" />
           </div>
         )}
 
-        {/* ── Main content ── */}
         {!loading && (
-          <div className="pt-32 pb-24 sm:pt-40 sm:pb-36 px-6 sm:px-10">
-            <div className="max-w-2xl mx-auto text-center">
-
-              {/* ── Animated checkmark with enso ring ── */}
-              <div className="relative w-28 h-28 mx-auto mb-12">
-                {/* Enso circle — spinning */}
-                <svg
-                  viewBox="0 0 120 120"
-                  className="absolute inset-0 w-full h-full anim-enso"
-                >
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="50"
-                    fill="none"
-                    stroke="#b08050"
-                    strokeWidth="0.6"
-                    strokeDasharray="95 280"
-                    strokeLinecap="round"
-                    transform="rotate(-30 60 60)"
-                    opacity="0.3"
-                  />
-                </svg>
-                {/* Confetti burst particles */}
-                {showConfetti && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {[
-                      { anim: "confetti1", dur: "1.2s", color: "#b08050", w: "8px", h: "3px", rad: "1px" },
-                      { anim: "confetti2", dur: "1.3s", color: "#d4a44a", w: "6px", h: "3px", rad: "1px" },
-                      { anim: "confetti3", dur: "1.1s", color: "#c89050", w: "7px", h: "2px", rad: "1px" },
-                      { anim: "confetti4", dur: "1.4s", color: "#e0b860", w: "5px", h: "3px", rad: "1px" },
-                      { anim: "confetti1", dur: "1.25s", color: "#b08050", w: "9px", h: "2px", rad: "1px" },
-                      { anim: "confetti2", dur: "1.15s", color: "#d4a060", w: "6px", h: "2px", rad: "1px" },
-                    ].map((c, i) => (
-                      <div
-                        key={i}
-                        className="absolute"
-                        style={{
-                          width: c.w,
-                          height: c.h,
-                          borderRadius: c.rad,
-                          background: c.color,
-                          animation: `${c.anim} ${c.dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`,
-                          opacity: 0,
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-                {/* Checkmark circle */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-[68px] h-[68px] rounded-full bg-amber-100/60 anim-check-pop flex items-center justify-center">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-9 h-9 anim-check"
-                      fill="none"
-                    >
-                      <circle cx="12" cy="12" r="11" stroke="#b08050" strokeWidth="1.5" />
-                      <path
-                        d="M7 12.5l3 3 7-7"
-                        stroke="#b08050"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
+          <main className="relative z-10 mx-auto max-w-xl px-5 pb-16 pt-14 sm:px-8 sm:pt-20">
+            <div className="text-center">
+              <div
+                className={`mx-auto mb-10 flex h-16 w-16 items-center justify-center rounded-full border border-[rgba(228,184,114,0.32)] bg-[rgba(228,184,114,0.12)] ${showMark ? "s-mark" : "opacity-0"}`}
+              >
+                <Check size={28} className="text-[#e4b872]" strokeWidth={2} />
               </div>
 
-              {/* ── Headline ── */}
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-stone-800 mb-3 anim-fade-1">
+              <h1 className="s-fade-1 mb-3 text-[clamp(1.85rem,5vw,2.75rem)] font-normal leading-[1.15] tracking-tight text-[#f6f2ea]">
                 {content.headline}
               </h1>
 
-              {/* ── Tier badge ── */}
-              {(tierName || tierPrice || content.tierLabel) && (
-                <div className="anim-fade-2 mb-6">
-                  <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/60 text-amber-800 text-sm font-medium">
-                    {tierName || content.tierLabel}
-                    {tierPrice && tierPrice !== "Free" && (
-                      <span className="text-amber-600 font-normal">
-                        · {tierPrice}
-                      </span>
-                    )}
-                  </span>
-                </div>
+              {badge && (
+                <p className="s-fade-2 mb-5 text-sm font-medium text-[#e4b872]">
+                  {badge}
+                </p>
               )}
 
-              {/* ── Subheadline ── */}
-              <p className="text-stone-500 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-12 anim-fade-3">
+              <p className="s-fade-3 mx-auto mb-12 max-w-md text-base leading-relaxed text-[#9e9aab]">
                 {content.subheadline}
               </p>
 
-              {/* ── Features ── */}
               {content.features.length > 0 && (
-                <div className="bg-white border border-stone-200/80 rounded-2xl p-8 sm:p-10 mb-10 text-left anim-fade-4">
-                  <h2 className="font-serif text-lg font-medium text-stone-700 mb-5">
+                <section className="s-fade-4 mb-12 text-left">
+                  <h2 className="mb-5 text-center text-lg font-normal text-[#f6f2ea]">
                     What you now have
                   </h2>
-                  <ul className="space-y-3">
+                  <ul className="space-y-3.5 border-y border-[rgba(255,255,255,0.07)] py-6">
                     {content.features.map((feat, i) => (
                       <li
                         key={i}
-                        className={`flex items-start gap-3 text-sm ${feat.locked ? "text-stone-350" : "text-stone-600"}`}
+                        className={`flex items-start gap-3 text-sm leading-relaxed ${feat.locked ? "text-[#63606f]" : "text-[#9e9aab]"}`}
                       >
                         {feat.locked ? (
-                          <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full border border-stone-300 flex items-center justify-center">
-                            <span className="w-1.5 h-1.5 rounded-full bg-stone-300" />
-                          </span>
+                          <span className="mt-1 h-3.5 w-3.5 flex-shrink-0 rounded-full border border-[#63606f]" />
                         ) : (
                           <Check
-                            size={16}
-                            className="mt-0.5 flex-shrink-0 text-amber-600"
+                            size={15}
+                            className="mt-0.5 flex-shrink-0 text-[#e4b872]"
                           />
                         )}
-                        <span className={feat.locked ? "opacity-50" : ""}>
+                        <span className={feat.locked ? "opacity-70" : ""}>
                           {feat.label}
                         </span>
                       </li>
                     ))}
                   </ul>
-                </div>
+                </section>
               )}
 
-              {/* ── Next steps ── */}
               {content.nextSteps.length > 0 && (
-                <div className="mb-10 anim-fade-5">
-                  <h2 className="font-serif text-lg font-medium text-stone-700 mb-5">
+                <section className="s-fade-5 mb-12">
+                  <h2 className="mb-6 text-lg font-normal text-[#f6f2ea]">
                     Where to begin
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-1">
                     {content.nextSteps.map((step, i) => {
                       const Icon = iconMap[step.icon] || Music;
                       return (
                         <Link
                           key={i}
                           href={step.href}
-                          className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-white border border-stone-200/80 hover:border-amber-300/40 hover:shadow-md transition-all duration-500"
+                          className="group flex items-center gap-4 rounded-2xl px-3 py-4 text-left transition-colors hover:bg-[rgba(255,255,255,0.045)]"
                         >
-                          <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors duration-500 flex-shrink-0">
-                            <Icon
-                              size={18}
-                              className="text-amber-700 group-hover:text-amber-800 transition-colors"
-                            />
+                          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(228,184,114,0.12)] text-[#e4b872] transition-colors group-hover:bg-[rgba(228,184,114,0.2)]">
+                            <Icon size={18} />
                           </div>
-                          <div className="text-center">
-                            <span className="text-sm font-medium text-stone-700 group-hover:text-stone-800 transition-colors">
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm font-medium text-[#f6f2ea]">
                               {step.label}
-                            </span>
-                            <p className="text-xs text-stone-400 mt-1 leading-relaxed">
+                            </div>
+                            <p className="mt-0.5 text-xs leading-relaxed text-[#63606f]">
                               {step.desc}
                             </p>
                           </div>
+                          <ArrowRight
+                            size={14}
+                            className="flex-shrink-0 text-[#63606f] transition-transform group-hover:translate-x-0.5 group-hover:text-[#e4b872]"
+                          />
                         </Link>
                       );
                     })}
                   </div>
-                </div>
+                </section>
               )}
 
-              {/* ── CTAs ── */}
-              <div className="space-y-4 anim-fade-6">
-                {/* Primary CTA */}
+              <div className="s-fade-6 space-y-3">
                 <Link
                   href={content.ctaHref}
-                  className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-stone-800 text-white text-sm tracking-wide hover:bg-stone-700 transition-all duration-300"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-[#e4b872] to-[#a67c3d] px-8 py-4 text-sm font-semibold text-[#08070c] transition-opacity hover:opacity-95 sm:w-auto"
                 >
                   {content.ctaLabel}
                   <ArrowRight size={16} />
                 </Link>
 
-                {/* Customer Portal — prominent secondary button */}
                 {hasCustomerPortal && (
                   <div>
                     <button
+                      type="button"
                       onClick={handlePortal}
                       disabled={portalLoading}
-                      className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-stone-300 text-stone-600 text-sm tracking-wide hover:border-stone-400 hover:text-stone-800 hover:bg-stone-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.14)] px-6 py-3.5 text-sm text-[#9e9aab] transition-colors hover:border-[rgba(255,255,255,0.22)] hover:text-[#f6f2ea] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                     >
                       {portalLoading ? (
                         <>
@@ -563,23 +420,22 @@ function SuccessContent() {
                       ) : (
                         <>
                           <Settings size={14} />
-                          Manage your subscription
+                          Manage subscription
                           <ExternalLink size={12} className="opacity-50" />
                         </>
                       )}
                     </button>
                     {portalError && (
-                      <p className="text-xs text-amber-700 mt-2">{portalError}</p>
+                      <p className="mt-2 text-xs text-[#ff9a3d]">{portalError}</p>
                     )}
                   </div>
                 )}
 
-                {/* Upsell for zen tier */}
                 {tier === "zen" && (
                   <div>
                     <Link
                       href="/signup"
-                      className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-amber-300/60 text-amber-800 text-sm tracking-wide hover:border-amber-400 hover:bg-amber-50 transition-all duration-300"
+                      className="inline-flex items-center gap-2 text-sm text-[#e4b872] transition-opacity hover:opacity-80"
                     >
                       See premium plans
                       <ArrowRight size={14} />
@@ -588,39 +444,19 @@ function SuccessContent() {
                 )}
               </div>
 
-              {/* ── Quote ── */}
-              <div className="mt-20 pt-16 border-t border-stone-200/60 anim-fade-7">
-                <p className="font-serif text-xl sm:text-2xl italic text-stone-400 font-light leading-relaxed max-w-md mx-auto">
+              <blockquote className="s-fade-6 mt-16 border-t border-[rgba(255,255,255,0.07)] pt-12">
+                <p
+                  className="mx-auto max-w-sm text-lg italic leading-relaxed text-[#9e9aab]"
+                  style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+                >
                   &ldquo;{content.quote}&rdquo;
                 </p>
-                <p className="text-xs tracking-[0.2em] uppercase text-stone-400 mt-4">
+                <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-[#63606f]">
                   — {content.quoteAttribution}
                 </p>
-              </div>
-
-              {/* ── Footer links ── */}
-              <div className="mt-16 flex items-center justify-center gap-6 text-xs text-stone-400">
-                <Link
-                  href="/landing"
-                  className="hover:text-stone-600 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/signup"
-                  className="hover:text-stone-600 transition-colors"
-                >
-                  Plans
-                </Link>
-                <Link
-                  href="/mindfulness"
-                  className="hover:text-stone-600 transition-colors"
-                >
-                  Browse
-                </Link>
-              </div>
+              </blockquote>
             </div>
-          </div>
+          </main>
         )}
       </div>
     </>
@@ -631,8 +467,11 @@ export default function SuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center" style={{ background: "#faf8f5" }}>
-          <div className="w-8 h-8 border-2 border-stone-300 border-t-amber-500 rounded-full animate-spin" />
+        <div
+          className="flex min-h-screen items-center justify-center"
+          style={{ background: "#08070c" }}
+        >
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#63606f] border-t-[#e4b872]" />
         </div>
       }
     >

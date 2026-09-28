@@ -8,11 +8,14 @@ import { CardRail } from "@/src/components/content/CardRail";
 import { ExperienceCard } from "@/src/components/content/ExperienceCard";
 import { SoundCard } from "@/src/components/content/SoundCard";
 import { MusicTrackCard } from "@/src/components/content/MusicTrackCard";
+import { Shelf } from "@/src/components/content/Shelf";
 import { usePlayer } from "@/src/providers/PlayerProvider";
 import { useFavorites } from "@/src/lib/useFavorites";
 import { accentByCategory, colors, radius, space, type } from "@/src/theme/tokens";
 import { useLayout } from "@/src/theme/useLayout";
 import { Icon } from "@/src/components/ui/Icon";
+
+const TRACK_PREVIEW = 8;
 
 type Filter = "all" | "focus" | "breathe" | "sleep" | "relax";
 
@@ -154,8 +157,41 @@ export default function ExploreScreen() {
         </View>
       )}
 
-      <View style={styles.block}>
-        <SectionHeader title="Soundscapes" caption="Layer a background under anything" />
+      <Shelf
+        title="Soundtracks"
+        caption="Long-form temple lo-fi"
+        count={MUSIC_TRACKS.length}
+        defaultExpanded
+        previewLimit={TRACK_PREVIEW}
+      >
+        {({ limit }) => (
+          <View style={styles.musicGrid}>
+            {(limit != null ? MUSIC_TRACKS.slice(0, limit) : MUSIC_TRACKS).map((t) => {
+              const active = musicOn && musicTrack === t.id;
+              return (
+                <MusicTrackCard
+                  key={t.id}
+                  track={t}
+                  active={active}
+                  onPress={() => router.push(`/music/${t.id}`)}
+                  onTogglePlay={() => {
+                    if (musicOn && musicTrack === t.id) void toggleMusic();
+                    else if (musicTrack !== t.id) void chooseMusic(t.id);
+                    else void toggleMusic();
+                  }}
+                />
+              );
+            })}
+          </View>
+        )}
+      </Shelf>
+
+      <Shelf
+        title="Soundscapes"
+        caption="Layer a background under anything"
+        count={SOUNDS.filter((s) => s.category !== "Noise").length}
+        defaultExpanded={false}
+      >
         <View style={styles.grid}>
           {SOUNDS.filter((s) => s.category !== "Noise").map((s) => {
             const active = soundscape === s.slug;
@@ -166,36 +202,12 @@ export default function ExploreScreen() {
                 caption={s.category}
                 category={s.category}
                 active={active}
-                // Tapping the running sound stops it, so the grid is a toggle
-                // rather than a one-way switch with no way back.
                 onPress={() => chooseSoundscape(active ? "off" : s.slug)}
               />
             );
           })}
         </View>
-      </View>
-
-      <View style={styles.block}>
-        <SectionHeader title="Soundtracks" caption="Long-form temple lo-fi" />
-        <View style={styles.musicGrid}>
-          {MUSIC_TRACKS.map((t) => {
-            const active = musicOn && musicTrack === t.id;
-            return (
-              <MusicTrackCard
-                key={t.id}
-                track={t}
-                active={active}
-                onPress={() => router.push(`/music/${t.id}`)}
-                onTogglePlay={() => {
-                  if (musicOn && musicTrack === t.id) void toggleMusic();
-                  else if (musicTrack !== t.id) void chooseMusic(t.id);
-                  else void toggleMusic();
-                }}
-              />
-            );
-          })}
-        </View>
-      </View>
+      </Shelf>
     </Screen>
   );
 }

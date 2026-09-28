@@ -20,6 +20,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      { source: "/privacy", destination: "/legal/privacy", permanent: true },
+      { source: "/terms", destination: "/legal/terms", permanent: true },
+      { source: "/disclaimer", destination: "/legal/disclaimer", permanent: true },
+    ];
+  },
   // Output as standalone for Docker/VPS deployment
   output: "standalone",
 };

@@ -11,12 +11,11 @@
     "primaryColor": "#E4B872",
     "description": "Lofi music, guided meditation and breathwork for focus, calm and deep sleep.",
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.lofibuddha.app",
       "appleTeamId": "QR69NLYHRX",
       "infoPlist": {
         "UIBackgroundModes": [
-          "audio",
           "audio"
         ],
         "ITSAppUsesNonExemptEncryption": false

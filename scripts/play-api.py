@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 """Google Play Developer API helper voor lofibuddha (com.lofibuddha.app).
 
-Auth via service-account JSON (secrets/google-play-service-account.json).
+Auth via service-account JSON. Zoekt (in volgorde):
+  PLAY_SA_PATH env, mobile/google-service-account.json, secrets/, /opt/data/...
+
 Werkt via de EDIT-flow (de app-resource GET/PATCH geeft een 404-quirk;
 de edit-endpoints werken wél).
 
 Gebruik:
   python3 scripts/play-api.py listing:get en-US
   python3 scripts/play-api.py listing:set en-US --title "..." --short "..." --full "path/to/full.txt"
+  python3 scripts/play-api.py images:upload en-US --image-type icon --image-path mobile/assets/images/icon-512.png
 """
-import json, sys, time, argparse
+import json, os, sys, time, argparse
+from pathlib import Path
 import jwt, requests
 
-SA_PATH = "/opt/data/bodhi-dashboard/secrets/google-play-service-account.json"
+ROOT = Path(__file__).resolve().parents[1]
+_SA_CANDIDATES = [
+    os.environ.get("PLAY_SA_PATH"),
+    str(ROOT / "mobile" / "google-service-account.json"),
+    str(ROOT / "secrets" / "google-play-service-account.json"),
+    "/opt/data/bodhi-dashboard/secrets/google-play-service-account.json",
+]
+SA_PATH = next((p for p in _SA_CANDIDATES if p and Path(p).is_file()), _SA_CANDIDATES[1])
 PACKAGE = "com.lofibuddha.app"
 BASE = f"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{PACKAGE}"
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
@@ -113,15 +124,64 @@ def get_track(track):
     return {"releases": r.json().get("releases", [])}
 
 
+def replace_icon(lang, image_path):
+    """Delete existing listing icons then upload the new one (single edit)."""
+    edit_id = create_edit()
+    token = get_token()
+    listed = requests.get(
+        f"{BASE}/edits/{edit_id}/listings/{lang}/icon",
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        timeout=30,
+    )
+    deleted = []
+    if listed.status_code == 200:
+        for img in listed.json().get("images", []) or []:
+            iid = img.get("id")
+            if not iid:
+                continue
+            d = requests.delete(
+                f"{BASE}/edits/{edit_id}/listings/{lang}/icon/{iid}",
+                headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+                timeout=30,
+            )
+            deleted.append({"id": iid, "status": d.status_code})
+    with open(image_path, "rb") as f:
+        data = f.read()
+    url = (
+        f"https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/"
+        f"{PACKAGE}/edits/{edit_id}/listings/{lang}/icon?uploadType=media"
+    )
+    r = requests.post(
+        url,
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "image/png"},
+        data=data,
+        timeout=120,
+    )
+    if r.status_code != 200:
+        return {"error": r.text, "deleted": deleted, "edit": edit_id}
+    c = requests.post(f"{BASE}/edits/{edit_id}:commit", headers=headers(), timeout=30)
+    return {
+        "deleted": deleted,
+        "upload": r.status_code,
+        "commit": c.status_code,
+        "image": r.json().get("image"),
+        "edit": edit_id,
+    }
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("action", help="listing:get|listing:set|images:get|images:delete|track:get")
+    ap.add_argument(
+        "action",
+        help="listing:get|listing:set|images:get|images:delete|images:upload|images:replace-icon|track:get",
+    )
     ap.add_argument("lang", help="bijv. en-US (of track-naam voor track:get)")
     ap.add_argument("--title")
     ap.add_argument("--short")
     ap.add_argument("--full", help="pad naar full-description .txt")
     ap.add_argument("--image-type", choices=["phoneScreenshots", "featureGraphic", "icon"])
     ap.add_argument("--image-id", help="image-id voor images:delete")
+    ap.add_argument("--image-path", help="pad naar PNG voor images:upload / images:replace-icon")
     a = ap.parse_args()
 
     if a.action == "listing:get":
@@ -137,6 +197,14 @@ def main():
         if not (a.image_type and a.image_id):
             print("--image-type en --image-id zijn verplicht"); sys.exit(1)
         print(delete_image(a.lang, a.image_type, a.image_id))
+    elif a.action == "images:upload":
+        if not (a.image_type and a.image_path):
+            print("--image-type en --image-path zijn verplicht"); sys.exit(1)
+        print(json.dumps(upload_image(a.lang, a.image_type, a.image_path), indent=2, ensure_ascii=False))
+    elif a.action == "images:replace-icon":
+        if not a.image_path:
+            print("--image-path is verplicht"); sys.exit(1)
+        print(json.dumps(replace_icon(a.lang, a.image_path), indent=2, ensure_ascii=False))
     elif a.action == "track:get":
         print(json.dumps(get_track(a.lang), indent=2, ensure_ascii=False))
     else:

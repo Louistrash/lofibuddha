@@ -24,10 +24,10 @@ export default function Root({ children }: { children: ReactNode }) {
         <meta name="description" content={DESCRIPTION} />
         <meta name="theme-color" content="#08070C" />
 
-        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
-        <link rel="icon" href="/bodhi-icon-48.png" sizes="48x48" type="image/png" />
-        <link rel="icon" href="/bodhi-icon-32.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/bodhi-icon-192.png" sizes="192x192" type="image/png" />
+        <link rel="icon" type="image/png" href="/bodhi-icon-48.png" sizes="48x48" />
+        <link rel="icon" type="image/png" href="/bodhi-icon-32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/bodhi-icon-192.png" sizes="192x192" />
+        <link rel="shortcut icon" href="/bodhi-icon-48.png" />
         <link rel="apple-touch-icon" href="/bodhi-icon-180.png" sizes="180x180" />
         <meta name="apple-mobile-web-app-title" content="LofiBuddha" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { EXPERIENCES, MUSIC_TRACKS, SOUNDS, type Experience } from "@lofibuddha/shared";
 import { SceneCanvas } from "@/src/components/content/SceneCanvas";
+import { Mandala } from "@/src/components/content/Mandala";
 import { IconButton } from "@/src/components/ui/Button";
 import { SectionHeader } from "@/src/components/ui/Primitives";
 import { SoundCard } from "@/src/components/content/SoundCard";
@@ -124,8 +125,10 @@ export default function MusicDetailScreen() {
                 <Icon name="music" size={64} color={colors.lotus} />
               </LinearGradient>
             )}
+            {/* Soft vignette — keeps blown highlights from reading as a white frame. */}
             <LinearGradient
-              colors={["transparent", "rgba(8,7,12,0.55)"]}
+              colors={["rgba(8,7,12,0.22)", "transparent", "rgba(8,7,12,0.62)"]}
+              locations={[0, 0.45, 1]}
               style={StyleSheet.absoluteFill}
               pointerEvents="none"
             />
@@ -180,19 +183,38 @@ export default function MusicDetailScreen() {
               <Pressable
                 key={g.id}
                 onPress={() => handleAddGuide(g)}
-                style={({ pressed }: any) => [styles.guideChip, pressed && { opacity: 0.85 }]}
+                accessibilityRole="button"
+                accessibilityLabel={`${g.title}, ${g.duration}`}
+                style={({ pressed, hovered }: any) => [
+                  styles.guideChip,
+                  hovered && { borderColor: tint(colors.jade, 0.45) },
+                  pressed && { opacity: 0.88, transform: [{ scale: 0.98 }] },
+                ]}
               >
                 <LinearGradient
-                  colors={[colors.goldBright, colors.goldDeep]}
+                  colors={[tint(colors.jade, 0.28), tint(colors.gold, 0.14), "transparent"]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={StyleSheet.absoluteFill}
+                  pointerEvents="none"
                 />
-                <Icon name="headphones" size={14} color={colors.ink} />
-                <Text style={[styles.guideTitle, { color: colors.ink }]} numberOfLines={2}>
+                <View style={styles.guideMandala} pointerEvents="none">
+                  <Mandala
+                    size={150}
+                    opacity={0.34}
+                    speed={0.22}
+                    intensity={0.45}
+                    detail="simple"
+                    colors={[colors.gold, colors.jade, colors.goldBright]}
+                  />
+                </View>
+                <View style={styles.guideBadge}>
+                  <Icon name="headphones" size={14} color={colors.gold} />
+                </View>
+                <Text style={styles.guideTitle} numberOfLines={2}>
                   {g.title}
                 </Text>
-                <Text style={[styles.guideDur, { color: "rgba(8,7,12,0.64)" }]}>{g.duration}</Text>
+                <Text style={styles.guideDur}>{g.duration}</Text>
               </Pressable>
             ))}
           </ScrollView>
@@ -252,9 +274,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.xl,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: colors.hairline,
+    borderColor: colors.goldEdge,
+    backgroundColor: colors.ink,
   },
-  art: { width: "100%", height: "100%" },
+  art: { width: "100%", height: "100%", backgroundColor: colors.ink },
 
   info: { width: "100%", maxWidth: 460, gap: space.md, alignItems: "center" },
   title: { ...type.largeTitle, color: colors.text, textAlign: "center" },
@@ -296,16 +319,34 @@ const styles = StyleSheet.create({
   rail: { gap: space.sm, paddingVertical: space.xs },
   guideChip: {
     width: 168,
+    minHeight: 118,
     paddingHorizontal: space.md,
     paddingVertical: space.md,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: "rgba(166,124,61,0.45)",
+    borderColor: tint(colors.gold, 0.38),
     backgroundColor: colors.card,
     gap: 6,
     alignItems: "flex-start",
+    justifyContent: "space-between",
     overflow: "hidden",
+    cursor: "pointer",
+  } as any,
+  guideMandala: {
+    position: "absolute",
+    right: -48,
+    bottom: -56,
   },
-  guideTitle: { ...type.headline, fontSize: 13, color: colors.text },
-  guideDur: { ...type.caption, color: colors.textMuted },
+  guideBadge: {
+    width: 30,
+    height: 30,
+    borderRadius: radius.pill,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: tint(colors.jade, 0.16),
+    borderWidth: 1,
+    borderColor: tint(colors.gold, 0.28),
+  },
+  guideTitle: { ...type.headline, fontSize: 13, color: colors.text, marginTop: space.sm },
+  guideDur: { ...type.caption, color: colors.jade },
 });

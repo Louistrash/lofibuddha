@@ -75,14 +75,19 @@ export default function PlayerScreen() {
     <SceneCanvas theme={theme} intensity={isBreath ? player.breathe : 0.5}>
       <View style={[styles.topBar, { paddingTop: insets.top + space.md }]}>
         <View style={styles.topLeft}>
-          <IconButton icon="down" onPress={dismiss} accessibilityLabel="Close player" />
+          <IconButton
+            icon="back"
+            onPress={dismiss}
+            accessibilityLabel="Go back"
+          />
           <Pressable
             onPress={() => router.replace("/")}
-            accessibilityLabel="Go to Today"
+            accessibilityRole="button"
+            accessibilityLabel="Go to Today home"
             style={({ hovered }: any) => [styles.homeLink, hovered && { opacity: 0.7 }]}
           >
-            <Icon name="buddha" size={19} color={colors.textSecondary} />
-            {l.isMedium ? <Text style={styles.homeLabel}>Today</Text> : null}
+            <Icon name="buddha" size={19} color={colors.gold} />
+            <Text style={styles.homeLabel}>Today</Text>
           </Pressable>
         </View>
         <View style={styles.topMeta}>
@@ -380,7 +385,7 @@ const styles = StyleSheet.create({
     paddingVertical: space.xs,
     paddingHorizontal: space.sm,
   },
-  homeLabel: { ...type.caption, color: colors.textSecondary },
+  homeLabel: { ...type.caption, color: colors.gold },
   topMeta: { flex: 1, alignItems: "center" },
   topLabel: { ...type.caption, color: colors.textSecondary },
 

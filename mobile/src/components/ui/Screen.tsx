@@ -1,5 +1,14 @@
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View, ViewStyle } from "react-native";
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,13 +27,25 @@ type Props = {
   actions?: React.ReactNode;
   scroll?: boolean;
   contentStyle?: ViewStyle;
+  /** Optional ref to the page ScrollView (jump-nav, programmatic scroll). */
+  scrollRef?: React.RefObject<ScrollView | null>;
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
 /**
  * Page shell. Keeps content within a readable column on desktop and
  * reserves room for the tab bar and mini player on phones.
  */
-export function Screen({ children, title, subtitle, actions, scroll = true, contentStyle }: Props) {
+export function Screen({
+  children,
+  title,
+  subtitle,
+  actions,
+  scroll = true,
+  contentStyle,
+  scrollRef,
+  onScroll,
+}: Props) {
   const l = useLayout();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -85,6 +106,7 @@ export function Screen({ children, title, subtitle, actions, scroll = true, cont
     <View style={styles.root}>
       <Backdrop />
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={[
           styles.centerer,
           {
@@ -93,6 +115,8 @@ export function Screen({ children, title, subtitle, actions, scroll = true, cont
           },
         ]}
         showsVerticalScrollIndicator={false}
+        onScroll={onScroll}
+        scrollEventThrottle={onScroll ? 16 : undefined}
       >
         {body}
       </ScrollView>

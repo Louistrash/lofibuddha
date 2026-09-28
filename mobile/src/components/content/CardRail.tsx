@@ -5,21 +5,24 @@ import { useLayout } from "@/src/theme/useLayout";
 
 /**
  * Horizontal rail on phones, wrapping grid on wider screens.
- * Keeps one component per screen instead of branching in every page.
+ * Pass `wrap` to force a wrapping grid (e.g. after “Show all”).
  */
 export function CardRail({
   children,
   minCardWidth = 260,
   columns,
+  wrap = false,
 }: {
   children: React.ReactNode;
   minCardWidth?: number;
   columns?: number;
+  /** Force wrapping grid even on compact layouts. */
+  wrap?: boolean;
 }) {
   const l = useLayout();
   const items = React.Children.toArray(children).filter(Boolean);
 
-  if (l.isCompact) {
+  if (l.isCompact && !wrap) {
     return (
       <ScrollView
         horizontal
