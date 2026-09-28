@@ -119,6 +119,7 @@ def send_via_resend(to_email, subject, html_body, text_body, dry_run=False):
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (compatible; LofiBuddha/1.0; +https://lofibuddha.com)",
         },
         method="POST",
     )

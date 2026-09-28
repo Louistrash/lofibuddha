@@ -2,6 +2,8 @@
 // Called from Stripe webhook on checkout.session.completed
 // Uses Resend API (same as newsletter system)
 
+import { EMAIL, EMAIL_LOGO_URL, wrapEmailHtml } from "./email-layout";
+
 const WELCOME_TEMPLATES: Record<string, Record<string, { subject: string; body: string }>> = {
   mindful: {
     en: {
@@ -40,52 +42,40 @@ export async function sendWelcomeEmail(
   const langName = { en: "English", nl: "Nederlands" }[language] || language;
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lofibuddha.com";
 
-  const html = `<!DOCTYPE html>
-<html lang="${language}">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#faf8f5;font-family:'Inter',-apple-system,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#faf8f5;padding:40px 0">
-  <tr><td align="center">
-    <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,0.06)">
-      
-      <!-- Header -->
-      <tr><td style="background:#1c1917;padding:40px 40px 32px;text-align:center">
-        <p style="margin:0;color:#b08050;font-size:10px;letter-spacing:3px;text-transform:uppercase">lofibuddha · ${langName}</p>
-        <h1 style="margin:16px 0 0;color:#faf8f5;font-size:22px;font-weight:300;line-height:1.3;font-family:'Playfair Display',Georgia,serif">${template.subject}</h1>
-      </td></tr>
-      
-      <!-- Content -->
-      <tr><td style="padding:32px 40px;color:#44403c;font-size:15px;line-height:1.8">
-        ${template.body.split("\\n").map((p) => {
-          if (p.startsWith("1.") || p.startsWith("2.") || p.startsWith("3.") || p.startsWith("4.")) {
-            return `<p style="margin:0 0 12px;padding-left:8px;border-left:2px solid #b08050">${p}</p>`;
-          }
-          if (!p.trim()) return "<br>";
-          return `<p style="margin:0 0 16px">${p}</p>`;
-        }).join("")}
-      </td></tr>
-      
-      <!-- CTA -->
-      <tr><td style="padding:8px 40px 16px;text-align:center">
-        <a href="${baseUrl}/account" style="display:inline-block;background:#1c1917;color:#fff;text-decoration:none;padding:14px 36px;border-radius:30px;font-size:14px;font-weight:400;letter-spacing:0.5px">View your journey</a>
-      </td></tr>
+  const bodyHtml = template.body
+    .split("\\n")
+    .map((p) => {
+      if (p.startsWith("1.") || p.startsWith("2.") || p.startsWith("3.") || p.startsWith("4.")) {
+        return `<p style="margin:0 0 12px;padding-left:8px;border-left:2px solid ${EMAIL.goldSoft}">${p}</p>`;
+      }
+      if (!p.trim()) return "<br>";
+      return `<p style="margin:0 0 16px">${p}</p>`;
+    })
+    .join("");
 
-      <!-- AI Buddha CTA -->
+  const afterBodyHtml = `
+      <tr><td style="padding:8px 40px 16px;text-align:center">
+        <a href="${baseUrl}/account" style="display:inline-block;background:${EMAIL.headerBg};color:#fff;text-decoration:none;padding:14px 36px;border-radius:30px;font-size:14px;font-weight:400;letter-spacing:0.5px">View your journey</a>
+      </td></tr>
       <tr><td style="padding:0 40px 32px;text-align:center">
-        <a href="https://lofibuddha.com/chat" style="display:inline-block;color:#b08050;text-decoration:none;font-size:13px;border-bottom:1px solid rgba(176,128,80,0.3);padding-bottom:2px">Chat with AI Buddha →</a>
-      </td></tr>
-      
-      <!-- Footer -->
-      <tr><td style="padding:24px 40px 32px;text-align:center;border-top:1px solid rgba(0,0,0,0.06)">
-        <p style="margin:0;color:#78716c;font-size:11px">You received this email because you subscribed to LofiBuddha.</p>
-        <p style="margin:8px 0 0;color:#78716c;font-size:11px">
-          <a href="${baseUrl}/api/subscribers?action=unsubscribe&email=${encodeURIComponent(email)}" style="color:#b08050;text-decoration:underline">Unsubscribe</a>
-        </p>
-      </td></tr>
-    </table>
-  </td></tr>
-</table>
-</body></html>`;
+        <a href="https://lofibuddha.com/chat" style="display:inline-block;color:${EMAIL.goldSoft};text-decoration:none;font-size:13px;border-bottom:1px solid rgba(176,128,80,0.3);padding-bottom:2px">Chat with AI Buddha →</a>
+      </td></tr>`;
+
+  const footerHtml = `
+        <img src="${EMAIL_LOGO_URL}" width="36" height="36" alt="" style="display:block;margin:0 auto 12px;border-radius:50%;width:36px;height:36px;opacity:0.9" />
+        <p style="margin:0;color:${EMAIL.muted};font-size:11px">You received this email because you subscribed to LofiBuddha.</p>
+        <p style="margin:8px 0 0;color:${EMAIL.muted};font-size:11px">
+          <a href="${baseUrl}/api/subscribers?action=unsubscribe&email=${encodeURIComponent(email)}" style="color:${EMAIL.goldSoft};text-decoration:underline">Unsubscribe</a>
+        </p>`;
+
+  const html = wrapEmailHtml({
+    lang: language,
+    eyebrow: `lofibuddha · ${langName}`,
+    title: template.subject,
+    bodyHtml,
+    afterBodyHtml,
+    footerHtml,
+  });
 
   try {
     const resp = await fetch("https://api.resend.com/emails", {

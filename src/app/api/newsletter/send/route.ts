@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
+import { EMAIL_LOGO_URL } from "@/lib/email-layout";
 
 const NEWSLETTER_DB = join(process.cwd(), "public", "data", "newsletters.json");
 const SUBSCRIBER_DB = join(process.cwd(), "public", "data", "subscribers.json");
@@ -56,6 +57,7 @@ function emailHTML(params: {
       
       <!-- Header -->
       <tr><td style="background:linear-gradient(135deg,#2a2318,#1a1715);padding:32px 40px;text-align:center">
+        <img src="${EMAIL_LOGO_URL}" width="72" height="72" alt="LofiBuddha" style="display:block;margin:0 auto 16px;border-radius:50%;border:2px solid #c49464;width:72px;height:72px" />
         <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:3px;text-transform:uppercase">lofibuddha · Issue #${params.issueNumber} · ${langName}</p>
         <h1 style="margin:12px 0 0;color:#f0ebe0;font-size:24px;font-weight:400;line-height:1.3">${params.subject}</h1>
       </td></tr>
@@ -93,6 +95,7 @@ function emailHTML(params: {
       
       <!-- Footer -->
       <tr><td style="padding:24px 40px 32px;text-align:center;border-top:1px solid #2a2318;margin-top:16px">
+        <img src="${EMAIL_LOGO_URL}" width="32" height="32" alt="" style="display:block;margin:0 auto 12px;border-radius:50%;width:32px;height:32px;opacity:0.85" />
         <p style="margin:0;color:#6b6358;font-size:11px">${l.footer}</p>
         <p style="margin:8px 0 0;color:#6b6358;font-size:11px">
           <a href="${unsubLink}" style="color:#9a9488;text-decoration:underline">${l.unsubscribe}</a>
