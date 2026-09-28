@@ -183,21 +183,21 @@ def drip_html(tier, tier_title, day, item, subscriber_email):
     unsub = f"{BASE_URL}/api/subscribers?action=unsubscribe&email={subscriber_email}"
 
     return f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#0f0f0f;font-family:Georgia,'Times New Roman',serif">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><style>@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');</style></head>
+<body style="margin:0;padding:0;background:#0f0f0f;font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f0f0f;padding:40px 0"><tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background:#1a1715;border-radius:16px;overflow:hidden;border:1px solid #3d362f">
 
 <tr><td style="background:linear-gradient(135deg,#2a2318,#1a1715);padding:32px 40px;text-align:center">
-<img src="https://lofibuddha.com/icon-transparent.png" alt="LofiBuddha" width="72" height="72" style="width:72px;height:72px;display:block;margin:0 auto 16px">
+<img src="https://lofibuddha.com/images/brand/lofibuddha-icon.png" alt="LofiBuddha" width="72" height="72" style="width:72px;height:72px;display:block;margin:0 auto 16px">
 <p style="margin:0;color:#c49464;font-size:10px;letter-spacing:3px;text-transform:uppercase">lofibuddha · {tier_title} · Day {day}</p>
-<h1 style="margin:12px 0 0;color:#f0ebe0;font-size:23px;font-weight:400;line-height:1.3">{title}</h1>
+<h1 style="margin:12px 0 0;color:#f0ebe0;font-size:24px;font-weight:700;line-height:1.25">{title}</h1>
 {subtitle if subtitle else ''}
 </td></tr>
 
 <tr><td style="height:1px;background:linear-gradient(90deg,transparent,#c49464,transparent)"></td></tr>
 
-<tr><td style="padding:32px 40px 8px;font-size:15px;line-height:1.8">{md_to_html(body)}</td></tr>
+<tr><td style="padding:32px 40px 8px;font-size:16px;line-height:1.65">{md_to_html(body)}</td></tr>
 <tr><td style="padding:0 40px 8px;text-align:center">{dur_badge}</td></tr>
 {action_html}
 {download_html}

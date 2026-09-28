@@ -36,7 +36,7 @@ export function emailHeader(eyebrow: string, title: string): string {
       <tr><td style="background:${EMAIL.headerBg};padding:36px 40px 32px;text-align:center">
         <img src="${EMAIL_LOGO_URL}" width="72" height="72" alt="LofiBuddha" style="display:block;margin:0 auto 16px;border-radius:50%;border:2px solid ${EMAIL.goldSoft};width:72px;height:72px" />
         <p style="margin:0;color:${EMAIL.gold};font-size:10px;letter-spacing:3px;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">${eyebrow}</p>
-        <h1 style="margin:14px 0 0;color:#faf8f5;font-size:22px;font-weight:400;line-height:1.35;font-family:Georgia,'Times New Roman',serif">${title}</h1>
+        <h1 style="margin:14px 0 0;color:#faf8f5;font-size:22px;font-weight:700;line-height:1.3">${title}</h1>
       </td></tr>`;
 }
 
@@ -48,9 +48,10 @@ export function wrapEmailHtml(opts: ShellOpts): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');</style>
   <title>${opts.title}</title>
 </head>
-<body style="margin:0;padding:0;background:${EMAIL.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Georgia,serif">
+<body style="margin:0;padding:0;background:${EMAIL.bg};font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${EMAIL.bg};padding:40px 16px">
   <tr><td align="center">
     <table role="presentation" width="${width}" cellpadding="0" cellspacing="0" style="max-width:${width}px;width:100%;background:${EMAIL.card};border-radius:16px;overflow:hidden;border:1px solid ${EMAIL.rule}">

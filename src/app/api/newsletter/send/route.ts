@@ -40,72 +40,79 @@ function emailHTML(params: {
     const slug = c.slug || "";
     const rawImg = c.image || "https://lofibuddha.com/images/generated/temple-01-jungle-1780083927467.png";
     const img = rawImg.startsWith("http") ? rawImg : `${params.baseUrl}${rawImg}`;
+    const href = `${params.baseUrl}/course/${slug}?lang=${params.language}`;
     return `
-    <div style="background:#1a1715;border-radius:12px;padding:16px;margin:8px 0;border:1px solid #3d362f">
-      <img src="${img}" alt="${title}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px" />
-      <h3 style="margin:0 0 4px;color:#d4b48a;font-size:15px">${title}</h3>
-      <p style="margin:0;color:#9a9488;font-size:12px">${desc.slice(0, 100)}...</p>
-      <a href="${params.baseUrl}/course/${slug}?lang=${params.language}" style="display:inline-block;margin-top:8px;color:#c49464;font-size:12px;text-decoration:none;font-weight:600">${l.cta} →</a>
+    <div style="background:#211c18;border-radius:12px;margin:0 0 14px;border:1px solid #3d362f;overflow:hidden">
+      <a href="${href}" style="display:block;text-decoration:none">
+        <img src="${img}" alt="${title}" width="600" style="width:100%;height:180px;object-fit:cover;object-position:center;border:none;display:block" />
+      </a>
+      <div style="padding:16px 16px 18px">
+        <a href="${href}" style="text-decoration:none"><h3 style="margin:0 0 6px;color:#e8d9b8;font-size:16px;font-weight:700">${title}</h3></a>
+        <p style="margin:0 0 12px;color:#b6ada0;font-size:14px;line-height:1.6">${desc}</p>
+        <a href="${href}" style="display:inline-block;color:#c49464;font-size:13px;text-decoration:none;font-weight:700">${l.cta} →</a>
+      </div>
     </div>`;
   }).join("");
 
   return `<!DOCTYPE html>
 <html lang="${params.language}">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#0f0f0f;font-family:Georgia,'Times New Roman',serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#0f0f0f;padding:40px 0">
-  <tr><td align="center">
-    <table width="600" cellpadding="0" cellspacing="0" style="background:#1a1715;border-radius:16px;overflow:hidden;border:1px solid #3d362f">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+</style>
+</head>
+<body style="margin:0;padding:0;background:#0f0f0f;font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0f0f0f;padding:40px 16px"><tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#1a1715;border-radius:16px;overflow:hidden;border:1px solid #3d362f">
       
       <!-- Header -->
-      <tr><td style="background:linear-gradient(135deg,#2a2318,#1a1715);padding:32px 40px;text-align:center">
+      <tr><td style="background:linear-gradient(135deg,#2a2318,#1a1715);padding:36px 24px 30px;text-align:center">
         <img src="${EMAIL_LOGO_URL}" width="72" height="72" alt="LofiBuddha" style="display:block;margin:0 auto 16px;border-radius:50%;border:2px solid #c49464;width:72px;height:72px" />
-        <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:3px;text-transform:uppercase">lofibuddha · Issue #${params.issueNumber} · ${langName}</p>
-        <h1 style="margin:12px 0 0;color:#f0ebe0;font-size:24px;font-weight:400;line-height:1.3">${params.subject}</h1>
+        <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700">lofibuddha · Issue #${params.issueNumber} · ${langName}</p>
+        <h1 style="margin:14px 0 0;color:#f0ebe0;font-size:26px;font-weight:700;line-height:1.25">${params.subject}</h1>
       </td></tr>
       
       <!-- Divider -->
       <tr><td style="height:1px;background:linear-gradient(90deg,transparent,#c49464,transparent)"></td></tr>
       
       <!-- Content -->
-      <tr><td style="padding:32px 40px;color:#d4c8b8;font-size:15px;line-height:1.8">
-        <p style="margin:0 0 8px;color:#9a9488;font-size:13px">${l.greeting} 🧘</p>
-        ${params.content.split("\\n").map((p: string) => `<p style="margin:0 0 16px">${p}</p>`).join("")}
+      <tr><td style="padding:28px 24px;color:#d8d0c4;font-size:16px;line-height:1.65">
+        <p style="margin:0 0 10px;color:#a89f92;font-size:14px">${l.greeting} 🧘</p>
+        ${params.content.split("\n").map((p: string) => `<p style="margin:0 0 14px">${p}</p>`).join("")}
       </td></tr>
       
       <!-- Courses -->
       ${courseCards ? `
-      <tr><td style="padding:0 40px 16px">
-        <h2 style="margin:0 0 8px;color:#c4b89a;font-size:14px;letter-spacing:2px;text-transform:uppercase">${l.courses}</h2>
+      <tr><td style="padding:0 24px 8px">
+        <h2 style="margin:0 0 12px;color:#c4b89a;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700">${l.courses}</h2>
         ${courseCards}
       </td></tr>` : ""}
       
       <!-- Mindfulness Tip -->
-      <tr><td style="padding:16px 40px">
+      <tr><td style="padding:14px 24px">
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#25201c;border-radius:12px;border:1px solid #3d362f">
-          <tr><td style="padding:20px 24px">
-            <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:2px;text-transform:uppercase">🌿 ${l.tip}</p>
-            <p style="margin:8px 0 0;color:#d4c8b8;font-size:14px;line-height:1.6">${l.tipBody}</p>
+          <tr><td style="padding:18px 22px">
+            <p style="margin:0;color:#c49464;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700">🌿 ${l.tip}</p>
+            <p style="margin:8px 0 0;color:#d8d0c4;font-size:15px;line-height:1.6">${l.tipBody}</p>
           </td></tr>
         </table>
       </td></tr>
       
       <!-- CTA -->
-      <tr><td style="padding:24px 40px 8px;text-align:center">
-        <a href="${params.baseUrl}" style="display:inline-block;background:linear-gradient(135deg,#c49464,#a0784c);color:#fff;text-decoration:none;padding:14px 36px;border-radius:30px;font-size:14px;font-weight:600;letter-spacing:1px">${l.cta}</a>
+      <tr><td style="padding:22px 24px 8px;text-align:center">
+        <a href="${params.baseUrl}" style="display:inline-block;background:linear-gradient(135deg,#c49464,#a0784c);color:#fff;text-decoration:none;padding:14px 34px;border-radius:30px;font-size:15px;font-weight:700;letter-spacing:0.5px">${l.cta}</a>
       </td></tr>
       
       <!-- Footer -->
-      <tr><td style="padding:24px 40px 32px;text-align:center;border-top:1px solid #2a2318;margin-top:16px">
+      <tr><td style="padding:22px 24px 30px;text-align:center;border-top:1px solid #2a2318;margin-top:16px">
         <img src="${EMAIL_LOGO_URL}" width="32" height="32" alt="" style="display:block;margin:0 auto 12px;border-radius:50%;width:32px;height:32px;opacity:0.85" />
-        <p style="margin:0;color:#6b6358;font-size:11px">${l.footer}</p>
-        <p style="margin:8px 0 0;color:#6b6358;font-size:11px">
-          <a href="${unsubLink}" style="color:#9a9488;text-decoration:underline">${l.unsubscribe}</a>
+        <p style="margin:0;color:#8a8378;font-size:12px">${l.footer}</p>
+        <p style="margin:8px 0 0;color:#8a8378;font-size:12px">
+          <a href="${unsubLink}" style="color:#a89f92;text-decoration:underline">${l.unsubscribe}</a>
         </p>
       </td></tr>
     </table>
-  </td></tr>
-</table>
+</td></tr></table>
 </body></html>`;
 }
 
