@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LofiBuddha — Week</title>
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --surface:rgba(255,255,255,.045);
+    --surface-border:rgba(255,255,255,.09);
+    --surface-border-strong:rgba(255,255,255,.14);
+    --text:#f2efe8;
+    --text-muted:#aaa499;
+    --text-faint:#6e6a60;
+    --focus:#E8A33D;
+    --breathe:#2DD4BF;
+    --sleep:#b89258;
+    --relax:#A855F7;
+    --gold:#d9b878;
+    --r-card:22px;
+    --r-pill:999px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, #15151a 0%, var(--bg) 55%),
+      var(--bg);
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:26px;
+    padding:40px 20px;
+    overflow:hidden;
+    position:relative;
+  }
+
+  .dust{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .dust span{
+    position:absolute; bottom:-8px;
+    width:3px; height:3px; border-radius:50%;
+    background:radial-gradient(circle, rgba(217,184,120,.9), rgba(217,184,120,0));
+    opacity:0;
+    animation:float-up linear infinite;
+  }
+  @keyframes float-up{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    12%{ opacity:.75; }
+    85%{ opacity:.25; }
+    100%{ transform:translateY(-105vh) translateX(var(--dx,0px)); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .dust span{ display:none; } }
+
+  .caption{
+    position:relative; z-index:2;
+    font-size:12px; letter-spacing:.32em; text-transform:uppercase;
+    color:var(--text-faint);
+  }
+
+  .phone{
+    position:relative; z-index:2;
+    width:392px;
+    border-radius:54px;
+    background:#000;
+    padding:12px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.06),
+      0 40px 90px -30px rgba(0,0,0,.9),
+      0 0 120px -40px rgba(217,184,120,.12);
+  }
+  .screen{
+    position:relative;
+    border-radius:44px;
+    overflow:hidden;
+    background:var(--bg);
+    height:868px;
+    display:flex;
+    flex-direction:column;
+    isolation:isolate;
+  }
+  .screen::before{
+    content:""; position:absolute; inset:0; z-index:-1;
+    background:
+      radial-gradient(380px 260px at 85% -6%, rgba(45,212,191,.10), transparent 60%),
+      radial-gradient(420px 300px at 10% 30%, rgba(232,163,61,.07), transparent 60%),
+      radial-gradient(460px 340px at 90% 78%, rgba(184,146,88,.09), transparent 62%);
+  }
+
+  .status{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 26px 4px;
+    font-size:13px; font-weight:600; color:var(--text);
+  }
+  .status .right{ display:flex; gap:6px; align-items:center; }
+  .status svg{ display:block; }
+
+  .head{ padding:16px 26px 4px; }
+  .head .topline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .head .date{ font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--text-faint); }
+  .head h1{ font-size:28px; font-weight:650; letter-spacing:-.02em; line-height:1.08; }
+  .streak{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:12.5px; font-weight:500; color:var(--gold);
+    background:rgba(217,184,120,.08);
+    border:1px solid rgba(217,184,120,.16);
+    padding:6px 12px; border-radius:var(--r-pill);
+  }
+  .streak .spark{ font-size:11px; line-height:1; }
+
+  .intent{
+    margin:12px 26px 0;
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface);
+    border:1px solid var(--surface-border);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    border-radius:18px;
+    padding:13px 16px;
+  }
+  .intent .dot{ width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px rgba(217,184,120,.7); flex:none; }
+  .intent .txt{ font-size:14px; color:var(--text-muted); font-weight:400; }
+  .intent .txt b{ color:var(--text); font-weight:550; }
+
+  /* week strip */
+  .week{ margin:14px 22px 2px; display:flex; gap:6px; }
+  .daytile{
+    flex:1; min-width:0;
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    padding:7px 0 8px; border-radius:14px;
+    background:transparent; border:1px solid transparent;
+    cursor:pointer; transition:background .2s, border-color .2s;
+  }
+  .daytile .dow{ font-size:11px; font-weight:500; letter-spacing:.05em; color:var(--text-faint); }
+  .daytile .num{ font-size:15px; font-weight:600; color:#b8b3a8; }
+  .daytile.active{ background:rgba(255,255,255,.06); }
+  .daytile.active .dow, .daytile.active .num{ color:var(--text); }
+  .daytile.today{ border-color:rgba(217,184,120,.30); }
+  .daytile.today .num{ color:var(--gold); }
+  .daytile.done .num::after{ content:""; display:block; width:4px; height:4px; border-radius:50%; background:var(--gold); margin:5px auto -1px; box-shadow:0 0 6px rgba(217,184,120,.7); }
+
+  /* carousel */
+  .carousel{ flex:1; min-height:0; margin-top:4px; }
+  .track{
+    display:flex; height:100%;
+    overflow-x:auto; scroll-snap-type:x mandatory;
+    touch-action:pan-x; overscroll-behavior-x:contain; scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .track::-webkit-scrollbar{ display:none; }
+  .slide{
+    flex:0 0 100%; scroll-snap-align:start; min-width:0;
+    padding:6px 26px 8px;
+    display:flex; flex-direction:column;
+    overflow-y:auto; scrollbar-width:none;
+  }
+  .slide::-webkit-scrollbar{ display:none; }
+
+  .day{ padding-top:3px; }
+  .day .label{
+    display:flex; align-items:center; gap:10px;
+    font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--text-faint); margin-bottom:5px;
+  }
+  .day .label::after{ content:""; height:1px; flex:1; background:rgba(255,255,255,.07); }
+
+  .card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--surface-border);
+    backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
+    border-radius:var(--r-card);
+    padding:13px 18px 12px;
+    margin-bottom:8px;
+    overflow:hidden;
+  }
+  .card .glow{
+    position:absolute; top:-70px; left:-40px; width:230px; height:230px;
+    border-radius:50%; pointer-events:none;
+    filter:blur(36px); opacity:.36;
+  }
+  .card .top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .card .cat{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; font-weight:600; }
+  .card .dur{
+    font-size:12px; font-weight:500; color:#e9e5db;
+    background:rgba(255,255,255,.08);
+    border:1px solid var(--surface-border-strong);
+    padding:4px 11px; border-radius:var(--r-pill);
+  }
+  .card .title{ font-size:16px; font-weight:620; letter-spacing:-.01em; line-height:1.2; margin-bottom:3px; }
+  .card .sub{ font-size:13px; color:var(--text-muted); line-height:1.45; }
+  .card .play-row{ display:flex; align-items:center; gap:14px; margin-top:10px; }
+  .play{
+    flex:none; width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; border:none; color:#0a0a0c;
+    box-shadow:0 6px 20px -6px rgba(0,0,0,.6);
+    transition:transform .15s ease;
+  }
+  .play:hover{ transform:scale(1.06); }
+  .play svg{ display:block; }
+  .card .meta{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tag{
+    font-size:11.5px; font-weight:500; color:var(--text-muted);
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--surface-border);
+    padding:5px 11px; border-radius:var(--r-pill);
+  }
+
+  .card.done{ border-color:rgba(217,184,120,.20); }
+  .card.done .glow{ opacity:.22; }
+  .card.done .title{ color:var(--text-muted); }
+  .done-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11.5px; font-weight:600; color:var(--gold);
+    background:rgba(217,184,120,.10);
+    border:1px solid rgba(217,184,120,.22);
+    padding:4px 11px; border-radius:var(--r-pill);
+  }
+
+  /* rest day empty state */
+  .card.rest{
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:34px 26px 32px;
+    border-style:dashed;
+  }
+  .rest .ring{
+    width:46px; height:46px; border-radius:50%;
+    border:1px solid rgba(217,184,120,.28);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 14px;
+  }
+  .rest .ring::before{ content:""; width:10px; height:10px; border-radius:50%; background:var(--gold); box-shadow:0 0 12px rgba(217,184,120,.7); }
+  .rest .title{ font-size:17px; font-weight:620; margin-bottom:5px; }
+  .rest .sub{ font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+  /* dots */
+  .dots{ display:flex; justify-content:center; gap:7px; padding:4px 0 10px; }
+  .dots button{
+    width:6px; height:6px; border-radius:999px; border:none; cursor:pointer;
+    background:rgba(255,255,255,.18); transition:all .25s ease; padding:0;
+  }
+  .dots button.active{ width:20px; background:var(--gold); box-shadow:0 0 8px rgba(217,184,120,.5); }
+
+  /* nav */
+  .nav{
+    display:flex; justify-content:space-around; align-items:center;
+    padding:14px 20px 22px;
+    background:rgba(10,10,12,.55);
+    backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .nav .item{ display:flex; flex-direction:column; align-items:center; gap:4px; font-size:10px; color:var(--text-faint); }
+  .nav .item svg{ opacity:.55; }
+  .nav .item.active{ color:var(--text); }
+  .nav .item.active svg{ opacity:1; }
+  .home-indicator{
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+    width:134px; height:5px; border-radius:999px;
+    background:rgba(255,255,255,.85); z-index:3;
+  }
+</style>
+</head>
+<body>
+
+<div class="dust" id="dust"></div>
+<div class="caption">LofiBuddha · Week</div>
+
+<div class="phone">
+  <div class="screen">
+
+    <div class="status">
+      <span>09:41</span>
+      <span class="right">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="1" fill="#f2efe8"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="1" fill="#f2efe8"/><rect x="9" y="2" width="3" height="9" rx="1" fill="#f2efe8"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#f2efe8" opacity=".35"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="#f2efe8" stroke-opacity=".5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#f2efe8"/><path d="M24 4v4c1.2-.4 1.8-1.3 1.8-2s-.6-1.6-1.8-2z" fill="#f2efe8" fill-opacity=".5"/></svg>
+      </span>
+    </div>
+
+    <div class="head">
+      <div class="topline">
+        <span class="date">Monday, September 28</span>
+        <span class="streak"><span class="spark">✦</span> 3-day streak</span>
+      </div>
+      <h1>Your week</h1>
+    </div>
+
+
+    <div class="week" id="week">
+      <button class="daytile today active" data-i="0"><span class="dow">Mon</span><span class="num">28</span></button>
+      <button class="daytile" data-i="1"><span class="dow">Tue</span><span class="num">29</span></button>
+      <button class="daytile" data-i="2"><span class="dow">Wed</span><span class="num">30</span></button>
+      <button class="daytile" data-i="3"><span class="dow">Thu</span><span class="num">1</span></button>
+      <button class="daytile" data-i="4"><span class="dow">Fri</span><span class="num">2</span></button>
+      <button class="daytile done" data-i="5"><span class="dow">Sat</span><span class="num">3</span></button>
+      <button class="daytile done" data-i="6"><span class="dow">Sun</span><span class="num">4</span></button>
+    </div>
+
+    <div class="carousel">
+      <div class="track" id="track">
+
+        <!-- Mon -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Morning</div>
+            <div class="card done">
+              <div class="glow" style="background:#2DD4BF;"></div>
+              <div class="top">
+                <span class="cat" style="color:#2DD4BF;">Breath</span>
+                <span class="done-badge">✓ Done</span>
+              </div>
+              <div class="title">Box Breathing</div>
+              <div class="sub">In four · hold four · out four — calm.</div>
+              <div class="play-row">
+                <button class="play" style="background:#2DD4BF;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">5 min</span><span class="tag">breath</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="day">
+            <div class="label">Midday</div>
+            <div class="card">
+              <div class="glow" style="background:#E8A33D;"></div>
+              <div class="top">
+                <span class="cat" style="color:#E8A33D;">Focus</span>
+                <span class="dur">10 min</span>
+              </div>
+              <div class="title">Deep Work</div>
+              <div class="sub">One task, full attention.</div>
+              <div class="play-row">
+                <button class="play" style="background:#E8A33D;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">focus</span><span class="tag">work</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="day">
+            <div class="label">Evening</div>
+            <div class="card">
+              <div class="glow" style="background:#b89258;"></div>
+              <div class="top">
+                <span class="cat" style="color:#b89258;">Sleep</span>
+                <span class="dur">15 min</span>
+              </div>
+              <div class="title">Drift Into Sleep</div>
+              <div class="sub">Let the day go, into restful sleep.</div>
+              <div class="play-row">
+                <button class="play" style="background:#b89258;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">sleep</span><span class="tag">story</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tue -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Morning</div>
+            <div class="card">
+              <div class="glow" style="background:#2DD4BF;"></div>
+              <div class="top">
+                <span class="cat" style="color:#2DD4BF;">Breath</span>
+                <span class="dur">5 min</span>
+              </div>
+              <div class="title">Breath of Life</div>
+              <div class="sub">Notice the breath — the quiet gift of being.</div>
+              <div class="play-row">
+                <button class="play" style="background:#2DD4BF;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">5 min</span><span class="tag">breath</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="day">
+            <div class="label">Evening</div>
+            <div class="card">
+              <div class="glow" style="background:#A855F7;"></div>
+              <div class="top">
+                <span class="cat" style="color:#A855F7;">Relax</span>
+                <span class="dur">12 min</span>
+              </div>
+              <div class="title">Body Scan</div>
+              <div class="sub">Travel through the body, releasing tension.</div>
+              <div class="play-row">
+                <button class="play" style="background:#A855F7;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">relax</span><span class="tag">body</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wed -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Morning</div>
+            <div class="card">
+              <div class="glow" style="background:#2DD4BF;"></div>
+              <div class="top">
+                <span class="cat" style="color:#2DD4BF;">Breath</span>
+                <span class="dur">6 min</span>
+              </div>
+              <div class="title">Ocean Breath</div>
+              <div class="sub">An ocean sound as the breath rolls in.</div>
+              <div class="play-row">
+                <button class="play" style="background:#2DD4BF;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">6 min</span><span class="tag">breath</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="day">
+            <div class="label">Midday</div>
+            <div class="card">
+              <div class="glow" style="background:#E8A33D;"></div>
+              <div class="top">
+                <span class="cat" style="color:#E8A33D;">Focus</span>
+                <span class="dur">10 min</span>
+              </div>
+              <div class="title">Deep Work</div>
+              <div class="sub">One task, full attention.</div>
+              <div class="play-row">
+                <button class="play" style="background:#E8A33D;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">focus</span><span class="tag">work</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thu -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Thursday</div>
+            <div class="card rest">
+              <div>
+                <div class="ring"></div>
+                <div class="title">Rest day</div>
+                <div class="sub">No practice scheduled.<br>Let stillness be the practice.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fri -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Morning</div>
+            <div class="card">
+              <div class="glow" style="background:#2DD4BF;"></div>
+              <div class="top">
+                <span class="cat" style="color:#2DD4BF;">Breath</span>
+                <span class="dur">5 min</span>
+              </div>
+              <div class="title">Box Breathing</div>
+              <div class="sub">A steady four-four-four-four rhythm.</div>
+              <div class="play-row">
+                <button class="play" style="background:#2DD4BF;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">5 min</span><span class="tag">breath</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="day">
+            <div class="label">Evening</div>
+            <div class="card">
+              <div class="glow" style="background:#A855F7;"></div>
+              <div class="top">
+                <span class="cat" style="color:#A855F7;">Relax</span>
+                <span class="dur">20 min</span>
+              </div>
+              <div class="title">Zen Garden</div>
+              <div class="sub">Water, light wind and a distant bell.</div>
+              <div class="play-row">
+                <button class="play" style="background:#A855F7;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">relax</span><span class="tag">sounds</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sat -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Morning</div>
+            <div class="card">
+              <div class="glow" style="background:#E8A33D;"></div>
+              <div class="top">
+                <span class="cat" style="color:#E8A33D;">Focus</span>
+                <span class="dur">8 min</span>
+              </div>
+              <div class="title">Morning Gratitude</div>
+              <div class="sub">Begin the day awake to what works for you.</div>
+              <div class="play-row">
+                <button class="play" style="background:#E8A33D;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">8 min</span><span class="tag">gratitude</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sun -->
+        <div class="slide">
+          <div class="day">
+            <div class="label">Evening</div>
+            <div class="card">
+              <div class="glow" style="background:#A855F7;"></div>
+              <div class="top">
+                <span class="cat" style="color:#A855F7;">Relax</span>
+                <span class="dur">10 min</span>
+              </div>
+              <div class="title">Loving-Kindness</div>
+              <div class="sub">May you be happy, may you be at ease.</div>
+              <div class="play-row">
+                <button class="play" style="background:#A855F7;" aria-label="Play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#0a0a0c"/></svg></button>
+                <div class="meta"><span class="tag">10 min</span><span class="tag">kindness</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="dots" id="dots"></div>
+
+    <div class="nav">
+      <div class="item active">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+        <span>Today</span>
+      </div>
+      <div class="item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span>Explore</span>
+      </div>
+      <div class="item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M7 12h10M10 18h4"/></svg>
+        <span>Library</span>
+      </div>
+      <div class="item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-5 8-5s8 1.7 8 5"/></svg>
+        <span>Profile</span>
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    const track = document.getElementById('track');
+    const dots = document.getElementById('dots');
+    const tiles = Array.from(document.querySelectorAll('.daytile'));
+    const slides = Array.from(document.querySelectorAll('.slide'));
+
+    // build dots
+    slides.forEach(() => {
+      const b = document.createElement('button');
+      dots.appendChild(b);
+    });
+    const dotEls = Array.from(dots.children);
+
+    function activeIndex(){
+      const w = track.clientWidth;
+      return Math.round(track.scrollLeft / w);
+    }
+
+    function sync(){
+      const i = Math.max(0, Math.min(slides.length - 1, activeIndex()));
+      dotEls.forEach((d, k) => d.classList.toggle('active', k === i));
+      tiles.forEach((t, k) => t.classList.toggle('active', k === i));
+    }
+
+    function goTo(i){
+      track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+    }
+
+    dotEls.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+    tiles.forEach((t, i) => t.addEventListener('click', () => goTo(i)));
+
+    let raf = false;
+    track.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = true;
+      requestAnimationFrame(() => { sync(); raf = false; });
+    }, { passive: true });
+
+    window.addEventListener('resize', sync);
+    sync();
+
+    // golden dust
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const dust = document.getElementById('dust');
+      for (let i = 0; i < 22; i++) {
+        const s = document.createElement('span');
+        const size = 1.5 + Math.random() * 2.5;
+        s.style.width = s.style.height = size + 'px';
+        s.style.left = (Math.random() * 100) + 'vw';
+        s.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+        s.style.animationDuration = (14 + Math.random() * 20) + 's';
+        s.style.animationDelay = (Math.random() * 20) + 's';
+        dust.appendChild(s);
+      }
+    }
+  })();
+</script>
+</body>
+</html>
