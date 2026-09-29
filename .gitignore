@@ -57,6 +57,21 @@ secrets/
 # Gegenereerde cover-art (regeneerbaar via scripts/generate-covers.py)
 data/music/covers/
 
+# Social media experiment assets (lokaal houden; niet in repo)
+data/shorts/
+public/images/lotus*.jpg
+public/images/cyber*.jpg
+public/images/mix*.jpg
+public/images/buddha[0-9]*.jpg
+public/images/buddha-blue.jpg
+public/images/buddha-jade.jpg
+public/images/buddha-rosegold.jpg
+public/images/buddha-silver.jpg
+public/images/buddha-violet.jpg
+public/images/buddha-warmgold.jpg
+public/images/buddha-water-*.jpg
+
+
 # Python cache / lokale venv
 .venv-pdf/
 scripts/__pycache__/
