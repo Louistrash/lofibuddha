@@ -31,6 +31,14 @@ public/audio/
 # Gegenereerde video's
 public/videos/
 
+# Social-media assets (gegenereerde experimenten) — apart in /opt/data/social-media/
+data/shorts/
+public/images/buddha-*.jpg
+public/images/buddha[0-9].jpg
+public/images/cyber*.jpg
+public/images/lotus*.jpg
+public/images/mix*.jpg
+
 # Logs
 *.log
 npm-debug.log*
